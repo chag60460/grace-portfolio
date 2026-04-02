@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grace — Portfolio</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── Menu bar ── -->
+  <div class="menubar">
+    <div class="menubar-left">
+      <span class="menubar-brand">grace.dev</span>  <!-- domain -->
+      <span>File</span>
+      <span>View</span>
+      <span>Go</span>
+      <span>Help</span>
+    </div>
+    <div class="menubar-right">
+      <span>Open to work</span>  <!-- status -->
+      <span id="clock"></span>
+    </div>
+  </div>
+
+  <!-- ── Window area ── -->
+  <div class="window-area">
+
+    <!-- Sidebar navigator -->
+    <div class="window sidebar-window">
+      <div class="titlebar">
+        <div class="dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">navigator</span>
+      </div>
+      <div class="sidebar-content">
+        <div class="profile-section">
+          <img class="avatar" src="profile_pic.jpeg" alt="Grace" />  <!-- photo -->
+          <div class="profile-name">Grace</div>  <!-- name -->
+          <div class="profile-role">software engineer</div>  <!-- role -->
+        </div>
+        <nav>
+          <div class="nav-item active" onclick="showSection('about', this)">
+            <div class="nav-icon icon-pink">◉</div> about me
+          </div>
+          <div class="nav-item" onclick="showSection('faith', this)">
+            <div class="nav-icon icon-pink">✝</div> faith
+          </div>
+          <div class="nav-item" onclick="showSection('projects', this)">
+            <div class="nav-icon icon-purple">◈</div> projects
+          </div>
+          <div class="nav-item" onclick="showSection('skills', this)">
+            <div class="nav-icon icon-blue">◇</div> skills
+          </div>
+          <div class="nav-item" onclick="showSection('resume', this)">
+            <div class="nav-icon icon-green">◻</div> resume
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main content window -->
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title" id="window-title">about me</span>
+      </div>
+      <div class="main-content">
+
+        <!-- ABOUT -->
+        <section class="section active" id="section-about">
+          <h1 class="section-title">hi, i'm grace 💕</h1>  <!-- name -->
+          <p class="section-sub">software engineer · creative coder · problem solver</p>  <!-- tagline -->
+
+          <!-- bio -->
+          <p class="about-bio">I love to create things and explore different domains.</p>
+          <p class="about-bio">Passionate about <b>tangible user interface</b>, <b>product development</b>, and the <b>occasional over-engineered side project</b>. Currently looking for my next adventure :3.</p>
+          <p class="about-bio">When I'm not coding, you'll find me studying nutrition and calories, cooking balanced meals, or bullet journaling.</p>
+
+          <!-- interest tags -->
+          <div class="tag-row">
+            <span class="tag tag-pink">tangible user interaction</span>
+            <span class="tag tag-purple">full-stack</span>
+            <span class="tag tag-blue">TypeScript</span>
+            <span class="tag tag-green">React</span>
+            <span class="tag tag-pink">Arduino</span>
+          </div>
+
+          <!-- stats -->
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-num">12+</div>
+              <div class="stat-label">projects shipped</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">3 yrs</div>
+              <div class="stat-label">experience</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">∞</div>
+              <div class="stat-label">matcha lattes consumed</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="section" id="section-projects">
+          <h1 class="section-title">passion projects</h1>
+          <p class="section-sub">things i've built and shipped</p>
+          <div class="projects-grid">
+
+            <!-- project cards -->
+            <div class="project-card">
+              <div class="project-icon icon-pink">🌸</div>
+              <div class="project-name">Sonic Stitches</div>
+              <p class="project-desc">Explores the theme of TeleAbsence through interactive installations over textiles and immersive experiences.</p>
+              <div class="project-tags">
+                <span class="project-tag">Arduino</span>
+                <span class="project-tag">Process</span>
+                <span class="project-tag">Java</span>
+              </div>
+            </div>
+
+            <div class="project-card">
+              <div class="project-icon icon-purple">🔮</div>
+              <div class="project-name">Solar Proximity</div>
+              <p class="project-desc">Captures the proximity of the warmth to body using a custom-built sensor array and visualizes the data in real-time.</p>
+              <div class="project-tags">
+                <span class="project-tag">TouchDesign</span>
+                <span class="project-tag">Arduino</span>
+              </div>
+            </div>
+
+            <div class="project-card">
+              <div class="project-icon icon-blue">🌊</div>
+              <div class="project-name">AI Arduino Temperature Monitor</div>
+              <p class="project-desc">AI-powered temperature monitoring system for temperature prediction, providing real-time data visualization and alerts.</p>
+              <div class="project-tags">
+                <span class="project-tag">Arduino</span>
+                <span class="project-tag">Python</span>
+                <span class="project-tag">TensorFlow</span>
+              </div>
+            </div>
+
+            <div class="project-card">
+              <div class="project-icon icon-green">🌿</div>
+              <div class="project-name">Yours, Truly</div>
+              <p class="project-desc">Open source journaling app with markdown support and end-to-end encryption.</p>
+              <div class="project-tags">
+                <span class="project-tag">Python + Flask</span>
+                <span class="project-tag">MySQL</span>
+                <span class="project-tag">HTML + CSS</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="section" id="section-skills">
+          <h1 class="section-title">skills.json</h1>
+          <p class="section-sub">technologies and tools i work with</p>
+
+          <!-- skill groups -->
+          <div class="skills-group">
+            <div class="skills-label">Languages</div>
+            <div class="skill-row">
+              <span class="skill-name">Python</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-purple" style="width:92%"></div></div>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">TypeScript</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-blue" style="width:80%"></div></div>
+              <span class="skill-pct">80%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">CPP</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-green" style="width:65%"></div></div>
+              <span class="skill-pct">65%</span>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <div class="skills-label">Frontend</div>
+            <div class="skill-row">
+              <span class="skill-name">React</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-pink" style="width:90%"></div></div>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">Vue.js</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-pink" style="width:85%"></div></div>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">CSS / UI</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-purple" style="width:78%"></div></div>
+              <span class="skill-pct">78%</span>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <div class="skills-label">Backend &amp; Infra</div>
+            <div class="skill-row">
+              <span class="skill-name">Node.js</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-green" style="width:88%"></div></div>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">MySQL</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-blue" style="width:75%"></div></div>
+              <span class="skill-pct">75%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">MongoDB</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill bar-blue" style="width:70%"></div></div>
+              <span class="skill-pct">70%</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESUME -->
+        <section class="section" id="section-resume">
+          <h1 class="section-title">resume.pdf</h1>
+          <p class="section-sub">experience &amp; education</p>
+
+          <!-- work experience -->
+          <div class="resume-section">
+            <div class="resume-section-title">Experience</div>
+            <div class="resume-item">
+              <div class="resume-dot"></div>
+              <div>
+                <div class="resume-item-title">Software Engineer — Microsoft</div>
+                <div class="resume-item-sub">2023 – present · Redmond, WA</div>
+                <p class="resume-item-desc">Led the end-to-end architectural modernization for the Windows Privacy Settings page, serving over 4 million monthly active users. Engineered a modernized library of reusable template components and a cohesive handler system that reduced UI rendering time by 33%. Bridged the gap between complex telemetry data and intuitive user experiences through AI-driven interaction patterns for 43 permission modules to enhance user clarity and data transparency. </p>
+              </div>
+            </div>
+            <div class="resume-item">
+              <div class="resume-dot"></div>
+              <div>
+                <div class="resume-item-title">Software Engineer Intern — MIT Media Lab, Personal Robots Group</div>
+                <div class="resume-item-sub">2022 · Cambridge, MA</div>
+                <p class="resume-item-desc">Integrated a new personality role in Jibo social robot reading station to help strengthen parent-child relationship through integrating backend scripts and refined haptic interface.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- education -->
+          <div class="resume-section">
+            <div class="resume-section-title">Education</div>
+            <div class="resume-item">
+              <div class="resume-dot"></div>
+              <div>
+                <div class="resume-item-title">Bachelors in Computer Science</div>
+                <div class="resume-item-sub">Massachusetts Institute of Technology | Wellesley College · 2023</div>
+                <p class="resume-item-desc">Focus in systems and human-computer interaction. Senior thesis on tangible user interface.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- resume download -->
+          <a class="download-btn" href="resume.pdf" download>↓ download full resume here</a>
+        </section>
+
+        <!-- FAITH -->
+        <section class="section" id="section-faith">
+          <h1 class="section-title">my journey as a Christ follower</h1>
+          <p class="section-sub">what grounds and guides me</p>
+
+          <!-- faith content -->
+          <div class="faith-block">
+            <div class="faith-verse">
+              "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."
+            </div>
+            <div class="faith-ref">— Jeremiah 29:11</div>
+          </div>
+
+          <p class="about-bio">Before anything, I am first and foremost a Christian. My faith is the foundation of who I am and how I approach my work. It shapes how I build, collaborate, and serve others through technology.</p>
+
+          <div class="faith-block">
+            <div class="faith-verse">
+              "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters."
+            </div>
+            <div class="faith-ref">— Colossians 3:23</div>
+          </div>
+
+          <p class="about-bio">I believe that every line of code can be an act of stewardship — using the gifts and talents I've been given to make a positive impact in the world.</p>
+          <p class="about-bio">In this specific season, God is fine-tuning my heart and making it align more with His. He has shown me how perfect love can cast out all fear, and instead make room for joy, peace, and compassion.</p>
+
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span><span class="status-dot"></span>available for work</span>  <!-- status -->
+    <span>grace@portfolio ~ </span>  <!-- name -->
+    <div class="status-links">
+      <!-- social links -->
+      <a href="https://github.com/chag60460" target="_blank">github</a>
+      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
+      <a href="mailto:gc1@wellesley.edu">email</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

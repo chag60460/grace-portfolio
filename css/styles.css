@@ -1,0 +1,415 @@
+/* ============================================================
+   grace-portfolio — styles.css
+   Organized by: base → layout → components → sections → utils
+   ============================================================ */
+
+/* ── Base reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0e6f8;
+  padding: 20px;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+
+.desktop {
+  width: 100%;
+  max-width: 900px;
+  min-height: 640px;
+  background: linear-gradient(135deg, #fce4f3 0%, #e8d5f5 40%, #d5e8f5 100%);
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(160, 120, 200, 0.25);
+}
+
+.window-area {
+  padding: 16px;
+  padding-bottom: 34px; /* room for status bar */
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 12px;
+  min-height: 580px;
+}
+
+/* ============================================================
+   COMPONENTS — Window chrome
+   ============================================================ */
+
+.window {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 0.5px solid rgba(200, 180, 220, 0.45);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sidebar-window { height: fit-content; }
+.main-window    { min-height: 500px; }
+
+.titlebar {
+  background: rgba(240, 230, 255, 0.7);
+  border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+  padding: 7px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.dots { display: flex; gap: 5px; }
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.dot-red    { background: #ff7eb3; }
+.dot-yellow { background: #ffcc80; }
+.dot-green  { background: #a8e6cf; }
+
+.titlebar-title {
+  font-size: 12px;
+  color: #7a6a8a;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* ── Menu bar ── */
+.menubar {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(180, 160, 200, 0.3);
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 18px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4a3f5c;
+  user-select: none;
+}
+
+.menubar-left         { display: flex; gap: 16px; align-items: center; }
+.menubar-left span    { cursor: default; }
+.menubar-brand        { font-weight: 700; }
+
+.menubar-right {
+  margin-left: auto;
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: #7a6a8a;
+  align-items: center;
+}
+
+/* ── Status bar ── */
+.status-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 0.5px solid rgba(200, 180, 220, 0.25);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+  font-size: 10px;
+  color: #9a85aa;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a8e6cf;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.status-links        { margin-left: auto; display: flex; gap: 12px; }
+.status-links a      { color: #9a85aa; text-decoration: none; font-size: 10px; }
+.status-links a:hover { color: #6a4a9a; }
+
+/* ============================================================
+   COMPONENTS — Sidebar
+   ============================================================ */
+
+.sidebar-content { padding: 14px 10px; }
+
+.profile-section {
+  text-align: center;
+  padding-bottom: 14px;
+  border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8c5f0, #c5d8f0);
+  margin: 0 auto 8px;
+  display: block;
+  object-fit: cover;
+  border: 2px solid rgba(200, 180, 220, 0.5);
+}
+
+.profile-name { font-size: 14px; font-weight: 600; color: #4a3f5c; }
+.profile-role { font-size: 11px; color: #9a85aa; margin-top: 2px; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #5a4a6a;
+  margin-bottom: 2px;
+  transition: background 0.15s;
+}
+
+.nav-item:hover  { background: rgba(200, 180, 220, 0.25); }
+.nav-item.active { background: rgba(200, 180, 220, 0.45); color: #4a3f5c; font-weight: 500; }
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   COMPONENTS — Color utilities
+   Applies to: nav icons, project icons, tags, skill bars
+   ============================================================ */
+
+.icon-pink   { background: #fce4f3; }
+.icon-purple { background: #ede4f5; }
+.icon-blue   { background: #deeaf5; }
+.icon-green  { background: #dff5ea; }
+
+.tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+
+.tag-pink   { background: #fce4f3; color: #a0508a; }
+.tag-purple { background: #ede4f5; color: #6a4a9a; }
+.tag-blue   { background: #deeaf5; color: #4a6a9a; }
+.tag-green  { background: #dff5ea; color: #3a8a6a; }
+
+.bar-pink   { background: linear-gradient(90deg, #f5c0e0, #e880b8); }
+.bar-purple { background: linear-gradient(90deg, #d0b8f0, #9a70d0); }
+.bar-blue   { background: linear-gradient(90deg, #b8d0f0, #6090d0); }
+.bar-green  { background: linear-gradient(90deg, #b8e8d0, #60b890); }
+
+/* ============================================================
+   SECTION — Shared
+   ============================================================ */
+
+.main-content { padding: 20px; overflow-y: auto; }
+
+.section        { display: none; }
+.section.active { display: block; }
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4a3f5c;
+  margin-bottom: 4px;
+}
+
+.section-sub {
+  font-size: 12px;
+  color: #9a85aa;
+  margin-bottom: 18px;
+}
+
+/* ============================================================
+   SECTION — About
+   ============================================================ */
+
+.about-bio { font-size: 13px; line-height: 1.7; color: #5a4a6a; margin-bottom: 14px; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+.stat-card {
+  background: rgba(240, 230, 255, 0.5);
+  border: 0.5px solid rgba(200, 180, 220, 0.35);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+
+.stat-num   { font-size: 20px; font-weight: 600; color: #6a4a9a; }
+.stat-label { font-size: 10px; color: #9a85aa; margin-top: 2px; }
+
+/* ============================================================
+   SECTION — Projects
+   ============================================================ */
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 0.5px solid rgba(200, 180, 220, 0.4);
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.project-card:hover { background: rgba(255, 255, 255, 0.78); }
+
+.project-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.project-name { font-size: 13px; font-weight: 600; color: #4a3f5c; margin-bottom: 4px; }
+.project-desc { font-size: 11px; color: #9a85aa; line-height: 1.5; margin-bottom: 10px; }
+.project-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.project-tag  { font-size: 10px; padding: 2px 7px; border-radius: 10px; background: #ede4f5; color: #6a4a9a; }
+
+/* ============================================================
+   SECTION — Skills
+   ============================================================ */
+
+.skills-group { margin-bottom: 18px; }
+
+.skills-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9a85aa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.skill-row    { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.skill-name   { font-size: 12px; color: #5a4a6a; width: 80px; flex-shrink: 0; }
+.skill-pct    { font-size: 11px; color: #9a85aa; width: 32px; text-align: right; }
+
+.skill-bar-bg {
+  flex: 1;
+  height: 6px;
+  border-radius: 10px;
+  background: rgba(200, 180, 220, 0.25);
+  overflow: hidden;
+}
+
+.skill-bar-fill { height: 100%; border-radius: 10px; }
+
+/* ============================================================
+   SECTION — Resume
+   ============================================================ */
+
+.resume-section       { margin-bottom: 20px; }
+
+.resume-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9a85aa;
+  border-bottom: 0.5px solid rgba(200, 180, 220, 0.35);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+.resume-item { margin-bottom: 14px; display: flex; gap: 12px; }
+
+.resume-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8c5f0, #c5d8f0);
+  border: 1.5px solid rgba(200, 180, 220, 0.6);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.resume-item-title { font-size: 13px; font-weight: 600; color: #4a3f5c; }
+.resume-item-sub   { font-size: 11px; color: #9a85aa; margin-top: 1px; }
+.resume-item-desc  { font-size: 11px; color: #7a6a8a; margin-top: 4px; line-height: 1.5; }
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(200, 180, 220, 0.3);
+  border: 0.5px solid rgba(200, 180, 220, 0.5);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6a4a9a;
+  cursor: pointer;
+  margin-top: 6px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.download-btn:hover { background: rgba(200, 180, 220, 0.45); }
+
+/* ============================================================
+   SECTION — Faith
+   ============================================================ */
+
+.faith-block {
+  background: rgba(252, 228, 243, 0.35);
+  border-left: 3px solid #e8a0c8;
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+
+.faith-verse {
+  font-size: 13px;
+  font-style: italic;
+  color: #5a4a6a;
+  line-height: 1.7;
+}
+
+.faith-ref {
+  font-size: 11px;
+  color: #9a85aa;
+  margin-top: 6px;
+  font-weight: 500;
+}
