@@ -413,3 +413,268 @@ body {
   margin-top: 6px;
   font-weight: 500;
 }
+
+/* ── Small Wins Calendar ── */
+
+.wins-calendar-intro {
+  margin-top: 22px;
+  margin-bottom: 10px;
+}
+
+.wins-calendar-title {
+  font-size: 15px;
+  font-weight: 600;
+  font-style: normal;
+  color: #e8a0c8;
+  margin-bottom: 4px;
+}
+
+.wins-calendar-desc {
+  font-size: 13px;
+  color: #5a4a6a;
+  line-height: 1.7;
+}
+
+.wins-calendar {
+  margin-top: 0;
+  background: rgba(255, 255, 255, 0.55);
+  border: 0.5px solid rgba(200, 180, 220, 0.4);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cal-week-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a3f5c;
+}
+
+.cal-nav {
+  background: rgba(200, 180, 220, 0.3);
+  border: 0.5px solid rgba(200, 180, 220, 0.5);
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  color: #6a4a9a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.cal-nav:hover { background: rgba(200, 180, 220, 0.5); }
+
+.calendar-grid {
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Book-open day cell ── */
+
+.cal-day {
+  perspective: 600px;
+  user-select: none;
+  position: relative;
+  width: 180px;
+}
+
+.cal-day.empty {
+  visibility: hidden;
+}
+
+/* The page behind the cover (wins content) */
+.cal-day-page {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: linear-gradient(160deg, rgba(252, 228, 243, 0.45), rgba(220, 200, 240, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #9a85aa;
+  overflow: hidden;
+  padding: 14px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal-day-page .page-illustration {
+  width: 90px;
+  height: 72px;
+  opacity: 0;
+  transition: opacity 0.3s 0.15s;
+  filter: drop-shadow(0 2px 6px rgba(160, 100, 180, 0.18));
+}
+
+.cal-day-page .page-illustration svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cal-day.opened .cal-day-page .page-illustration {
+  opacity: 1;
+}
+
+.cal-day-page .page-wins {
+  text-align: center;
+  line-height: 1.5;
+  color: #4a3f5c;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s 0.25s;
+}
+
+.cal-day.opened .cal-day-page .page-wins {
+  opacity: 1;
+}
+
+.cal-day-page .page-wins span::before {
+  content: '♡ ';
+  color: #e8a0c8;
+}
+
+/* The cover that swings open */
+.cal-day-cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 18px;
+  color: #7a6a8a;
+  cursor: default;
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.4, 0.15, 0.2, 1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.cal-day-cover .cover-weekday {
+  font-size: 10px;
+  font-weight: 500;
+  color: #9a85aa;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.cal-day.has-wins .cal-day-cover {
+  background: rgba(252, 228, 243, 0.6);
+  color: #6a4a9a;
+  font-weight: 600;
+  cursor: pointer;
+  border: 0.5px solid rgba(232, 160, 200, 0.25);
+}
+
+.cal-day.has-wins .cal-day-cover:hover {
+  background: rgba(232, 160, 200, 0.4);
+}
+
+.cal-day.has-wins .cal-day-cover::after {
+  content: '✿';
+  position: absolute;
+  bottom: 5px;
+  right: 7px;
+  font-size: 10px;
+  color: #e8a0c8;
+}
+
+.cal-day.today .cal-day-cover {
+  border: 1.5px solid #c5a0d8;
+}
+
+/* When opened — cover swings open partway */
+.cal-day.opened .cal-day-cover {
+  transform: rotateY(-80deg);
+  box-shadow: 2px 0 8px rgba(140, 100, 180, 0.15);
+}
+
+/* Expanded detail panel below calendar */
+.wins-detail {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 0.5px solid rgba(200, 180, 220, 0.4);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: none;
+  animation: detailSlide 0.3s ease;
+}
+
+.wins-detail.open {
+  display: block;
+}
+
+@keyframes detailSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.wins-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.wins-detail-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3f5c;
+}
+
+.wins-detail-sub {
+  font-size: 10px;
+  color: #e8a0c8;
+  font-weight: 500;
+}
+
+.wins-detail-close {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: #9a85aa;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.wins-detail-close:hover { color: #6a4a9a; }
+
+.wins-detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wins-detail-list li {
+  font-size: 12px;
+  color: #5a4a6a;
+  line-height: 1.6;
+  padding: 5px 0;
+  border-bottom: 0.5px solid rgba(200, 180, 220, 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.wins-detail-list li::before {
+  content: '♡';
+  color: #e8a0c8;
+  flex-shrink: 0;
+}
+
+.wins-detail-list li:last-child { border-bottom: none; }
