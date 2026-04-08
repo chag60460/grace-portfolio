@@ -57,6 +57,7 @@ setInterval(updateClock, 30_000);
 
 const SMALL_WINS = {
   // Format: 'YYYY-MM-DD': ['win1', 'win2', ...]
+  '2026-04-07': ['Went to an EiC networking event and learned some very helpful tips'],
   '2026-04-06': ['Figured out how to reverse a linked list for the first time ever!'],
   '2026-04-05': ['Easter! Yapped with friends after church and saw sunset later'],
   '2026-04-04': ['Had a nice conversation with Michael about Shanghai and our shared experience'],
@@ -106,6 +107,30 @@ function getWinIllustration(wins) {
         <circle cx="50" cy="50" r="6" fill="#fff" opacity="0.5"/>
         <circle cx="20" cy="25" r="3" fill="${c2}" opacity="0.5"/>
         <circle cx="78" cy="28" r="4" fill="${c1}" opacity="0.6"/>
+      ` },
+    { keywords: ['shanghai','shared experience','michael'],
+      draw: (c1, c2) => `
+        <!-- cute coffee cup -->
+        <!-- saucer -->
+        <ellipse cx="50" cy="68" rx="30" ry="6" fill="${c2}" stroke="#c8a0b8" stroke-width="1"/>
+        <ellipse cx="50" cy="66" rx="28" ry="5" fill="#fff" opacity="0.3"/>
+        <!-- cup body -->
+        <path d="M28 35 L32 64 Q50 70 68 64 L72 35 Z" fill="#fff" stroke="${c1}" stroke-width="1.5"/>
+        <!-- cup rim -->
+        <ellipse cx="50" cy="35" rx="22" ry="6" fill="${c1}" stroke="#c8a0b8" stroke-width="1"/>
+        <ellipse cx="50" cy="35" rx="19" ry="4.5" fill="#8B6B4B" opacity="0.7"/>
+        <!-- latte art heart -->
+        <path d="M50 42 L47 39 A3 3 0 0 1 50 36 A3 3 0 0 1 53 39 Z" fill="#fff" opacity="0.6"/>
+        <!-- handle -->
+        <path d="M72 42 Q82 42 82 50 Q82 58 72 58" stroke="${c1}" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <!-- steam -->
+        <path d="M40 24 Q42 16 40 8" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.4" stroke-linecap="round"/>
+        <path d="M50 22 Q52 14 50 6" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.5" stroke-linecap="round"/>
+        <path d="M60 24 Q62 16 60 8" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.4" stroke-linecap="round"/>
+        <!-- tiny sparkles -->
+        <circle cx="18" cy="14" r="2.5" fill="${c2}" opacity="0.5"/>
+        <circle cx="84" cy="10" r="2" fill="${c2}" opacity="0.4"/>
+        <text x="14" y="28" font-size="5" fill="#d0a0c8">♡</text>
       ` },
     { keywords: ['friend','yap','conversation','talk','chat','call'],
       draw: (c1, c2) => `
@@ -159,6 +184,53 @@ function getWinIllustration(wins) {
         <line x1="55" y1="35" x2="70" y2="38" stroke="#fff" stroke-width="1" opacity="0.6"/>
         <line x1="55" y1="41" x2="70" y2="44" stroke="#fff" stroke-width="1" opacity="0.6"/>
         <circle cx="50" cy="18" r="4" fill="#ffcc80" opacity="0.5"/>
+      ` },
+    { keywords: ['network','event','career','tips','conference','meetup','workshop','learn'],
+      draw: (c1, c2) => `
+        <!-- cartoon girl at networking event -->
+        <!-- hair (long, flowing) -->
+        <path d="M36 12 Q28 10 26 22 Q24 34 28 42 L32 42 Q30 32 32 22 Q34 14 50 12 Q66 14 68 22 Q70 32 68 42 L72 42 Q76 34 74 22 Q72 10 64 12 Z" fill="#4a3728"/>
+        <!-- face -->
+        <ellipse cx="50" cy="24" rx="16" ry="17" fill="#ffe0cc"/>
+        <!-- bangs -->
+        <path d="M34 18 Q38 8 50 10 Q62 8 66 18 Q62 14 50 13 Q38 14 34 18 Z" fill="#4a3728"/>
+        <!-- eyes -->
+        <ellipse cx="43" cy="24" rx="3" ry="3.5" fill="#fff"/>
+        <ellipse cx="43" cy="25" rx="2" ry="2.5" fill="#3a2a1a"/>
+        <circle cx="42" cy="23.5" r="1" fill="#fff"/>
+        <ellipse cx="57" cy="24" rx="3" ry="3.5" fill="#fff"/>
+        <ellipse cx="57" cy="25" rx="2" ry="2.5" fill="#3a2a1a"/>
+        <circle cx="56" cy="23.5" r="1" fill="#fff"/>
+        <!-- eyebrows -->
+        <path d="M39 19 Q43 17 46 19" stroke="#4a3728" fill="none" stroke-width="1" stroke-linecap="round"/>
+        <path d="M54 19 Q57 17 61 19" stroke="#4a3728" fill="none" stroke-width="1" stroke-linecap="round"/>
+        <!-- smile -->
+        <path d="M45 31 Q50 35 55 31" stroke="#d4727a" fill="none" stroke-width="1.2" stroke-linecap="round"/>
+        <!-- blush -->
+        <ellipse cx="38" cy="30" rx="3.5" ry="2" fill="#f5c0c0" opacity="0.4"/>
+        <ellipse cx="62" cy="30" rx="3.5" ry="2" fill="#f5c0c0" opacity="0.4"/>
+        <!-- neck -->
+        <rect x="46" y="40" width="8" height="5" fill="#ffe0cc"/>
+        <!-- body / blouse -->
+        <path d="M36 45 Q50 42 64 45 L68 70 L32 70 Z" fill="${c1}"/>
+        <!-- collar -->
+        <path d="M44 45 L50 50 L56 45" stroke="#fff" fill="none" stroke-width="1.2"/>
+        <!-- arms -->
+        <line x1="36" y1="50" x2="22" y2="58" stroke="#ffe0cc" stroke-width="4" stroke-linecap="round"/>
+        <line x1="64" y1="50" x2="78" y2="55" stroke="#ffe0cc" stroke-width="4" stroke-linecap="round"/>
+        <!-- hand holding notepad -->
+        <rect x="74" y="50" width="12" height="16" rx="2" fill="#fff" stroke="${c2}" stroke-width="1"/>
+        <line x1="77" y1="54" x2="83" y2="54" stroke="#d0b8f0" stroke-width="0.7"/>
+        <line x1="77" y1="57" x2="82" y2="57" stroke="#d0b8f0" stroke-width="0.7"/>
+        <line x1="77" y1="60" x2="81" y2="60" stroke="#d0b8f0" stroke-width="0.7"/>
+        <!-- other hand waving -->
+        <circle cx="20" cy="56" r="3" fill="#ffe0cc"/>
+        <!-- speech bubble -->
+        <rect x="6" y="6" width="22" height="14" rx="4" fill="#fff" stroke="${c2}" stroke-width="0.8"/>
+        <polygon points="20,20 22,26 16,20" fill="#fff" stroke="${c2}" stroke-width="0.8"/>
+        <text x="17" y="15" text-anchor="middle" font-size="6" fill="#9a85aa">Hi!</text>
+        <!-- sparkle -->
+        <text x="82" y="14" text-anchor="middle" font-size="7">✨</text>
       ` },
     { keywords: ['help','volunteer','serve','encourage','kind'],
       draw: (c1, c2) => `
