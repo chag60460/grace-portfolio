@@ -57,6 +57,7 @@ setInterval(updateClock, 30_000);
 
 const SMALL_WINS = {
   // Format: 'YYYY-MM-DD': ['win1', 'win2', ...]
+  '2026-04-08': ['Feeling lost about the future but faced my emotions honestly'],
   '2026-04-07': ['Went to an EiC networking event and learned some very helpful tips'],
   '2026-04-06': ['Figured out how to reverse a linked list for the first time ever!'],
   '2026-04-05': ['Easter! Yapped with friends after church and saw sunset later'],
@@ -162,6 +163,30 @@ function getWinIllustration(wins) {
         <path d="M42 30 Q44 20 46 30" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.6"/>
         <path d="M50 28 Q52 18 54 28" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.6"/>
         <path d="M56 30 Q58 22 60 30" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.6"/>
+      ` },
+    { keywords: ['lost','future','faced','honest','brave','uncertain','vulnerability','vulnerable'],
+      draw: (c1, c2) => `
+        <!-- foggy path with a small lantern — facing the unknown -->
+        <rect x="0" y="50" width="100" height="30" rx="0" fill="${c1}" opacity="0.3"/>
+        <path d="M10 70 Q30 50 50 55 Q70 48 90 65" stroke="${c2}" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <!-- fog layers -->
+        <ellipse cx="25" cy="40" rx="20" ry="8" fill="#e0d8f0" opacity="0.35"/>
+        <ellipse cx="70" cy="35" rx="22" ry="9" fill="#d8e0f5" opacity="0.3"/>
+        <ellipse cx="50" cy="45" rx="30" ry="10" fill="#e8d5f0" opacity="0.25"/>
+        <!-- small lantern glow -->
+        <circle cx="50" cy="42" r="12" fill="#ffcc80" opacity="0.25"/>
+        <circle cx="50" cy="42" r="7" fill="#ffe8a0" opacity="0.4"/>
+        <!-- lantern body -->
+        <rect x="47" y="38" width="6" height="8" rx="1" fill="#ffcc80" stroke="#d0a060" stroke-width="0.8"/>
+        <rect x="46" y="37" width="8" height="2" rx="1" fill="#d0a060"/>
+        <line x1="50" y1="35" x2="50" y2="37" stroke="#d0a060" stroke-width="1" stroke-linecap="round"/>
+        <!-- tiny heart near lantern -->
+        <text x="60" y="36" font-size="6" fill="#e8a0c8" opacity="0.7">♡</text>
+        <!-- stars in the haze -->
+        <circle cx="20" cy="18" r="1.5" fill="#fff" opacity="0.5"/>
+        <circle cx="75" cy="15" r="1" fill="#fff" opacity="0.4"/>
+        <circle cx="50" cy="12" r="1.2" fill="#fff" opacity="0.45"/>
+        <circle cx="35" cy="22" r="1" fill="#fff" opacity="0.35"/>
       ` },
     { keywords: ['emotion','process','journal','gratitude','grateful','reflect'],
       draw: (c1, c2) => `
