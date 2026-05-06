@@ -28,6 +28,16 @@ function showSection(name, el) {
   document.getElementById('window-title').textContent = SECTION_TITLES[name] ?? name;
 }
 
+/* ── Restore section from sessionStorage (for back-links) ── */
+(function () {
+  const pending = sessionStorage.getItem('openSection');
+  if (pending) {
+    sessionStorage.removeItem('openSection');
+    const navItem = document.querySelector(`.nav-item[onclick*="'${pending}'"]`);
+    if (navItem) showSection(pending, navItem);
+  }
+})();
+
 /* ── Live clock ─────────────────────────────────────────────
    Renders a real-time clock in the menu bar.
    Updates every 30 seconds.
