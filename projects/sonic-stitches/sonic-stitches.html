@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sonic Stitches — Grace Chang</title>
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <style>
+    /* ── Project page layout ── */
+    .window-area { grid-template-columns: 1fr !important; }
+    .main-window { min-height: auto; }
+    .main-content { padding: 0; overflow-y: auto; max-height: 75vh; }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #9a85aa;
+      text-decoration: none;
+      padding: 16px 24px 0;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #6a4a9a; }
+
+    /* ── Hero section ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 28px 20px;
+      background: linear-gradient(to top, rgba(40, 30, 50, 0.82), transparent);
+    }
+    .hero-overlay h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .hero-overlay .hero-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+    }
+
+    /* ── Content body ── */
+    .case-study {
+      padding: 24px 28px 32px;
+    }
+
+    /* ── Meta bar ── */
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+      padding: 16px;
+      background: rgba(240, 230, 255, 0.4);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+    }
+    .meta-item { text-align: center; }
+    .meta-label {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-size: 12px;
+      color: #4a3f5c;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ── Section headings ── */
+    .case-study h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 32px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .case-study h2:first-child { margin-top: 0; }
+
+    .case-study h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6a4a9a;
+      margin: 18px 0 6px;
+    }
+
+    /* ── Body text ── */
+    .case-study p {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+    .case-study ul {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.8;
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    /* ── Prompt callout ── */
+    .prompt-box {
+      background: rgba(240, 230, 255, 0.5);
+      border-left: 3px solid #c5b8f0;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #6a4a9a;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* ── Image grids ── */
+    .img-full {
+      width: 100%;
+      border-radius: 10px;
+      margin: 14px 0;
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .img-grid {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .img-grid-2 { grid-template-columns: 1fr 1fr; }
+    .img-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .img-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .img-caption {
+      font-size: 11px;
+      color: #9a85aa;
+      text-align: center;
+      margin-top: -6px;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+
+    /* ── Process flow ── */
+    .process-flow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .process-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+      position: relative;
+    }
+    .process-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .process-step {
+      font-size: 10px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .process-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .process-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Materials grid ── */
+    .materials-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .material-card {
+      background: rgba(255, 255, 255, 0.55);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .material-card img {
+      width: 100%;
+      height: 90px;
+      object-fit: contain;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      background: #fff;
+    }
+    .material-card .mat-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 4px;
+    }
+    .material-card .mat-desc {
+      font-size: 10px;
+      color: #9a85aa;
+      line-height: 1.5;
+    }
+
+    /* ── Scenario cards ── */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .scenario-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .scenario-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 4px;
+    }
+    .scenario-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .scenario-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Tech pipeline ── */
+    .tech-pipeline {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      margin: 16px 0;
+    }
+    .tech-node {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.4);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .tech-node .tech-icon {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .tech-node .tech-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .tech-node .tech-detail {
+      font-size: 11px;
+      color: #5a4a6a;
+      line-height: 1.5;
+    }
+    .tech-arrow {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      color: #c5b8f0;
+      flex-shrink: 0;
+    }
+
+    /* ── Tags row ── */
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+    }
+    .tags-row .project-tag {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #ede4f5;
+      color: #6a4a9a;
+      font-weight: 500;
+    }
+
+    /* ── Demo section ── */
+    .demo-section {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .demo-embed {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      background: #1a1a2e;
+    }
+    .demo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 10px 22px;
+      background: rgba(200, 180, 240, 0.25);
+      border: 0.5px solid rgba(200, 180, 220, 0.5);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6a4a9a;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .demo-link:hover { background: rgba(200, 180, 240, 0.4); }
+
+    /* ── Outcome callout ── */
+    .outcome-box {
+      background: rgba(168, 230, 207, 0.2);
+      border-left: 3px solid #a8e6cf;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+    .outcome-box p {
+      font-size: 12px;
+      color: #3a6a5a;
+      margin: 0;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── Menu bar ── -->
+  <div class="menubar">
+    <div class="menubar-left">
+      <span class="menubar-brand">grace.dev</span>
+      <span>File</span>
+      <span>View</span>
+      <span>Go</span>
+      <span>Help</span>
+    </div>
+    <div class="menubar-right">
+      <span>Open to work</span>
+      <span id="clock"></span>
+    </div>
+  </div>
+
+  <!-- ── Window area ── -->
+  <div class="window-area">
+
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">sonic-stitches — case study</span>
+      </div>
+      <div class="main-content">
+
+        <a href="../../index.html" class="back-link" onclick="sessionStorage.setItem('openSection','projects')">‹ back to projects</a>
+
+        <!-- ════════════ HERO ════════════ -->
+        <div class="hero">
+          <img src="media/cover.png" alt="Close-up of a finger touching embroidered flowers on the Sonic Stitches tablecloth" />
+          <div class="hero-overlay">
+            <h1>Sonic Stitches</h1>
+            <p class="hero-subtitle">Storytelling through collaborative embroidery</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+
+          <!-- ════════════ META ════════════ -->
+          <div class="project-meta" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="meta-item">
+              <div class="meta-label">Role</div>
+              <div class="meta-value">Interaction Engineer &amp; HCI Researcher</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Context</div>
+              <div class="meta-value">MIT Media Lab, Tangible Interfaces Group</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Duration</div>
+              <div class="meta-value">10 weeks</div>
+            </div>
+          </div>
+
+          <!-- ════════════ OVERVIEW ════════════ -->
+          <h2>Overview</h2>
+          <p>Sonic Stitches is an interactive tablecloth that transforms collaborative embroidery into a tangible storytelling medium. Community members sew patterns into a shared cloth while recording personal narratives about food and home. Later, dinner guests touch the stitched patterns to hear those stories — bridging past and present at the same table.</p>
+
+          <div class="prompt-box">
+            What is the potential of fiber interfaces in collaborative storytelling activated through sound, movement, and touch?
+          </div>
+
+          <div class="tags-row">
+            <span class="project-tag">Arduino</span>
+            <span class="project-tag">Processing</span>
+            <span class="project-tag">Conductive Thread</span>
+            <span class="project-tag">Capacitive Sensing</span>
+            <span class="project-tag">Textile Sensors</span>
+            <span class="project-tag">Tangible UI</span>
+          </div>
+
+          <!-- ════════════ CONCEPT ════════════ -->
+          <h2>Concept &amp; Motivation</h2>
+          <p>How do we feel the presence of someone who isn't there? TeleAbsence — the felt absence of a distant loved one — is a deeply human experience. We wanted to explore how tangible artifacts could carry traces of a person's presence: their voice, their touch, their stories — so that others could encounter them later, across time and distance. Specifically, we believe <strong>the sense of touch is critical for humans to feel connected</strong>, so we aim to use tactile sensations as a way to evoke that presence.</p>
+          <p>We ground this in the ritual of <strong>shared meals</strong>. Food evokes powerful memories of home, identity, and belonging. We ask participants <em>"What foods remind you of home?"</em> — a question that reliably surfaces intimate, sensory-rich stories. The dinner table became our site of encounter: a place where past voices could rejoin the present.</p>
+          <p>The medium we choose is <strong>collaborative embroidery</strong>. Textile craft practices are inherently slow — requiring makers to sit together for hours. That slowness creates a natural space for reflection and storytelling. By recording narratives <em>during</em> the act of sewing and embedding them <em>into</em> the stitchwork itself, the tablecloth becomes both the artifact and the archive.</p>
+
+          <div class="img-grid img-grid-2">
+            <img src="media/collaborative-quilting.png" alt="Historical collaborative quilting traditions" />
+            <img src="media/embroidery-art.png" alt="Colorful embroidery artwork showing narrative scenes" />
+          </div>
+          <p class="img-caption">Left: Collaborative textile traditions that inspired our approach.<br/>Right: Narrative embroidery as a storytelling medium.</p>
+
+          <!-- ════════════ APPROACH ════════════ -->
+          <h2>Artistic Approach</h2>
+          <p>The physicality of embroidery offers specific important affordances:</p>
+          <ul>
+            <li>The practice is <strong>slow and collaborative</strong> — you build a mindful connection to the tablecloth artifact</li>
+            <li>When touching hand-sewn embroidery, you can <strong>feel the journey</strong> of the craft maker in every stitch</li>
+            <li>By playing stories while you interact with stitchwork, the <strong>artifact and voice become entangled</strong> — the maker's presence is embedded in the cloth</li>
+          </ul>
+
+          <div class="process-flow">
+            <div class="process-card">
+              <img src="media/collaborative-sewing.jpg" alt="Community members sewing patterns collaboratively" />
+              <div class="process-step">Part 1 — Gather</div>
+              <div class="process-title">Collaborative Embroidery Session</div>
+              <p>Communities are invited to sew their own patterns into the tablecloth. As they sit and stitch, they reflect on a meaningful question — "What food reminds you most of home?" Their spoken responses are recorded and mapped to their specific stitchwork.</p>
+            </div>
+            <div class="process-card">
+              <img src="media/dinner-interaction.jpg" alt="Guests touching tablecloth patterns during dinner" />
+              <div class="process-step">Part 2 — Share</div>
+              <div class="process-title">Sonic Dinner Experience</div>
+              <p>Guests sit for dinner on the Sonic Stitches tablecloth. Running their hands along the hand-stitched patterns plays audio snippets from the person who sewed that portion — past and present voices share the same table.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ RESEARCH & MATERIALS ════════════ -->
+          <h2>Research &amp; Materials</h2>
+          <p>We experimented with various forms of conductive textiles and sensing methods as points of entry for our project's core question.</p>
+
+          <div class="materials-grid">
+            <div class="material-card">
+              <img src="media/conductive-threads.png" alt="Conductive thread spools" />
+              <div class="mat-name">Conductive Thread</div>
+              <div class="mat-desc">Carries electricity like wires. Enables soft circuit construction through tufting and knitting techniques.</div>
+            </div>
+            <div class="material-card">
+              <img src="media/pressure-sensor.png" alt="Fabric pressure sensor" />
+              <div class="mat-name">Pressure Sensors</div>
+              <div class="mat-desc">Textile sensors that measure physical pressure and squeezing, mapped to various sound outputs.</div>
+            </div>
+            <div class="material-card">
+              <img src="media/capacitive-sensor.png" alt="Capacitive sensor" />
+              <div class="mat-name">Capacitive Sensing</div>
+              <div class="mat-desc">The circuit itself acts as a capacitive sensor, detecting finger proximity and touch through fabric.</div>
+            </div>
+          </div>
+
+          <!-- ════════════ SCENARIOS ════════════ -->
+          <h2>Design Scenarios</h2>
+          <p>We explored three modes of interaction that the system could support:</p>
+
+          <div class="scenario-grid">
+            <div class="scenario-card">
+              <div class="scenario-num">Scenario 1</div>
+              <div class="scenario-title">Individual Exploration</div>
+              <p>A user traces their finger along the fabric to explore audio stories woven into a tapestry — a glimpse of dinnertime conversations from the past. The fabric becomes a <em>beyond-the-present</em> portal.</p>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-num">Scenario 2</div>
+              <div class="scenario-title">Shared Storytelling</div>
+              <p>Collocated sharing where conversations of the past interleave with those physically present — a family reunion at the dinner table where absent voices join in.</p>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-num">Scenario 3</div>
+              <div class="scenario-title">Textile Mapping</div>
+              <p>A knitted object is directly associated with its audio story. Computation disappears into everyday objects — a scarf, a placemat, a quilt square.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ PROTOTYPING ════════════ -->
+          <h2>Prototyping</h2>
+          <p>We built the system iteratively — starting with material explorations and moving through circuit design to a fully integrated tablecloth prototype.</p>
+
+          <div class="process-flow">
+            <div class="process-card">
+              <img src="media/methodology.jpg" alt="Sewing conductive thread into the tablecloth with a needle" />
+              <div class="process-step">Step 1 — Input</div>
+              <div class="process-title">Conductive Thread Circuits</div>
+              <p>Sewed conductive thread into specific embroidery zones on the tablecloth. Each thread path acts as a capacitive sensor pad — when a finger touches the stitches, the change in capacitance is detected by the circuit.</p>
+            </div>
+            <div class="process-card">
+              <img src="media/pressure-sensor.png" alt="Pressure sensor fabric" />
+              <div class="process-step">Step 2 — Sensing</div>
+              <div class="process-title">Pressure &amp; Capacitive Sensors</div>
+              <p>Integrated textile pressure sensors beneath the embroidered sections. Calibrated sensitivity thresholds so touches and presses trigger audio behaviors.</p>
+            </div>
+          </div>
+
+          <div class="process-flow">
+            <div class="process-card">
+              <img src="media/arduino-processor.png" alt="Arduino processing bridge" />
+              <div class="process-step">Step 3 — Processing</div>
+              <div class="process-title">Arduino → Processing Bridge</div>
+              <p>Arduino reads analog sensor values via serial and sends them to a Processing sketch. Wrote firmware to debounce touch signals and map multiple zones simultaneously.</p>
+            </div>
+            <div class="process-card">
+              <img src="media/collaborative-sewing.jpg" alt="Recording oral narratives while sewing" />
+              <div class="process-step">Step 4 — Output</div>
+              <div class="process-title">Audio Playback &amp; Story Mapping</div>
+              <p>Processing maps each touch zone to a recorded oral narrative. When a guest touches a stitched pattern, the corresponding maker's story plays through speakers beneath the table.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ TECHNICAL ════════════ -->
+          <h2>Technical Architecture</h2>
+          <p>The system uses a three-stage pipeline from physical touch to audio playback:</p>
+
+          <div class="tech-pipeline">
+            <div class="tech-node">
+              <div class="tech-icon">🧵</div>
+              <div class="tech-label">Input</div>
+              <div class="tech-detail">Conductive threads sewn into fabric act as capacitive sensor pads. Touch is detected as changes in capacitance.</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">⚡</div>
+              <div class="tech-label">Processing</div>
+              <div class="tech-detail">Arduino reads analog pressure values and sends serial data to a Processing sketch running on a laptop.</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🔊</div>
+              <div class="tech-label">Output</div>
+              <div class="tech-detail">Processing maps touch zones to audio files and plays oral narratives through speakers beneath the table.</div>
+            </div>
+          </div>
+
+          <h3>My Contribution</h3>
+          <p>I was responsible for the <strong>entire technical architecture</strong>, from sensor integration to embedded programming — writing the Arduino firmware that reads capacitive touch values from conductive thread zones, calibrating sensor thresholds, and building the serial communication bridge to Processing. I also led the <strong>interaction design</strong>, defining how touch gestures would map to different audio playback behaviors based on different embroidery.</p>
+
+          <!-- ════════════ FINAL RESULT ════════════ -->
+          <h2>Final Result</h2>
+
+          <div class="img-grid img-grid-2">
+            <img src="media/table-overhead.jpg" alt="Overhead view of Sonic Stitches tablecloth set for dinner" />
+            <img src="media/dinner-interaction.jpg" alt="Guest interacting with the embroidered tablecloth" />
+          </div>
+          <p class="img-caption">Left: The final Sonic Stitches tablecloth set for dinner, with embroidered patterns visible between place settings.<br/>Right: A guest touching the stitched patterns to trigger audio narratives.</p>
+
+          <img src="media/project-detail.jpg" alt="Close-up of the interactive embroidered tablecloth" class="img-full" />
+          <p class="img-caption">Close-up showing the hand-stitched patterns that serve as touch-sensitive interaction zones.</p>
+
+          <!-- ════════════ DEMO ════════════ -->
+          <h2>Demo</h2>
+          <div class="demo-section">
+            <video class="demo-embed" controls preload="metadata">
+              <source src="media/Sonic Stitches Demo.mp4#t=0.02" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <!-- ════════════ OUTCOME ════════════ -->
+          <h2>Outcome &amp; Reflection</h2>
+          <div class="outcome-box">
+            <p>Sonic Stitches was to demonstrate how computation can disappear into handcrafted objects, creating intimate connections between makers separated by time and space.</p>
+          </div>
+          <p>This project deepened our understanding of how <strong>tangible interfaces</strong> can mediate human connection in ways that screens cannot. The slow, embodied act of sewing creates a fundamentally different relationship to a digital artifact than typing or tapping — and that difference matters for storytelling.</p>
+
+          <!-- ════════════ FUTURE ════════════ -->
+          <h2>Future Directions</h2>
+          <ul>
+            <li>Deploy product across more communities to gather further user feedback</li>
+            <li>Improve hardware integration — embedding the Arduino and wiring seamlessly within the tablecloth to achieve a more ubiquitous computing experience</li>
+            <li>Explore narratives that "cross" — playing on the interwoven nature of the piece where touching intersecting threads blends multiple stories</li>
+          </ul>
+
+        </div><!-- /case-study -->
+
+      </div><!-- /main-content -->
+    </div><!-- /main-window -->
+
+  </div><!-- /window-area -->
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span><span class="status-dot"></span>available for work</span>
+    <span>grace@portfolio ~ </span>
+    <div class="status-links">
+      <a href="https://github.com/chag60460" target="_blank">github</a>
+      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
+      <a href="mailto:chag60460@gmail.com">email</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const formatted = now.toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit',
+    });
+    const clockEl = document.getElementById('clock');
+    if (clockEl) clockEl.textContent = formatted;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+</script>
+</body>
+</html>
