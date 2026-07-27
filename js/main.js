@@ -8,10 +8,8 @@
    ─────────────────────────────────────────────────────────── */
 
 const SECTION_TITLES = {
-  about:    'about me',
+  about:    'portfolio',
   faith:    'faith',
-  projects: 'projects',
-  skills:   'skills',
   resume:   'resume',
 };
 

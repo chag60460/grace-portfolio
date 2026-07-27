@@ -46,16 +46,10 @@
         </div>
         <nav>
           <div class="nav-item active" onclick="showSection('about', this)">
-            <div class="nav-icon icon-pink">◉</div> about me
+            <div class="nav-icon icon-pink">◉</div> portfolio
           </div>
           <div class="nav-item" onclick="showSection('faith', this)">
             <div class="nav-icon icon-pink">✝</div> faith
-          </div>
-          <div class="nav-item" onclick="showSection('projects', this)">
-            <div class="nav-icon icon-purple">◈</div> projects
-          </div>
-          <div class="nav-item" onclick="showSection('skills', this)">
-            <div class="nav-icon icon-blue">◇</div> skills
           </div>
           <div class="nav-item" onclick="showSection('resume', this)">
             <div class="nav-icon icon-green">◻</div> resume
@@ -72,7 +66,7 @@
           <div class="dot dot-yellow"></div>
           <div class="dot dot-green"></div>
         </div>
-        <span class="titlebar-title" id="window-title">about me</span>
+        <span class="titlebar-title" id="window-title">portfolio</span>
       </div>
       <div class="main-content">
 
@@ -82,9 +76,7 @@
           <p class="section-sub">software engineer · creative coder · product designer</p>  <!-- tagline -->
 
           <!-- bio -->
-          <p class="about-bio">I love to create things and explore different domains. I am  a product-minded interaction engineer working on physical-digital systems.</p>
-          <p class="about-bio">Passionate about <b>tangible user interface</b>, <b>product development</b>, and the <b>occasional over-engineered side project</b>. I love using AI to prototype and make my ideas come to life. Currently looking for my next adventure :3.</p>
-          <p class="about-bio">When I'm not coding, you'll find me studying nutrition and calories, cooking balanced meals, or bullet journaling.</p>
+          <p class="about-bio">I'm a product-minded interaction engineer with 3 years of experience building physical-digital systems. Passionate about <b>tangible user interfaces</b>, <b>product development</b>, and the <b>occasional over-engineered side project</b>. I love using AI to prototype and make my ideas come to life.</p>
 
           <!-- interest tags -->
           <div class="tag-row">
@@ -95,72 +87,62 @@
             <span class="tag tag-pink">Arduino</span>
           </div>
 
-          <!-- stats -->
-          <div class="stat-row">
-            <div class="stat-card">
-              <div class="stat-num">12+</div>
-              <div class="stat-label">projects shipped</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num">3 yrs</div>
-              <div class="stat-label">experience</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num">∞</div>
-              <div class="stat-label">matcha lattes consumed</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- PROJECTS -->
-        <section class="section" id="section-projects">
-          <h1 class="section-title">passion projects</h1>
+          <!-- projects gallery -->
+          <h2 class="section-title" style="margin-top: 20px; font-size: 15px;">projects</h2>
           <p class="section-sub">things i've built and shipped</p>
           <div class="projects-grid">
 
-            <!-- project cards -->
             <div class="project-card" id="card-sonic-stitches"
                  onclick="window.location.href='projects/sonic-stitches/sonic-stitches.html'"
                  onmouseenter="this.style.background='rgba(230,215,245,0.65)';this.style.boxShadow='0 4px 16px rgba(160,120,200,0.18)'"
                  onmouseleave="this.style.background='';this.style.boxShadow=''">
-              <div class="project-icon icon-pink">🌸</div>
+              <img class="project-thumb" src="projects/sonic-stitches/media/cover.png" alt="Sonic Stitches" />
               <div class="project-name">Sonic Stitches</div>
               <p class="project-desc">Explores the theme of TeleAbsence through interactive installations over textiles and immersive experiences.</p>
               <div class="project-tags">
                 <span class="project-tag">Arduino</span>
-                <span class="project-tag">Process</span>
+                <span class="project-tag">C</span>
+                <span class="project-tag">Interaction Design</span>
+                <span class="project-tag">Capacitive &amp; Pressure Sensors</span>
                 <span class="project-tag">Java</span>
+                <span class="project-tag">Processing</span>
               </div>
             </div>
 
             <div class="project-card">
-              <div class="project-icon icon-purple">🔮</div>
+              <div class="project-thumb-placeholder icon-purple"></div>
               <div class="project-name">Solar Proximity</div>
               <p class="project-desc">Captures the proximity of the warmth to body using a custom-built sensor array and visualizes the data in real-time.</p>
               <div class="project-tags">
-                <span class="project-tag">TouchDesign</span>
+                <span class="project-tag">TouchDesigner</span>
                 <span class="project-tag">Arduino</span>
+                <span class="project-tag">Thermal Sensors</span>
+                <span class="project-tag">Real-time Visualization</span>
               </div>
             </div>
 
             <div class="project-card">
-              <div class="project-icon icon-blue">🌊</div>
+              <div class="project-thumb-placeholder icon-blue"></div>
               <div class="project-name">AI Arduino Temperature Monitor</div>
               <p class="project-desc">AI-powered temperature monitoring system for temperature prediction, providing real-time data visualization and alerts.</p>
               <div class="project-tags">
                 <span class="project-tag">Arduino</span>
                 <span class="project-tag">Python</span>
                 <span class="project-tag">TensorFlow</span>
+                <span class="project-tag">IoT</span>
+                <span class="project-tag">Data Visualization</span>
               </div>
             </div>
 
             <div class="project-card">
-              <div class="project-icon icon-green">🌿</div>
+              <div class="project-thumb-placeholder icon-green"></div>
               <div class="project-name">Yours, Truly</div>
               <p class="project-desc">Open source journaling app with markdown support and end-to-end encryption.</p>
               <div class="project-tags">
                 <span class="project-tag">Python + Flask</span>
                 <span class="project-tag">MySQL</span>
+                <span class="project-tag">REST API</span>
+                <span class="project-tag">E2E Encryption</span>
                 <span class="project-tag">HTML + CSS</span>
               </div>
             </div>
@@ -168,69 +150,9 @@
           </div>
         </section>
 
-        <!-- SKILLS -->
-        <section class="section" id="section-skills">
-          <h1 class="section-title">skills.json</h1>
-          <p class="section-sub">technologies and tools i work with</p>
 
-          <!-- skill groups -->
-          <div class="skills-group">
-            <div class="skills-label">Languages</div>
-            <div class="skill-row">
-              <span class="skill-name">Python</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-purple" style="width:92%"></div></div>
-              <span class="skill-pct">92%</span>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">TypeScript</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-blue" style="width:80%"></div></div>
-              <span class="skill-pct">80%</span>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">CPP</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-green" style="width:65%"></div></div>
-              <span class="skill-pct">65%</span>
-            </div>
-          </div>
 
-          <div class="skills-group">
-            <div class="skills-label">Frontend</div>
-            <div class="skill-row">
-              <span class="skill-name">React</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-pink" style="width:90%"></div></div>
-              <span class="skill-pct">90%</span>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">Vue.js</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-pink" style="width:85%"></div></div>
-              <span class="skill-pct">85%</span>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">CSS / UI</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-purple" style="width:78%"></div></div>
-              <span class="skill-pct">78%</span>
-            </div>
-          </div>
 
-          <div class="skills-group">
-            <div class="skills-label">Backend &amp; Infra</div>
-            <div class="skill-row">
-              <span class="skill-name">Node.js</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-green" style="width:88%"></div></div>
-              <span class="skill-pct">88%</span>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">MySQL</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-blue" style="width:75%"></div></div>
-              <span class="skill-pct">75%</span>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">MongoDB</span>
-              <div class="skill-bar-bg"><div class="skill-bar-fill bar-blue" style="width:70%"></div></div>
-              <span class="skill-pct">70%</span>
-            </div>
-          </div>
-        </section>
 
         <!-- RESUME -->
         <section class="section" id="section-resume">
