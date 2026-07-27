@@ -67,6 +67,7 @@ setInterval(updateClock, 30_000);
 
 const SMALL_WINS = {
   // Format: 'YYYY-MM-DD': ['win1', 'win2', ...]
+  '2026-07-26': ['I applied to my dream job'],
   '2026-04-08': ['Feeling lost about the future but faced my emotions honestly'],
   '2026-04-07': ['Went to an EiC networking event and learned some very helpful tips'],
   '2026-04-06': ['Figured out how to reverse a linked list for the first time ever!'],
