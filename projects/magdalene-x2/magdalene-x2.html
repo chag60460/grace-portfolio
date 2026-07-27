@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magdalene X² — Grace Chang</title>
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <style>
+    /* ── Project page layout ── */
+    .window-area { grid-template-columns: 1fr !important; }
+    .main-window { min-height: auto; }
+    .main-content { padding: 0; overflow-y: auto; max-height: 75vh; }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #9a85aa;
+      text-decoration: none;
+      padding: 16px 24px 0;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #6a4a9a; }
+
+    /* ── Hero section ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #F6EEE2, #E9DDD0, #D4C4B6);
+    }
+    .hero-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+    /* Mini phone mockups in hero */
+    .hero-phone {
+      width: 110px;
+      height: 220px;
+      background: #FCF7EF;
+      border-radius: 20px;
+      border: 1px solid #e7ddcd;
+      box-shadow: 0 12px 30px rgba(60,40,20,.18);
+      overflow: hidden;
+      flex-shrink: 0;
+      padding: 6px;
+    }
+    .hero-phone-inner {
+      background: #FCF7EF;
+      border-radius: 16px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .hp-bar { height: 14px; background: #FCF7EF; border-bottom: 0.5px solid #EFE6D9; }
+    .hp-body { flex: 1; padding: 6px 8px; overflow: hidden; }
+    .hp-greeting { font-size: 5px; color: #968D9B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .hp-phase { display: inline-flex; align-items: center; gap: 3px; background: #F8EAD4; color: #8a5a22; border-radius: 99px; padding: 2px 5px; font-size: 4.5px; font-weight: 600; margin: 3px 0; }
+    .hp-phase i { width: 4px; height: 4px; border-radius: 50%; background: #E0A24E; }
+    .hp-reading { font-size: 6.5px; line-height: 1.35; color: #2A2431; margin: 4px 0; font-family: Georgia, serif; }
+    .hp-reading em { font-style: normal; color: #C0613E; }
+    .hp-chip { display: inline-block; background: #fff; border: 0.5px solid #C0613E; color: #9a4a32; border-radius: 99px; padding: 1.5px 5px; font-size: 4px; margin: 1px 1px; }
+    .hp-mod { background: #fff; border: 0.5px solid #EFE6D9; border-radius: 6px; padding: 4px 5px; margin-bottom: 3px; }
+    .hp-mod-name { font-size: 5px; font-weight: 600; color: #2A2431; }
+    .hp-mod-sub { font-size: 4px; color: #968D9B; }
+    .hp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+    .hp-nav { height: 16px; background: #fff; border-top: 0.5px solid #EFE6D9; display: flex; justify-content: space-around; align-items: center; font-size: 3.5px; color: #968D9B; }
+    .hp-nav .act { color: #C0613E; font-weight: 600; }
+    .hp-tag { font-size: 4.5px; color: #C0613E; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .hp-voice { font-family: Georgia, serif; font-size: 6.5px; line-height: 1.35; color: #2A2431; margin-bottom: 5px; }
+    .hp-action { background: linear-gradient(160deg, #C0613E, #A8502F); color: #fff; border-radius: 8px; padding: 5px 6px; margin-top: 4px; }
+    .hp-action-title { font-size: 5.5px; font-family: Georgia, serif; margin: 2px 0 4px; }
+    .hp-action-btn { background: #fff; color: #9a4a32; border-radius: 99px; text-align: center; padding: 3px; font-size: 4.5px; font-weight: 600; }
+    .hp-action-label { font-size: 3.5px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.9; }
+    .hp-msg { max-width: 85%; padding: 4px 5px; font-size: 4.5px; line-height: 1.4; margin-bottom: 3px; border-radius: 6px; }
+    .hp-msg.me { background: #C0613E; color: #fff; margin-left: auto; border-bottom-right-radius: 2px; }
+    .hp-msg.ai { background: #fff; border: 0.5px solid #EFE6D9; border-bottom-left-radius: 2px; }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 28px 20px;
+      background: linear-gradient(to top, rgba(42, 36, 49, 0.85), transparent);
+    }
+    .hero-overlay h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .hero-overlay .hero-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+    }
+
+    /* ── Content body ── */
+    .case-study {
+      padding: 24px 28px 32px;
+    }
+
+    /* ── Meta bar ── */
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+      padding: 16px;
+      background: rgba(240, 230, 255, 0.4);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+    }
+    .meta-item { text-align: center; }
+    .meta-label {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-size: 12px;
+      color: #4a3f5c;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ── Section headings ── */
+    .case-study h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 32px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .case-study h2:first-child { margin-top: 0; }
+
+    .case-study h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6a4a9a;
+      margin: 18px 0 6px;
+    }
+
+    /* ── Body text ── */
+    .case-study p {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+    .case-study ul {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.8;
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    /* ── Prompt callout ── */
+    .prompt-box {
+      background: rgba(240, 230, 255, 0.5);
+      border-left: 3px solid #c5b8f0;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #6a4a9a;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* ── Tags row ── */
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+    }
+    .tags-row .project-tag {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #ede4f5;
+      color: #6a4a9a;
+      font-weight: 500;
+    }
+
+    /* ── Persona cards ── */
+    .persona-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .persona-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .persona-emoji {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .persona-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 2px;
+    }
+    .persona-archetype {
+      font-size: 10px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+    .persona-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .persona-card .persona-quote {
+      font-style: italic;
+      margin-top: 8px;
+      font-size: 10.5px;
+      color: #9a85aa;
+    }
+
+    /* ── Landscape table ── */
+    .landscape-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin: 14px 0;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .landscape-table th {
+      background: rgba(240, 230, 255, 0.5);
+      color: #6a4a9a;
+      font-weight: 600;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .landscape-table th:first-child { text-align: left; }
+    .landscape-table td {
+      padding: 8px;
+      color: #5a4a6a;
+      text-align: center;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.15);
+    }
+    .landscape-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: #4a3f5c;
+    }
+    .landscape-table tr:last-child td { border-bottom: none; }
+    .landscape-table tr.highlight {
+      background: rgba(179, 0, 89, 0.06);
+    }
+    .landscape-table tr.highlight td {
+      color: #4a3f5c;
+      font-weight: 600;
+    }
+
+    /* ── Gap callout ── */
+    .gap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .gap-card {
+      background: rgba(179, 0, 89, 0.06);
+      border: 0.5px solid rgba(179, 0, 89, 0.2);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .gap-icon {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .gap-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 4px;
+    }
+    .gap-card p {
+      font-size: 10.5px;
+      color: #7a6a8a;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── Process flow ── */
+    .process-flow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .process-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .process-step {
+      font-size: 10px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .process-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .process-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Design showcase (phone mockups) ── */
+    .mockup-stage {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .mockup-col { width: 160px; }
+    .mockup-phone {
+      width: 160px;
+      background: #fff;
+      border-radius: 24px;
+      padding: 6px;
+      box-shadow: 0 14px 36px rgba(60,40,20,.16);
+      border: 1px solid #e7ddcd;
+    }
+    .mockup-screen {
+      background: #FCF7EF;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+    .m-statusbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 10px 2px;
+      font-size: 6px;
+      font-weight: 600;
+      color: #2A2431;
+    }
+    .m-body { flex: 1; padding: 4px 10px; overflow: hidden; }
+    .m-nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 6px 4px 8px;
+      background: #fff;
+      border-top: 0.5px solid #EFE6D9;
+      font-size: 5px;
+      color: #968D9B;
+    }
+    .m-nav .act { color: #C0613E; font-weight: 600; }
+    .m-greeting { font-size: 6px; color: #968D9B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin: 4px 0 3px; }
+    .m-phase { display: inline-flex; align-items: center; gap: 3px; background: #F8EAD4; color: #8a5a22; border-radius: 99px; padding: 2px 6px; font-size: 5.5px; font-weight: 600; margin-bottom: 8px; }
+    .m-phase i { width: 5px; height: 5px; border-radius: 50%; background: #E0A24E; }
+    .m-reading { font-family: Georgia, serif; font-size: 8px; line-height: 1.35; color: #2A2431; margin-bottom: 8px; }
+    .m-reading em { font-style: normal; color: #C0613E; }
+    .m-seclbl { font-size: 5px; color: #968D9B; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin: 8px 0 4px; }
+    .m-chip { display: inline-block; background: #fff; border: 0.5px solid #C0613E; color: #9a4a32; border-radius: 99px; padding: 2px 6px; font-size: 5px; margin: 1px; }
+    .m-h2 { font-family: Georgia, serif; font-size: 10px; font-weight: 600; margin: 4px 0 8px; color: #2A2431; }
+    .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .m-mod { background: #fff; border: 0.5px solid #EFE6D9; border-radius: 8px; padding: 6px; }
+    .m-mod-icon { font-size: 12px; margin-bottom: 4px; }
+    .m-mod-name { font-size: 6px; font-weight: 600; color: #2A2431; }
+    .m-mod-sub { font-size: 5px; color: #968D9B; }
+    .m-tag { font-size: 5px; color: #C0613E; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin: 6px 0 6px; }
+    .m-voice { font-family: Georgia, serif; font-size: 8px; line-height: 1.35; color: #2A2431; margin-bottom: 6px; }
+    .m-means { font-size: 6.5px; color: #574F5E; line-height: 1.5; margin-bottom: 6px; }
+    .m-conf { font-size: 5px; color: #968D9B; margin-bottom: 4px; }
+    .m-action { background: linear-gradient(160deg, #C0613E, #A8502F); color: #fff; border-radius: 10px; padding: 7px 8px; margin-top: 6px; }
+    .m-action-label { font-size: 4.5px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.9; }
+    .m-action-title { font-family: Georgia, serif; font-size: 7px; margin: 3px 0 5px; }
+    .m-action-btn { background: #fff; color: #9a4a32; border-radius: 99px; text-align: center; padding: 4px; font-size: 5.5px; font-weight: 600; }
+    .m-msg { max-width: 85%; padding: 4px 6px; font-size: 5.5px; line-height: 1.4; margin-bottom: 4px; border-radius: 8px; }
+    .m-msg.me { background: #C0613E; color: #fff; margin-left: auto; border-bottom-right-radius: 3px; }
+    .m-msg.ai { background: #fff; border: 0.5px solid #EFE6D9; border-bottom-left-radius: 3px; }
+    .m-msg.ai b { color: #C0613E; }
+    .m-askbar { display: flex; align-items: center; gap: 4px; padding: 6px 10px 2px; }
+    .m-askbar-label { font-family: Georgia, serif; font-size: 8px; font-weight: 600; }
+    .m-input { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: #fff; border-top: 0.5px solid #EFE6D9; }
+    .m-input-box { flex: 1; background: #FCF7EF; border: 0.5px solid #EFE6D9; border-radius: 99px; padding: 4px 8px; font-size: 5px; color: #968D9B; }
+    .m-input-mic { width: 16px; height: 16px; border-radius: 50%; background: #C0613E; color: #fff; display: grid; place-items: center; font-size: 6px; }
+
+    .mockup-caption {
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 10px 4px 0;
+      text-align: center;
+    }
+    .mockup-caption span {
+      display: block;
+      font-size: 10px;
+      color: #9a85aa;
+      font-weight: 400;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* ── Tech pipeline ── */
+    .tech-pipeline {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      margin: 16px 0;
+    }
+    .tech-node {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.4);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .tech-node .tech-icon {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .tech-node .tech-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .tech-node .tech-detail {
+      font-size: 11px;
+      color: #5a4a6a;
+      line-height: 1.5;
+    }
+    .tech-arrow {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      color: #c5b8f0;
+      flex-shrink: 0;
+    }
+
+    /* ── Scenario cards ── */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .scenario-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .scenario-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 4px;
+    }
+    .scenario-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .scenario-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── UX principle cards ── */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .principle-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .principle-num {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    .principle-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 4px;
+    }
+    .principle-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── Outcome callout ── */
+    .outcome-box {
+      background: rgba(168, 230, 207, 0.2);
+      border-left: 3px solid #a8e6cf;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+    .outcome-box p {
+      font-size: 12px;
+      color: #3a6a5a;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── Stat row ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .stat-card {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .stat-num {
+      font-size: 20px;
+      font-weight: 700;
+      color: #6a4a9a;
+      margin-bottom: 2px;
+    }
+    .stat-label {
+      font-size: 10px;
+      color: #9a85aa;
+      line-height: 1.4;
+    }
+
+    /* ── Image caption ── */
+    .img-caption {
+      font-size: 11px;
+      color: #9a85aa;
+      text-align: center;
+      margin-top: -6px;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── Menu bar ── -->
+  <div class="menubar">
+    <div class="menubar-left">
+      <span class="menubar-brand">grace.dev</span>
+      <span>File</span>
+      <span>View</span>
+      <span>Go</span>
+      <span>Help</span>
+    </div>
+    <div class="menubar-right">
+      <span>Open to work</span>
+      <span id="clock"></span>
+    </div>
+  </div>
+
+  <!-- ── Window area ── -->
+  <div class="window-area">
+
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">magdalene-x² — case study</span>
+      </div>
+      <div class="main-content">
+
+        <a href="../../index.html" class="back-link" onclick="sessionStorage.setItem('openSection','about')">‹ back to portfolio</a>
+
+        <!-- ════════════ HERO ════════════ -->
+        <div class="hero">
+          <div class="hero-inner">
+            <!-- Mini phone: Today screen -->
+            <div class="hero-phone">
+              <div class="hero-phone-inner">
+                <div class="hp-bar"></div>
+                <div class="hp-body">
+                  <div class="hp-greeting">Good morning, Olivia</div>
+                  <div class="hp-phase"><i></i> Day 22 · Luteal</div>
+                  <div class="hp-reading">Your body's running warmer this week. Expect a little <em>less energy and more hunger</em> — that's your luteal phase.</div>
+                  <div style="margin-top:4px">
+                    <span class="hp-chip">Protein-first breakfast</span>
+                    <span class="hp-chip">Gentle movement</span>
+                  </div>
+                </div>
+                <div class="hp-nav"><span class="act">☀️ Today</span><span>🪟 Modules</span><span>✦ Ask</span></div>
+              </div>
+            </div>
+            <!-- Mini phone: Insight screen -->
+            <div class="hero-phone" style="transform: translateY(-12px);">
+              <div class="hero-phone-inner">
+                <div class="hp-bar"></div>
+                <div class="hp-body">
+                  <div class="hp-tag">Sleep × Glucose × Cycle</div>
+                  <div class="hp-voice">When you sleep under 6½ hours, your mornings spike higher — and it's worse in your luteal phase.</div>
+                  <div class="hp-action">
+                    <div class="hp-action-label">Try this</div>
+                    <div class="hp-action-title">Protect 7.5h sleep for 2 weeks</div>
+                    <div class="hp-action-btn">Start experiment</div>
+                  </div>
+                </div>
+                <div class="hp-nav"><span>☀️ Today</span><span>🪟 Modules</span><span class="act">🧫 Exp</span></div>
+              </div>
+            </div>
+            <!-- Mini phone: Ask screen -->
+            <div class="hero-phone">
+              <div class="hero-phone-inner">
+                <div class="hp-bar"></div>
+                <div class="hp-body" style="padding-top: 8px;">
+                  <div style="font-family: Georgia, serif; font-size: 6.5px; font-weight: 600; margin-bottom: 6px;">✦ Ask Magdalene</div>
+                  <div class="hp-msg me">Why am I so tired this week?</div>
+                  <div class="hp-msg ai">Your signals line up: <b style="color:#C0613E">luteal phase</b>, under 6½h sleep on three nights, and <b style="color:#C0613E">ferritin</b> came back low-normal. Together they explain the drag.</div>
+                  <div class="hp-msg me">What can I do?</div>
+                  <div class="hp-msg ai">Protect your sleep and lean into iron-rich meals. Want me to set up a 2-week experiment?</div>
+                </div>
+                <div class="hp-nav"><span>☀️ Today</span><span class="act">✦ Ask</span><span>🧫 Exp</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-overlay">
+            <h1>Magdalene X²</h1>
+            <p class="hero-subtitle">An autonomous health-intelligence companion for women</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+
+          <!-- ════════════ META ════════════ -->
+          <div class="project-meta">
+            <div class="meta-item">
+              <div class="meta-label">Role</div>
+              <div class="meta-value">Founder · Product &amp; Design</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Type</div>
+              <div class="meta-value">0→1 Product Design</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Stage</div>
+              <div class="meta-value">Concept → Hi-Fi Prototype</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Year</div>
+              <div class="meta-value">2026</div>
+            </div>
+          </div>
+
+          <!-- ════════════ OVERVIEW ════════════ -->
+          <h2>Overview</h2>
+          <p>Magdalene X² is an autonomous, multi-agent health-intelligence companion that unifies a woman's <strong>labs, menstrual cycle, nutrition, fitness, and sleep</strong> into one system. It detects meaningful changes, explains them in plain language, generates hypotheses, and runs small <strong>closed-loop personal experiments</strong> — framed as wellness insight, never diagnosis.</p>
+
+          <div class="prompt-box">
+            Every woman deserves a tireless health analyst that understands her <em>whole</em> biology — not five disconnected apps. How might we turn the data a woman already produces into understanding and action?
+          </div>
+
+          <div class="tags-row">
+            <span class="project-tag">Product Design</span>
+            <span class="project-tag">Multi-Agent AI</span>
+            <span class="project-tag">Health Tech</span>
+            <span class="project-tag">N-of-1 Experiments</span>
+            <span class="project-tag">Femtech</span>
+            <span class="project-tag">UX Research</span>
+          </div>
+
+          <!-- ════════════ PROBLEM ════════════ -->
+          <h2>Problem &amp; Motivation</h2>
+          <p>Health-engaged women generate more personal health data than ever — rings, watches, CGMs, lab panels, cycle apps — yet <strong>no tool connects it</strong>. They get numbers, not meaning, and they're left to play detective across five domains that biologically interact.</p>
+
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-num">318K+</div>
+              <div class="stat-label">health apps exist with no synthesis layer</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">~6%</div>
+              <div class="stat-label">of sport-science studies are female-only</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">25%</div>
+              <div class="stat-label">more of their lives women spend in poor health vs. men</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">~18%</div>
+              <div class="stat-label">of self-trackers ever share data with a clinician</div>
+            </div>
+          </div>
+
+          <p>The menstrual cycle is a <strong>master modulator</strong> — it affects glucose response, sleep architecture, injury risk, and nutrition needs. Any single-domain reading (e.g., HRV or a lab value) is biologically ambiguous without cycle context. Yet no consumer tool reads these domains together.</p>
+
+          <!-- ════════════ RESEARCH ════════════ -->
+          <h2>User Research &amp; Market Analysis</h2>
+          <p>Conducted deep research across 30+ products in three categories — biomarker platforms, AI health assistants, and femtech — to map the competitive landscape and identify the unoccupied white space.</p>
+
+          <h3>The Competitive Gap</h3>
+          <table class="landscape-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Cycle</th>
+                <th>Sleep</th>
+                <th>Fitness</th>
+                <th>Nutrition</th>
+                <th>Labs</th>
+                <th>Autonomous AI</th>
+                <th>Self-Experiments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Flo (77M MAU)</td>
+                <td>✅</td><td>⚠️</td><td>❌</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td>
+              </tr>
+              <tr>
+                <td>Oura</td>
+                <td>✅</td><td>✅</td><td>⚠️</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td>
+              </tr>
+              <tr>
+                <td>WHOOP</td>
+                <td>⚠️</td><td>✅</td><td>✅</td><td>❌</td><td>⚠️</td><td>⚠️</td><td>❌</td>
+              </tr>
+              <tr>
+                <td>Levels</td>
+                <td>❌</td><td>⚠️</td><td>⚠️</td><td>✅</td><td>⚠️</td><td>⚠️</td><td>⚠️</td>
+              </tr>
+              <tr>
+                <td>Wild.AI</td>
+                <td>✅</td><td>⚠️</td><td>✅</td><td>⚠️</td><td>❌</td><td>⚠️</td><td>❌</td>
+              </tr>
+              <tr>
+                <td>Allara (clinical)</td>
+                <td>⚠️</td><td>❌</td><td>⚠️</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td>
+              </tr>
+              <tr>
+                <td>Fountain Life</td>
+                <td>❌</td><td>⚠️</td><td>⚠️</td><td>⚠️</td><td>✅✅</td><td>⚠️</td><td>⚠️</td>
+              </tr>
+              <tr class="highlight">
+                <td>Magdalene X²</td>
+                <td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="gap-grid">
+            <div class="gap-card">
+              <div class="gap-icon">🔗</div>
+              <div class="gap-title">Cross-Domain Synthesis</div>
+              <p>No product integrates all five domains — labs, cycle, nutrition, fitness, sleep — into a unified analysis.</p>
+            </div>
+            <div class="gap-card">
+              <div class="gap-icon">🤖</div>
+              <div class="gap-title">Autonomous Agents</div>
+              <p>"Agentic" in consumer health today means a chatbot that can call an API. No one deploys multi-agent orchestration.</p>
+            </div>
+            <div class="gap-card">
+              <div class="gap-icon">🧫</div>
+              <div class="gap-title">Closed-Loop Experiments</div>
+              <p>No consumer tool automates the N-of-1 workflow: baseline → intervention → measure outcome → learn.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ PERSONAS ════════════ -->
+          <h2>Target Users</h2>
+          <p>Three personas form a clean, non-overlapping spectrum — <strong>prevention → performance → investigation</strong> — and sequence the system by complexity.</p>
+
+          <div class="persona-grid">
+            <div class="persona-card">
+              <div class="persona-emoji">👩🏻‍💻</div>
+              <div class="persona-archetype">POC · Primary</div>
+              <div class="persona-name">Olivia — The Healthy Optimizer</div>
+              <p>Mid-20s, healthy and asymptomatic. Wears an Oura ring, logs workouts, curious about a CGM. Wants to <strong>prevent future problems</strong> and build durable habits.</p>
+              <p class="persona-quote">"I have five apps and a spreadsheet and still can't tell whether what I'm doing is actually keeping me healthy."</p>
+            </div>
+            <div class="persona-card">
+              <div class="persona-emoji">🏃🏽‍♀️</div>
+              <div class="persona-archetype">MVP · Secondary</div>
+              <div class="persona-name">Mia — The Athlete</div>
+              <p>Late 20s, serious recreational athlete. Energy and recovery swing with her cycle but nothing explains it. Suspects low iron.</p>
+              <p class="persona-quote">"Generic fitness AI tells me to push harder on days my body can't."</p>
+            </div>
+            <div class="persona-card">
+              <div class="persona-emoji">👩🏾‍⚕️</div>
+              <div class="persona-archetype">GA · Secondary</div>
+              <div class="persona-name">Priya — The Dismissed Patient</div>
+              <p>Mid-30s, experiencing irregular cycles and energy crashes. Wants answers and evidence to bring her clinician.</p>
+              <p class="persona-quote">"Doctors say 'your labs are normal' and move on."</p>
+            </div>
+          </div>
+
+          <!-- ════════════ KEY USE CASES ════════════ -->
+          <h2>Key Scenarios</h2>
+
+          <div class="scenario-grid">
+            <div class="scenario-card">
+              <div class="scenario-num">Olivia · Prevention</div>
+              <div class="scenario-title">Sleep × Glucose × Cycle</div>
+              <p>Magdalene detects that short sleep raises next-morning glucose in the luteal phase → proposes a 2-week sleep-protection experiment → shows flattened spikes.</p>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-num">Mia · Performance</div>
+              <div class="scenario-title">Recovery × Ferritin × Cycle</div>
+              <p>Connects poor late-luteal recovery + low-normal ferritin → recommends phase-shifted intensity + iron-focused fueling → re-checks and reports recovery change.</p>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-num">Priya · Investigation</div>
+              <div class="scenario-title">Glucose × Cycles × Clinician Report</div>
+              <p>Connects prolonged post-meal glucose in the luteal phase + irregular cycles → produces a clinician-ready summary + a protein-first-breakfast experiment.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ DESIGN PROCESS ════════════ -->
+          <h2>Design Process</h2>
+          <p>I explored five visual directions by studying well-designed health and femtech apps, then converged on a direction that combines <strong>Headspace-style modularity</strong> (clear, grouped modules) with <strong>Co–Star-style personalization</strong> (a voice that knows you).</p>
+
+          <div class="process-flow">
+            <div class="process-card">
+              <div class="process-step">Phase 1 — Research</div>
+              <div class="process-title">UI Case Study</div>
+              <p>Analyzed 12+ health and femtech apps across five visual directions (calm dark-premium, warm editorial, clinical data-forward, bold athletic, personality-driven) to identify patterns worth borrowing.</p>
+            </div>
+            <div class="process-card">
+              <div class="process-step">Phase 2 — Concept</div>
+              <div class="process-title">Low-Fi Concept</div>
+              <p>Defined the design language — warm cream palette, editorial serif for the "voice," clean sans for data. Five core screens: Today, Modules, Insight, Ask, and Goals.</p>
+            </div>
+          </div>
+          <div class="process-flow">
+            <div class="process-card">
+              <div class="process-step">Phase 3 — Iteration</div>
+              <div class="process-title">Design Iterations</div>
+              <p>Refined typography (Fraunces + Inter), interaction patterns, and the experiment flow through multiple rounds. Added interactive tab navigation and smooth transitions.</p>
+            </div>
+            <div class="process-card">
+              <div class="process-step">Phase 4 — Hi-Fi</div>
+              <div class="process-title">Hi-Fi Prototype</div>
+              <p>Full-fidelity interactive prototype with all five screens, interactive elements, and the complete insight → experiment → outcome flow.</p>
+            </div>
+          </div>
+
+          <h3>Key Design Patterns Borrowed</h3>
+          <ul>
+            <li><strong>One number per domain first</strong> — never a table on the home screen (inspired by Oura, WHOOP)</li>
+            <li><strong>Color = state, not alarm</strong> — green/amber mean "where you are," not "good/bad"</li>
+            <li><strong>Plain-English "what this means"</strong> after any data point (Function, WHOOP)</li>
+            <li><strong>Drill-down, not dump</strong> — full data is 2–3 taps deep, never the default</li>
+            <li><strong>Deviation &amp; rest = information, not failure</strong> — anti-guilt framing throughout</li>
+          </ul>
+
+          <!-- ════════════ DESIGN SHOWCASE ════════════ -->
+          <h2>Product Design</h2>
+          <p>The final design uses a warm, editorial voice paired with modular data cards. The cycle phase is a first-class variable that contextualizes every insight.</p>
+
+          <div class="mockup-stage">
+            <!-- Today -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
+                  <div class="m-body">
+                    <div class="m-greeting">Good morning, Olivia</div>
+                    <div class="m-phase"><i></i> Mon · Cycle day 22 · Luteal</div>
+                    <div class="m-reading">Your body's running warmer this week. Expect a little <em>less energy and more hunger</em> — that's your luteal phase, not a setback.</div>
+                    <div class="m-seclbl">Today, consider</div>
+                    <div style="margin-bottom: 8px;">
+                      <span class="m-chip">Protein-first breakfast</span>
+                      <span class="m-chip">Gentle movement</span>
+                      <span class="m-chip">Wind down by 10</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;background:#ECE2EB;border-radius:8px;padding:7px 8px;font-size:6px;">
+                      <span style="font-size:10px">✨</span>
+                      <div><div style="font-weight:600;color:#2A2431">1 new insight</div><div style="color:#968D9B;font-size:5px">Sleep × glucose × cycle</div></div>
+                      <span style="margin-left:auto;color:#7A5C77">›</span>
+                    </div>
+                  </div>
+                  <div class="m-nav"><span class="act">☀️ Today</span><span>🪟 Modules</span><span>✦ Ask</span><span>🧫 Exp</span><span>👤 Me</span></div>
+                </div>
+              </div>
+              <div class="mockup-caption">Today<span>The personalized daily reading — a voice that knows you</span></div>
+            </div>
+
+            <!-- Modules -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
+                  <div class="m-body">
+                    <div class="m-h2">Your body, in modules</div>
+                    <div class="m-grid">
+                      <div class="m-mod"><div class="m-mod-icon">🌙</div><div class="m-mod-name">Cycle</div><div class="m-mod-sub">Day 22 · Luteal</div></div>
+                      <div class="m-mod"><div class="m-mod-icon">🌗</div><div class="m-mod-name">Sleep</div><div class="m-mod-sub">6h12 last night ↓</div></div>
+                      <div class="m-mod"><div class="m-mod-icon">🧪</div><div class="m-mod-name">Labs</div><div class="m-mod-sub">Ferritin low-normal</div></div>
+                      <div class="m-mod"><div class="m-mod-icon">🍽️</div><div class="m-mod-name">Nutrition</div><div class="m-mod-sub">Glucose steadier ↑</div></div>
+                      <div class="m-mod"><div class="m-mod-icon">🏃‍♀️</div><div class="m-mod-name">Movement</div><div class="m-mod-sub">Recovery: ease up</div></div>
+                      <div class="m-mod"><div class="m-mod-icon">✨</div><div class="m-mod-name">Insights</div><div class="m-mod-sub">1 new</div></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;background:#2A2431;border-radius:8px;padding:7px 8px;margin-top:5px;">
+                      <span style="font-size:10px">🧫</span>
+                      <div style="color:#fff"><div style="font-size:6px;font-weight:600">Experiment · Protect 7.5h sleep</div><div style="font-size:5px;color:#cdbfd0">Day 6 of 14</div>
+                        <div style="height:3px;border-radius:2px;background:rgba(255,255,255,0.15);margin-top:3px;overflow:hidden"><div style="width:43%;height:100%;background:#C0613E;border-radius:2px"></div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="m-nav"><span>☀️ Today</span><span class="act">🪟 Modules</span><span>✦ Ask</span><span>🧫 Exp</span><span>👤 Me</span></div>
+                </div>
+              </div>
+              <div class="mockup-caption">Modules<span>One calm, illustrated card per domain</span></div>
+            </div>
+
+            <!-- Insight → Experiment -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
+                  <div class="m-body">
+                    <div class="m-tag">Sleep × Glucose × Cycle</div>
+                    <div class="m-voice">When you sleep under 6½ hours, your mornings spike higher — and it's worse in your luteal phase.</div>
+                    <div class="m-means">Protecting sleep now keeps your metabolism steadier through the back half of your cycle.</div>
+                    <div class="m-conf">●●●○ based on 18 nights</div>
+                    <div style="font-size:5.5px;color:#968D9B;margin-bottom:8px">ⓘ Information, not a diagnosis.</div>
+                    <div class="m-action">
+                      <div class="m-action-label">Try this</div>
+                      <div class="m-action-title">Protect 7.5h sleep for 2 weeks — we'll compare your morning glucose.</div>
+                      <div class="m-action-btn">Start experiment</div>
+                    </div>
+                  </div>
+                  <div class="m-nav"><span>☀️ Today</span><span>🪟 Modules</span><span>✦ Ask</span><span class="act">🧫 Exp</span><span>👤 Me</span></div>
+                </div>
+              </div>
+              <div class="mockup-caption">Insight → Experiment<span>Voice → meaning → one clear action</span></div>
+            </div>
+
+            <!-- Ask -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
+                  <div class="m-askbar">
+                    <span style="font-size:10px">✦</span>
+                    <span class="m-askbar-label">Ask Magdalene</span>
+                    <span style="margin-left:auto;font-size:5px;background:#F6E2D6;color:#9a4a32;padding:2px 5px;border-radius:99px;">🎙 Voice</span>
+                  </div>
+                  <div class="m-body" style="padding-top:4px">
+                    <div class="m-msg me">Why am I so tired this week?</div>
+                    <div class="m-msg ai">A few of your signals line up: you're in your <b>luteal phase</b>, you slept under 6½h on three nights, and your <b>ferritin</b> came back low-normal. Together they explain the drag.<span style="display:block;font-size:4.5px;color:#968D9B;margin-top:3px">ⓘ Information, not a diagnosis.</span></div>
+                    <div class="m-msg me">What can I do?</div>
+                    <div class="m-msg ai">Two gentle levers this week: protect your sleep, and lean into iron-rich meals. Want me to set up a 2-week experiment?</div>
+                    <div style="margin-top:3px">
+                      <span class="m-chip">Yes, set it up</span>
+                      <span class="m-chip">Explain my ferritin</span>
+                    </div>
+                  </div>
+                  <div class="m-input">
+                    <div class="m-input-box">Ask about your body…</div>
+                    <div class="m-input-mic">🎙</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Ask<span>Conversational AI grounded in her own data</span></div>
+            </div>
+          </div>
+
+          <!-- ════════════ ARCHITECTURE ════════════ -->
+          <h2>System Architecture</h2>
+          <p>The product loop: <strong>Ingest → Detect → Explain → Hypothesize → Experiment → Learn.</strong> The experiment engine writing outcomes back to the timeline is what closes the loop — the core differentiator.</p>
+
+          <div class="tech-pipeline">
+            <div class="tech-node">
+              <div class="tech-icon">📊</div>
+              <div class="tech-label">Ingest</div>
+              <div class="tech-detail">Wearables, cycle, labs, CGM, nutrition → unified health timeline, cycle-phase tagged</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🔍</div>
+              <div class="tech-label">Detect</div>
+              <div class="tech-detail">Autonomous change &amp; pattern detection across all domains — no user prompt required</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🤖</div>
+              <div class="tech-label">Reason</div>
+              <div class="tech-detail">Multi-agent orchestrator coordinates domain agents, hypothesis engine, experiment designer</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🛡️</div>
+              <div class="tech-label">Guard</div>
+              <div class="tech-detail">Safety layer screens outputs — no diagnostic claims, honest uncertainty, clinician escalation</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">💬</div>
+              <div class="tech-label">Surface</div>
+              <div class="tech-detail">Plain-language insights, experiments, weekly summary, clinician report</div>
+            </div>
+          </div>
+
+          <!-- ════════════ UX PRINCIPLES ════════════ -->
+          <h2>UX Principles</h2>
+
+          <div class="principle-grid">
+            <div class="principle-card">
+              <div class="principle-num">💡</div>
+              <div class="principle-title">Say what it means, not how it works</div>
+              <p>Lead with the insight, hide the machinery. The user sees the meaning — not the multi-agent pipeline behind it.</p>
+            </div>
+            <div class="principle-card">
+              <div class="principle-num">🎯</div>
+              <div class="principle-title">One clear next action</div>
+              <p>Every insight offers at most one small experiment. Reduce decision fatigue to a single "yes."</p>
+            </div>
+            <div class="principle-card">
+              <div class="principle-num">⚖️</div>
+              <div class="principle-title">Honest uncertainty</div>
+              <p>Never over-claim. Show confidence levels, defer to clinicians, and always frame as "information, not a diagnosis."</p>
+            </div>
+            <div class="principle-card">
+              <div class="principle-num">🔒</div>
+              <div class="principle-title">Privacy you can feel</div>
+              <p>End-to-end encryption, no third-party data sharing, granular consent. Visible control over data as a trust signal — especially for reproductive data.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ OUTCOME ════════════ -->
+          <h2>Outcome &amp; Status</h2>
+          <div class="outcome-box">
+            <p>Magdalene X² targets a category-creation white space that the market is visibly self-organizing toward — but no incumbent has executed: cross-domain synthesis + autonomous agents + a closed experimentation loop.</p>
+          </div>
+          <p>The project produced a comprehensive <strong>product requirements document</strong>, deep <strong>competitive and scientific research</strong>, three validated <strong>user personas</strong>, a full <strong>UI case study</strong> across 12+ competitor apps, and an interactive <strong>hi-fi prototype</strong> — all the artifacts needed to move from concept to build.</p>
+
+          <!-- ════════════ FUTURE ════════════ -->
+          <h2>Next Steps</h2>
+          <ul>
+            <li><strong>POC (Olivia):</strong> Connect data + deliver one real cross-domain insight + one semi-manual experiment. Prove the "aha."</li>
+            <li><strong>MVP (Mia):</strong> Cycle-aware training/fatigue insights; guided experiments; multi-source integration; retention instrumentation.</li>
+            <li><strong>GA (Priya):</strong> Handle hormonal/metabolic complexity; clinician-ready reports; scaled autonomous experiment engine.</li>
+          </ul>
+
+        </div><!-- /case-study -->
+
+      </div><!-- /main-content -->
+    </div><!-- /main-window -->
+
+  </div><!-- /window-area -->
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span><span class="status-dot"></span>available for work</span>
+    <span>grace@portfolio ~ </span>
+    <div class="status-links">
+      <a href="https://github.com/chag60460" target="_blank">github</a>
+      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
+      <a href="mailto:chag60460@gmail.com">email</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const formatted = now.toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit',
+    });
+    const clockEl = document.getElementById('clock');
+    if (clockEl) clockEl.textContent = formatted;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+</script>
+</body>
+</html>

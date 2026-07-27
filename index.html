@@ -42,7 +42,7 @@
         <div class="profile-section">
           <img class="avatar" src="profile_pic.jpeg" alt="Grace" />  <!-- photo -->
           <div class="profile-name">Grace</div>  <!-- name -->
-          <div class="profile-role">software engineer</div>  <!-- role -->
+          <div class="profile-role">software engineer @ Microsoft</div>  <!-- role -->
         </div>
         <nav>
           <div class="nav-item active" onclick="showSection('about', this)">
@@ -76,7 +76,8 @@
           <p class="section-sub">software engineer · creative coder · product designer</p>  <!-- tagline -->
 
           <!-- bio -->
-          <p class="about-bio">I'm a product-minded interaction engineer with 3 years of experience building physical-digital systems. Passionate about <b>tangible user interfaces</b>, <b>product development</b>, and the <b>occasional over-engineered side project</b>. I love using AI to prototype and make my ideas come to life.</p>
+          <p class="about-bio">I'm a product-minded software engineer with 3 years of experience building interaction systems, distributed systems, and physical-digital systems. </p>
+          <p class="about-bio">My passion lies in <b>tangible user interfaces</b>, <b>product development</b>, and the <b>interaction design</b>. I am deeply interested in <b>creating meaningful human computer user experiences</b>, especially pushing for <b><i>ubiquitous computing.</i></b></p>
 
           <!-- interest tags -->
           <div class="tag-row">
@@ -109,15 +110,18 @@
               </div>
             </div>
 
-            <div class="project-card">
-              <div class="project-thumb-placeholder icon-purple"></div>
-              <div class="project-name">Solar Proximity</div>
-              <p class="project-desc">Captures the proximity of the warmth to body using a custom-built sensor array and visualizes the data in real-time.</p>
+            <div class="project-card" id="card-magdalene-x2"
+                 onclick="window.location.href='projects/magdalene-x2/magdalene-x2.html'"
+                 onmouseenter="this.style.background='rgba(230,215,245,0.65)';this.style.boxShadow='0 4px 16px rgba(160,120,200,0.18)'"
+                 onmouseleave="this.style.background='';this.style.boxShadow=''">
+              <div class="project-thumb-placeholder icon-purple" style="background: linear-gradient(135deg, #F6EEE2, #E9DDD0, #D4C4B6); display: flex; align-items: center; justify-content: center; font-size: 28px;">🧬</div>
+              <div class="project-name">Magdalene X²</div>
+              <p class="project-desc">An autonomous, multi-agent health-intelligence app that unifies labs, cycle, nutrition, fitness, and sleep for women.</p>
               <div class="project-tags">
-                <span class="project-tag">TouchDesigner</span>
-                <span class="project-tag">Arduino</span>
-                <span class="project-tag">Thermal Sensors</span>
-                <span class="project-tag">Real-time Visualization</span>
+                <span class="project-tag">Product Design</span>
+                <span class="project-tag">Multi-Agent AI</span>
+                <span class="project-tag">Health Tech</span>
+                <span class="project-tag">UX Research</span>
               </div>
             </div>
 
