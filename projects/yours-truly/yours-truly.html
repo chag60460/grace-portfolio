@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yours, Truly — Grace Chang</title>
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <style>
+    /* ── Project page layout ── */
+    .window-area { grid-template-columns: 1fr !important; }
+    .main-window { min-height: auto; }
+    .main-content { padding: 0; overflow-y: auto; max-height: 75vh; }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #9a85aa;
+      text-decoration: none;
+      padding: 16px 24px 0;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #6a4a9a; }
+
+    /* ── Hero section ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      margin-top: 12px;
+      background: linear-gradient(160deg, #FFF5F5, #FFE4EC, #FFC8D6);
+    }
+    .hero-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    /* ── Notebook mockup in hero ── */
+    .hero-notebook {
+      width: 260px;
+      height: 220px;
+      background: #fff;
+      border-radius: 4px 14px 14px 4px;
+      box-shadow: 0 14px 36px rgba(80,40,60,.16);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #f0d8e0;
+    }
+    .hero-notebook::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 28px;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 28px,
+        #ffb6c1 28px,
+        #ffb6c1 30px
+      );
+      border-right: 2px solid #ffccd5;
+    }
+    .hero-notebook-body {
+      margin-left: 34px;
+      padding: 14px 16px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        transparent 0px,
+        transparent 24px,
+        #f8e8ee 24px,
+        #f8e8ee 25px
+      );
+    }
+    .hn-title {
+      font-family: 'Noteworthy', cursive, serif;
+      font-size: 16px;
+      color: #6a3a4a;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .hn-date {
+      font-size: 9px;
+      color: #c48a9a;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+    .hn-prompt {
+      font-size: 10px;
+      color: #8a5a6a;
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+    .hn-answer {
+      font-size: 9px;
+      color: #5a3a4a;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .hn-mood {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #FFF0F3;
+      border: 0.5px solid #ffb6c1;
+      border-radius: 12px;
+      padding: 3px 8px;
+      font-size: 8px;
+      color: #8a3a5a;
+    }
+    .hn-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #F0FFF5;
+      border: 0.5px solid #a8e6cf;
+      border-radius: 12px;
+      padding: 3px 8px;
+      font-size: 8px;
+      color: #3a6a4a;
+      margin-left: 4px;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 28px 20px;
+      background: linear-gradient(to top, rgba(60, 30, 40, 0.82), transparent);
+    }
+    .hero-overlay h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .hero-overlay .hero-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+    }
+
+    /* ── Content body ── */
+    .case-study {
+      padding: 24px 28px 32px;
+    }
+
+    /* ── Meta bar ── */
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+      padding: 16px;
+      background: rgba(240, 230, 255, 0.4);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+    }
+    .meta-item { text-align: center; }
+    .meta-label {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-size: 12px;
+      color: #4a3f5c;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ── Section headings ── */
+    .case-study h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 32px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .case-study h2:first-child { margin-top: 0; }
+
+    .case-study h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6a4a9a;
+      margin: 18px 0 6px;
+    }
+
+    /* ── Body text ── */
+    .case-study p {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+    .case-study ul {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.8;
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    /* ── Prompt callout ── */
+    .prompt-box {
+      background: rgba(255, 240, 243, 0.6);
+      border-left: 3px solid #ffb6c1;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #6a3a5a;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* ── Tags row ── */
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+    }
+    .tags-row .project-tag {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #ede4f5;
+      color: #6a4a9a;
+      font-weight: 500;
+    }
+
+    /* ── Feature cards ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .feature-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .feature-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Process flow ── */
+    .process-flow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .process-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .process-step {
+      font-size: 10px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .process-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .process-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Tech pipeline ── */
+    .tech-pipeline {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      margin: 16px 0;
+    }
+    .tech-node {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.4);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .tech-node .tech-icon {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .tech-node .tech-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .tech-node .tech-detail {
+      font-size: 11px;
+      color: #5a4a6a;
+      line-height: 1.5;
+    }
+    .tech-arrow {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      color: #c5b8f0;
+      flex-shrink: 0;
+    }
+
+    /* ── Screen mockups ── */
+    .mockup-stage {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .mockup-col { width: 200px; }
+    .mockup-browser {
+      width: 200px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(80,40,60,.12);
+      border: 1px solid #f0d8e0;
+      overflow: hidden;
+    }
+    .mb-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 8px;
+      background: #FFF5F7;
+      border-bottom: 1px solid #f0d8e0;
+    }
+    .mb-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .mb-dot-r { background: #ff6b6b; }
+    .mb-dot-y { background: #ffd93d; }
+    .mb-dot-g { background: #6bcf7f; }
+    .mb-url {
+      margin-left: 8px;
+      font-size: 5.5px;
+      color: #c48a9a;
+      background: #FFF0F3;
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+    .mb-body {
+      height: 240px;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Homepage mockup */
+    .mb-home {
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240"><rect fill="%23FFF5F0" width="200" height="240"/></svg>');
+      background-color: #FFF8F5;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px;
+      position: relative;
+    }
+    .mb-home::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 16px;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 16px,
+        #ffccd5 16px,
+        #ffccd5 17px
+      );
+      opacity: 0.5;
+    }
+    .mb-home-title {
+      font-family: Georgia, serif;
+      font-size: 12px;
+      color: #6a3a4a;
+      margin-bottom: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .mb-home-btn {
+      background: #ffb6c1;
+      color: #fff;
+      border-radius: 6px;
+      padding: 5px 14px;
+      font-size: 7px;
+      font-weight: 600;
+      margin: 4px 0;
+      text-align: center;
+      width: 70px;
+    }
+    /* Entry mockup */
+    .mb-entry {
+      background: #FFF8F5;
+      height: 100%;
+      padding: 10px 12px;
+      position: relative;
+    }
+    .mb-entry::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 16px,
+        #ffccd5 16px,
+        #ffccd5 17px
+      );
+      opacity: 0.5;
+    }
+    .mb-entry-date {
+      font-family: Georgia, serif;
+      font-size: 9px;
+      color: #6a3a4a;
+      margin-bottom: 6px;
+      margin-left: 16px;
+      font-weight: 600;
+    }
+    .mb-field {
+      margin-left: 16px;
+      margin-bottom: 6px;
+    }
+    .mb-field-label {
+      font-size: 5.5px;
+      color: #c48a9a;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+    .mb-field-input {
+      background: #FFF0F3;
+      border: 0.5px solid #ffccd5;
+      border-radius: 4px;
+      padding: 3px 5px;
+      font-size: 5.5px;
+      color: #5a3a4a;
+      width: 100%;
+    }
+    .mb-field-textarea {
+      background: repeating-linear-gradient(
+        transparent 0px,
+        transparent 10px,
+        #f8e8ee 10px,
+        #f8e8ee 11px
+      );
+      border: 0.5px solid #ffccd5;
+      border-radius: 4px;
+      padding: 3px 5px;
+      font-size: 5.5px;
+      color: #5a3a4a;
+      width: 100%;
+      height: 32px;
+    }
+    .mb-select {
+      background: #FFF0F3;
+      border: 0.5px solid #ffccd5;
+      border-radius: 4px;
+      padding: 2px 5px;
+      font-size: 5.5px;
+      color: #8a3a5a;
+      display: inline-block;
+    }
+    .mb-save-btn {
+      background: #ffb6c1;
+      color: #fff;
+      border-radius: 4px;
+      padding: 3px 10px;
+      font-size: 5.5px;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 6px;
+      margin-left: 16px;
+      display: inline-block;
+    }
+    /* Calendar/mood mockup */
+    .mb-calendar {
+      background: #FFF8F5;
+      height: 100%;
+      padding: 12px 14px;
+      position: relative;
+    }
+    .mb-calendar::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 16px,
+        #ffccd5 16px,
+        #ffccd5 17px
+      );
+      opacity: 0.5;
+    }
+    .mb-cal-title {
+      font-family: Georgia, serif;
+      font-size: 9px;
+      color: #6a3a4a;
+      margin-left: 16px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .mb-cal-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 16px;
+      margin-bottom: 5px;
+      padding: 4px 6px;
+      background: #FFF0F3;
+      border-radius: 4px;
+      border: 0.5px solid #ffccd5;
+    }
+    .mb-cal-emoji { font-size: 8px; }
+    .mb-cal-date { font-size: 5.5px; color: #6a3a4a; font-weight: 600; }
+    .mb-cal-mood { font-size: 5px; color: #c48a9a; }
+
+    .mockup-caption {
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 10px 4px 0;
+      text-align: center;
+    }
+    .mockup-caption span {
+      display: block;
+      font-size: 10px;
+      color: #9a85aa;
+      font-weight: 400;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* ── Schema diagram ── */
+    .schema-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .schema-table {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .schema-table-header {
+      background: rgba(240, 230, 255, 0.5);
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6a4a9a;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .schema-table-body {
+      padding: 10px 14px;
+    }
+    .schema-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      font-size: 11px;
+    }
+    .schema-field .field-name {
+      color: #4a3f5c;
+      font-weight: 500;
+      font-family: monospace;
+    }
+    .schema-field .field-type {
+      color: #9a85aa;
+      font-size: 10px;
+    }
+    .schema-field .field-key {
+      color: #c5a0d8;
+      font-size: 9px;
+      font-weight: 600;
+    }
+
+    /* ── Outcome callout ── */
+    .outcome-box {
+      background: rgba(168, 230, 207, 0.2);
+      border-left: 3px solid #a8e6cf;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+    .outcome-box p {
+      font-size: 12px;
+      color: #3a6a5a;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── Security list ── */
+    .security-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .security-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .security-icon {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    .security-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 4px;
+    }
+    .security-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── Image caption ── */
+    .img-caption {
+      font-size: 11px;
+      color: #9a85aa;
+      text-align: center;
+      margin-top: -6px;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── Menu bar ── -->
+  <div class="menubar">
+    <div class="menubar-left">
+      <span class="menubar-brand">grace.dev</span>
+      <span>File</span>
+      <span>View</span>
+      <span>Go</span>
+      <span>Help</span>
+    </div>
+    <div class="menubar-right">
+      <span>Open to work</span>
+      <span id="clock"></span>
+    </div>
+  </div>
+
+  <!-- ── Window area ── -->
+  <div class="window-area">
+
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">yours-truly</span>
+      </div>
+      <div class="main-content">
+
+        <a href="../../index.html" class="back-link" onclick="sessionStorage.setItem('openSection','about')">‹ back to portfolio</a>
+
+        <!-- ════════════ HERO ════════════ -->
+        <div class="hero">
+          <div class="hero-inner">
+            <div class="hero-notebook">
+              <div class="hero-notebook-body">
+                <div class="hn-title">Wellness Journal</div>
+                <div class="hn-date">January 18, 2022</div>
+                <div class="hn-prompt">🌹 Rose of the day</div>
+                <div class="hn-answer">Had a great study session with friends at the library today</div>
+                <div class="hn-prompt">🥀 Thorn of the day</div>
+                <div class="hn-answer">Didn't sleep well — kept thinking about midterms</div>
+                <div class="hn-prompt">🌱 Bud of the day</div>
+                <div class="hn-answer">Looking forward to the weekend trip home</div>
+                <div style="margin-top: 10px;">
+                  <span class="hn-mood">😊 Happy</span>
+                  <span class="hn-stat">😴 7h sleep</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-overlay">
+            <h1>Yours, Truly</h1>
+            <p class="hero-subtitle">A wellness journaling app for college students</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+
+          <!-- ════════════ META ════════════ -->
+          <div class="project-meta" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="meta-item">
+              <div class="meta-label">Role</div>
+              <div class="meta-value">Full-Stack Developer</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Stack</div>
+              <div class="meta-value">Python, Flask, MySQL, HTML, CSS, JavaScript</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Duration</div>
+              <div class="meta-value">2 months</div>
+            </div>
+          </div>
+
+          <!-- ════════════ OVERVIEW ════════════ -->
+          <h2>Overview</h2>
+          <p><strong>Yours, Truly</strong> is a full-stack wellness journaling web application designed for college students. It provides a private, structured space to track daily emotions, sleep, stress levels, and personal reflections using a <strong>rose/thorn/bud</strong> journaling framework — with secure authentication and a mood-based entry retrieval system.</p>
+
+          <div class="prompt-box">
+            How might we create a digital space that encourages daily reflection and emotional awareness for college students — as intimate and personal as a physical journal, but with the recall and insight of a database?
+          </div>
+
+          <div class="tags-row">
+            <span class="project-tag">Python</span>
+            <span class="project-tag">Flask</span>
+            <span class="project-tag">MySQL</span>
+            <span class="project-tag">Bcrypt</span>
+            <span class="project-tag">Jinja2</span>
+            <span class="project-tag">HTML + CSS</span>
+            <span class="project-tag">REST API</span>
+          </div>
+
+          <!-- ════════════ MOTIVATION ════════════ -->
+          <h2>Motivation</h2>
+          <p>College is a time of intense emotional flux — academic pressure, social transitions, and identity formation all happening simultaneously. Many students want to journal for mental wellness but struggle with blank-page paralysis. Physical journals can't be searched or queried. And existing digital options feel clinical, not personal.</p>
+          <p>I wanted to build something that felt like <strong>opening a real notebook</strong> — warm, inviting, and handwritten — but with the power of a database underneath: structured prompts, mood tracking, calendar retrieval, and secure multi-user accounts.</p>
+
+          <!-- ════════════ FEATURES ════════════ -->
+          <h2>Core Features</h2>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-icon">📝</div>
+              <div class="feature-title">Daily Journal Entries</div>
+              <p>Structured prompts — rose (highlight), thorn (challenge), bud (something to look forward to) — plus sleep hours, primary mood, and stress level (1–10).</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔐</div>
+              <div class="feature-title">Secure Authentication</div>
+              <p>User registration and login with bcrypt password hashing and salting. Session-based access control ensures entries are private.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📅</div>
+              <div class="feature-title">Calendar &amp; Mood Filter</div>
+              <p>Browse past entries by date or filter all entries by emotion — see every "Happy" day or every "Sad" day at a glance.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">👤</div>
+              <div class="feature-title">User Profiles</div>
+              <p>Editable profile with class standing, major, residence hall, and profile picture upload with file-type validation.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">✏️</div>
+              <div class="feature-title">Full CRUD Operations</div>
+              <p>Create, read, update, and delete journal entries. Auto-detects whether to insert a new entry or update an existing one for that date.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🎨</div>
+              <div class="feature-title">Journal Aesthetic</div>
+              <p>Notebook paper texture, binder rings, handwriting-style fonts, and a warm pink palette — the feeling of a physical journal in the browser.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ DESIGN ════════════ -->
+          <h2>Design &amp; UI</h2>
+          <p>The visual design intentionally evokes a <strong>physical wellness journal</strong> — ruled paper textures, binder ring imagery, handwriting fonts (Noteworthy, Brush Script MT), and a warm pink color palette. The goal was to make opening the app feel like opening your personal notebook.</p>
+
+          <div class="mockup-stage">
+            <!-- Homepage -->
+            <div class="mockup-col">
+              <div class="mockup-browser">
+                <div class="mb-titlebar">
+                  <div class="mb-dot mb-dot-r"></div>
+                  <div class="mb-dot mb-dot-y"></div>
+                  <div class="mb-dot mb-dot-g"></div>
+                  <span class="mb-url">localhost:5000</span>
+                </div>
+                <div class="mb-body">
+                  <div class="mb-home">
+                    <div class="mb-home-title">Wellness Journal</div>
+                    <div class="mb-home-btn">Register</div>
+                    <div class="mb-home-btn">Log In</div>
+                    <div class="mb-home-btn">About</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Homepage<span>Journal-style landing with binder rings</span></div>
+            </div>
+
+            <!-- Entry -->
+            <div class="mockup-col">
+              <div class="mockup-browser">
+                <div class="mb-titlebar">
+                  <div class="mb-dot mb-dot-r"></div>
+                  <div class="mb-dot mb-dot-y"></div>
+                  <div class="mb-dot mb-dot-g"></div>
+                  <span class="mb-url">localhost:5000/entry/January182022</span>
+                </div>
+                <div class="mb-body">
+                  <div class="mb-entry">
+                    <div class="mb-entry-date">January 18, 2022</div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">😴 Sleep</div>
+                      <div class="mb-select">7 hours</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">😊 Mood</div>
+                      <div class="mb-select">Happy</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">🌹 Rose</div>
+                      <div class="mb-field-textarea">Had a great study session with friends</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">🥀 Thorn</div>
+                      <div class="mb-field-textarea">Didn't sleep well last night</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">🌱 Bud</div>
+                      <div class="mb-field-textarea">Looking forward to the weekend</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">📊 Stress</div>
+                      <div class="mb-select">4 / 10</div>
+                    </div>
+                    <div class="mb-save-btn">Save Entry</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Daily Entry<span>Rose/thorn/bud + mood + sleep + stress</span></div>
+            </div>
+
+            <!-- Calendar / Mood -->
+            <div class="mockup-col">
+              <div class="mockup-browser">
+                <div class="mb-titlebar">
+                  <div class="mb-dot mb-dot-r"></div>
+                  <div class="mb-dot mb-dot-y"></div>
+                  <div class="mb-dot mb-dot-g"></div>
+                  <span class="mb-url">localhost:5000/calendar</span>
+                </div>
+                <div class="mb-body">
+                  <div class="mb-calendar">
+                    <div class="mb-cal-title">Mood Tracker</div>
+                    <div style="margin-left:16px;margin-bottom:6px;font-size:5.5px;color:#8a5a6a;">Showing entries for: <strong>Happy</strong></div>
+                    <div class="mb-cal-item">
+                      <span class="mb-cal-emoji">😊</span>
+                      <div>
+                        <div class="mb-cal-date">January 18, 2022</div>
+                        <div class="mb-cal-mood">Sleep: 7h · Stress: 4/10</div>
+                      </div>
+                    </div>
+                    <div class="mb-cal-item">
+                      <span class="mb-cal-emoji">😊</span>
+                      <div>
+                        <div class="mb-cal-date">January 15, 2022</div>
+                        <div class="mb-cal-mood">Sleep: 8h · Stress: 3/10</div>
+                      </div>
+                    </div>
+                    <div class="mb-cal-item">
+                      <span class="mb-cal-emoji">😊</span>
+                      <div>
+                        <div class="mb-cal-date">January 12, 2022</div>
+                        <div class="mb-cal-mood">Sleep: 7h · Stress: 5/10</div>
+                      </div>
+                    </div>
+                    <div class="mb-cal-item">
+                      <span class="mb-cal-emoji">😊</span>
+                      <div>
+                        <div class="mb-cal-date">January 8, 2022</div>
+                        <div class="mb-cal-mood">Sleep: 9h · Stress: 2/10</div>
+                      </div>
+                    </div>
+                    <div class="mb-cal-item">
+                      <span class="mb-cal-emoji">😊</span>
+                      <div>
+                        <div class="mb-cal-date">January 5, 2022</div>
+                        <div class="mb-cal-mood">Sleep: 6h · Stress: 4/10</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Mood Filter<span>Browse entries by emotion or date</span></div>
+            </div>
+
+            <!-- Profile -->
+            <div class="mockup-col">
+              <div class="mockup-browser">
+                <div class="mb-titlebar">
+                  <div class="mb-dot mb-dot-r"></div>
+                  <div class="mb-dot mb-dot-y"></div>
+                  <div class="mb-dot mb-dot-g"></div>
+                  <span class="mb-url">localhost:5000/profile</span>
+                </div>
+                <div class="mb-body">
+                  <div class="mb-entry">
+                    <div class="mb-entry-date" style="margin-bottom:10px">Profile</div>
+                    <div style="margin-left:16px;text-align:center;margin-bottom:8px;">
+                      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#ffccd5,#ffb6c1);margin:0 auto 4px;display:grid;place-items:center;font-size:14px;">👤</div>
+                      <div style="font-size:6px;color:#6a3a4a;font-style:italic;">Glad You Are Here</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">Email</div>
+                      <div class="mb-field-input">gc1@wellesley.edu</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">Class Standing</div>
+                      <div class="mb-select">Junior</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">Major</div>
+                      <div class="mb-select">Computer Science</div>
+                    </div>
+                    <div class="mb-field">
+                      <div class="mb-field-label">Residence Hall</div>
+                      <div class="mb-select">Bates Hall</div>
+                    </div>
+                    <div class="mb-save-btn">Update</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Profile<span>Editable user profile with photo upload</span></div>
+            </div>
+          </div>
+
+          <!-- ════════════ ARCHITECTURE ════════════ -->
+          <h2>Technical Architecture</h2>
+          <p>A classic <strong>MVC pattern</strong> — Flask handles routing and rendering, a command module abstracts all database operations, and Jinja2 templates provide the view layer. The app uses session-based auth with bcrypt hashing.</p>
+
+          <div class="tech-pipeline">
+            <div class="tech-node">
+              <div class="tech-icon">🌐</div>
+              <div class="tech-label">Client</div>
+              <div class="tech-detail">HTML + Jinja2 templates with custom CSS (journal aesthetic, ruled paper, binder rings)</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">⚙️</div>
+              <div class="tech-label">Server</div>
+              <div class="tech-detail">Python Flask with session auth, bcrypt password hashing, and file upload handling</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🗃️</div>
+              <div class="tech-label">Database</div>
+              <div class="tech-detail">MySQL with relational tables for accounts, entries, and profile pictures</div>
+            </div>
+          </div>
+
+          <h3>Database Schema</h3>
+          <div class="schema-grid">
+            <div class="schema-table">
+              <div class="schema-table-header">accounts</div>
+              <div class="schema-table-body">
+                <div class="schema-field"><span class="field-key">PK</span> <span class="field-name">email</span> <span class="field-type">varchar(90)</span></div>
+                <div class="schema-field"><span class="field-name">password</span> <span class="field-type">varchar(90) · bcrypt</span></div>
+                <div class="schema-field"><span class="field-name">class_standing</span> <span class="field-type">varchar(50)</span></div>
+                <div class="schema-field"><span class="field-name">major</span> <span class="field-type">varchar(90)</span></div>
+                <div class="schema-field"><span class="field-name">residence_hall</span> <span class="field-type">varchar(90)</span></div>
+                <div class="schema-field"><span class="field-name">picture</span> <span class="field-type">varchar (file path)</span></div>
+              </div>
+            </div>
+            <div class="schema-table">
+              <div class="schema-table-header">entries</div>
+              <div class="schema-table-body">
+                <div class="schema-field"><span class="field-key">PK</span> <span class="field-name">email</span> <span class="field-type">varchar(90)</span></div>
+                <div class="schema-field"><span class="field-key">PK</span> <span class="field-name">entry_date</span> <span class="field-type">varchar(30)</span></div>
+                <div class="schema-field"><span class="field-name">sleep</span> <span class="field-type">int</span></div>
+                <div class="schema-field"><span class="field-name">mood</span> <span class="field-type">varchar(20)</span></div>
+                <div class="schema-field"><span class="field-name">rose</span> <span class="field-type">varchar(250)</span></div>
+                <div class="schema-field"><span class="field-name">thorn</span> <span class="field-type">varchar(250)</span></div>
+                <div class="schema-field"><span class="field-name">bud</span> <span class="field-type">varchar(250)</span></div>
+                <div class="schema-field"><span class="field-name">stress</span> <span class="field-type">int (1–10)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ════════════ SECURITY ════════════ -->
+          <h2>Security &amp; Privacy</h2>
+          <p>Since journal entries are deeply personal, security was a primary concern throughout development.</p>
+
+          <div class="security-grid">
+            <div class="security-card">
+              <div class="security-icon">🔑</div>
+              <div class="security-title">Bcrypt Password Hashing</div>
+              <p>All passwords are hashed with bcrypt + salt before storage. Plaintext passwords never touch the database.</p>
+            </div>
+            <div class="security-card">
+              <div class="security-icon">🛡️</div>
+              <div class="security-title">Session-Based Access Control</div>
+              <p>Every protected route verifies the user session — unauthorized access redirects to home with an error message.</p>
+            </div>
+            <div class="security-card">
+              <div class="security-icon">📎</div>
+              <div class="security-title">Secure File Upload</div>
+              <p>Profile picture uploads are validated for allowed file types (png, jpg, gif), sanitized with secure_filename, and size-limited to 3MB.</p>
+            </div>
+            <div class="security-card">
+              <div class="security-icon">🔒</div>
+              <div class="security-title">Input Parameterization</div>
+              <p>All SQL queries use parameterized statements to prevent SQL injection attacks.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ IMPLEMENTATION ════════════ -->
+          <h2>Implementation Details</h2>
+
+          <div class="process-flow">
+            <div class="process-card">
+              <div class="process-step">Backend</div>
+              <div class="process-title">Flask + Command Module</div>
+              <p>Clean separation between routing (app.py) and database operations (command.py). The command module provides a reusable API for all CRUD operations on both accounts and entries tables.</p>
+            </div>
+            <div class="process-card">
+              <div class="process-step">Auth Flow</div>
+              <div class="process-title">Register → Hash → Session</div>
+              <p>Registration checks email uniqueness, hashes password with bcrypt + salt, inserts the account, then sets the session. Login verifies by re-hashing input against stored hash.</p>
+            </div>
+          </div>
+          <div class="process-flow">
+            <div class="process-card">
+              <div class="process-step">Entry Logic</div>
+              <div class="process-title">Smart Insert/Update</div>
+              <p>On save, the app first attempts an INSERT. If the composite key (email + date) already exists, it catches the duplicate-key exception and performs an UPDATE instead — one button handles both cases.</p>
+            </div>
+            <div class="process-card">
+              <div class="process-step">Mood Query</div>
+              <div class="process-title">Emotion-Based Retrieval</div>
+              <p>The calendar view allows filtering all entries by one of six emotions (Anger, Fear, Disgust, Happy, Sad, Surprise), surfacing patterns in emotional history over time.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ OUTCOME ════════════ -->
+          <h2>Outcome &amp; Reflection</h2>
+          <div class="outcome-box">
+            <p>Yours, Truly demonstrated how a thoughtful interface design can make a database-backed application feel personal and intimate — and how the right data model (composite keys, emotion tagging) can turn a simple CRUD app into a meaningful self-reflection tool.</p>
+          </div>
+          <p>This was my first full-stack web application from scratch — handling authentication, database design, file uploads, and a complete CRUD lifecycle. The project solidified my understanding of <strong>relational data modeling</strong>, <strong>server-side rendering</strong>, and <strong>security best practices</strong> (hashing, parameterized queries, file validation).</p>
+          <p>Most importantly, it taught me that the <strong>best software feels invisible</strong> — the journal aesthetic makes users forget they're interacting with a Flask app backed by MySQL. That's the goal.</p>
+
+          <!-- ════════════ FUTURE ════════════ -->
+          <h2>Future Directions</h2>
+          <ul>
+            <li>Add data visualization — charts showing mood and stress trends over time</li>
+            <li>Implement end-to-end encryption for entry content (encrypt client-side before storage)</li>
+            <li>Add markdown support for richer journal formatting</li>
+            <li>Build a mobile-responsive layout for journaling on the go</li>
+          </ul>
+
+        </div><!-- /case-study -->
+
+      </div><!-- /main-content -->
+    </div><!-- /main-window -->
+
+  </div><!-- /window-area -->
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span><span class="status-dot"></span>available for work</span>
+    <span>grace@portfolio ~ </span>
+    <div class="status-links">
+      <a href="https://github.com/chag60460" target="_blank">github</a>
+      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
+      <a href="mailto:chag60460@gmail.com">email</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const formatted = now.toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit',
+    });
+    const clockEl = document.getElementById('clock');
+    if (clockEl) clockEl.textContent = formatted;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+</script>
+</body>
+</html>
