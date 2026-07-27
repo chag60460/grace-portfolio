@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expressive Navigation — Grace Chang</title>
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <style>
+    /* ── Project page layout ── */
+    .window-area { grid-template-columns: 1fr !important; }
+    .main-window { min-height: auto; }
+    .main-content { padding: 0; overflow-y: auto; max-height: 75vh; }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #9a85aa;
+      text-decoration: none;
+      padding: 16px 24px 0;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #6a4a9a; }
+
+    /* ── Hero section ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      margin-top: 12px;
+      background: linear-gradient(160deg, #1a1a2e, #16213e, #0f3460);
+    }
+    .hero-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+    /* Phone mockup in hero */
+    .hero-phone {
+      width: 150px;
+      height: 240px;
+      background: #111;
+      border-radius: 22px;
+      border: 2px solid #333;
+      box-shadow: 0 16px 40px rgba(0,0,0,.5);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-phone-screen {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: #1a1a2e;
+    }
+    .hp-camera-feed {
+      flex: 1;
+      background: linear-gradient(180deg, #2a2a3e, #1a1a2e);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Face wireframe */
+    .hp-face-wireframe {
+      width: 70px;
+      height: 90px;
+      border: 1.5px solid rgba(100, 200, 255, 0.5);
+      border-radius: 50% 50% 45% 45%;
+      position: relative;
+    }
+    .hp-face-wireframe::before {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 18%;
+      right: 18%;
+      height: 1px;
+      background: rgba(100, 200, 255, 0.3);
+    }
+    .hp-face-wireframe::after {
+      content: '';
+      position: absolute;
+      top: 55%;
+      left: 30%;
+      right: 30%;
+      height: 8px;
+      border: 1px solid rgba(100, 200, 255, 0.4);
+      border-radius: 0 0 50% 50%;
+      border-top: none;
+    }
+    .hp-eye {
+      position: absolute;
+      top: 33%;
+      width: 12px;
+      height: 6px;
+      border: 1px solid rgba(100, 200, 255, 0.5);
+      border-radius: 50%;
+    }
+    .hp-eye-l { left: 18%; }
+    .hp-eye-r { right: 18%; }
+    .hp-brow {
+      position: absolute;
+      top: 26%;
+      width: 14px;
+      height: 4px;
+      border-top: 1px solid rgba(100, 200, 255, 0.4);
+      border-radius: 50% 50% 0 0;
+    }
+    .hp-brow-l { left: 16%; }
+    .hp-brow-r { right: 16%; }
+    .hp-nose {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 10px;
+      border-bottom: 1px solid rgba(100, 200, 255, 0.4);
+      border-left: 1px solid rgba(100, 200, 255, 0.3);
+      border-right: 1px solid rgba(100, 200, 255, 0.3);
+      border-radius: 0 0 40% 40%;
+    }
+    .hp-landmarks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .hp-dot {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(100, 200, 255, 0.7);
+    }
+    .hp-bbox {
+      position: absolute;
+      top: 10%;
+      left: 15%;
+      right: 15%;
+      bottom: 10%;
+      border: 1px dashed rgba(100, 200, 255, 0.3);
+      border-radius: 4px;
+    }
+    /* Dashboard panel */
+    .hp-dashboard {
+      height: 72px;
+      background: rgba(20, 20, 35, 0.95);
+      border-top: 1px solid rgba(100, 200, 255, 0.15);
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .hp-state-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(100, 200, 120, 0.15);
+      border: 0.5px solid rgba(100, 200, 120, 0.4);
+      border-radius: 8px;
+      padding: 2px 6px;
+      font-size: 5px;
+      color: #a8e6cf;
+      font-weight: 600;
+      align-self: flex-start;
+    }
+    .hp-state-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #a8e6cf;
+    }
+    .hp-gauges {
+      display: flex;
+      gap: 8px;
+    }
+    .hp-gauge {
+      flex: 1;
+    }
+    .hp-gauge-label {
+      font-size: 4px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+    .hp-gauge-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .hp-gauge-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+    .hp-gauge-fill.valence { width: 68%; background: linear-gradient(90deg, #64c8ff, #a8e6cf); }
+    .hp-gauge-fill.arousal { width: 45%; background: linear-gradient(90deg, #64c8ff, #c5b8f0); }
+    .hp-feedback {
+      background: rgba(168, 230, 207, 0.1);
+      border: 0.5px solid rgba(168, 230, 207, 0.3);
+      border-radius: 4px;
+      padding: 3px 5px;
+      font-size: 4.5px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.4;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 28px 20px;
+      background: linear-gradient(to top, rgba(10, 10, 20, 0.9), transparent);
+    }
+    .hero-overlay h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .hero-overlay .hero-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+    }
+
+    /* ── Content body ── */
+    .case-study {
+      padding: 24px 28px 32px;
+    }
+
+    /* ── Meta bar ── */
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+      padding: 16px;
+      background: rgba(240, 230, 255, 0.4);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+    }
+    .meta-item { text-align: center; }
+    .meta-label {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-size: 12px;
+      color: #4a3f5c;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ── Section headings ── */
+    .case-study h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 32px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .case-study h2:first-child { margin-top: 0; }
+
+    .case-study h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6a4a9a;
+      margin: 18px 0 6px;
+    }
+
+    /* ── Body text ── */
+    .case-study p {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+    .case-study ul {
+      font-size: 13px;
+      color: #5a4a6a;
+      line-height: 1.8;
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    /* ── Prompt callout ── */
+    .prompt-box {
+      background: rgba(240, 230, 255, 0.5);
+      border-left: 3px solid #c5b8f0;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #6a4a9a;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* ── Tags row ── */
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+    }
+    .tags-row .project-tag {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #ede4f5;
+      color: #6a4a9a;
+      font-weight: 500;
+    }
+
+    /* ── Process flow ── */
+    .process-flow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .process-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .process-step {
+      font-size: 10px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .process-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .process-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Tech pipeline ── */
+    .tech-pipeline {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      margin: 16px 0;
+    }
+    .tech-node {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.4);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .tech-node .tech-icon {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .tech-node .tech-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .tech-node .tech-detail {
+      font-size: 11px;
+      color: #5a4a6a;
+      line-height: 1.5;
+    }
+    .tech-arrow {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      color: #c5b8f0;
+      flex-shrink: 0;
+    }
+
+    /* ── Feature grid ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 0.5px solid rgba(200, 180, 220, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .feature-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .feature-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Module table ── */
+    .module-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin: 14px 0;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .module-table th {
+      background: rgba(240, 230, 255, 0.5);
+      color: #6a4a9a;
+      font-weight: 600;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .module-table td {
+      padding: 8px 12px;
+      color: #5a4a6a;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.15);
+      vertical-align: top;
+    }
+    .module-table td:first-child {
+      font-weight: 600;
+      color: #4a3f5c;
+      font-family: monospace;
+      font-size: 10.5px;
+    }
+    .module-table tr:last-child td { border-bottom: none; }
+
+    /* ── Circumplex diagram ── */
+    .circumplex {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 180, 220, 0.4);
+      position: relative;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .circumplex::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(200, 180, 220, 0.3);
+    }
+    .circumplex::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(200, 180, 220, 0.3);
+    }
+    .circumplex-label {
+      position: absolute;
+      font-size: 9px;
+      color: #9a85aa;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .circumplex-label.top { top: 4px; left: 50%; transform: translateX(-50%); }
+    .circumplex-label.bottom { bottom: 4px; left: 50%; transform: translateX(-50%); }
+    .circumplex-label.left { left: 6px; top: 50%; transform: translateY(-50%); }
+    .circumplex-label.right { right: 6px; top: 50%; transform: translateY(-50%); }
+    .circumplex-state {
+      position: absolute;
+      font-size: 8px;
+      color: #5a4a6a;
+      font-weight: 500;
+    }
+
+    /* ── Scenario cards ── */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .scenario-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .scenario-severity {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 4px;
+    }
+    .scenario-severity.info { color: #64b5f6; }
+    .scenario-severity.positive { color: #a8e6cf; }
+    .scenario-severity.caution { color: #ffd93d; }
+    .scenario-severity.alert { color: #ff8a80; }
+    .scenario-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 6px;
+    }
+    .scenario-card p {
+      font-size: 11px;
+      color: #7a6a8a;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .scenario-card .feedback-example {
+      margin-top: 6px;
+      font-size: 10.5px;
+      color: #6a4a9a;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* ── Privacy cards ── */
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .privacy-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 0.5px solid rgba(200, 180, 220, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .privacy-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+    .privacy-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin-bottom: 4px;
+    }
+    .privacy-card p {
+      font-size: 10.5px;
+      color: #7a6a8a;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── Outcome callout ── */
+    .outcome-box {
+      background: rgba(168, 230, 207, 0.2);
+      border-left: 3px solid #a8e6cf;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+    .outcome-box p {
+      font-size: 12px;
+      color: #3a6a5a;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── Caution callout ── */
+    .caution-box {
+      background: rgba(255, 235, 200, 0.3);
+      border-left: 3px solid #ffd93d;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+    .caution-box p {
+      font-size: 12px;
+      color: #6a5a3a;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── Phone mockups ── */
+    .mockup-stage {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .mockup-col { width: 160px; }
+    .mockup-phone {
+      width: 160px;
+      background: #111;
+      border-radius: 22px;
+      padding: 5px;
+      box-shadow: 0 14px 36px rgba(0,0,0,.3);
+      border: 1.5px solid #333;
+    }
+    .mockup-screen {
+      background: #1a1a2e;
+      border-radius: 18px;
+      overflow: hidden;
+      height: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+    .m-statusbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 10px 2px;
+      font-size: 6px;
+      font-weight: 600;
+    }
+    .m-body { flex: 1; overflow: hidden; }
+    .mockup-caption {
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 10px 4px 0;
+      text-align: center;
+    }
+    .mockup-caption span {
+      display: block;
+      font-size: 10px;
+      color: #9a85aa;
+      font-weight: 400;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── Menu bar ── -->
+  <div class="menubar">
+    <div class="menubar-left">
+      <span class="menubar-brand">grace.dev</span>
+      <span>File</span>
+      <span>View</span>
+      <span>Go</span>
+      <span>Help</span>
+    </div>
+    <div class="menubar-right">
+      <span>Open to work</span>
+      <span id="clock"></span>
+    </div>
+  </div>
+
+  <!-- ── Window area ── -->
+  <div class="window-area">
+
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">expressive-navigation — case study</span>
+      </div>
+      <div class="main-content">
+
+        <a href="../../index.html" class="back-link" onclick="sessionStorage.setItem('openSection','about')">‹ back to portfolio</a>
+
+        <!-- ════════════ HERO ════════════ -->
+        <div class="hero">
+          <div class="hero-inner">
+            <div class="hero-phone">
+              <div class="hero-phone-screen">
+                <div class="hp-camera-feed">
+                  <div class="hp-bbox"></div>
+                  <div class="hp-face-wireframe">
+                    <div class="hp-eye hp-eye-l"></div>
+                    <div class="hp-eye hp-eye-r"></div>
+                    <div class="hp-brow hp-brow-l"></div>
+                    <div class="hp-brow hp-brow-r"></div>
+                    <div class="hp-nose"></div>
+                    <div class="hp-landmarks">
+                      <div class="hp-dot" style="top:28%;left:22%"></div>
+                      <div class="hp-dot" style="top:28%;right:22%"></div>
+                      <div class="hp-dot" style="top:35%;left:24%"></div>
+                      <div class="hp-dot" style="top:35%;left:38%"></div>
+                      <div class="hp-dot" style="top:35%;right:24%"></div>
+                      <div class="hp-dot" style="top:35%;right:38%"></div>
+                      <div class="hp-dot" style="top:50%;left:44%"></div>
+                      <div class="hp-dot" style="top:50%;right:44%"></div>
+                      <div class="hp-dot" style="top:53%;left:50%"></div>
+                      <div class="hp-dot" style="top:60%;left:34%"></div>
+                      <div class="hp-dot" style="top:60%;right:34%"></div>
+                      <div class="hp-dot" style="top:65%;left:42%"></div>
+                      <div class="hp-dot" style="top:65%;right:42%"></div>
+                      <div class="hp-dot" style="top:70%;left:50%"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="hp-dashboard">
+                  <div class="hp-state-pill"><div class="hp-state-dot"></div>Engaged</div>
+                  <div class="hp-gauges">
+                    <div class="hp-gauge">
+                      <div class="hp-gauge-label">Valence</div>
+                      <div class="hp-gauge-bar"><div class="hp-gauge-fill valence"></div></div>
+                    </div>
+                    <div class="hp-gauge">
+                      <div class="hp-gauge-label">Arousal</div>
+                      <div class="hp-gauge-bar"><div class="hp-gauge-fill arousal"></div></div>
+                    </div>
+                  </div>
+                  <div class="hp-feedback">✓ Patient appears engaged — rapport is building</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-overlay">
+            <h1>Expressive Navigation</h1>
+            <p class="hero-subtitle">Real-time affect-aware clinical decision support on iOS</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+
+          <!-- ════════════ META ════════════ -->
+          <div class="project-meta" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="meta-item">
+              <div class="meta-label">Role</div>
+              <div class="meta-value">iOS Engineer &amp; Researcher</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Context</div>
+              <div class="meta-value">MIT Media Lab, Fluid Interfaces Group</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Tech Stack</div>
+              <div class="meta-value">Swift, UIKit, Apple Vision Framework</div>
+            </div>
+          </div>
+
+          <!-- ════════════ OVERVIEW ════════════ -->
+          <h2>Overview</h2>
+          <p><strong>Expressive Navigation</strong> is an affect-aware iOS prototype that uses Apple's <strong>Vision</strong> framework to infer subtle facial-expression cues in real time and surfaces <strong>actionable, clinician-facing feedback</strong> to support therapeutic interactions. Everything runs <strong>entirely on-device</strong> — no video, images, or audio ever leave the phone.</p>
+
+          <div class="prompt-box">
+            How might we give clinicians a real-time, privacy-preserving signal about a patient's emotional state — one that supports better therapeutic rapport without replacing clinical judgment?
+          </div>
+
+          <div class="tags-row">
+            <span class="project-tag">Swift</span>
+            <span class="project-tag">UIKit</span>
+            <span class="project-tag">Apple Vision</span>
+            <span class="project-tag">AVFoundation</span>
+            <span class="project-tag">Computer Vision</span>
+            <span class="project-tag">Affect Computing</span>
+            <span class="project-tag">On-Device ML</span>
+          </div>
+
+          <!-- ════════════ PROBLEM ════════════ -->
+          <h2>Problem &amp; Motivation</h2>
+          <p>Clinicians navigate complex emotional terrain in every therapeutic session. Subtle shifts in a patient's expression — a slight brow furrow, a tightening around the mouth, a drop in eye contact — are critical cues that inform therapeutic decisions: when to probe deeper, when to slow down, when to change approach.</p>
+          <p>But these signals are fleeting, easy to miss when managing a conversation, and impossible to review afterward. Meanwhile, facial expression analysis research typically requires expensive lab equipment, privacy-invasive video recording, and offline processing — none of which works in a live clinical setting.</p>
+          <p>Expressive Navigation asks: <strong>what if the clinician's phone could act as a real-time, privacy-preserving emotional compass?</strong></p>
+
+          <!-- ════════════ FEATURES ════════════ -->
+          <h2>Core Capabilities</h2>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-icon">👁️</div>
+              <div class="feature-title">Real-Time Landmark Detection</div>
+              <p>Streams the front camera and runs Apple Vision's face landmark detection on every frame — extracting eyes, brows, nose, mouth, and head pose in real time.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📊</div>
+              <div class="feature-title">Affect Inference</div>
+              <p>Converts facial geometry into interpretable expression features (smile, brow raise, brow furrow, eye openness, gaze) mapped onto valence × arousal coordinates.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🎯</div>
+              <div class="feature-title">Per-Person Calibration</div>
+              <p>A short calibration step records the individual's resting face so all features are measured as deviations from their unique neutral baseline.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">💬</div>
+              <div class="feature-title">Clinical Feedback Engine</div>
+              <p>Debounced, rule-based guidance surfaced to the clinician with severity level, rationale, and actionable suggestion — never interrupting flow.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📈</div>
+              <div class="feature-title">Signal Dynamics</div>
+              <p>EMA smoothing with trend detection (warming/cooling), variability tracking (lability vs. blunting), and time-in-state metrics across the session.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔒</div>
+              <div class="feature-title">Privacy-First Recording</div>
+              <p>Session export captures only derived numeric signals (valence, arousal, state) as on-device JSON — zero imagery or audio ever leaves the device.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ HOW IT WORKS ════════════ -->
+          <h2>How the Inference Works</h2>
+          <p>Apple Vision returns landmark points and head pose only. The <strong>AffectEngine</strong> derives expression features using scale-invariant geometry — everything normalized by <strong>interocular distance</strong> for robustness across different face sizes and distances:</p>
+
+          <ul>
+            <li><strong>Smile</strong> — vertical position of mouth corners within the mouth's span, combined with mouth widening</li>
+            <li><strong>Brow raise</strong> — eyebrow-to-eye distance vs. calibrated baseline</li>
+            <li><strong>Brow furrow</strong> — inner-brow separation (corrugator proxy) vs. baseline</li>
+            <li><strong>Eye openness</strong> — eye-aspect-ratio (EAR)</li>
+            <li><strong>Mouth opening</strong> — inner-lip vertical gap</li>
+            <li><strong>Gaze/attention</strong> — head yaw/pitch magnitude as a proxy for eye contact</li>
+          </ul>
+
+          <p>These features map onto <strong>valence</strong> (pleasantness) and <strong>arousal</strong> (activation) via a weighted, fully-inspectable model, then into one of eight discrete expression states on the affect circumplex:</p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin:14px 0;">
+            <span class="project-tag" style="background:#e8f5e9;color:#2e7d32">Positive</span>
+            <span class="project-tag" style="background:#e3f2fd;color:#1565c0">Engaged</span>
+            <span class="project-tag" style="background:#f3e5f5;color:#6a1b9a">Calm</span>
+            <span class="project-tag" style="background:#fff8e1;color:#f57f17">Surprised</span>
+            <span class="project-tag" style="background:#fff3e0;color:#e65100">Tense</span>
+            <span class="project-tag" style="background:#fce4ec;color:#c62828">Distressed</span>
+            <span class="project-tag" style="background:#eceff1;color:#37474f">Withdrawn</span>
+            <span class="project-tag" style="background:#efebe9;color:#4e342e">Fatigued</span>
+          </div>
+
+          <div class="caution-box">
+            <p><strong>Clinical framing:</strong> This is decision-support only — not a diagnostic device and not a measurement of true internal emotion. Facial expression is an imperfect, culturally-mediated signal. The output is treated as one weak signal among many, always with a qualified human in the loop.</p>
+          </div>
+
+          <!-- ════════════ FEEDBACK ════════════ -->
+          <h2>Feedback Engine</h2>
+          <p>The FeedbackEngine translates sustained affect patterns into debounced, clinician-facing suggestions — never interrupting at every frame change, only surfacing guidance when a meaningful pattern persists:</p>
+
+          <div class="scenario-grid">
+            <div class="scenario-card">
+              <div class="scenario-severity positive">Positive</div>
+              <div class="scenario-title">Rapport Building</div>
+              <p>Patient shows sustained positive expression over the last 30 seconds — warmth and engagement are present.</p>
+              <div class="feedback-example">"Rapport appears strong — this may be a good moment to explore a difficult topic."</div>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-severity caution">Caution</div>
+              <div class="scenario-title">Sustained Distress</div>
+              <p>Expression has remained in distressed/tense territory beyond the debounce window (14s).</p>
+              <div class="feedback-example">"Possible distress — consider slowing the pace and checking in."</div>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-severity info">Info</div>
+              <div class="scenario-title">Signal Blunting</div>
+              <p>Low variability detected — expression has been unusually flat across the session window.</p>
+              <div class="feedback-example">"Low expressivity — the patient may be guarded or disengaged."</div>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-severity alert">Alert</div>
+              <div class="scenario-title">Sudden Withdrawal</div>
+              <p>Rapid shift from engaged to withdrawn — gaze avoidance and expression dampening detected simultaneously.</p>
+              <div class="feedback-example">"Sudden withdrawal — the last topic may have triggered a protective response."</div>
+            </div>
+          </div>
+
+          <!-- ════════════ APP SCREENS ════════════ -->
+          <h2>App Screens</h2>
+          <p>The app guides clinicians through calibration, live session monitoring, and post-session review — all with a dark, low-distraction interface designed for therapeutic environments.</p>
+
+          <div class="mockup-stage">
+            <!-- Calibration -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span style="color:#fff">9:41</span><span style="opacity:0.5;color:#fff">●●●</span></div>
+                  <div class="m-body" style="background:#1a1a2e;padding:10px 12px">
+                    <div style="text-align:center;margin-top:16px">
+                      <div style="font-size:8px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;font-weight:600">Calibration</div>
+                      <div style="font-size:10px;color:#fff;margin:8px 0 4px;font-weight:500">Look naturally at the camera</div>
+                      <div style="font-size:6px;color:rgba(255,255,255,0.5);margin-bottom:14px">Hold a neutral expression for 5 seconds</div>
+                    </div>
+                    <div style="width:80px;height:80px;border-radius:50%;border:2px solid rgba(100,200,255,0.4);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;position:relative">
+                      <div style="width:50px;height:62px;border:1px solid rgba(100,200,255,0.4);border-radius:50% 50% 45% 45%"></div>
+                      <div style="position:absolute;inset:4px;border-radius:50%;border:1.5px dashed rgba(100,200,255,0.2)"></div>
+                    </div>
+                    <div style="text-align:center">
+                      <div style="display:inline-flex;gap:3px;margin-bottom:8px">
+                        <div style="width:6px;height:6px;border-radius:50%;background:#64c8ff"></div>
+                        <div style="width:6px;height:6px;border-radius:50%;background:#64c8ff"></div>
+                        <div style="width:6px;height:6px;border-radius:50%;background:#64c8ff"></div>
+                        <div style="width:6px;height:6px;border-radius:50%;background:rgba(100,200,255,0.2)"></div>
+                        <div style="width:6px;height:6px;border-radius:50%;background:rgba(100,200,255,0.2)"></div>
+                      </div>
+                      <div style="font-size:5.5px;color:rgba(255,255,255,0.6)">3 of 5 samples captured</div>
+                    </div>
+                    <div style="background:rgba(100,200,255,0.15);border:0.5px solid rgba(100,200,255,0.3);border-radius:6px;padding:6px 8px;margin-top:14px;font-size:5.5px;color:rgba(255,255,255,0.7);line-height:1.5;text-align:center">Calibration ensures readings are measured relative to <em>your</em> patient's resting face</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Calibration<span>5-sample baseline for per-person normalization</span></div>
+            </div>
+
+            <!-- Live Session -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span style="color:#fff">9:41</span><span style="opacity:0.5;color:#fff">●●● REC</span></div>
+                  <div class="m-body" style="background:#1a1a2e;padding:0;display:flex;flex-direction:column;height:100%">
+                    <!-- Camera area -->
+                    <div style="flex:1;background:linear-gradient(180deg,#2a2a3e,#1a1a2e);position:relative;display:flex;align-items:center;justify-content:center">
+                      <div style="position:absolute;top:6px;left:8px;right:8px;display:flex;justify-content:space-between;font-size:5px;color:rgba(255,255,255,0.4)">
+                        <span>● LIVE</span><span>12:34</span>
+                      </div>
+                      <div style="width:60px;height:76px;border:1.5px solid rgba(100,200,255,0.5);border-radius:50% 50% 45% 45%;position:relative">
+                        <div style="position:absolute;top:30%;left:18%;width:10px;height:5px;border:1px solid rgba(100,200,255,0.5);border-radius:50%"></div>
+                        <div style="position:absolute;top:30%;right:18%;width:10px;height:5px;border:1px solid rgba(100,200,255,0.5);border-radius:50%"></div>
+                        <div style="position:absolute;top:55%;left:30%;right:30%;height:7px;border:1px solid rgba(100,200,255,0.4);border-radius:0 0 50% 50%;border-top:none"></div>
+                      </div>
+                      <div style="position:absolute;top:8%;left:12%;right:12%;bottom:8%;border:1px dashed rgba(100,200,255,0.25);border-radius:3px"></div>
+                    </div>
+                    <!-- Dashboard -->
+                    <div style="background:rgba(20,20,35,0.95);border-top:1px solid rgba(100,200,255,0.15);padding:7px 10px">
+                      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+                        <div style="display:inline-flex;align-items:center;gap:3px;background:rgba(100,200,120,0.15);border:0.5px solid rgba(100,200,120,0.4);border-radius:6px;padding:2px 6px;font-size:5.5px;color:#a8e6cf;font-weight:600"><div style="width:4px;height:4px;border-radius:50%;background:#a8e6cf"></div>Positive</div>
+                        <div style="font-size:5px;color:rgba(255,255,255,0.4);margin-left:auto">▲ warming</div>
+                      </div>
+                      <div style="display:flex;gap:8px;margin-bottom:5px">
+                        <div style="flex:1"><div style="font-size:4.5px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:2px">Valence</div><div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden"><div style="width:72%;height:100%;background:linear-gradient(90deg,#64c8ff,#a8e6cf);border-radius:2px"></div></div></div>
+                        <div style="flex:1"><div style="font-size:4.5px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:2px">Arousal</div><div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden"><div style="width:55%;height:100%;background:linear-gradient(90deg,#64c8ff,#c5b8f0);border-radius:2px"></div></div></div>
+                      </div>
+                      <div style="background:rgba(168,230,207,0.1);border:0.5px solid rgba(168,230,207,0.3);border-radius:4px;padding:3px 6px;font-size:5px;color:rgba(255,255,255,0.8)">✓ Rapport appears strong — good moment to explore a difficult topic</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Live Session<span>Real-time landmarks + affect dashboard + feedback</span></div>
+            </div>
+
+            <!-- Session Summary -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span style="color:#fff">9:41</span><span style="opacity:0.5;color:#fff">●●●</span></div>
+                  <div class="m-body" style="background:#1a1a2e;padding:10px 12px">
+                    <div style="font-size:8px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:6px">Session Summary</div>
+                    <div style="font-size:6px;color:rgba(255,255,255,0.4);margin-bottom:10px">July 27, 2026 · 45 min</div>
+                    <!-- Stats row -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:10px">
+                      <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:6px;text-align:center">
+                        <div style="font-size:10px;color:#a8e6cf;font-weight:700">0.62</div>
+                        <div style="font-size:4.5px;color:rgba(255,255,255,0.4);margin-top:2px">Mean Valence</div>
+                      </div>
+                      <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:6px;text-align:center">
+                        <div style="font-size:10px;color:#c5b8f0;font-weight:700">0.45</div>
+                        <div style="font-size:4.5px;color:rgba(255,255,255,0.4);margin-top:2px">Mean Arousal</div>
+                      </div>
+                      <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:6px;text-align:center">
+                        <div style="font-size:10px;color:#64c8ff;font-weight:700">87%</div>
+                        <div style="font-size:4.5px;color:rgba(255,255,255,0.4);margin-top:2px">Signal Quality</div>
+                      </div>
+                    </div>
+                    <!-- State distribution -->
+                    <div style="font-size:5px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.04em;font-weight:600;margin-bottom:5px">Time in State</div>
+                    <div style="margin-bottom:10px">
+                      <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div style="font-size:5px;color:rgba(255,255,255,0.6);width:32px">Positive</div><div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:38%;height:100%;background:#a8e6cf;border-radius:3px"></div></div><div style="font-size:5px;color:rgba(255,255,255,0.4)">38%</div></div>
+                      <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div style="font-size:5px;color:rgba(255,255,255,0.6);width:32px">Engaged</div><div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:30%;height:100%;background:#64c8ff;border-radius:3px"></div></div><div style="font-size:5px;color:rgba(255,255,255,0.4)">30%</div></div>
+                      <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div style="font-size:5px;color:rgba(255,255,255,0.6);width:32px">Calm</div><div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:18%;height:100%;background:#c5b8f0;border-radius:3px"></div></div><div style="font-size:5px;color:rgba(255,255,255,0.4)">18%</div></div>
+                      <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><div style="font-size:5px;color:rgba(255,255,255,0.6);width:32px">Tense</div><div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:10%;height:100%;background:#ffd93d;border-radius:3px"></div></div><div style="font-size:5px;color:rgba(255,255,255,0.4)">10%</div></div>
+                      <div style="display:flex;align-items:center;gap:5px"><div style="font-size:5px;color:rgba(255,255,255,0.6);width:32px">Distressed</div><div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:4%;height:100%;background:#ff8a80;border-radius:3px"></div></div><div style="font-size:5px;color:rgba(255,255,255,0.4)">4%</div></div>
+                    </div>
+                    <!-- Feedback events -->
+                    <div style="font-size:5px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.04em;font-weight:600;margin-bottom:5px">Feedback Events</div>
+                    <div style="background:rgba(168,230,207,0.08);border:0.5px solid rgba(168,230,207,0.2);border-radius:4px;padding:4px 6px;margin-bottom:4px;font-size:5px;color:rgba(255,255,255,0.7)">12:08 — ✓ Rapport strong</div>
+                    <div style="background:rgba(255,217,61,0.08);border:0.5px solid rgba(255,217,61,0.2);border-radius:4px;padding:4px 6px;margin-bottom:4px;font-size:5px;color:rgba(255,255,255,0.7)">12:23 — ⚠ Sustained tension detected</div>
+                    <div style="background:rgba(168,230,207,0.08);border:0.5px solid rgba(168,230,207,0.2);border-radius:4px;padding:4px 6px;font-size:5px;color:rgba(255,255,255,0.7)">12:31 — ✓ Returned to positive</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Session Summary<span>Post-session stats, state distribution, and event log</span></div>
+            </div>
+
+            <!-- Feedback Detail -->
+            <div class="mockup-col">
+              <div class="mockup-phone">
+                <div class="mockup-screen">
+                  <div class="m-statusbar"><span style="color:#fff">9:41</span><span style="opacity:0.5;color:#fff">●●●</span></div>
+                  <div class="m-body" style="background:#1a1a2e;padding:10px 12px">
+                    <div style="font-size:5px;color:rgba(255,255,255,0.4);margin-bottom:8px">‹ Back to session</div>
+                    <div style="font-size:8px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:10px">Feedback Detail</div>
+                    <!-- Alert card -->
+                    <div style="background:rgba(255,138,128,0.1);border:0.5px solid rgba(255,138,128,0.3);border-radius:8px;padding:10px;margin-bottom:10px">
+                      <div style="font-size:5px;color:#ff8a80;text-transform:uppercase;font-weight:700;letter-spacing:0.04em;margin-bottom:4px">⚠ Caution · 12:23</div>
+                      <div style="font-size:7.5px;color:#fff;font-weight:600;margin-bottom:4px">Sustained tension detected</div>
+                      <div style="font-size:5.5px;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:6px">Expression remained in tense/distressed territory for 18 seconds following the topic of family relationships.</div>
+                      <div style="font-size:5px;color:rgba(255,255,255,0.5);text-transform:uppercase;font-weight:600;margin-bottom:3px">Rationale</div>
+                      <div style="font-size:5.5px;color:rgba(255,255,255,0.6);line-height:1.4;margin-bottom:6px">Brow furrow elevated +2.1σ from baseline; mouth corners pulled down; gaze shifted away.</div>
+                      <div style="font-size:5px;color:rgba(255,255,255,0.5);text-transform:uppercase;font-weight:600;margin-bottom:3px">Suggestion</div>
+                      <div style="font-size:5.5px;color:rgba(255,255,255,0.6);line-height:1.4">Consider slowing the pace and checking in with the patient about their comfort level.</div>
+                    </div>
+                    <!-- Context -->
+                    <div style="background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 8px">
+                      <div style="font-size:5px;color:rgba(255,255,255,0.5);text-transform:uppercase;font-weight:600;margin-bottom:4px">Signal at trigger</div>
+                      <div style="display:flex;gap:8px">
+                        <div><div style="font-size:4.5px;color:rgba(255,255,255,0.4)">Valence</div><div style="font-size:7px;color:#ff8a80;font-weight:700">-0.34</div></div>
+                        <div><div style="font-size:4.5px;color:rgba(255,255,255,0.4)">Arousal</div><div style="font-size:7px;color:#ffd93d;font-weight:700">0.71</div></div>
+                        <div><div style="font-size:4.5px;color:rgba(255,255,255,0.4)">Confidence</div><div style="font-size:7px;color:#64c8ff;font-weight:700">●●●○</div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-caption">Feedback Detail<span>Rationale + suggestion + signal context</span></div>
+            </div>
+          </div>
+
+          <!-- ════════════ ARCHITECTURE ════════════ -->
+          <h2>System Architecture</h2>
+          <p>A modular pipeline from camera frame to clinical guidance, with clean separation between vision processing, affect inference, and UI presentation:</p>
+
+          <div class="tech-pipeline">
+            <div class="tech-node">
+              <div class="tech-icon">📷</div>
+              <div class="tech-label">Camera</div>
+              <div class="tech-detail">AVCaptureSession streams front camera frames as CVPixelBuffers with EXIF orientation</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">👁️</div>
+              <div class="tech-label">Vision</div>
+              <div class="tech-detail">VNDetectFaceLandmarksRequest extracts face geometry &amp; head pose per frame</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🧠</div>
+              <div class="tech-label">Affect</div>
+              <div class="tech-detail">AffectEngine maps geometry to valence/arousal with per-person baseline calibration</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">💬</div>
+              <div class="tech-label">Feedback</div>
+              <div class="tech-detail">Debounced rule-based engine surfaces clinician guidance with severity &amp; rationale</div>
+            </div>
+          </div>
+
+          <h3>Module Structure</h3>
+          <table class="module-table">
+            <thead>
+              <tr><th>Module</th><th>Responsibility</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Affect/AffectModels</td><td>UIKit-free value types: FaceGeometry, AffectFeatures, AffectSignal, ExpressionState, AffectSnapshot</td></tr>
+              <tr><td>Affect/AffectEngine</td><td>Geometry → features → valence/arousal → discrete state. Per-person baseline calibration with ≥5 samples.</td></tr>
+              <tr><td>Affect/AffectSmoothing</td><td>EMA smoothing + SignalHistory (mean, variability, trend, time-in-state metrics)</td></tr>
+              <tr><td>Affect/FeedbackEngine</td><td>Debounced rule-based clinician guidance with per-rule cooldowns (14s default)</td></tr>
+              <tr><td>Vision/FaceLandmarkProcessor</td><td>Thin wrapper around VNSequenceRequestHandler → FaceGeometry</td></tr>
+              <tr><td>Camera/CameraController</td><td>AVCaptureSession pipeline (front camera) + preview layer + delegate pattern</td></tr>
+              <tr><td>Session/SessionRecorder</td><td>Privacy-preserving time series: derived signals only, on-device JSON export</td></tr>
+              <tr><td>UI/*</td><td>SessionViewController, FaceOverlayView, AffectDashboardView, GaugeView, FeedbackBannerView</td></tr>
+            </tbody>
+          </table>
+
+          <!-- ════════════ PRIVACY ════════════ -->
+          <h2>Privacy &amp; Ethics</h2>
+          <p>Affect computing with facial data in a clinical context demands the highest standard of privacy and ethical framing:</p>
+
+          <div class="privacy-grid">
+            <div class="privacy-card">
+              <div class="privacy-icon">📵</div>
+              <div class="privacy-title">Zero Imagery Stored</div>
+              <p>No video, images, or audio are ever saved or transmitted. Only derived numeric signals exist after processing.</p>
+            </div>
+            <div class="privacy-card">
+              <div class="privacy-icon">📱</div>
+              <div class="privacy-title">Fully On-Device</div>
+              <p>All inference runs locally using Apple Vision. No network calls, no cloud processing, no third-party SDKs.</p>
+            </div>
+            <div class="privacy-card">
+              <div class="privacy-icon">⚖️</div>
+              <div class="privacy-title">Decision-Support Only</div>
+              <p>Explicitly framed as one weak signal among many. Never diagnostic, always requiring a qualified human in the loop.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ IMPLEMENTATION ════════════ -->
+          <h2>Key Implementation Details</h2>
+
+          <div class="process-flow">
+            <div class="process-card">
+              <div class="process-step">Scale Invariance</div>
+              <div class="process-title">Interocular Normalization</div>
+              <p>All facial measurements are normalized by interocular distance (computed in aspect-correct pixel space), making the system robust to different face sizes, camera distances, and head angles.</p>
+            </div>
+            <div class="process-card">
+              <div class="process-step">Calibration</div>
+              <div class="process-title">Per-Person Baseline</div>
+              <p>A 5-sample calibration captures the individual's resting neutral face. All subsequent measurements are deviations from their personal baseline — not from a generic "average face."</p>
+            </div>
+          </div>
+          <div class="process-flow">
+            <div class="process-card">
+              <div class="process-step">Temporal</div>
+              <div class="process-title">EMA + Debouncing</div>
+              <p>Exponential moving average smoothing prevents frame-to-frame jitter. The feedback engine uses per-rule cooldowns (14s) to avoid alert fatigue — only sustained patterns trigger guidance.</p>
+            </div>
+            <div class="process-card">
+              <div class="process-step">Quality Gating</div>
+              <div class="process-title">Signal Confidence</div>
+              <p>The system gates all clinical guidance on signal quality — poor face detection, extreme angles, or low landmark confidence suppress feedback rather than generating noisy false signals.</p>
+            </div>
+          </div>
+
+          <!-- ════════════ OUTCOME ════════════ -->
+          <h2>Outcome &amp; Reflection</h2>
+          <div class="outcome-box">
+            <p>Expressive Navigation demonstrates that meaningful affect inference is possible using only Apple's built-in Vision framework — no custom ML models, no cloud APIs, no privacy compromise — while maintaining honest epistemic framing about what facial expressions can and cannot tell us.</p>
+          </div>
+          <p>The project pushed my understanding of <strong>real-time computer vision pipelines</strong>, <strong>signal processing</strong> (EMA smoothing, trend detection), and the deeply important question of how to surface probabilistic information to experts without over-claiming. The hardest design problem wasn't technical — it was finding the right <strong>epistemic humility</strong> in how the system communicates uncertainty.</p>
+
+          <!-- ════════════ FUTURE ════════════ -->
+          <h2>Future Directions</h2>
+          <ul>
+            <li>Longitudinal session comparison — tracking affect trajectory across multiple appointments</li>
+            <li>Explore ARKit's blendshape coefficients (52 facial action units) for richer input when available</li>
+            <li>Clinician user-testing to validate feedback utility and refine debounce/cooldown parameters</li>
+            <li>Configurable sensitivity profiles for different therapeutic modalities (CBT vs. psychodynamic)</li>
+          </ul>
+
+        </div><!-- /case-study -->
+
+      </div><!-- /main-content -->
+    </div><!-- /main-window -->
+
+  </div><!-- /window-area -->
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span><span class="status-dot"></span>available for work</span>
+    <span>grace@portfolio ~ </span>
+    <div class="status-links">
+      <a href="https://github.com/chag60460" target="_blank">github</a>
+      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
+      <a href="mailto:chag60460@gmail.com">email</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const formatted = now.toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit',
+    });
+    const clockEl = document.getElementById('clock');
+    if (clockEl) clockEl.textContent = formatted;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+</script>
+</body>
+</html>
