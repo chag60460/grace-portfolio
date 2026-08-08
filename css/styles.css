@@ -84,7 +84,7 @@ body {
 
 .titlebar-title {
   font-size: 12px;
-  color: #7a6a8a;
+  color: #5a4a6a;
   font-weight: 500;
   margin-left: 4px;
 }
@@ -115,7 +115,7 @@ body {
   display: flex;
   gap: 14px;
   font-size: 11px;
-  color: #7a6a8a;
+  color: #5a4a6a;
   align-items: center;
 }
 
@@ -134,8 +134,8 @@ body {
   align-items: center;
   padding: 0 16px;
   gap: 16px;
-  font-size: 10px;
-  color: #9a85aa;
+  font-size: 11px;
+  color: #6b5a7d;
 }
 
 .status-dot {
@@ -148,7 +148,7 @@ body {
 }
 
 .status-links        { margin-left: auto; display: flex; gap: 12px; }
-.status-links a      { color: #9a85aa; text-decoration: none; font-size: 10px; }
+.status-links a      { color: #6b5a7d; text-decoration: none; font-size: 11px; }
 .status-links a:hover { color: #6a4a9a; }
 
 /* ============================================================
@@ -176,7 +176,7 @@ body {
 }
 
 .profile-name { font-size: 14px; font-weight: 600; color: #4a3f5c; }
-.profile-role { font-size: 11px; color: #9a85aa; margin-top: 2px; }
+.profile-role { font-size: 11px; color: #6b5a7d; margin-top: 2px; }
 
 .nav-item {
   display: flex;
@@ -215,7 +215,7 @@ body {
 .icon-blue   { background: #deeaf5; }
 .icon-green  { background: #dff5ea; }
 
-.tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+.tag { font-size: 12px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
 
 .tag-pink   { background: #fce4f3; color: #a0508a; }
 .tag-purple { background: #ede4f5; color: #6a4a9a; }
@@ -244,8 +244,8 @@ body {
 }
 
 .section-sub {
-  font-size: 12px;
-  color: #9a85aa;
+  font-size: 13px;
+  color: #6b5a7d;
   margin-bottom: 18px;
 }
 
@@ -268,7 +268,7 @@ body {
 }
 
 .stat-num   { font-size: 20px; font-weight: 600; color: #6a4a9a; }
-.stat-label { font-size: 10px; color: #9a85aa; margin-top: 2px; }
+.stat-label { font-size: 11px; color: #6b5a7d; margin-top: 2px; }
 
 /* ============================================================
    SECTION — Projects
@@ -309,12 +309,19 @@ body {
   transition: background 0.15s, transform 0.15s;
 }
 
-.project-card:hover::after {
+.project-card:hover::after,
+.project-card:focus-visible::after {
   background: rgba(200, 180, 220, 0.5);
   transform: translate(1px, -1px);
 }
 
-.project-card:hover { background: rgba(255, 255, 255, 0.78); }
+/* Purple lift on hover — ported from the original inline handlers so it
+   also fires on keyboard focus and respects the transition above. */
+.project-card:hover,
+.project-card:focus-visible {
+  background: rgba(230, 215, 245, 0.65);
+  box-shadow: 0 4px 16px rgba(160, 120, 200, 0.18);
+}
 
 .project-thumb {
   width: 100%;
@@ -348,9 +355,9 @@ body {
 }
 
 .project-name { font-size: 13px; font-weight: 600; color: #4a3f5c; margin-bottom: 4px; }
-.project-desc { font-size: 11px; color: #9a85aa; line-height: 1.5; margin-bottom: 10px; }
+.project-desc { font-size: 13px; color: #6b5a7d; line-height: 1.5; margin-bottom: 10px; }
 .project-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-.project-tag  { font-size: 10px; padding: 2px 7px; border-radius: 10px; background: #ede4f5; color: #6a4a9a; }
+.project-tag  { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: #ede4f5; color: #6a4a9a; }
 
 /* ============================================================
    SECTION — Skills
@@ -361,7 +368,7 @@ body {
 .skills-label {
   font-size: 11px;
   font-weight: 600;
-  color: #9a85aa;
+  color: #6b5a7d;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 8px;
@@ -369,7 +376,7 @@ body {
 
 .skill-row    { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .skill-name   { font-size: 12px; color: #5a4a6a; width: 80px; flex-shrink: 0; }
-.skill-pct    { font-size: 11px; color: #9a85aa; width: 32px; text-align: right; }
+.skill-pct    { font-size: 11px; color: #6b5a7d; width: 32px; text-align: right; }
 
 .skill-bar-bg {
   flex: 1;
@@ -392,7 +399,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #9a85aa;
+  color: #6b5a7d;
   border-bottom: 0.5px solid rgba(200, 180, 220, 0.35);
   padding-bottom: 6px;
   margin-bottom: 12px;
@@ -411,8 +418,8 @@ body {
 }
 
 .resume-item-title { font-size: 13px; font-weight: 600; color: #4a3f5c; }
-.resume-item-sub   { font-size: 11px; color: #9a85aa; margin-top: 1px; }
-.resume-item-desc  { font-size: 11px; color: #7a6a8a; margin-top: 4px; line-height: 1.5; }
+.resume-item-sub   { font-size: 12px; color: #6b5a7d; margin-top: 1px; }
+.resume-item-desc  { font-size: 13px; color: #5a4a6a; margin-top: 4px; line-height: 1.5; }
 
 .download-btn {
   display: inline-flex;
@@ -453,8 +460,8 @@ body {
 }
 
 .faith-ref {
-  font-size: 11px;
-  color: #9a85aa;
+  font-size: 12px;
+  color: #6b5a7d;
   margin-top: 6px;
   font-weight: 500;
 }
@@ -546,7 +553,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  color: #9a85aa;
+  color: #6b5a7d;
   overflow: hidden;
   padding: 14px;
   flex-direction: column;
@@ -600,7 +607,7 @@ body {
   justify-content: center;
   gap: 2px;
   font-size: 18px;
-  color: #7a6a8a;
+  color: #5a4a6a;
   cursor: default;
   transform-origin: left center;
   transition: transform 0.5s cubic-bezier(0.4, 0.15, 0.2, 1);
@@ -611,9 +618,9 @@ body {
 }
 
 .cal-day-cover .cover-weekday {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
-  color: #9a85aa;
+  color: #6b5a7d;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -683,16 +690,16 @@ body {
 }
 
 .wins-detail-sub {
-  font-size: 10px;
-  color: #e8a0c8;
-  font-weight: 500;
+  font-size: 11px;
+  color: #c4649b;
+  font-weight: 600;
 }
 
 .wins-detail-close {
   background: none;
   border: none;
   font-size: 13px;
-  color: #9a85aa;
+  color: #6b5a7d;
   cursor: pointer;
   transition: color 0.15s;
 }
@@ -706,7 +713,7 @@ body {
 }
 
 .wins-detail-list li {
-  font-size: 12px;
+  font-size: 13px;
   color: #5a4a6a;
   line-height: 1.6;
   padding: 5px 0;
@@ -723,3 +730,235 @@ body {
 }
 
 .wins-detail-list li:last-child { border-bottom: none; }
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+/* Visible keyboard focus for every interactive element.
+   :focus-visible keeps the ring off mouse clicks. */
+a:focus-visible,
+button:focus-visible,
+.nav-item:focus-visible,
+.project-card:focus-visible,
+.cal-day-cover:focus-visible {
+  outline: 2px solid #6a4a9a;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Fallback for browsers without :focus-visible */
+a:focus,
+button:focus {
+  outline: 2px solid #6a4a9a;
+  outline-offset: 2px;
+}
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Reset UA button styling so semantic buttons keep the current look */
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+/* Skip link — first tab stop, hidden until focused */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -48px;
+  z-index: 999;
+  background: #fff;
+  color: #4a3f5c;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(160, 120, 200, 0.5);
+  text-decoration: none;
+  transition: top 0.15s;
+}
+.skip-link:focus { top: 8px; }
+
+/* Screen-reader-only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Honour reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .cal-day.opened .cal-day-cover {
+    transform: none;
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE
+   Breakpoints: 900px (tablet) → 768px (sidebar collapse) → 600px (phone)
+   ============================================================ */
+
+/* Let the desktop shell grow past its fixed height on small screens */
+@media (max-width: 900px) {
+  body { padding: 12px; align-items: flex-start; }
+  .desktop { min-height: 0; }
+}
+
+/* Sidebar becomes a horizontal nav bar above the content window */
+@media (max-width: 768px) {
+  body { padding: 8px; }
+
+  .desktop { border-radius: 12px; }
+
+  .window-area {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    padding-bottom: 34px;
+    min-height: 0;
+    gap: 10px;
+  }
+
+  .main-window { min-height: 0; }
+
+  /* Profile block sits inline with the nav */
+  .sidebar-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+    border-right: 0.5px solid rgba(200, 180, 220, 0.35);
+    padding-right: 12px;
+  }
+
+  .avatar { width: 38px; height: 38px; margin: 0; }
+
+  .sidebar-content nav {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+
+  .nav-item { margin-bottom: 0; padding: 8px 12px; }
+
+  /* Menu bar: drop the fake macOS menus, keep brand + status */
+  .menubar-left span:not(.menubar-brand) { display: none; }
+
+  .main-content { padding: 16px; }
+
+  /* Content should scroll with the page, not inside a fixed box */
+  .main-content { overflow-y: visible; }
+}
+
+/* Phone */
+@media (max-width: 600px) {
+  .projects-grid { grid-template-columns: 1fr; }
+
+  .project-thumb,
+  .project-thumb-placeholder { height: 140px; }
+
+  .stat-row { grid-template-columns: 1fr; }
+
+  .section-title { font-size: 17px; }
+
+  .status-bar {
+    position: static;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+
+  .window-area { padding-bottom: 12px; }
+
+  .status-links { margin-left: 0; width: 100%; }
+
+  /* Calendar day fills the available width */
+  .cal-day { width: 100%; max-width: 240px; }
+  .calendar-grid { justify-content: center; }
+  .wins-calendar { padding: 14px; }
+
+  .faith-block { padding: 12px 14px; }
+}
+
+/* Very small phones */
+@media (max-width: 400px) {
+  .menubar { gap: 10px; padding: 0 10px; }
+  .menubar-right span:not(#clock) { display: none; }
+  .profile-section { border-right: none; padding-right: 0; }
+  .sidebar-content nav { width: 100%; }
+  .nav-item { flex: 1; justify-content: center; }
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT NORMALIZATION
+   Nav items are <button>, project cards are <a>. These rules keep
+   the original visual design while restoring native semantics.
+   ============================================================ */
+
+.nav-item {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  background: none;
+  border: none;
+}
+
+.project-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+}
+
+/* Children became <span>, so restore block flow */
+.project-name { display: block; }
+.project-desc { display: block; }
+.project-tags { display: flex; }
+
+/* Hidden panels must not render even when .active is absent */
+.section[hidden] { display: none !important; }
+
+/* Calendar day cover is a <button> */
+.cal-day-cover {
+  font-family: inherit;
+  width: 100%;
+  border: none;
+  padding: 0;
+}
+
+/* Faith blockquote/figure reset */
+.faith-block figure,
+figure.faith-block { margin: 0 0 16px; }
+.faith-verse { margin: 0; }

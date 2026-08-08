@@ -3,10 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grace — Portfolio</title>
+
+  <title>Grace Chang — UX Engineer</title>
+  <meta name="description" content="Grace Chang builds design systems, interface architecture, and tangible interaction prototypes — currently Interface Software Engineer on Windows at Microsoft, previously MIT Media Lab." />
+  <meta name="author" content="Grace Chang" />
+  <meta name="theme-color" content="#e8d5f5" />
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Grace Chang — UX Engineer" />
+  <meta property="og:description" content="Design systems, interface architecture, and tangible interaction prototypes. Microsoft · MIT Media Lab." />
+  <meta property="og:url" content="https://chag60460.github.io/grace-portfolio/" />
+  <meta property="og:image" content="https://chag60460.github.io/grace-portfolio/profile_pic.jpeg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127800;</text></svg>" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
 <div class="desktop">
 
@@ -14,10 +30,10 @@
   <div class="menubar">
     <div class="menubar-left">
       <span class="menubar-brand">grace.dev</span>  <!-- domain -->
-      <span>File</span>
-      <span>View</span>
-      <span>Go</span>
-      <span>Help</span>
+      <span aria-hidden="true">File</span>
+      <span aria-hidden="true">View</span>
+      <span aria-hidden="true">Go</span>
+      <span aria-hidden="true">Help</span>
     </div>
     <div class="menubar-right">
       <span>Open to work</span>  <!-- status -->
@@ -31,7 +47,7 @@
     <!-- Sidebar navigator -->
     <div class="window sidebar-window">
       <div class="titlebar">
-        <div class="dots">
+        <div class="dots" aria-hidden="true">
           <div class="dot dot-red"></div>
           <div class="dot dot-yellow"></div>
           <div class="dot dot-green"></div>
@@ -40,19 +56,29 @@
       </div>
       <div class="sidebar-content">
         <div class="profile-section">
-          <img class="avatar" src="profile_pic.jpeg" alt="Grace" />  <!-- photo -->
-          <div class="profile-name">Grace</div>  <!-- name -->
-          <div class="profile-role">software engineer @ Microsoft</div>  <!-- role -->
+          <img class="avatar" src="profile_pic.jpeg" alt="Portrait of Grace Chang" width="60" height="60" />  <!-- photo -->
+          <div>
+            <div class="profile-name">Grace</div>  <!-- name -->
+            <div class="profile-role">Interface Software Engineer @ Microsoft</div>  <!-- role -->
+          </div>
         </div>
-        <nav>
-          <div class="nav-item active" onclick="showSection('about', this)">
-            <div class="nav-icon icon-pink">◉</div> portfolio
-          </div>
-          <div class="nav-item" onclick="showSection('faith', this)">
-            <div class="nav-icon icon-pink">✝</div> faith
-          </div>
-          <div class="nav-item" onclick="showSection('resume', this)">
-            <div class="nav-icon icon-green">◻</div> resume
+        <nav aria-label="Sections">
+          <div role="tablist" aria-label="Portfolio sections" style="display: contents;">
+            <button type="button" class="nav-item active" role="tab"
+                    id="tab-about" aria-controls="section-about" aria-selected="true"
+                    data-section="about">
+              <span class="nav-icon icon-pink" aria-hidden="true">◉</span> portfolio
+            </button>
+            <button type="button" class="nav-item" role="tab"
+                    id="tab-faith" aria-controls="section-faith" aria-selected="false"
+                    data-section="faith">
+              <span class="nav-icon icon-pink" aria-hidden="true">✝</span> faith
+            </button>
+            <button type="button" class="nav-item" role="tab"
+                    id="tab-resume" aria-controls="section-resume" aria-selected="false"
+                    data-section="resume">
+              <span class="nav-icon icon-green" aria-hidden="true">◻</span> resume
+            </button>
           </div>
         </nav>
       </div>
@@ -61,28 +87,28 @@
     <!-- Main content window -->
     <div class="window main-window">
       <div class="titlebar">
-        <div class="dots">
+        <div class="dots" aria-hidden="true">
           <div class="dot dot-red"></div>
           <div class="dot dot-yellow"></div>
           <div class="dot dot-green"></div>
         </div>
         <span class="titlebar-title" id="window-title">portfolio</span>
       </div>
-      <div class="main-content">
+      <main class="main-content" id="main-content">
 
         <!-- ABOUT -->
-        <section class="section active" id="section-about">
+        <section class="section active" id="section-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0">
           <h1 class="section-title">hi, i'm grace 💕</h1>  <!-- name -->
-          <p class="section-sub">software engineer · creative coder · product designer</p>  <!-- tagline -->
+          <p class="section-sub">ux engineering · design systems · creative technology</p>  <!-- tagline -->
 
           <!-- bio -->
-          <p class="about-bio">I'm a product-minded software engineer with 3 years of experience building interaction systems, distributed systems, and physical-digital systems. </p>
-          <p class="about-bio">My passion lies in <b>tangible user interfaces</b>, <b>product development</b>, and the <b>interaction design</b>. I am deeply interested in <b>creating meaningful human computer user experiences</b>, especially pushing for <b><i>ubiquitous computing.</i></b></p>
+          <p class="about-bio">I build interface architecture, design systems, and physical–digital interaction systems — 3 years in, currently an Interface Software Engineer on Windows at Microsoft, previously at the MIT Media Lab.</p>
+          <p class="about-bio">My passion lies in <b>tangible user interfaces</b>, <b>interaction design</b>, and <b>the craft layer where design becomes code</b>. I am deeply interested in <b>creating meaningful human–computer experiences</b>, especially pushing for <b><i>ubiquitous computing.</i></b></p>
 
           <!-- interest tags -->
           <div class="tag-row">
             <span class="tag tag-pink">tangible user interaction</span>
-            <span class="tag tag-purple">full-stack</span>
+            <span class="tag tag-purple">design systems</span>
             <span class="tag tag-blue">TypeScript</span>
             <span class="tag tag-green">React</span>
             <span class="tag tag-pink">Arduino</span>
@@ -93,112 +119,142 @@
           <p class="section-sub">things i've built and shipped</p>
           <div class="projects-grid">
 
-            <div class="project-card" id="card-sonic-stitches"
-                 onclick="window.location.href='projects/sonic-stitches/sonic-stitches.html'"
-                 onmouseenter="this.style.background='rgba(230,215,245,0.65)';this.style.boxShadow='0 4px 16px rgba(160,120,200,0.18)'"
-                 onmouseleave="this.style.background='';this.style.boxShadow=''">
-              <img class="project-thumb" src="projects/sonic-stitches/media/cover.png" alt="Sonic Stitches" />
-              <div class="project-name">Sonic Stitches</div>
-              <p class="project-desc">Explores the theme of TeleAbsence through interactive installations over textiles and immersive experiences.</p>
-              <div class="project-tags">
+            <a class="project-card" id="card-sonic-stitches"
+               href="projects/sonic-stitches/sonic-stitches.html">
+              <img class="project-thumb" src="projects/sonic-stitches/media/cover.png"
+                   alt="The Sonic Stitches embroidered tablecloth set for dinner" loading="lazy" />
+              <span class="project-name">Sonic Stitches</span>
+              <span class="project-desc">Explores the theme of TeleAbsence through interactive installations over textiles and immersive experiences.</span>
+              <span class="project-tags">
                 <span class="project-tag">Arduino</span>
                 <span class="project-tag">C</span>
                 <span class="project-tag">Interaction Design</span>
                 <span class="project-tag">Capacitive &amp; Pressure Sensors</span>
                 <span class="project-tag">Java</span>
                 <span class="project-tag">Processing</span>
-              </div>
-            </div>
+              </span>
+            </a>
 
-            <div class="project-card" id="card-magdalene-x2"
-                 onclick="window.location.href='projects/magdalene-x2/magdalene-x2.html'"
-                 onmouseenter="this.style.background='rgba(230,215,245,0.65)';this.style.boxShadow='0 4px 16px rgba(160,120,200,0.18)'"
-                 onmouseleave="this.style.background='';this.style.boxShadow=''">
-              <div class="project-thumb-placeholder icon-purple" style="background: linear-gradient(135deg, #F6EEE2, #E9DDD0, #D4C4B6); display: flex; align-items: center; justify-content: center; font-size: 28px;">🧬</div>
-              <div class="project-name">Magdalene X²</div>
-              <p class="project-desc">An autonomous, multi-agent health-intelligence app that unifies labs, cycle, nutrition, fitness, and sleep for women.</p>
-              <div class="project-tags">
+            <a class="project-card" id="card-magdalene-x2"
+               href="projects/magdalene-x2/magdalene-x2.html">
+              <img class="project-thumb" src="projects/magdalene-x2/media/cover.svg"
+                   alt="Magdalene X squared health intelligence app interface" loading="lazy" />
+              <span class="project-name">Magdalene X²</span>
+              <span class="project-desc">An autonomous, multi-agent health-intelligence app that unifies labs, cycle, nutrition, fitness, and sleep for women.</span>
+              <span class="project-tags">
                 <span class="project-tag">Product Design</span>
                 <span class="project-tag">Multi-Agent AI</span>
                 <span class="project-tag">Health Tech</span>
                 <span class="project-tag">UX Research</span>
-              </div>
-            </div>
+              </span>
+            </a>
 
-            <div class="project-card" id="card-expressive-navigation"
-                 onclick="window.location.href='projects/expressive-navigation/expressive-navigation.html'"
-                 onmouseenter="this.style.background='rgba(230,215,245,0.65)';this.style.boxShadow='0 4px 16px rgba(160,120,200,0.18)'"
-                 onmouseleave="this.style.background='';this.style.boxShadow=''">
-              <img class="project-thumb" src="projects/expressive-navigation/media/cover.png" alt="Expressive Navigation" />
-              <div class="project-name">Expressive Navigation</div>
-              <p class="project-desc">Real-time affect-aware iOS prototype using Apple Vision for on-device facial expression inference and clinical decision support.</p>
-              <div class="project-tags">
+            <a class="project-card" id="card-expressive-navigation"
+               href="projects/expressive-navigation/expressive-navigation.html">
+              <img class="project-thumb" src="projects/expressive-navigation/media/cover.png"
+                   alt="Expressive Navigation iOS prototype detecting facial expressions" loading="lazy" />
+              <span class="project-name">Expressive Navigation</span>
+              <span class="project-desc">Real-time affect-aware iOS prototype using Apple Vision for on-device facial expression inference and clinical decision support.</span>
+              <span class="project-tags">
                 <span class="project-tag">Swift</span>
                 <span class="project-tag">Apple Vision</span>
                 <span class="project-tag">AVFoundation</span>
                 <span class="project-tag">Affect Computing</span>
                 <span class="project-tag">On-Device ML</span>
-              </div>
-            </div>
+              </span>
+            </a>
 
-            <div class="project-card" id="card-yours-truly"
-                 onclick="window.location.href='projects/yours-truly/yours-truly.html'"
-                 onmouseenter="this.style.background='rgba(230,215,245,0.65)';this.style.boxShadow='0 4px 16px rgba(160,120,200,0.18)'"
-                 onmouseleave="this.style.background='';this.style.boxShadow=''">
-              <img class="project-thumb" src="projects/yours-truly/media/cover.png" alt="Yours, Truly" />
-              <div class="project-name">Yours, Truly</div>
-              <p class="project-desc">Full-stack wellness journaling web app with structured daily prompts, mood tracking, and secure authentication.</p>
-              <div class="project-tags">
+            <a class="project-card" id="card-yours-truly"
+               href="projects/yours-truly/yours-truly.html">
+              <img class="project-thumb" src="projects/yours-truly/media/cover.png"
+                   alt="Yours, Truly wellness journaling web app" loading="lazy" />
+              <span class="project-name">Yours, Truly</span>
+              <span class="project-desc">Full-stack wellness journaling web app with structured daily prompts, mood tracking, and secure authentication.</span>
+              <span class="project-tags">
                 <span class="project-tag">Python + Flask</span>
                 <span class="project-tag">MySQL</span>
                 <span class="project-tag">Bcrypt</span>
                 <span class="project-tag">Jinja2</span>
                 <span class="project-tag">HTML + CSS</span>
-              </div>
-            </div>
+              </span>
+            </a>
 
           </div>
         </section>
 
-
-
-
-
         <!-- RESUME -->
-        <section class="section" id="section-resume">
+        <section class="section" id="section-resume" role="tabpanel" aria-labelledby="tab-resume" tabindex="0" hidden>
           <h1 class="section-title">resume.pdf</h1>
           <p class="section-sub">experience &amp; education</p>
 
           <!-- work experience -->
           <div class="resume-section">
-            <div class="resume-section-title">Experience</div>
+            <h2 class="resume-section-title">Experience</h2>
             <div class="resume-item">
-              <div class="resume-dot"></div>
+              <div class="resume-dot" aria-hidden="true"></div>
               <div>
-                <div class="resume-item-title">Software Engineer — Microsoft</div>
-                <div class="resume-item-sub">2023 – present · Redmond, WA</div>
-                <p class="resume-item-desc">Led the end-to-end architectural modernization for the Windows Privacy Settings page, serving over 4 million monthly active users. Engineered a modernized library of reusable template components and a cohesive handler system that reduced UI rendering time by 33%. Bridged the gap between complex telemetry data and intuitive user experiences through AI-driven interaction patterns for 43 permission modules to enhance user clarity and data transparency. </p>
+                <div class="resume-item-title">Interface Software Engineer — Microsoft</div>
+                <div class="resume-item-sub">Experiences &amp; Devices · Nov 2024 – Present · Redmond, WA</div>
+                <p class="resume-item-desc">Led end-to-end interface design and implementation for the Windows Privacy Settings experience serving 4M+ monthly active devices, partnering closely with designers and PMs to translate CSAT telemetry into UI refreshes that lifted feature discoverability by 10% and cut render latency by 1.57s.</p>
+                <p class="resume-item-desc">Designed and built a scalable custom UI component library replacing fragmented implementations across 35+ complex, data-driven interfaces — cutting rendering time by 33% and establishing a consistent design system that raised craftsmanship across surfaces.</p>
               </div>
             </div>
             <div class="resume-item">
-              <div class="resume-dot"></div>
+              <div class="resume-dot" aria-hidden="true"></div>
               <div>
-                <div class="resume-item-title"> SDE Researcher Intern — MIT Media Lab, Personal Robots Group</div>
-                <div class="resume-item-sub">2022 · Cambridge, MA</div>
-                <p class="resume-item-desc">Integrated a new personality role in Jibo social robot reading station to help strengthen parent-child relationship through integrating backend scripts and refined haptic interface.</p>
+                <div class="resume-item-title">Distributed Software Engineer — Microsoft</div>
+                <div class="resume-item-sub">Azure Core · Aug 2023 – Nov 2024 · Redmond, WA</div>
+                <p class="resume-item-desc">Optimized distributed infrastructure serving 40B+ daily requests, improving P99.9 latency by up to 250% through architectural and synchronization improvements.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- design engineering & prototyping -->
+          <div class="resume-section">
+            <h2 class="resume-section-title">Design Engineering &amp; Prototyping</h2>
+            <div class="resume-item">
+              <div class="resume-dot" aria-hidden="true"></div>
+              <div>
+                <div class="resume-item-title">Interactive Design Engineer — MIT Media Lab</div>
+                <div class="resume-item-sub">Tangible Media Group · Sep 2022 – May 2023 · Cambridge, MA</div>
+                <p class="resume-item-desc">Designed and prototyped <a href="projects/sonic-stitches/sonic-stitches.html">Sonic Stitches</a>, a wearable telepresence system — engineering conductive-embroidery capacitive sensing on Arduino and mapping touch gestures to real-time generative audio-visual feedback.</p>
+              </div>
+            </div>
+            <div class="resume-item">
+              <div class="resume-dot" aria-hidden="true"></div>
+              <div>
+                <div class="resume-item-title">Creative Technology Engineer — MIT Media Lab</div>
+                <div class="resume-item-sub">Personal Robots Group · Mar 2022 – Jun 2022 · Cambridge, MA</div>
+                <p class="resume-item-desc">Prototyped expressive interaction behaviors for the Jibo social robot — integrating character animation, haptic feedback, and conversational interaction — and user-tested expressive personas to raise engagement in parent–child reading sessions.</p>
+              </div>
+            </div>
+            <div class="resume-item">
+              <div class="resume-dot" aria-hidden="true"></div>
+              <div>
+                <div class="resume-item-title">Interaction Prototyping Engineer — MIT Media Lab</div>
+                <div class="resume-item-sub">Fluid Interfaces Group · Oct 2021 – Mar 2022 · Cambridge, MA</div>
+                <p class="resume-item-desc">Prototyped <a href="projects/expressive-navigation/expressive-navigation.html">Expressive Navigation</a>, an affect-aware iOS system using Apple's Vision framework and UIKit to infer emotional cues from facial expressions and deliver real-time feedback for clinicians.</p>
+              </div>
+            </div>
+            <div class="resume-item">
+              <div class="resume-dot" aria-hidden="true"></div>
+              <div>
+                <div class="resume-item-title">AR/VR Prototyping Engineer — MIT Climate &amp; Sustainability Consortium</div>
+                <div class="resume-item-sub">Jun 2021 – Oct 2021 · Cambridge, MA</div>
+                <p class="resume-item-desc">Built a real-time driving simulation in Unity and extended it into VR, rendering spatial acceleration and motion cues that conveyed an autonomous agent's decisions through immersive spatial interaction.</p>
               </div>
             </div>
           </div>
 
           <!-- education -->
           <div class="resume-section">
-            <div class="resume-section-title">Education</div>
+            <h2 class="resume-section-title">Education</h2>
             <div class="resume-item">
-              <div class="resume-dot"></div>
+              <div class="resume-dot" aria-hidden="true"></div>
               <div>
-                <div class="resume-item-title">Bachelors in Computer Science</div>
-                <div class="resume-item-sub">Massachusetts Institute of Technology | Wellesley College · 2023</div>
-                <p class="resume-item-desc">Focus in systems and human-computer interaction. Senior thesis on tangible user interface.</p>
+                <div class="resume-item-title">B.A. in Computer Science (Dual Enrollment)</div>
+                <div class="resume-item-sub">Massachusetts Institute of Technology | Wellesley College · May 2023</div>
+                <p class="resume-item-desc">Tangible User Interface · Artificial Intelligence · Software Construction · Software Studio · Data Structures &amp; Algorithms. Senior thesis on tangible user interfaces.</p>
               </div>
             </div>
           </div>
@@ -208,60 +264,60 @@
         </section>
 
         <!-- FAITH -->
-        <section class="section" id="section-faith">
+        <section class="section" id="section-faith" role="tabpanel" aria-labelledby="tab-faith" tabindex="0" hidden>
           <h1 class="section-title">my journey as a Christ follower</h1>
           <p class="section-sub">what grounds and guides me</p>
 
           <!-- faith content -->
-          <div class="faith-block">
-            <div class="faith-verse">
+          <figure class="faith-block">
+            <blockquote class="faith-verse">
               "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."
-            </div>
-            <div class="faith-ref">— Jeremiah 29:11</div>
-          </div>
+            </blockquote>
+            <figcaption class="faith-ref">— Jeremiah 29:11</figcaption>
+          </figure>
 
           <p class="about-bio">Before anything, I am first and foremost a Christian. My faith is the foundation of who I am and how I approach my work. It shapes how I build, collaborate, and serve others through technology.</p>
 
-          <div class="faith-block">
-            <div class="faith-verse">
+          <figure class="faith-block">
+            <blockquote class="faith-verse">
               "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters."
-            </div>
-            <div class="faith-ref">— Colossians 3:23</div>
-          </div>
+            </blockquote>
+            <figcaption class="faith-ref">— Colossians 3:23</figcaption>
+          </figure>
 
           <p class="about-bio">I believe that every line of code can be an act of stewardship — using the gifts and talents I've been given to make a positive impact in the world.</p>
           <p class="about-bio">In this specific season, God is fine-tuning my heart and making it align more with His. He has shown me how perfect love can cast out all fear, and instead make room for joy, peace, and compassion.</p>
 
           <!-- Small Wins Calendar -->
           <div class="wins-calendar-intro">
-            <div class="wins-calendar-title">Small Wins Diary</div>
+            <h2 class="wins-calendar-title">Small Wins Diary</h2>
             <p class="wins-calendar-desc">Here I have coded a calendar to celebrate one win each day — because every small step forward is still a step worth honoring. This is to remind me that God is faithful in the little things, and that His grace is sufficient for me every single day.</p>
           </div>
           <div class="wins-calendar">
             <div class="calendar-header">
-              <button class="cal-nav" id="cal-prev">‹</button>
-              <span class="cal-week-label" id="cal-week-label"></span>
-              <button class="cal-nav" id="cal-next">›</button>
+              <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous day">‹</button>
+              <span class="cal-week-label" id="cal-week-label" aria-live="polite"></span>
+              <button type="button" class="cal-nav" id="cal-next" aria-label="Next day">›</button>
             </div>
             <div class="calendar-grid" id="calendar-grid"></div>
           </div>
 
         </section>
 
-      </div>
+      </main>
     </div>
   </div>
 
   <!-- ── Status bar ── -->
   <div class="status-bar">
-    <span><span class="status-dot"></span>available for work</span>  <!-- status -->
+    <span><span class="status-dot" aria-hidden="true"></span>available for work</span>  <!-- status -->
     <span>grace@portfolio ~ </span>  <!-- name -->
-    <div class="status-links">
+    <nav class="status-links" aria-label="Social links">
       <!-- social links -->
-      <a href="https://github.com/chag60460" target="_blank">github</a>
-      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
-      <a href="mailto:gc1@wellesley.edu">email</a>
-    </div>
+      <a href="https://github.com/chag60460" target="_blank" rel="noopener noreferrer">github</a>
+      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank" rel="noopener noreferrer">linkedin</a>
+      <a href="mailto:chag60460@gmail.com">email</a>
+    </nav>
   </div>
 
 </div>

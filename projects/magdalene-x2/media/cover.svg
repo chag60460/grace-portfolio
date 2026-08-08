@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 130" role="img"
+     aria-label="Magdalene X squared: the Today screen showing cycle phase and daily suggestions, beside the five body modules">
+  <defs>
+    <radialGradient id="mx-bg" cx="50%" cy="-8%" r="120%">
+      <stop offset="0%" stop-color="#F6EEE2"/>
+      <stop offset="100%" stop-color="#E9E0D2"/>
+    </radialGradient>
+    <linearGradient id="mx-scr" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBEBD6"/>
+      <stop offset="26%" stop-color="#FCF7EF"/>
+      <stop offset="100%" stop-color="#FCF7EF"/>
+    </linearGradient>
+    <clipPath id="mx-clip"><rect x="63" y="12" width="66" height="106" rx="12"/></clipPath>
+    <filter id="mx-sh" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#463219" flood-opacity="0.17"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="130" fill="url(#mx-bg)"/>
+
+  <!-- Phone -->
+  <g filter="url(#mx-sh)">
+    <rect x="60" y="9" width="72" height="112" rx="15" fill="#ffffff" stroke="#e7ddcd" stroke-width="1"/>
+  </g>
+  <rect x="63" y="12" width="66" height="106" rx="12" fill="url(#mx-scr)"/>
+
+  <g clip-path="url(#mx-clip)">
+    <!-- status bar -->
+    <text x="68" y="20" font-family="Inter, system-ui, sans-serif" font-size="4" fill="#574F5E">9:41</text>
+    <rect x="118" y="16.6" width="7" height="3.6" rx="1.1" fill="none" stroke="#968D9B" stroke-width="0.6"/>
+    <rect x="118.8" y="17.4" width="4.6" height="2" rx="0.6" fill="#2A2431"/>
+
+    <!-- greeting -->
+    <text x="68" y="32" font-family="Fraunces, Georgia, serif" font-size="7" font-weight="600" fill="#2A2431">Good morning,</text>
+    <text x="68" y="40" font-family="Fraunces, Georgia, serif" font-size="7" font-weight="600" fill="#2A2431">Grace</text>
+
+    <!-- cycle phase pill -->
+    <rect x="68" y="44" width="52" height="9" rx="4.5" fill="#FCE5DF"/>
+    <circle cx="73.5" cy="48.5" r="2" fill="#D86C62"/>
+    <text x="78" y="50.5" font-family="Inter, system-ui, sans-serif" font-size="4.4" fill="#D86C62">Day 22 · Luteal</text>
+
+    <!-- reading copy -->
+    <rect x="68" y="57" width="54" height="2.3" rx="1.15" fill="#574F5E" opacity="0.42"/>
+    <rect x="68" y="62" width="48" height="2.3" rx="1.15" fill="#574F5E" opacity="0.42"/>
+    <rect x="68" y="67" width="30" height="2.3" rx="1.15" fill="#C0613E" opacity="0.6"/>
+
+    <!-- today, consider -->
+    <text x="68" y="79" font-family="Inter, system-ui, sans-serif" font-size="3.9"
+          letter-spacing="0.45" fill="#968D9B" font-weight="700">TODAY, CONSIDER</text>
+    <rect x="68" y="82" width="33" height="8" rx="4" fill="#E6EFE0" stroke="#d5e3cd" stroke-width="0.5"/>
+    <circle cx="73" cy="86" r="1.6" fill="#5E8C5A"/>
+    <text x="76.4" y="87.6" font-family="Inter, system-ui, sans-serif" font-size="3.7" fill="#436E3F">Protein first</text>
+
+    <rect x="68" y="92.5" width="30" height="8" rx="4" fill="#ECE2EB" stroke="#ded0dd" stroke-width="0.5"/>
+    <circle cx="73" cy="96.5" r="1.6" fill="#7A5C77"/>
+    <text x="76.4" y="98.1" font-family="Inter, system-ui, sans-serif" font-size="3.7" fill="#5C4360">Movement</text>
+
+    <rect x="100" y="92.5" width="26" height="8" rx="4" fill="#E3ECF2" stroke="#cfdde7" stroke-width="0.5"/>
+    <circle cx="105" cy="96.5" r="1.6" fill="#4f6f8a"/>
+    <text x="108.4" y="98.1" font-family="Inter, system-ui, sans-serif" font-size="3.7" fill="#3F6486">Sleep 10</text>
+
+    <!-- bottom nav -->
+    <rect x="63" y="106" width="66" height="12" fill="#ffffff" opacity="0.97"/>
+    <line x1="63" y1="106" x2="129" y2="106" stroke="#EFE6D9" stroke-width="0.7"/>
+    <circle cx="70" cy="111.5" r="2" fill="#C0613E"/>
+    <circle cx="83" cy="111.5" r="2" fill="#cfc6bb"/>
+    <circle cx="96" cy="111.5" r="2" fill="#cfc6bb"/>
+    <circle cx="109" cy="111.5" r="2" fill="#cfc6bb"/>
+    <circle cx="122" cy="111.5" r="2" fill="#cfc6bb"/>
+  </g>
+
+  <!-- Five modules -->
+  <g font-family="Inter, system-ui, sans-serif" font-size="4.8" font-weight="600">
+    <rect x="150" y="9" width="80" height="19" rx="6" fill="#ffffff" stroke="#EFE6D9" stroke-width="0.8"/>
+    <rect x="154" y="13" width="11" height="11" rx="3.6" fill="#FCE5DF"/>
+    <circle cx="159.5" cy="18.5" r="2.7" fill="none" stroke="#D86C62" stroke-width="1.3"/>
+    <text x="169" y="17.6" fill="#2A2431">Cycle</text>
+    <text x="169" y="24" font-size="4" font-weight="400" fill="#968D9B">Day 22 · Luteal</text>
+
+    <rect x="150" y="32" width="80" height="19" rx="6" fill="#ffffff" stroke="#EFE6D9" stroke-width="0.8"/>
+    <rect x="154" y="36" width="11" height="11" rx="3.6" fill="#E3ECF2"/>
+    <path d="M161.8 39.3a3.1 3.1 0 1 0 0 4.2 2.6 2.6 0 0 1 0-4.2z" fill="#4f6f8a"/>
+    <text x="169" y="40.6" fill="#2A2431">Sleep</text>
+    <text x="169" y="47" font-size="4" font-weight="400" fill="#968D9B">6h 12m ↓</text>
+
+    <rect x="150" y="55" width="80" height="19" rx="6" fill="#ffffff" stroke="#EFE6D9" stroke-width="0.8"/>
+    <rect x="154" y="59" width="11" height="11" rx="3.6" fill="#F6E2D6"/>
+    <path d="M159.5 61c2 2.4 2.9 3.5 2.9 4.7a2.9 2.9 0 0 1-5.8 0c0-1.2.9-2.3 2.9-4.7z" fill="#9F4D2F"/>
+    <text x="169" y="63.6" fill="#2A2431">Labs</text>
+    <text x="169" y="70" font-size="4" font-weight="400" fill="#968D9B">Ferritin low-normal</text>
+
+    <rect x="150" y="78" width="80" height="19" rx="6" fill="#ffffff" stroke="#EFE6D9" stroke-width="0.8"/>
+    <rect x="154" y="82" width="11" height="11" rx="3.6" fill="#E7EEE6"/>
+    <path d="M156.9 90.3c0-3.1 2.4-5.1 5.1-5.1 0 3.1-2.2 5.1-5.1 5.1z" fill="#5b7560"/>
+    <text x="169" y="86.6" fill="#2A2431">Nutrition</text>
+    <text x="169" y="93" font-size="4" font-weight="400" fill="#968D9B">Glucose steadier ↑</text>
+
+    <rect x="150" y="101" width="80" height="19" rx="6" fill="#ffffff" stroke="#EFE6D9" stroke-width="0.8"/>
+    <rect x="154" y="105" width="11" height="11" rx="3.6" fill="#ECE2EB"/>
+    <path d="M156.6 111.9l1.9-2.2 1.6 1.5 2-2.8 2 2.4" fill="none" stroke="#7A5C77" stroke-width="1.3"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="169" y="109.6" fill="#2A2431">Movement</text>
+    <text x="169" y="116" font-size="4" font-weight="400" fill="#968D9B">Recovery: ease up</text>
+  </g>
+
+  <!-- Agent nodes feeding the app -->
+  <g opacity="0.9">
+    <circle cx="24" cy="32" r="9" fill="#ffffff" stroke="#EFE6D9" stroke-width="1"/>
+    <circle cx="16" cy="65" r="9" fill="#ffffff" stroke="#EFE6D9" stroke-width="1"/>
+    <circle cx="27" cy="98" r="9" fill="#ffffff" stroke="#EFE6D9" stroke-width="1"/>
+    <circle cx="24" cy="32" r="2.9" fill="#C0613E"/>
+    <circle cx="16" cy="65" r="2.9" fill="#7E9A82"/>
+    <circle cx="27" cy="98" r="2.9" fill="#7A5C77"/>
+    <path d="M33 35 Q47 40 60 45" stroke="#C0613E" stroke-width="1" fill="none" stroke-dasharray="2.2 2.2" opacity="0.5"/>
+    <path d="M25 65 Q42 65 60 65" stroke="#7E9A82" stroke-width="1" fill="none" stroke-dasharray="2.2 2.2" opacity="0.5"/>
+    <path d="M36 96 Q48 92 60 88" stroke="#7A5C77" stroke-width="1" fill="none" stroke-dasharray="2.2 2.2" opacity="0.5"/>
+  </g>
+
+  <!-- Right-edge trend accent -->
+  <g opacity="0.75">
+    <path d="M244 96 L258 84 L270 90 L284 68 L300 58" fill="none" stroke="#C0613E"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    <circle cx="300" cy="58" r="2.6" fill="#C0613E"/>
+    <rect x="244" y="24" width="56" height="5" rx="2.5" fill="#ffffff" opacity="0.7"/>
+    <rect x="244" y="33" width="42" height="5" rx="2.5" fill="#ffffff" opacity="0.55"/>
+    <rect x="244" y="42" width="32" height="5" rx="2.5" fill="#ffffff" opacity="0.4"/>
+  </g>
+</svg>

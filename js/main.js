@@ -3,38 +3,76 @@
    ============================================================ */
 
 /* ── Section switcher ──────────────────────────────────────
-   Called by onclick in each .nav-item.
-   Updates the active section, nav highlight, and window title.
+   Nav items are real <button role="tab"> elements. This wires
+   them up with proper ARIA state, roving tabindex, and arrow-key
+   navigation so the whole site is keyboard operable.
    ─────────────────────────────────────────────────────────── */
 
 const SECTION_TITLES = {
-  about:    'portfolio',
-  faith:    'faith',
-  resume:   'resume',
+  about:  'portfolio',
+  faith:  'faith',
+  resume: 'resume',
 };
 
 function showSection(name, el) {
-  // Deactivate all sections and nav items
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const tab = el || document.querySelector(`.nav-item[data-section="${name}"]`);
+  const panel = document.getElementById('section-' + name);
+  if (!tab || !panel) return;
 
-  // Activate the chosen section and nav item
-  document.getElementById('section-' + name).classList.add('active');
-  el.classList.add('active');
+  // Deactivate all panels and tabs
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.remove('active');
+    s.hidden = true;
+  });
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.remove('active');
+    n.setAttribute('aria-selected', 'false');
+    n.tabIndex = -1;
+  });
+
+  // Activate the chosen panel and tab
+  panel.classList.add('active');
+  panel.hidden = false;
+  tab.classList.add('active');
+  tab.setAttribute('aria-selected', 'true');
+  tab.tabIndex = 0;
 
   // Update the window titlebar
   document.getElementById('window-title').textContent = SECTION_TITLES[name] ?? name;
 }
 
-/* ── Restore section from sessionStorage (for back-links) ── */
-(function () {
+/* ── Wire up tabs: click + arrow keys ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = Array.from(document.querySelectorAll('.nav-item[data-section]'));
+
+  tabs.forEach((tab, i) => {
+    tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+
+    tab.addEventListener('click', () => showSection(tab.dataset.section, tab));
+
+    tab.addEventListener('keydown', (e) => {
+      const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+      let next = null;
+
+      if (e.key in keys) next = (i + keys[e.key] + tabs.length) % tabs.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = tabs.length - 1;
+      else return;
+
+      e.preventDefault();
+      showSection(tabs[next].dataset.section, tabs[next]);
+      tabs[next].focus();
+    });
+  });
+
+  // Restore section from sessionStorage (set by project-page back links)
   const pending = sessionStorage.getItem('openSection');
   if (pending) {
     sessionStorage.removeItem('openSection');
-    const navItem = document.querySelector(`.nav-item[onclick*="'${pending}'"]`);
-    if (navItem) showSection(pending, navItem);
+    const target = document.querySelector(`.nav-item[data-section="${pending}"]`);
+    if (target) showSection(pending, target);
   }
-})();
+});
 
 /* ── Live clock ─────────────────────────────────────────────
    Renders a real-time clock in the menu bar.
@@ -79,6 +117,13 @@ currentDate.setHours(0, 0, 0, 0);
 let openedDay = null;
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+// Escape text before it is injected as HTML
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
 
 // Simple hash to derive a number from text
 function hashStr(str) {
@@ -299,7 +344,7 @@ function renderCalendar() {
   const label = document.getElementById('cal-week-label');
   if (!grid || !label) return;
 
-  closeDay();
+  closeDay(false);
   openedDay = null;
 
   label.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
@@ -315,38 +360,46 @@ function renderCalendar() {
   if (wins) classes.push('has-wins');
   if (isToday) classes.push('today');
 
-  const onclick = wins ? ` onclick="toggleDay(this, '${key}')"` : '';
-
   let pageContent = '';
   if (wins) {
     const illustration = getWinIllustration(wins);
-    const preview = wins.map(w => `<span>${w}</span>`).join('<br>');
-    pageContent = `<div class="page-illustration">${illustration}</div><div class="page-wins">${preview}</div>`;
+    const preview = wins.map(w => `<span>${escapeHtml(w)}</span>`).join('<br>');
+    pageContent = `<div class="page-illustration" aria-hidden="true">${illustration}</div>` +
+                  `<div class="page-wins">${preview}</div>`;
   }
 
   const dayName = DAY_NAMES[currentDate.getDay()];
+  const dateLabel = currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-  grid.innerHTML = `<div class="${classes.join(' ')}"${onclick}>` +
-    `<div class="cal-day-page">${pageContent}</div>` +
-    `<div class="cal-day-cover"><span class="cover-weekday">${dayName}</span>${currentDate.getDate()}</div>` +
+  // Days with wins are real buttons; empty days are inert text.
+  const cover = wins
+    ? `<button type="button" class="cal-day-cover" aria-expanded="false" ` +
+      `aria-label="Show small wins for ${dateLabel}" data-date="${key}">` +
+      `<span class="cover-weekday">${dayName}</span>${currentDate.getDate()}</button>`
+    : `<div class="cal-day-cover"><span class="cover-weekday">${dayName}</span>${currentDate.getDate()}</div>`;
+
+  grid.innerHTML = `<div class="${classes.join(' ')}">` +
+    `<div class="cal-day-page">${pageContent}</div>` + cover +
   `</div>`;
+
+  const btn = grid.querySelector('.cal-day-cover[data-date]');
+  if (btn) btn.addEventListener('click', () => toggleDay(btn.closest('.cal-day'), key, btn));
 }
 
-function toggleDay(el, dateKey) {
+function toggleDay(el, dateKey, btn) {
   if (el.classList.contains('opened')) {
-    // Close this day
-    el.classList.remove('opened');
-    openedDay = null;
-    hideDetail();
+    closeDay();
     return;
   }
 
   // Close previously opened day
   if (openedDay) {
     openedDay.classList.remove('opened');
+    openedDay.querySelector('.cal-day-cover[data-date]')?.setAttribute('aria-expanded', 'false');
   }
 
   el.classList.add('opened');
+  if (btn) btn.setAttribute('aria-expanded', 'true');
   openedDay = el;
   showDetail(dateKey);
 }
@@ -363,16 +416,19 @@ function showDetail(dateKey) {
   const [y, m, d] = dateKey.split('-').map(Number);
   const dateStr = new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   const wins = SMALL_WINS[dateKey] || [];
-  const listHtml = wins.map(w => `<li>${w}</li>`).join('');
+  const listHtml = wins.map(w => `<li>${escapeHtml(w)}</li>`).join('');
 
+  panel.setAttribute('role', 'region');
+  panel.setAttribute('aria-label', `Small wins for ${dateStr}`);
   panel.innerHTML =
     `<div class="wins-detail-header">` +
       `<div><div class="wins-detail-date">${dateStr}</div>` +
       `<div class="wins-detail-sub">small wins ✿</div></div>` +
-      `<button class="wins-detail-close" onclick="closeDay()">✕</button>` +
+      `<button type="button" class="wins-detail-close" aria-label="Close small wins">✕</button>` +
     `</div>` +
     `<ul class="wins-detail-list">${listHtml}</ul>`;
 
+  panel.querySelector('.wins-detail-close').addEventListener('click', closeDay);
   panel.classList.add('open');
 }
 
@@ -381,9 +437,16 @@ function hideDetail() {
   if (panel) panel.classList.remove('open');
 }
 
-function closeDay() {
+/* restoreFocus: return focus to the day button when the user closed it
+   themselves. Suppressed during re-render, where the button is replaced. */
+function closeDay(restoreFocus = true) {
   if (openedDay) {
+    const btn = openedDay.querySelector('.cal-day-cover[data-date]');
     openedDay.classList.remove('opened');
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      if (restoreFocus && btn.isConnected) btn.focus();
+    }
     openedDay = null;
   }
   hideDetail();

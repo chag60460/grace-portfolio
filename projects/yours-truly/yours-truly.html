@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yours, Truly — Grace Chang</title>
+  <meta name="description" content="Yours, Truly: a full-stack wellness journaling web app with structured daily prompts, mood tracking, and secure authentication." />
   <link rel="stylesheet" href="../../css/styles.css" />
   <style>
     /* ── Project page layout ── */
@@ -17,7 +18,7 @@
       align-items: center;
       gap: 4px;
       font-size: 12px;
-      color: #9a85aa;
+      color: #6b5a7d;
       text-decoration: none;
       padding: 16px 24px 0;
       transition: color 0.15s;
@@ -268,7 +269,7 @@
     }
     .feature-card p {
       font-size: 11px;
-      color: #7a6a8a;
+      color: #5a4a6a;
       line-height: 1.6;
       margin: 0;
     }
@@ -302,7 +303,7 @@
     }
     .process-card p {
       font-size: 11px;
-      color: #7a6a8a;
+      color: #5a4a6a;
       line-height: 1.6;
       margin: 0;
     }
@@ -583,7 +584,7 @@
     .mockup-caption span {
       display: block;
       font-size: 10px;
-      color: #9a85aa;
+      color: #6b5a7d;
       font-weight: 400;
       margin-top: 2px;
       line-height: 1.4;
@@ -626,7 +627,7 @@
       font-family: monospace;
     }
     .schema-field .field-type {
-      color: #9a85aa;
+      color: #6b5a7d;
       font-size: 10px;
     }
     .schema-field .field-key {
@@ -675,7 +676,7 @@
     }
     .security-card p {
       font-size: 11px;
-      color: #7a6a8a;
+      color: #5a4a6a;
       line-height: 1.5;
       margin: 0;
     }
@@ -683,13 +684,53 @@
     /* ── Image caption ── */
     .img-caption {
       font-size: 11px;
-      color: #9a85aa;
+      color: #6b5a7d;
       text-align: center;
       margin-top: -6px;
       margin-bottom: 14px;
       font-style: italic;
     }
-  </style>
+  
+    /* ============================================================
+       PROJECT PAGE — RESPONSIVE
+       ============================================================ */
+
+    /* Tablet: relax the fixed inner scroll box */
+    @media (max-width: 900px) {
+      .main-content { max-height: none; }
+    }
+
+    /* Phone: collapse every multi-column grid, shrink the hero */
+    @media (max-width: 700px) {
+      .main-content { max-height: none; overflow-y: visible; }
+
+      .hero { height: 190px; }
+      .hero-overlay { padding: 22px 18px 14px; }
+      .hero-overlay h1 { font-size: 20px; }
+      .hero-overlay .hero-subtitle { font-size: 12px; }
+
+      .back-link { padding: 12px 18px 0; }
+
+      /* Inline style attributes need !important to be overridden */
+      .project-meta,
+  .feature-grid,
+  .process-flow,
+  .schema-grid,
+  .security-grid,
+      [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      .process-flow .flow-arrow,
+      .flow-arrow { transform: rotate(90deg); }
+    }
+
+    /* Very small phones */
+    @media (max-width: 420px) {
+      .hero { height: 150px; }
+      .hero-overlay h1 { font-size: 18px; }
+    }
+</style>
 </head>
 <body>
 
@@ -724,7 +765,7 @@
       </div>
       <div class="main-content">
 
-        <a href="../../index.html" class="back-link" onclick="sessionStorage.setItem('openSection','about')">‹ back to portfolio</a>
+        <a href="../../index.html" class="back-link" data-open-section="about">‹ back to portfolio</a>
 
         <!-- ════════════ HERO ════════════ -->
         <div class="hero">
@@ -1148,6 +1189,14 @@
   }
   updateClock();
   setInterval(updateClock, 30000);
+</script>
+<script>
+  /* openSection-wiring: remember which panel to reopen on the home page */
+  document.querySelectorAll('[data-open-section]').forEach(el => {
+    el.addEventListener('click', () => {
+      sessionStorage.setItem('openSection', el.dataset.openSection);
+    });
+  });
 </script>
 </body>
 </html>
