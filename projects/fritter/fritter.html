@@ -40,48 +40,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 18px;
+      gap: 26px;
     }
-    .hero-phone {
-      width: 110px;
-      height: 220px;
-      background: #FDFCFF;
-      border-radius: 20px;
-      border: 1px solid #e2dcef;
-      box-shadow: 0 12px 30px rgba(60,40,90,.18);
-      overflow: hidden;
-      flex-shrink: 0;
-      padding: 6px;
+    .hero-shot {
+      height: 236px;
+      width: auto;
+      display: block;
+      border-radius: 14px;
+      filter: drop-shadow(0 14px 28px rgba(30,60,58,.28));
     }
-    .hero-phone-inner {
-      background: #FDFCFF;
-      border-radius: 16px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .fp-bar { height: 12px; border-bottom: 0.5px solid #EFEAF7; }
-    .fp-body { flex: 1; padding: 7px 8px; overflow: hidden; }
-    .fp-tag { font-size: 4.5px; font-weight: 700; color: #3F8C84; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
-    .fp-q { font-size: 6px; line-height: 1.4; color: #26403D; font-weight: 600; margin-bottom: 5px; }
-    .fp-chip { display: inline-block; border: 0.5px solid #A8CFCB; color: #3F8C84; border-radius: 99px; padding: 1.5px 5px; font-size: 4px; margin: 1px; }
-    .fp-chip.on { background: #5FA49B; color: #fff; border-color: #5FA49B; }
-    .fp-post { background: #fff; border: 0.5px solid #E6F0EF; border-radius: 5px; height: 22px; margin-bottom: 3px; }
-    .fp-post.lock { display: flex; align-items: center; justify-content: center; font-size: 6px; color: #9DBFBB; }
-    .fp-points { text-align: center; margin: 6px 0; }
-    .fp-points-num { font-size: 16px; font-weight: 700; color: #3F8C84; line-height: 1; }
-    .fp-points-lbl { font-size: 4px; color: #8FA5A2; text-transform: uppercase; letter-spacing: 0.06em; }
-    .fp-ring {
-      width: 52px; height: 52px; border-radius: 50%;
-      margin: 8px auto 6px;
-      background: conic-gradient(#5FA49B 0 72%, #DDEAE8 72% 100%);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .fp-ring i { width: 40px; height: 40px; border-radius: 50%; background: #FDFCFF; display: flex; align-items: center; justify-content: center; font-size: 6px; font-weight: 700; color: #26403D; font-style: normal; }
-    .fp-note { font-size: 4.5px; color: #8FA5A2; text-align: center; line-height: 1.5; }
-    .fp-nav { height: 14px; border-top: 0.5px solid #E6F0EF; display: flex; justify-content: space-around; align-items: center; font-size: 3.5px; color: #9DBFBB; }
-    .fp-nav .act { color: #3F8C84; font-weight: 700; }
+    .hero-shot.lift { transform: translateY(-14px); }
 
     .hero-overlay {
       position: absolute;
@@ -91,7 +59,7 @@
       align-items: center;
       justify-content: flex-end;
       padding-bottom: 18px;
-      background: linear-gradient(to top, rgba(40,30,60,.55), rgba(40,30,60,0) 55%);
+      background: linear-gradient(to top, rgba(25,45,43,.62), rgba(25,45,43,0) 38%);
       pointer-events: none;
     }
     .hero-overlay h1 {
@@ -364,61 +332,9 @@
         <!-- ════════════ HERO ════════════ -->
         <div class="hero">
           <div class="hero-inner">
-
-            <!-- Survey screen -->
-            <div class="hero-phone">
-              <div class="hero-phone-inner">
-                <div class="fp-bar"></div>
-                <div class="fp-body">
-                  <div class="fp-tag">Today's feed</div>
-                  <div class="fp-q">What would you like to see more of?</div>
-                  <div>
-                    <span class="fp-chip on">#disability</span>
-                    <span class="fp-chip on">#nba</span>
-                    <span class="fp-chip">#politics</span>
-                    <span class="fp-chip">#gaming</span>
-                  </div>
-                  <div class="fp-q" style="margin-top:7px">Show differing perspectives?</div>
-                  <div>
-                    <span class="fp-chip on">Yes</span>
-                    <span class="fp-chip">No</span>
-                  </div>
-                </div>
-                <div class="fp-nav"><span class="act">Feed</span><span>Chat</span><span>Me</span></div>
-              </div>
-            </div>
-
-            <!-- Reward screen -->
-            <div class="hero-phone" style="transform: translateY(-12px);">
-              <div class="hero-phone-inner">
-                <div class="fp-bar"></div>
-                <div class="fp-body">
-                  <div class="fp-tag">Your balance</div>
-                  <div class="fp-points">
-                    <div class="fp-points-num">30</div>
-                    <div class="fp-points-lbl">minutes earned</div>
-                  </div>
-                  <div class="fp-post"></div>
-                  <div class="fp-post"></div>
-                  <div class="fp-post lock">🔒 message a friend to unlock</div>
-                </div>
-                <div class="fp-nav"><span>Feed</span><span class="act">Chat</span><span>Me</span></div>
-              </div>
-            </div>
-
-            <!-- Time limit screen -->
-            <div class="hero-phone">
-              <div class="hero-phone-inner">
-                <div class="fp-bar"></div>
-                <div class="fp-body">
-                  <div class="fp-tag">Daily limit</div>
-                  <div class="fp-ring"><i>18:04</i></div>
-                  <div class="fp-note">You set 25 minutes today.<br />Chat stays open when time runs out.</div>
-                </div>
-                <div class="fp-nav"><span>Feed</span><span>Chat</span><span class="act">Me</span></div>
-              </div>
-            </div>
-
+            <img class="hero-shot" src="media/shot_feed.png" alt="Fritter feed with posts locked until the reader earns points" />
+            <img class="hero-shot lift" src="media/shot_chat.png" alt="Fritter chat screen where messaging a friend earns browsing time" />
+            <img class="hero-shot" src="media/shot_limit.png" alt="Fritter daily limit warning offering five more minutes or exit" />
           </div>
           <div class="hero-overlay">
             <h1>Fritter</h1>
@@ -629,6 +545,13 @@
             </tbody>
           </table>
 
+          <h3>Wireframing the survivors</h3>
+          <p>With three concepts left, I moved into Figma to work out the actual flows — how the survey opens the day, where earned minutes surface while browsing, and what the limit does when it fires. Drawing the screens is also what exposed the conflicts that peer critique would later confirm.</p>
+
+          <div class="links-row">
+            <a class="link-btn" href="https://www.figma.com/design/uv1mCkyagYMeN9Wpddybgf/Fritter-Wireframe" target="_blank" rel="noopener noreferrer">Figma wireframes ↗</a>
+          </div>
+
           <!-- ════════════ 7. SPECIFY ════════════ -->
           <div class="stage">Stage 07 · Specify</div>
           <h2>Specifying the system</h2>
@@ -722,7 +645,6 @@
 
           <div class="links-row">
             <a class="link-btn" href="https://chag60460.github.io/fritter-case-study/" target="_blank" rel="noopener noreferrer">Full process archive ↗</a>
-            <a class="link-btn" href="https://www.figma.com/design/uv1mCkyagYMeN9Wpddybgf/Fritter-Wireframe" target="_blank" rel="noopener noreferrer">Figma wireframes ↗</a>
           </div>
 
           <p class="privacy-note">Research participants are referred to as Participant A and Participant B. Names and identifying details have been removed or generalized; quotes are preserved except where they contained identifying information.</p>
