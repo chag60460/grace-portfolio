@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fritter — Grace Chang</title>
+  <meta name="description" content="Fritter: a research-driven social feed redesign that gives people explicit control over how their feed is curated. From user interviews through concept design, critique, and shipped implementation." />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <style>
+    /* ── Project page layout ── */
+    .window-area { grid-template-columns: 1fr !important; }
+    .main-window { min-height: auto; }
+    .main-content { padding: 0; overflow-y: auto; max-height: 75vh; }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #6b5a7d;
+      text-decoration: none;
+      padding: 16px 24px 0;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #6a4a9a; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #DCEDEB, #C6E1DE, #A8CFCB);
+    }
+    .hero-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+    .hero-phone {
+      width: 110px;
+      height: 220px;
+      background: #FDFCFF;
+      border-radius: 20px;
+      border: 1px solid #e2dcef;
+      box-shadow: 0 12px 30px rgba(60,40,90,.18);
+      overflow: hidden;
+      flex-shrink: 0;
+      padding: 6px;
+    }
+    .hero-phone-inner {
+      background: #FDFCFF;
+      border-radius: 16px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .fp-bar { height: 12px; border-bottom: 0.5px solid #EFEAF7; }
+    .fp-body { flex: 1; padding: 7px 8px; overflow: hidden; }
+    .fp-tag { font-size: 4.5px; font-weight: 700; color: #3F8C84; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+    .fp-q { font-size: 6px; line-height: 1.4; color: #26403D; font-weight: 600; margin-bottom: 5px; }
+    .fp-chip { display: inline-block; border: 0.5px solid #A8CFCB; color: #3F8C84; border-radius: 99px; padding: 1.5px 5px; font-size: 4px; margin: 1px; }
+    .fp-chip.on { background: #5FA49B; color: #fff; border-color: #5FA49B; }
+    .fp-post { background: #fff; border: 0.5px solid #E6F0EF; border-radius: 5px; height: 22px; margin-bottom: 3px; }
+    .fp-post.lock { display: flex; align-items: center; justify-content: center; font-size: 6px; color: #9DBFBB; }
+    .fp-points { text-align: center; margin: 6px 0; }
+    .fp-points-num { font-size: 16px; font-weight: 700; color: #3F8C84; line-height: 1; }
+    .fp-points-lbl { font-size: 4px; color: #8FA5A2; text-transform: uppercase; letter-spacing: 0.06em; }
+    .fp-ring {
+      width: 52px; height: 52px; border-radius: 50%;
+      margin: 8px auto 6px;
+      background: conic-gradient(#5FA49B 0 72%, #DDEAE8 72% 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fp-ring i { width: 40px; height: 40px; border-radius: 50%; background: #FDFCFF; display: flex; align-items: center; justify-content: center; font-size: 6px; font-weight: 700; color: #26403D; font-style: normal; }
+    .fp-note { font-size: 4.5px; color: #8FA5A2; text-align: center; line-height: 1.5; }
+    .fp-nav { height: 14px; border-top: 0.5px solid #E6F0EF; display: flex; justify-content: space-around; align-items: center; font-size: 3.5px; color: #9DBFBB; }
+    .fp-nav .act { color: #3F8C84; font-weight: 700; }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 18px;
+      background: linear-gradient(to top, rgba(40,30,60,.55), rgba(40,30,60,0) 55%);
+      pointer-events: none;
+    }
+    .hero-overlay h1 {
+      font-size: 26px;
+      color: #fff;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    .hero-subtitle {
+      font-size: 12.5px;
+      color: rgba(255,255,255,.9);
+      margin: 4px 0 0;
+    }
+
+    /* ── Case study body ── */
+    .case-study { padding: 24px 28px 32px; }
+
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,.55);
+      border: 0.5px solid rgba(200,180,220,.35);
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+    .meta-label {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #c5a0d8;
+      margin-bottom: 4px;
+    }
+    .meta-value { font-size: 12px; color: #4a3f5c; font-weight: 500; line-height: 1.4; }
+
+    .case-study h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #4a3f5c;
+      margin: 32px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .case-study h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6a4a9a;
+      margin: 18px 0 6px;
+    }
+    .case-study p { font-size: 13px; color: #5a4a6a; line-height: 1.75; margin-bottom: 12px; }
+    .case-study ul { font-size: 13px; color: #5a4a6a; line-height: 1.8; padding-left: 20px; margin-bottom: 14px; }
+
+    /* stage label above each h2 */
+    .stage {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #c5a0d8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 30px;
+    }
+    .stage + h2 { margin-top: 4px; }
+
+    .prompt-box {
+      background: rgba(240, 230, 255, 0.5);
+      border-left: 3px solid #c5b8f0;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #6a4a9a;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+    .tags-row .project-tag {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #ede4f5;
+      color: #6a4a9a;
+      font-weight: 500;
+    }
+
+    /* ── Participant cards ── */
+    .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .persona-card {
+      background: rgba(255,255,255,.6);
+      border: 0.5px solid rgba(200,180,220,.35);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .persona-archetype {
+      font-size: 10px; font-weight: 700; color: #c5a0d8;
+      text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px;
+    }
+    .persona-name { font-size: 13px; font-weight: 600; color: #4a3f5c; margin-bottom: 6px; }
+    .persona-card p { font-size: 11.5px; color: #5a4a6a; line-height: 1.6; margin: 0 0 8px; }
+    .persona-quote {
+      font-style: italic; font-size: 11px; color: #6b5a7d;
+      border-left: 2px solid #ddd0ef; padding-left: 10px; margin: 0;
+    }
+
+    /* ── Insight callout ── */
+    .insight {
+      background: rgba(123, 94, 167, .07);
+      border: 0.5px solid rgba(123, 94, 167, .25);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 18px 0;
+    }
+    .insight-label {
+      font-size: 9.5px; font-weight: 700; color: #7B5EA7;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    .insight p { margin: 0; font-size: 13.5px; color: #4a3f5c; line-height: 1.7; }
+
+    /* ── Concept grid ── */
+    .concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+    .concept-card {
+      background: rgba(255,255,255,.6);
+      border: 0.5px solid rgba(200,180,220,.35);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .concept-card img { width: 100%; height: 130px; object-fit: cover; object-position: top; display: block; background: #f6f2fb; }
+    .concept-body { padding: 12px 14px 14px; }
+    .concept-num {
+      font-size: 9px; font-weight: 700; color: #c5a0d8;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .concept-name { font-size: 12.5px; font-weight: 600; color: #4a3f5c; margin: 3px 0 5px; }
+    .concept-card p { font-size: 11px; line-height: 1.55; margin: 0; color: #5a4a6a; }
+    .verdict {
+      display: inline-block; font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.4px;
+      border-radius: 99px; padding: 2px 8px; margin-top: 8px;
+    }
+    .verdict.kept { background: rgba(88, 150, 110, .13); color: #3f7a56; }
+    .verdict.cut  { background: rgba(179, 0, 89, .09); color: #9c3b6a; }
+
+    /* ── Decision table ── */
+    .landscape-table {
+      width: 100%; border-collapse: collapse; font-size: 11.5px; margin: 14px 0;
+      background: rgba(255,255,255,.5); border-radius: 10px; overflow: hidden;
+      border: 0.5px solid rgba(200,180,220,.3);
+    }
+    .landscape-table th {
+      background: rgba(240,230,255,.5); color: #6a4a9a; font-weight: 600;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 10px 10px; text-align: left;
+      border-bottom: 0.5px solid rgba(200,180,220,.3);
+    }
+    .landscape-table td {
+      padding: 10px; color: #5a4a6a; vertical-align: top; line-height: 1.55;
+      border-bottom: 0.5px solid rgba(200,180,220,.15);
+    }
+    .landscape-table td:first-child { font-weight: 600; color: #4a3f5c; white-space: nowrap; }
+    .landscape-table tr:last-child td { border-bottom: none; }
+
+    /* ── Before / after critique pairs ── */
+    .change-list { display: grid; gap: 10px; margin: 16px 0; }
+    .change-row {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 10px;
+    }
+    .change-cell {
+      border-radius: 10px; padding: 13px 15px; font-size: 11.5px; line-height: 1.6;
+      border: 0.5px solid rgba(200,180,220,.35);
+    }
+    .change-cell.crit { background: rgba(179, 0, 89, .05); }
+    .change-cell.fix  { background: rgba(88, 150, 110, .07); }
+    .change-cell b { display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+    .change-cell.crit b { color: #9c3b6a; }
+    .change-cell.fix b { color: #3f7a56; }
+    .change-arrow { display: flex; align-items: center; color: #c5a0d8; font-size: 15px; }
+
+    /* ── Figures ── */
+    figure { margin: 16px 0; }
+    figure img { width: 100%; border-radius: 10px; border: 0.5px solid rgba(200,180,220,.35); display: block; }
+    figcaption { font-size: 11px; color: #8a7d9c; margin-top: 7px; line-height: 1.5; text-align: center; }
+    .fig-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+    .fig-row.two { grid-template-columns: repeat(2, 1fr); max-width: 560px; }
+    .fig-row figure { margin: 0; }
+    .fig-row img { height: 150px; object-fit: cover; object-position: top; }
+    .fig-row.two img { height: 200px; }
+
+    /* ── Video showcase ── */
+    .demo-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0; }
+    .demo-card {
+      background: rgba(255,255,255,.6);
+      border: 0.5px solid rgba(200,180,220,.35);
+      border-radius: 10px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .demo-card video {
+      width: 100%; display: block; background: #12100f;
+      max-height: 360px; object-fit: contain;
+    }
+    .demo-body { padding: 12px 14px 14px; }
+    .demo-name { font-size: 12.5px; font-weight: 600; color: #4a3f5c; margin-bottom: 4px; }
+    .demo-card p { font-size: 11px; line-height: 1.55; margin: 0; color: #5a4a6a; }
+
+    /* ── Links out ── */
+    .links-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 4px; }
+    .link-btn {
+      font-size: 11.5px; text-decoration: none; font-weight: 500;
+      padding: 9px 16px; border-radius: 99px;
+      background: #ede4f5; color: #6a4a9a;
+      border: 0.5px solid rgba(200,180,220,.5);
+      transition: background .15s, color .15s;
+    }
+    .link-btn:hover { background: #6a4a9a; color: #fff; }
+
+    .privacy-note {
+      font-size: 11px; color: #8a7d9c; font-style: italic;
+      line-height: 1.6; margin-top: 18px;
+      padding-top: 12px; border-top: 0.5px solid rgba(200,180,220,.3);
+    }
+
+    @media (max-width: 780px) {
+      .project-meta { grid-template-columns: 1fr 1fr; }
+      .concept-grid, .fig-row, .demo-row { grid-template-columns: 1fr; }
+      .persona-grid { grid-template-columns: 1fr; }
+      .change-row { grid-template-columns: 1fr; }
+      .change-arrow { transform: rotate(90deg); justify-content: center; }
+      .hero-phone:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── Menu bar ── -->
+  <div class="menubar">
+    <div class="menubar-left">
+      <span class="menubar-brand">grace.dev</span>
+      <span>File</span>
+      <span>View</span>
+      <span>Go</span>
+      <span>Help</span>
+    </div>
+    <div class="menubar-right">
+      <span>Open to work</span>
+      <span id="clock"></span>
+    </div>
+  </div>
+
+  <!-- ── Window area ── -->
+  <div class="window-area">
+
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">fritter — case study</span>
+      </div>
+      <div class="main-content">
+
+        <a href="../../index.html" class="back-link" data-open-section="about">‹ back to portfolio</a>
+
+        <!-- ════════════ HERO ════════════ -->
+        <div class="hero">
+          <div class="hero-inner">
+
+            <!-- Survey screen -->
+            <div class="hero-phone">
+              <div class="hero-phone-inner">
+                <div class="fp-bar"></div>
+                <div class="fp-body">
+                  <div class="fp-tag">Today's feed</div>
+                  <div class="fp-q">What would you like to see more of?</div>
+                  <div>
+                    <span class="fp-chip on">#disability</span>
+                    <span class="fp-chip on">#nba</span>
+                    <span class="fp-chip">#politics</span>
+                    <span class="fp-chip">#gaming</span>
+                  </div>
+                  <div class="fp-q" style="margin-top:7px">Show differing perspectives?</div>
+                  <div>
+                    <span class="fp-chip on">Yes</span>
+                    <span class="fp-chip">No</span>
+                  </div>
+                </div>
+                <div class="fp-nav"><span class="act">Feed</span><span>Chat</span><span>Me</span></div>
+              </div>
+            </div>
+
+            <!-- Reward screen -->
+            <div class="hero-phone" style="transform: translateY(-12px);">
+              <div class="hero-phone-inner">
+                <div class="fp-bar"></div>
+                <div class="fp-body">
+                  <div class="fp-tag">Your balance</div>
+                  <div class="fp-points">
+                    <div class="fp-points-num">30</div>
+                    <div class="fp-points-lbl">minutes earned</div>
+                  </div>
+                  <div class="fp-post"></div>
+                  <div class="fp-post"></div>
+                  <div class="fp-post lock">🔒 message a friend to unlock</div>
+                </div>
+                <div class="fp-nav"><span>Feed</span><span class="act">Chat</span><span>Me</span></div>
+              </div>
+            </div>
+
+            <!-- Time limit screen -->
+            <div class="hero-phone">
+              <div class="hero-phone-inner">
+                <div class="fp-bar"></div>
+                <div class="fp-body">
+                  <div class="fp-tag">Daily limit</div>
+                  <div class="fp-ring"><i>18:04</i></div>
+                  <div class="fp-note">You set 25 minutes today.<br />Chat stays open when time runs out.</div>
+                </div>
+                <div class="fp-nav"><span>Feed</span><span>Chat</span><span class="act">Me</span></div>
+              </div>
+            </div>
+
+          </div>
+          <div class="hero-overlay">
+            <h1>Fritter</h1>
+            <p class="hero-subtitle">Giving people explicit control over how their feed gets built</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+
+          <!-- ════════════ META ════════════ -->
+          <div class="project-meta">
+            <div class="meta-item">
+              <div class="meta-label">Role</div>
+              <div class="meta-value">Solo Designer &amp; Developer</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Type</div>
+              <div class="meta-value">Research → Shipped Redesign</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Timeline</div>
+              <div class="meta-value">7 weeks · Sep–Oct 2022</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Context</div>
+              <div class="meta-value">MIT 6.1040 Software Studio</div>
+            </div>
+          </div>
+
+          <!-- ════════════ OVERVIEW ════════════ -->
+          <h2>Overview</h2>
+          <p>Fritter is a redesign of the social feed built around a single idea: <strong>people should be able to say what they want to see, and understand why they're seeing it.</strong> I ran the project end to end — teardown of the incumbent, two user interviews, six concepts, three shipped features, peer critique, and a working frontend and backend.</p>
+
+          <div class="prompt-box">
+            Twitter decides what you see and never explains how. How might we hand that decision back to the person scrolling — without making the feed worse?
+          </div>
+
+          <div class="tags-row">
+            <span class="project-tag">User Research</span>
+            <span class="project-tag">Concept Design</span>
+            <span class="project-tag">Interaction Design</span>
+            <span class="project-tag">Design Critique</span>
+            <span class="project-tag">Vue + TypeScript</span>
+            <span class="project-tag">MongoDB</span>
+          </div>
+
+          <!-- ════════════ 1. INCUMBENT ════════════ -->
+          <div class="stage">Stage 01 · Understand</div>
+          <h2>Tearing down the incumbent</h2>
+          <p>Before proposing anything, I audited how Twitter actually behaves — what it rewards, what it hides, and where its design creates harm. I looked at accessibility affordances, engagement mechanics, and the way controversy propagates through quote-tweeting.</p>
+          <p>The finding that shaped everything after: <strong>the platform treats all engagement as positive signal.</strong> A quote-tweet written to condemn a post boosts that post exactly as much as one written to endorse it. The system has no concept of the user's intent — so outrage and agreement are indistinguishable inputs to the same ranking function.</p>
+          <p>What the platform gets right is worth naming too. Hashtags, bios, and threads make it genuinely possible to find people like you, and accessibility affordances have improved steadily. Any redesign had to preserve that discovery capability while fixing the ranking opacity underneath it.</p>
+
+          <div class="fig-row two">
+            <figure>
+              <img src="media/alt_text.png" alt="Twitter's alt text editor for describing images" loading="lazy" />
+              <figcaption>Accessibility affordances added over time — alt text authoring for images</figcaption>
+            </figure>
+            <figure>
+              <img src="media/tck.jpeg" alt="A Twitter thread discussing identity and belonging across cultures" loading="lazy" />
+              <figcaption>What works: threads let people find others navigating the same questions</figcaption>
+            </figure>
+          </div>
+
+          <!-- ════════════ 2. RESEARCH PLAN ════════════ -->
+          <div class="stage">Stage 02 · Plan</div>
+          <h2>Defining who to talk to, and why</h2>
+          <p>I wrote selection criteria before recruiting anyone, so the sample would stretch across the dimensions most likely to change how someone experiences a feed:</p>
+          <ul>
+            <li><strong>Personal background</strong> — lived experience that shapes what community means online</li>
+            <li><strong>Academic background</strong> — inside and outside my own institution and discipline, so the sample wasn't a mirror</li>
+            <li><strong>Belief background</strong> — people who identify strongly with a religious or political community, to test whether the feed builds or breaks echo chambers</li>
+          </ul>
+          <p>I then deliberately recruited two participants who sat at <strong>opposite ends of usage</strong>: one light user who mostly posts, one heavy user who mostly browses. If both reported the same frustration, that frustration was structural rather than personal.</p>
+
+          <!-- ════════════ 3. INTERVIEWS ════════════ -->
+          <div class="stage">Stage 03 · Listen</div>
+          <h2>Two interviews, opposite ends of the spectrum</h2>
+
+          <div class="persona-grid">
+            <div class="persona-card">
+              <div class="persona-archetype">Participant A · light user</div>
+              <div class="persona-name">The advocate who posts</div>
+              <p>Joined recently on a mentor's recommendation. Uses the platform to find community and share resources, and is deliberate about what she reveals. Values hashtags and bios as the connective tissue that makes finding people possible.</p>
+              <p class="persona-quote">"If you want to talk to another disabled person, you can just search them up… through these hashtags you can find community and share resources."</p>
+            </div>
+            <div class="persona-card">
+              <div class="persona-archetype">Participant B · heavy user</div>
+              <div class="persona-name">The browser who lurks</div>
+              <p>Years of daily use, mostly scrolling for news, sport, and politics. Likes the speed and the ease of skipping past things. Aware the habit has gotten away from him, and frustrated that the feed gives him no dial to turn.</p>
+              <p class="persona-quote">"I wish there's more user choice for what's popping up… it would be nice if user has input to a curated content, not just the algorithm."</p>
+            </div>
+          </div>
+
+          <!-- ════════════ 4. SYNTHESIS ════════════ -->
+          <div class="stage">Stage 04 · Synthesize</div>
+          <h2>Where two very different users converged</h2>
+          <p>Participant A wanted <em>reach without exposure</em> — community access without surrendering privacy. Participant B wanted <em>speed without capture</em> — quick information without the compulsive pull. On the surface, opposite problems.</p>
+          <p>Both, however, described the same underlying cause: they had no say in how the feed was assembled, and no visibility into why any given post appeared. Participant A put the mechanism plainly — the algorithm "does not tell you whether things are bad engagement or good engagement." Participant B described the consequence: "if you lean one way directly, you are probably going to interact with only people sharing the same mindset."</p>
+
+          <div class="insight">
+            <div class="insight-label">The insight that set the direction</div>
+            <p>A light sharer and a heavy browser, with nothing else in common, both asked for the same thing: <strong>explicit input into curation.</strong> Opacity wasn't a preference problem, it was a structural one — which meant the fix belonged in the mechanism, not in the settings menu.</p>
+          </div>
+
+          <!-- ════════════ 5. DIVERGE ════════════ -->
+          <div class="stage">Stage 05 · Diverge</div>
+          <h2>Six concepts</h2>
+          <p>Each concept got a stated purpose and an operating principle — what it's for, and exactly what happens when someone uses it. Three adapted existing patterns, three invented new ones.</p>
+
+          <div class="concept-grid">
+            <div class="concept-card">
+              <img src="media/design_1.jpeg" alt="Sketch of periodic user survey concept" loading="lazy" />
+              <div class="concept-body">
+                <div class="concept-num">Concept 01 · adjust</div>
+                <div class="concept-name">Periodic user survey</div>
+                <p>Ask people directly what they want more of, and whether they want opposing views — then curate from the answer.</p>
+                <span class="verdict kept">Shipped</span>
+              </div>
+            </div>
+            <div class="concept-card">
+              <img src="media/design_2.jpeg" alt="Sketch of screen time limit concept" loading="lazy" />
+              <div class="concept-body">
+                <div class="concept-num">Concept 02 · adopt</div>
+                <div class="concept-name">Screen time limit</div>
+                <p>A self-set daily cap, borrowed from iOS Screen Time, with a soft "five more minutes" override.</p>
+                <span class="verdict kept">Shipped</span>
+              </div>
+            </div>
+            <div class="concept-card">
+              <img src="media/point.jpeg" alt="Sketch of accumulating points reward concept" loading="lazy" />
+              <div class="concept-body">
+                <div class="concept-num">Concept 04 · adopt</div>
+                <div class="concept-name">Accumulating points</div>
+                <p>Earn browsing minutes by messaging friends, so the currency of the app is conversation rather than consumption.</p>
+                <span class="verdict kept">Shipped</span>
+              </div>
+            </div>
+            <div class="concept-card">
+              <img src="media/design_3.jpeg" alt="Sketch of disappearing content concept" loading="lazy" />
+              <div class="concept-body">
+                <div class="concept-num">Concept 03 · invent</div>
+                <div class="concept-name">Disappearing content</div>
+                <p>Fifty posts a day, chosen by topic, each vanishing as you scroll past it. Empty feed until tomorrow.</p>
+                <span class="verdict cut">Cut</span>
+              </div>
+            </div>
+            <div class="concept-card">
+              <img src="media/warning.jpeg" alt="Sketch of public search history concept" loading="lazy" />
+              <div class="concept-body">
+                <div class="concept-num">Concept 05 · invent</div>
+                <div class="concept-name">Public search history</div>
+                <p>Exceed your limit and the app publishes your recent searches and most-visited profiles to your page.</p>
+                <span class="verdict cut">Cut</span>
+              </div>
+            </div>
+            <div class="concept-card">
+              <img src="media/spinner.jpeg" alt="Sketch of spinning wheel randomization concept" loading="lazy" />
+              <div class="concept-body">
+                <div class="concept-num">Concept 06 · invent</div>
+                <div class="concept-name">Spinning wheel</div>
+                <p>Spin to pick one of five randomized bundles drawn from the hashtags you follow.</p>
+                <span class="verdict cut">Cut</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ════════════ 6. CONVERGE ════════════ -->
+          <div class="stage">Stage 06 · Decide</div>
+          <h2>Three in, three out</h2>
+          <p>The three I cut are the more interesting half of the decision.</p>
+
+          <table class="landscape-table">
+            <thead>
+              <tr><th>Concept</th><th>Call</th><th>Reasoning</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Periodic survey</td>
+                <td>Shipped</td>
+                <td>The only concept that gave direct, explicit input into curation — the exact thing both participants asked for. Daily framing also let intent change day to day.</td>
+              </tr>
+              <tr>
+                <td>Reward system</td>
+                <td>Shipped</td>
+                <td>Turned time on the app into something you earn through conversation, addressing the compulsion without simply locking people out.</td>
+              </tr>
+              <tr>
+                <td>Time limit</td>
+                <td>Shipped</td>
+                <td>Kept opt-in by design. It exists for people who want a brake, and stays invisible to those who don't.</td>
+              </tr>
+              <tr>
+                <td>Public search history</td>
+                <td>Cut</td>
+                <td>It works by shame, and shame is unevenly distributed — plenty of users simply wouldn't care, which defeats the mechanism for exactly the people it targets. It also cut against the goal of making the app feel socially safe.</td>
+              </tr>
+              <tr>
+                <td>Disappearing content</td>
+                <td>Cut</td>
+                <td>Ephemerality undercuts the reason to post at all: what's the point of being here if nothing you share is preserved? Participant A's use case — sharing resources others can find later — dies under this model.</td>
+              </tr>
+              <tr>
+                <td>Spinning wheel</td>
+                <td>Cut</td>
+                <td>Randomization makes the mechanism visible without making it controllable. It's transparency theatre, and the survey already delivered real agency.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- ════════════ 7. SPECIFY ════════════ -->
+          <div class="stage">Stage 07 · Specify</div>
+          <h2>Specifying the system</h2>
+          <p>Each feature was decomposed into concepts with an explicit purpose, state, and set of actions, then synchronized. Writing the state model surfaced conflicts between features long before any of it was built.</p>
+
+          <figure>
+            <img src="media/overall_data_model.jpg" alt="Overall data model showing concepts and their relationships" loading="lazy" />
+            <figcaption>The data model — eight concepts and the synchronizations between them</figcaption>
+          </figure>
+
+          <div class="fig-row">
+            <figure>
+              <img src="media/overall_feature_1.png" alt="Feature specification for user curated content" loading="lazy" />
+              <figcaption>Feature 1 — User Frittered Content: auth, post, and survey concepts in sync</figcaption>
+            </figure>
+            <figure>
+              <img src="media/overall_feature_2.png" alt="Feature specification for the reward system" loading="lazy" />
+              <figcaption>Feature 2 — Reward System: friend, chat, and reward concepts in sync</figcaption>
+            </figure>
+            <figure>
+              <img src="media/overall_feature_3.png" alt="Feature specification for the time limit" loading="lazy" />
+              <figcaption>Feature 3 — Limited Countdown: time limit synced to browsing, not chat</figcaption>
+            </figure>
+          </div>
+
+          <!-- ════════════ 8. CRITIQUE ════════════ -->
+          <div class="stage">Stage 08 · Critique</div>
+          <h2>What critique changed</h2>
+          <p>I reviewed four classmates' designs against concept independence, efficacy, simplicity, and synchronization, and had mine reviewed on the same axes. Four criticisms landed, and each produced a specific change:</p>
+
+          <div class="change-list">
+            <div class="change-row">
+              <div class="change-cell crit"><b>Criticism</b>Two friends could spam each other with junk messages to farm browsing minutes, gaming the reward system.</div>
+              <div class="change-arrow">→</div>
+              <div class="change-cell fix"><b>Change</b>Added a dictionary check on outgoing messages, so repeated or meaningless strings don't earn points.</div>
+            </div>
+            <div class="change-row">
+              <div class="change-cell crit"><b>Criticism</b>The time limit could cut someone off mid-conversation — the app punishing the exact behaviour it rewards.</div>
+              <div class="change-arrow">→</div>
+              <div class="change-cell fix"><b>Change</b>Added a "Chat Only" mode. The limit now applies to browsing the public feed, never to messages.</div>
+            </div>
+            <div class="change-row">
+              <div class="change-cell crit"><b>Criticism</b>The Friend concept existed only to make rewards work, and its relationship to following was unclear.</div>
+              <div class="change-arrow">→</div>
+              <div class="change-cell fix"><b>Change</b>Friends' posts now always appear regardless of survey answers, comments earn points too, and following became explicitly one-way.</div>
+            </div>
+            <div class="change-row">
+              <div class="change-cell crit"><b>Criticism</b>Filling out a survey every single day is a high cost of operation for a small benefit.</div>
+              <div class="change-arrow">→</div>
+              <div class="change-cell fix"><b>Change</b>Yesterday's answers carry forward with one tap, and hashtags became mandatory on posts so the pool stays rich.</div>
+            </div>
+          </div>
+
+          <h3>One I pushed back on</h3>
+          <p>Two reviewers argued that public-by-default posting would induce anxiety and discourage people from posting. I kept it. The goal was never for everyone to post — quieter users can browse and use chat, both first-class paths through the app. Making posts public is what creates the shared surface that community forms on, and Participant A's entire use case depended on strangers being able to find her.</p>
+
+          <!-- ════════════ 9. SHIP ════════════ -->
+          <div class="stage">Stage 09 · Build</div>
+          <h2>Shipping it</h2>
+          <p>I built the design out as a working application — Vue and TypeScript on the front end, Express and MongoDB behind it.</p>
+
+          <div class="demo-row">
+            <div class="demo-card">
+              <video src="media/user_frittered_content.mp4" controls preload="metadata" playsinline></video>
+              <div class="demo-body">
+                <div class="demo-name">User Frittered Content</div>
+                <p>The daily survey, and the feed it produces. You can always trace a post back to an answer you gave.</p>
+              </div>
+            </div>
+            <div class="demo-card">
+              <video src="media/fritter_reward_system.mp4" controls preload="metadata" playsinline></video>
+              <div class="demo-body">
+                <div class="demo-name">Fritter Reward System</div>
+                <p>Messaging a friend earns browsing minutes. Posts stay locked until you've spent some of them.</p>
+              </div>
+            </div>
+            <div class="demo-card">
+              <video src="media/limited_fritter_countdown.mp4" controls preload="metadata" playsinline></video>
+              <div class="demo-body">
+                <div class="demo-name">Limited Fritter Countdown</div>
+                <p>A self-set daily cap on browsing, with chat deliberately exempt from the clock.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ════════════ 10. REFLECT ════════════ -->
+          <div class="stage">Stage 10 · Reflect</div>
+          <h2>What I'd do differently</h2>
+          <p>I'd validate the reward mechanic with users before specifying it. I designed it from a principle — conversation over consumption — and only found the spam loophole once it reached critique. A handful of concept tests would have surfaced that a week earlier, and cheaply.</p>
+          <p>I'd also treat the daily survey as a hypothesis rather than a settled feature. Cost of operation was the criticism I most underestimated: I was so focused on giving people control that I didn't count what exercising that control would cost them every single morning. Agency isn't free, and a design that demands it daily has to earn the interruption.</p>
+
+          <div class="links-row">
+            <a class="link-btn" href="https://chag60460.github.io/fritter-case-study/" target="_blank" rel="noopener noreferrer">Full process archive ↗</a>
+            <a class="link-btn" href="https://www.figma.com/design/uv1mCkyagYMeN9Wpddybgf/Fritter-Wireframe" target="_blank" rel="noopener noreferrer">Figma wireframes ↗</a>
+          </div>
+
+          <p class="privacy-note">Research participants are referred to as Participant A and Participant B. Names and identifying details have been removed or generalized; quotes are preserved except where they contained identifying information.</p>
+
+        </div><!-- /case-study -->
+
+      </div><!-- /main-content -->
+    </div><!-- /main-window -->
+
+  </div><!-- /window-area -->
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span><span class="status-dot"></span>available for work</span>
+    <span>grace@portfolio ~ </span>
+    <div class="status-links">
+      <a href="https://github.com/chag60460" target="_blank">github</a>
+      <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
+      <a href="mailto:chag60460@gmail.com">email</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const formatted = now.toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit',
+    });
+    const clockEl = document.getElementById('clock');
+    if (clockEl) clockEl.textContent = formatted;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+</script>
+<script>
+  /* openSection-wiring: remember which panel to reopen on the home page */
+  document.querySelectorAll('[data-open-section]').forEach(el => {
+    el.addEventListener('click', () => {
+      sessionStorage.setItem('openSection', el.dataset.openSection);
+    });
+  });
+</script>
+</body>
+</html>
