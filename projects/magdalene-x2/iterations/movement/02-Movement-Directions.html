@@ -1,0 +1,380 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Movement — three module directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FCF7EF;--paper:#fff;--ink:#2A2431;--ink2:#574F5E;--muted:#968D9B;--line:#EFE6D9;
+ --clay:#C0613E;--clay-d:#9F4D2F;
+ --plum:#7A5C77;--plum-soft:#ECE2EB;--plum-d:#5C4360;
+ --luteal:#E0A24E;--luteal-soft:#F8EAD4;--sage:#7E9A82;--sage-soft:#E7EEE6;--sage-d:#5b7560;--amber:#B5701F;
+ --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --sh:0 1px 2px rgba(40,30,20,.04),0 8px 22px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F6EEE2,#E9E0D2);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:42px 18px 80px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);font-weight:700}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:2px 0 4px}
+.hint{color:var(--ink2);font-size:16px;margin:2px 0 8px;max-width:900px;line-height:1.55}
+.hint b{color:var(--plum-d)}
+.stage{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+.col{width:330px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.cap .badge{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--plum-d);background:var(--plum-soft);border-radius:999px;padding:2px 8px}
+.cap span.d{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.phone{width:330px;background:#fff;border-radius:46px;padding:13px;box-shadow:0 30px 66px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--cream);border-radius:36px;overflow:hidden;height:724px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.tview{position:relative;flex:1;overflow:hidden}
+.tscreen{position:absolute;inset:0;display:none;flex-direction:column}
+.tscreen.on{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.body{flex:1;overflow:auto;padding:8px 20px 14px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--paper);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--clay);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ic.fill{fill:currentColor;stroke:none}.nav .ic{width:22px;height:22px}
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500;cursor:pointer}
+.h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em;margin:0}
+.row{display:flex;align-items:center;gap:13px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--plum-soft);color:var(--plum)}
+.reading{font-family:var(--serif);font-size:21px;font-weight:500;line-height:1.4;letter-spacing:-.01em;margin:14px 0 0}
+.reading em{font-style:normal;color:var(--plum-d)}
+.sub{font-size:13px;color:var(--ink2);line-height:1.5;margin-top:8px}
+.seclbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:20px 0 10px}
+.link{color:var(--plum-d);font-weight:600;font-size:11px;cursor:pointer;letter-spacing:normal;text-transform:none}
+.phasepill{display:inline-flex;align-items:center;gap:7px;background:var(--luteal-soft);color:#8a5a22;border-radius:999px;padding:5px 11px;font-size:11.5px;font-weight:600;margin:14px 0 2px}
+.phasepill i{width:8px;height:8px;border-radius:50%;background:var(--luteal)}
+.disc{font-size:11px;color:var(--muted);margin-top:16px;text-align:center}
+/* A — guidance 3-up card */
+.fcard{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);cursor:pointer;overflow:hidden;transition:transform .12s ease}
+.fcard:active{transform:scale(.99)}
+.fcol{flex:1;padding:13px 4px;text-align:center;border-right:1px solid var(--line)}
+.fcol:last-child{border-right:0}
+.fcol .fic{color:var(--plum)}
+.fk{display:block;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:6px 0 4px}
+.fv{display:block;font-family:var(--serif);font-size:18px;font-weight:600;color:var(--plum-d);line-height:1}
+.fsub{display:block;font-size:9px;color:var(--sage-d);font-weight:600;margin-top:4px}
+.mstrip{display:flex;gap:8px}
+.mcell{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 6px;text-align:center;box-shadow:var(--sh)}
+.mcell .mv{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--plum-d)}
+.mcell .mk{font-size:8.5px;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-top:4px}
+.syncrow{display:flex;align-items:center;gap:11px;background:#FBF6F1;border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-top:16px;cursor:pointer;transition:transform .12s ease}
+.syncrow:active{transform:scale(.99)}
+.syncrow .sh{color:#E0726A;flex:none}
+.syncrow .st{font-size:11.5px;font-weight:600;color:var(--ink2)}
+.syncrow .ss{font-size:10.5px;color:var(--muted);margin-top:1px}
+.syncrow .schev{margin-left:auto;color:var(--muted)}
+/* shared fitness profile (bars) */
+.profcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:2px 15px}
+.dim{display:flex;gap:11px;padding:14px 0;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim .di{width:34px;height:34px;border-radius:10px;background:var(--plum-soft);color:var(--plum);display:grid;place-items:center;flex:none}
+.dim .dmain{flex:1;min-width:0}
+.dim .drow1{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.dim .dn{font-size:14px;font-weight:600}
+.dim .dtrend{font-size:12.5px;font-weight:700;white-space:nowrap}
+.dim .ds{font-size:11.5px;color:var(--muted);margin-top:2px}
+.dlvlrow{display:flex;align-items:center;gap:9px;margin-top:9px}
+.lvlbar{flex:1;height:6px;border-radius:3px;background:#EAE0D2;position:relative}
+.lvlbar>i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--plum)}
+.dlvl{font-size:10.5px;color:var(--sage-d);font-weight:600;white-space:nowrap}
+.tload{display:flex;align-items:center;background:#FBF6F1;border:1px solid var(--line);border-radius:14px;padding:11px 14px}
+.tload .tt{font-size:11.5px;color:var(--muted);font-weight:600}
+.tload .tts{font-size:11.5px;color:var(--ink2);margin-top:2px}
+.bdg{font-size:10.5px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--sage-soft);color:var(--sage-d);white-space:nowrap}
+.cycnote{display:flex;gap:9px;background:#F4EEF3;border:1px solid #E7DCE6;border-radius:14px;padding:12px;margin-top:16px;font-size:12px;color:var(--plum-d);line-height:1.45}
+.cycnote .ic{flex:none;color:var(--plum-d)}
+/* connected apps */
+.src{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.src:last-of-type{border-bottom:0}
+.logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px;flex:none}
+.src .snm{font-size:13.5px;font-weight:600}
+.src .smeta{font-size:11px;color:var(--muted);margin-top:1px}
+.src .sact{margin-left:auto}
+.synced{color:var(--sage-d);font-size:12px;font-weight:600;display:inline-flex;gap:5px;align-items:center;white-space:nowrap}
+.connectbtn{border:1.3px solid var(--plum);color:var(--plum-d);background:#fff;border-radius:999px;padding:6px 15px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer}
+.connectbtn:active{background:var(--plum-soft)}
+.note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:14px}
+/* B — phase-arc hero */
+.archero{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:15px 14px 10px;margin-top:14px}
+.archero .arc-cap{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.archero .arc-cap em{font-style:normal;color:var(--plum-d)}
+.archero .arc-sub{font-size:12px;color:var(--ink2);line-height:1.45;margin:5px 0 10px}
+.arcsvg{width:100%;display:block}
+.arc-x{display:flex;margin-top:4px;font-size:9px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+.arc-x span{text-align:center}
+.arc-x .now{color:var(--plum-d)}
+.readline{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--ink2)}
+.readline b{color:var(--plum-d);font-weight:700}
+/* C — fitness rings */
+.ringrow{display:flex;gap:8px;margin-top:12px;cursor:pointer}
+.ringcell{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:13px 6px 11px;text-align:center;transition:transform .12s ease}
+.ringrow:active .ringcell{transform:scale(.99)}
+.ring{position:relative;width:62px;height:62px;margin:0 auto}
+.ring svg{width:62px;height:62px;transform:rotate(-90deg)}
+.ring .rt{fill:none;stroke:#EAE0D2;stroke-width:6}
+.ring .rf{fill:none;stroke:var(--plum);stroke-width:6;stroke-linecap:round}
+.ring .rc{position:absolute;inset:0;display:grid;place-items:center;color:var(--plum)}
+.ringk{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-top:9px}
+.ringv{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--plum-d);margin-top:2px}
+.rings{font-size:9px;color:var(--sage-d);font-weight:600;margin-top:2px}
+.readcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:15px}
+.reading2{font-family:var(--serif);font-size:19px;font-weight:500;line-height:1.35;letter-spacing:-.01em}
+.reading2 em{font-style:normal;color:var(--plum-d)}
+.minirow{display:flex;gap:16px;margin-top:11px}
+.minirow .mi{font-size:11.5px;color:var(--muted)}
+.minirow .mi b{font-family:var(--serif);font-size:14px;color:var(--plum-d);font-weight:600}
+.ringbig{position:relative;width:74px;height:74px;margin:0 auto}
+.ringbig svg{width:74px;height:74px;transform:rotate(-90deg)}
+.ringbig .rt{fill:none;stroke:#EAE0D2;stroke-width:7}
+.ringbig .rf{fill:none;stroke:var(--plum);stroke-width:7;stroke-linecap:round}
+.ringbig .rc{position:absolute;inset:0;display:grid;place-items:center;color:var(--plum)}
+.foot{margin-top:46px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid #EEE0D8;padding-top:18px}
+</style></head><body><div class="page">
+
+<div class="ibadge">Movement · Iteration 2 · three module directions</div>
+<h1 class="ttl">Movement — three directions, side by side</h1>
+<p class="hint">Same module, same content (cycle-aware guidance · <b>Cardio · Strength · Activity</b> fitness profile · app sync) — three different <b>leads</b>. <b>A guidance-led</b> (calm, on-voice), <b>B phase-arc hero</b> (your cycle training-intensity curve), <b>C fitness-rings</b> (fitness-forward dashboard). Each phone is live: tap the fitness card / rings → profile, the synced row → connected apps, ‹ to go back, Connect buttons work.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="ic-cycle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.9" class="fill"/></symbol>
+<symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 20.5C6.5 16.5 3 13.2 3 9.3 3 6.6 5 4.8 7.4 4.8c1.6 0 3 .9 3.6 2.1.6-1.2 2-2.1 3.6-2.1C19 4.8 21 6.6 21 9.3c0 3.9-3.5 7.2-9 11.2z"/></symbol>
+<symbol id="ic-dumbbell" viewBox="0 0 24 24"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></symbol>
+<symbol id="ic-rings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5.3"/><circle cx="12" cy="12" r="2.2"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></symbol>
+</defs></svg>
+
+<div class="stage">
+
+ <!-- ============ DIRECTION A — GUIDANCE-LED ============ -->
+ <div class="col">
+  <div class="phone"><div class="scr">
+   <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+   <div class="tview">
+    <section class="tscreen on" id="a-over"><div class="body">
+      <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+      <div class="row" style="margin:4px 0 0"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Movement</h2></div>
+      <div class="reading">Recovery's low — <em>ease up today.</em></div>
+      <div class="phasepill"><i></i> Day 22 · Luteal</div>
+      <div class="seclbl" style="display:flex;justify-content:space-between;align-items:center">Fitness level <span class="link" onclick="tnav('a-fitness')">Full profile ›</span></div>
+      <div class="fcard" onclick="tnav('a-fitness')">
+        <div class="fcol"><svg class="ic fic" style="width:19px;height:19px"><use href="#ic-heart"/></svg><span class="fk">Cardio</span><span class="fv">42</span><span class="fsub">VO₂max ↑</span></div>
+        <div class="fcol"><svg class="ic fic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg><span class="fk">Strength</span><span class="fv">Good</span><span class="fsub">lifts ↑</span></div>
+        <div class="fcol"><svg class="ic fic" style="width:19px;height:19px"><use href="#ic-rings"/></svg><span class="fk">Activity</span><span class="fv">High</span><span class="fsub">5 days →</span></div>
+      </div>
+      <div class="seclbl">This morning</div>
+      <div class="mstrip">
+        <div class="mcell"><div class="mv">38%</div><div class="mk">Recovery</div></div>
+        <div class="mcell"><div class="mv">42ms</div><div class="mk">HRV ▼</div></div>
+        <div class="mcell"><div class="mv">61</div><div class="mk">RHR ▲</div></div>
+      </div>
+      <div class="syncrow" onclick="tnav('a-apps')">
+        <svg class="ic sh" style="width:18px;height:18px"><use href="#ic-heart"/></svg>
+        <div><div class="st">Apple Health · Strava · Oura</div><div class="ss">Tap to manage connected apps</div></div>
+        <svg class="ic schev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg>
+      </div>
+      <div class="disc">ⓘ Information, not a diagnosis.</div>
+    </div></section>
+    <section class="tscreen" id="a-fitness"><div class="body">
+      <div class="hdr" onclick="tnav('a-over')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+      <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Fitness level</h2></div>
+      <p class="sub" style="margin-top:0">Where you stand across three dimensions — and which way each is trending.</p>
+      <div class="profcard" style="margin-top:14px">
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-heart"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Cardio fitness</span><span class="dtrend" style="color:var(--sage-d)">↑ +2</span></div><div class="ds">VO₂max 42 mL/kg·min</div><div class="dlvlrow"><div class="lvlbar"><i style="width:72%"></i></div><span class="dlvl">Above average</span></div></div></div>
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-dumbbell"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Strength</span><span class="dtrend" style="color:var(--sage-d)">↑</span></div><div class="ds">3×/wk · key lifts climbing</div><div class="dlvlrow"><div class="lvlbar"><i style="width:60%"></i></div><span class="dlvl">Building</span></div></div></div>
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-rings"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Activity</span><span class="dtrend" style="color:var(--muted)">→</span></div><div class="ds">8.4k steps · 5 active days/wk</div><div class="dlvlrow"><div class="lvlbar"><i style="width:82%"></i></div><span class="dlvl">Consistent</span></div></div></div>
+      </div>
+      <div class="seclbl">Training load</div>
+      <div class="tload"><div><div class="tt">Fitness building · fatigue moderate</div><div class="tts">42-day load vs last 7 days</div></div><span class="bdg" style="margin-left:auto">Productive</span></div>
+      <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Strength &amp; VO₂max gains cluster in your <b>follicular phase</b> — that's the window to schedule the hard work.</div></div>
+      <div class="disc">ⓘ Information, not a diagnosis.</div>
+    </div></section>
+    <section class="tscreen" id="a-apps"><div class="body">
+      <div class="hdr" onclick="tnav('a-over')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+      <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Connected apps</h2></div>
+      <p class="sub" style="margin-top:0">Movement reads workouts, heart rate, strength &amp; recovery from the apps you connect.</p>
+      <div style="margin-top:10px">
+        <div class="src"><div class="logo" style="background:#FC4C02">S</div><div><div class="snm">Strava</div><div class="smeta">Runs, rides &amp; workouts · 1h ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#E0726A"><svg class="ic fill" style="width:19px;height:19px;color:#fff"><use href="#ic-heart"/></svg></div><div><div class="snm">Apple Health</div><div class="smeta">VO₂max, strength, activity · 2m ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#1A1620">O</div><div><div class="snm">Oura</div><div class="smeta">Recovery, HRV, sleep · 12m ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#101316">W</div><div><div class="snm">WHOOP</div><div class="smeta">Strain, strength &amp; recovery</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+        <div class="src"><div class="logo" style="background:#0B7BBE">G</div><div><div class="snm">Garmin</div><div class="smeta">VO₂max, training load</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+        <div class="src"><div class="logo" style="background:#181A1D">P</div><div><div class="snm">Peloton</div><div class="smeta">Classes, strength &amp; output</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+      </div>
+      <p class="note">We only read the data types you allow. Disconnect anytime in Settings.</p>
+    </div></section>
+   </div>
+   <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+  </div></div>
+  <div class="cap"><div class="v">A · Guidance-led <span class="badge">calm</span></div><span class="d">A quiet cycle-aware reading leads; fitness is a compact 3-up card. Most on-voice and lowest-key.</span></div>
+ </div>
+
+ <!-- ============ DIRECTION B — PHASE-ARC HERO ============ -->
+ <div class="col">
+  <div class="phone"><div class="scr">
+   <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+   <div class="tview">
+    <section class="tscreen on" id="b-over"><div class="body">
+      <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+      <div class="row" style="margin:4px 0 0"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Movement</h2></div>
+      <div class="phasepill"><i></i> Day 22 · Luteal</div>
+      <div class="archero">
+        <div class="arc-cap">You're in your <em>ease-down week.</em></div>
+        <div class="arc-sub">Strength &amp; power return in your follicular phase — that's when to schedule the hard sessions.</div>
+        <svg class="arcsvg" viewBox="0 0 300 132" preserveAspectRatio="xMidYMid meet">
+          <defs><linearGradient id="af" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A5C77" stop-opacity=".22"/><stop offset="1" stop-color="#7A5C77" stop-opacity="0"/></linearGradient></defs>
+          <rect x="170" y="10" width="124" height="98" fill="#ECE2EB" opacity=".55"/>
+          <path d="M6,96 C24,96 32,90 46,87 C82,80 96,50 122,40 C134,35 140,27 150,27 C162,27 173,49 198,65 C232,88 268,95 294,97 L294,108 L6,108 Z" fill="url(#af)"/>
+          <path d="M6,96 C24,96 32,90 46,87 C82,80 96,50 122,40 C134,35 140,27 150,27 C162,27 173,49 198,65 C232,88 268,95 294,97" fill="none" stroke="#7A5C77" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="232" y1="20" x2="232" y2="108" stroke="#5C4360" stroke-width="1" stroke-dasharray="3 3" opacity=".55"/>
+          <circle cx="232" cy="88" r="5.5" fill="#fff" stroke="#5C4360" stroke-width="2.5"/>
+          <text x="232" y="16" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#5C4360">YOU'RE HERE</text>
+          <line x1="6" y1="108" x2="294" y2="108" stroke="#EFE6D9" stroke-width="1"/>
+        </svg>
+        <div class="arc-x"><span style="flex:5">Menstrual</span><span style="flex:8">Follicular</span><span style="flex:3">Ovul</span><span class="now" style="flex:12">Luteal · now</span></div>
+      </div>
+      <div class="readline"><svg class="ic" style="width:16px;height:16px;color:var(--plum)"><use href="#ic-act"/></svg> <span>Today: recovery <b>38% · low</b> — keep it easy.</span></div>
+      <div class="seclbl" style="display:flex;justify-content:space-between;align-items:center">Fitness level <span class="link" onclick="tnav('b-fitness')">Full profile ›</span></div>
+      <div class="fcard" onclick="tnav('b-fitness')">
+        <div class="fcol"><svg class="ic fic" style="width:19px;height:19px"><use href="#ic-heart"/></svg><span class="fk">Cardio</span><span class="fv">42</span><span class="fsub">VO₂max ↑</span></div>
+        <div class="fcol"><svg class="ic fic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg><span class="fk">Strength</span><span class="fv">Good</span><span class="fsub">lifts ↑</span></div>
+        <div class="fcol"><svg class="ic fic" style="width:19px;height:19px"><use href="#ic-rings"/></svg><span class="fk">Activity</span><span class="fv">High</span><span class="fsub">5 days →</span></div>
+      </div>
+      <div class="syncrow" onclick="tnav('b-apps')">
+        <svg class="ic sh" style="width:18px;height:18px"><use href="#ic-heart"/></svg>
+        <div><div class="st">Apple Health · Strava · Oura</div><div class="ss">Tap to manage connected apps</div></div>
+        <svg class="ic schev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg>
+      </div>
+      <div class="disc">ⓘ Information, not a diagnosis.</div>
+    </div></section>
+    <section class="tscreen" id="b-fitness"><div class="body">
+      <div class="hdr" onclick="tnav('b-over')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+      <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Fitness level</h2></div>
+      <p class="sub" style="margin-top:0">Where you stand across three dimensions — and which way each is trending.</p>
+      <div class="profcard" style="margin-top:14px">
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-heart"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Cardio fitness</span><span class="dtrend" style="color:var(--sage-d)">↑ +2</span></div><div class="ds">VO₂max 42 mL/kg·min</div><div class="dlvlrow"><div class="lvlbar"><i style="width:72%"></i></div><span class="dlvl">Above average</span></div></div></div>
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-dumbbell"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Strength</span><span class="dtrend" style="color:var(--sage-d)">↑</span></div><div class="ds">3×/wk · key lifts climbing</div><div class="dlvlrow"><div class="lvlbar"><i style="width:60%"></i></div><span class="dlvl">Building</span></div></div></div>
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-rings"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Activity</span><span class="dtrend" style="color:var(--muted)">→</span></div><div class="ds">8.4k steps · 5 active days/wk</div><div class="dlvlrow"><div class="lvlbar"><i style="width:82%"></i></div><span class="dlvl">Consistent</span></div></div></div>
+      </div>
+      <div class="seclbl">Training load</div>
+      <div class="tload"><div><div class="tt">Fitness building · fatigue moderate</div><div class="tts">42-day load vs last 7 days</div></div><span class="bdg" style="margin-left:auto">Productive</span></div>
+      <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Strength &amp; VO₂max gains cluster in your <b>follicular phase</b> — that's the window to schedule the hard work.</div></div>
+      <div class="disc">ⓘ Information, not a diagnosis.</div>
+    </div></section>
+    <section class="tscreen" id="b-apps"><div class="body">
+      <div class="hdr" onclick="tnav('b-over')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+      <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Connected apps</h2></div>
+      <p class="sub" style="margin-top:0">Movement reads workouts, heart rate, strength &amp; recovery from the apps you connect.</p>
+      <div style="margin-top:10px">
+        <div class="src"><div class="logo" style="background:#FC4C02">S</div><div><div class="snm">Strava</div><div class="smeta">Runs, rides &amp; workouts · 1h ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#E0726A"><svg class="ic fill" style="width:19px;height:19px;color:#fff"><use href="#ic-heart"/></svg></div><div><div class="snm">Apple Health</div><div class="smeta">VO₂max, strength, activity · 2m ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#1A1620">O</div><div><div class="snm">Oura</div><div class="smeta">Recovery, HRV, sleep · 12m ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#101316">W</div><div><div class="snm">WHOOP</div><div class="smeta">Strain, strength &amp; recovery</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+        <div class="src"><div class="logo" style="background:#0B7BBE">G</div><div><div class="snm">Garmin</div><div class="smeta">VO₂max, training load</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+        <div class="src"><div class="logo" style="background:#181A1D">P</div><div><div class="snm">Peloton</div><div class="smeta">Classes, strength &amp; output</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+      </div>
+      <p class="note">We only read the data types you allow. Disconnect anytime in Settings.</p>
+    </div></section>
+   </div>
+   <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+  </div></div>
+  <div class="cap"><div class="v">B · Phase-arc hero <span class="badge">signature</span></div><span class="d">Your cycle training-intensity curve leads — the cross-domain view nothing else gives. Most differentiated.</span></div>
+ </div>
+
+ <!-- ============ DIRECTION C — FITNESS-RINGS ============ -->
+ <div class="col">
+  <div class="phone"><div class="scr">
+   <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+   <div class="tview">
+    <section class="tscreen on" id="c-over"><div class="body">
+      <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+      <div class="row" style="margin:4px 0 0"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Movement</h2></div>
+      <div class="seclbl" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">Fitness level <span class="link" onclick="tnav('c-fitness')">Full profile ›</span></div>
+      <div class="ringrow" onclick="tnav('c-fitness')">
+        <div class="ringcell"><div class="ring"><svg viewBox="0 0 62 62"><circle class="rt" cx="31" cy="31" r="26"/><circle class="rf" cx="31" cy="31" r="26" style="stroke-dasharray:163.4;stroke-dashoffset:45.8"/></svg><div class="rc"><svg class="ic" style="width:17px;height:17px"><use href="#ic-heart"/></svg></div></div><div class="ringk">Cardio</div><div class="ringv">42</div><div class="rings">VO₂max ↑</div></div>
+        <div class="ringcell"><div class="ring"><svg viewBox="0 0 62 62"><circle class="rt" cx="31" cy="31" r="26"/><circle class="rf" cx="31" cy="31" r="26" style="stroke-dasharray:163.4;stroke-dashoffset:65.4"/></svg><div class="rc"><svg class="ic" style="width:17px;height:17px"><use href="#ic-dumbbell"/></svg></div></div><div class="ringk">Strength</div><div class="ringv">Good</div><div class="rings">lifts ↑</div></div>
+        <div class="ringcell"><div class="ring"><svg viewBox="0 0 62 62"><circle class="rt" cx="31" cy="31" r="26"/><circle class="rf" cx="31" cy="31" r="26" style="stroke-dasharray:163.4;stroke-dashoffset:29.4"/></svg><div class="rc"><svg class="ic" style="width:17px;height:17px"><use href="#ic-rings"/></svg></div></div><div class="ringk">Activity</div><div class="ringv">High</div><div class="rings">5 days →</div></div>
+      </div>
+      <div class="seclbl">Today</div>
+      <div class="readcard">
+        <div class="reading2">Recovery's low — <em>ease up today.</em></div>
+        <div class="minirow"><span class="mi"><b>38%</b> recovery</span><span class="mi"><b>42ms</b> HRV ▼</span><span class="mi"><b>61</b> RHR ▲</span></div>
+        <div class="phasepill" style="margin-top:12px"><i></i> Day 22 · Luteal</div>
+      </div>
+      <div class="syncrow" onclick="tnav('c-apps')">
+        <svg class="ic sh" style="width:18px;height:18px"><use href="#ic-heart"/></svg>
+        <div><div class="st">Apple Health · Strava · Oura</div><div class="ss">Tap to manage connected apps</div></div>
+        <svg class="ic schev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg>
+      </div>
+      <div class="disc">ⓘ Information, not a diagnosis.</div>
+    </div></section>
+    <section class="tscreen" id="c-fitness"><div class="body">
+      <div class="hdr" onclick="tnav('c-over')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+      <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Fitness level</h2></div>
+      <div class="ringrow" style="margin-top:6px;cursor:default">
+        <div class="ringcell"><div class="ringbig"><svg viewBox="0 0 74 74"><circle class="rt" cx="37" cy="37" r="31"/><circle class="rf" cx="37" cy="37" r="31" style="stroke-dasharray:194.8;stroke-dashoffset:54.5"/></svg><div class="rc"><svg class="ic" style="width:20px;height:20px"><use href="#ic-heart"/></svg></div></div><div class="ringk">Cardio</div><div class="ringv">42</div><div class="rings">Above avg ↑</div></div>
+        <div class="ringcell"><div class="ringbig"><svg viewBox="0 0 74 74"><circle class="rt" cx="37" cy="37" r="31"/><circle class="rf" cx="37" cy="37" r="31" style="stroke-dasharray:194.8;stroke-dashoffset:77.9"/></svg><div class="rc"><svg class="ic" style="width:20px;height:20px"><use href="#ic-dumbbell"/></svg></div></div><div class="ringk">Strength</div><div class="ringv">Good</div><div class="rings">Building ↑</div></div>
+        <div class="ringcell"><div class="ringbig"><svg viewBox="0 0 74 74"><circle class="rt" cx="37" cy="37" r="31"/><circle class="rf" cx="37" cy="37" r="31" style="stroke-dasharray:194.8;stroke-dashoffset:35.1"/></svg><div class="rc"><svg class="ic" style="width:20px;height:20px"><use href="#ic-rings"/></svg></div></div><div class="ringk">Activity</div><div class="ringv">High</div><div class="rings">Consistent →</div></div>
+      </div>
+      <div class="profcard" style="margin-top:16px">
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-heart"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Cardio fitness</span><span class="dtrend" style="color:var(--sage-d)">↑ +2</span></div><div class="ds">VO₂max 42 mL/kg·min · above average for 32</div></div></div>
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-dumbbell"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Strength</span><span class="dtrend" style="color:var(--sage-d)">↑</span></div><div class="ds">3×/wk · key lifts climbing · building</div></div></div>
+        <div class="dim"><div class="di"><svg class="ic" style="width:18px;height:18px"><use href="#ic-rings"/></svg></div><div class="dmain"><div class="drow1"><span class="dn">Activity</span><span class="dtrend" style="color:var(--muted)">→</span></div><div class="ds">8.4k steps · 5 active days/wk · consistent</div></div></div>
+      </div>
+      <div class="seclbl">Training load</div>
+      <div class="tload"><div><div class="tt">Fitness building · fatigue moderate</div><div class="tts">42-day load vs last 7 days</div></div><span class="bdg" style="margin-left:auto">Productive</span></div>
+      <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Strength &amp; VO₂max gains cluster in your <b>follicular phase</b> — that's the window to schedule the hard work.</div></div>
+    </div></section>
+    <section class="tscreen" id="c-apps"><div class="body">
+      <div class="hdr" onclick="tnav('c-over')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+      <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Connected apps</h2></div>
+      <p class="sub" style="margin-top:0">Movement reads workouts, heart rate, strength &amp; recovery from the apps you connect.</p>
+      <div style="margin-top:10px">
+        <div class="src"><div class="logo" style="background:#FC4C02">S</div><div><div class="snm">Strava</div><div class="smeta">Runs, rides &amp; workouts · 1h ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#E0726A"><svg class="ic fill" style="width:19px;height:19px;color:#fff"><use href="#ic-heart"/></svg></div><div><div class="snm">Apple Health</div><div class="smeta">VO₂max, strength, activity · 2m ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#1A1620">O</div><div><div class="snm">Oura</div><div class="smeta">Recovery, HRV, sleep · 12m ago</div></div><span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Synced</span></div>
+        <div class="src"><div class="logo" style="background:#101316">W</div><div><div class="snm">WHOOP</div><div class="smeta">Strain, strength &amp; recovery</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+        <div class="src"><div class="logo" style="background:#0B7BBE">G</div><div><div class="snm">Garmin</div><div class="smeta">VO₂max, training load</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+        <div class="src"><div class="logo" style="background:#181A1D">P</div><div><div class="snm">Peloton</div><div class="smeta">Classes, strength &amp; output</div></div><button class="sact connectbtn" onclick="connectApp(this)">Connect</button></div>
+      </div>
+      <p class="note">We only read the data types you allow. Disconnect anytime in Settings.</p>
+    </div></section>
+   </div>
+   <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+  </div></div>
+  <div class="cap"><div class="v">C · Fitness-rings <span class="badge">fitness-forward</span></div><span class="d">Cardio/Strength/Activity rings lead; today's recovery sits in a secondary card. Most dashboard-like.</span></div>
+ </div>
+
+</div>
+
+<div class="foot">Movement module · Iteration 2 · three interactive directions · tap within each phone · experiment only (HiFi unchanged)</div>
+
+<script>
+function tnav(id){const el=document.getElementById(id);const v=el.closest('.tview');v.querySelectorAll('.tscreen').forEach(s=>s.classList.remove('on'));el.classList.add('on');const b=el.querySelector('.body');if(b)b.scrollTop=0;}
+function connectApp(btn){btn.outerHTML='<span class="sact synced"><svg class="ic" style="width:15px;height:15px"><use href="#ic-check"/></svg> Syncing…</span>';}
+</script>
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 2 · what came out of it</div>
+  <p style="margin:0">The same content was given three different leads and compared side by side. The guidance-led reading was adopted as the default because it matches the product principle of saying what something means rather than how it works, while the fitness-rings dashboard was rejected for leading with numbers the user must interpret herself. The phase-arc remains swappable, being the one view no competitor offers.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>

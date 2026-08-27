@@ -1,0 +1,298 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Movement — log an activity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FCF7EF;--paper:#fff;--ink:#2A2431;--ink2:#574F5E;--muted:#968D9B;--line:#EFE6D9;
+ --clay:#C0613E;--clay-d:#9F4D2F;--clay-soft:#F6E2D6;
+ --plum:#7A5C77;--plum-soft:#ECE2EB;--plum-d:#5C4360;
+ --luteal:#E0A24E;--luteal-soft:#F8EAD4;--sage:#7E9A82;--sage-soft:#E7EEE6;--sage-d:#5b7560;
+ --amber:#B5701F;--amber-soft:#FBEAD9;--sky:#4f6f8a;--sky-soft:#E3ECF2;--coral-d:#D86C62;--coral-soft:#FCE5DF;
+ --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --sh:0 1px 2px rgba(40,30,20,.04),0 8px 22px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F6EEE2,#E9E0D2);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:42px 18px 80px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);font-weight:700}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:2px 0 4px}
+.hint{color:var(--ink2);font-size:16px;margin:2px 0 8px;max-width:900px;line-height:1.55}
+.hint b{color:var(--plum-d)}
+.stage{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+.col{width:330px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.cap .badge{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--plum-d);background:var(--plum-soft);border-radius:999px;padding:2px 8px}
+.cap span.d{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.phone{width:330px;background:#fff;border-radius:46px;padding:13px;box-shadow:0 30px 66px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--cream);border-radius:36px;overflow:hidden;height:724px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.tview{position:relative;flex:1;overflow:hidden}
+.tscreen{position:absolute;inset:0;display:none;flex-direction:column}
+.tscreen.on{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.body{flex:1;overflow:auto;padding:8px 20px 14px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--paper);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--clay);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ic.fill{fill:currentColor;stroke:none}.nav .ic{width:22px;height:22px}
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500;cursor:pointer}
+.h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em;margin:0}
+.row{display:flex;align-items:center;gap:13px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--plum-soft);color:var(--plum)}
+.seclbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:18px 0 10px}
+.wkcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);display:flex;padding:13px 2px;margin-top:6px}
+.wkcell{flex:1;text-align:center;border-right:1px solid var(--line)}
+.wkcell:last-child{border-right:0}
+.wkv{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--plum-d);line-height:1}
+.wkk{font-size:8px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;margin-top:5px}
+.act{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.act:last-child{border-bottom:0}
+.atile{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none}
+.anm{font-size:13.5px;font-weight:600}
+.ameta{font-size:11px;color:var(--muted);margin-top:2px}
+.achev{margin-left:auto;color:var(--muted)}
+.actgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.acttile{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:13px;cursor:pointer}
+.acttile .atile{margin-bottom:9px}
+.acount{font-size:10.5px;color:var(--muted);margin-top:3px}
+.ametric{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--plum-d);margin-top:7px}
+.acard{display:flex;align-items:center;gap:12px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:12px 13px;margin-bottom:10px;cursor:pointer}
+.acard .atile{width:40px;height:40px;border-radius:12px}
+.acmain{min-width:0}
+.acn{font-size:13.5px;font-weight:600}
+.acc{font-size:10.5px;color:var(--muted);margin-top:1px}
+.aspark{width:72px;height:20px;display:block;margin-top:6px}
+.acm{margin-left:auto;text-align:right}
+.acmv{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--plum-d);line-height:1}
+.acmk{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:3px}
+.hero2{background:linear-gradient(160deg,#F4EEF3,#FBF6F2);border:1px solid var(--line);border-radius:18px;padding:15px;text-align:center}
+.hero2 .h2n{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--plum-d);line-height:1}
+.hero2 .h2n small{font-size:14px;color:var(--muted);font-weight:500}
+.hero2 .h2s{font-size:12px;color:var(--ink2);margin-top:5px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mg{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 12px;box-shadow:var(--sh)}
+.mgv{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--plum-d);line-height:1}
+.mgk{font-size:10px;color:var(--muted);font-weight:600;margin-top:4px}
+.listcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:4px 14px}
+.rl{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.rl:last-child{border-bottom:0}
+.rl .rd{font-weight:600;width:78px}
+.rl .rdist{color:var(--ink2);flex:1}
+.rl .rpace{color:var(--muted);font-weight:600}
+.rl .rup{color:var(--sage-d);font-weight:700}
+.chartcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:14px 14px 10px}
+.xlbl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-weight:600;margin-top:3px}
+.xlbl .now{color:var(--plum-d)}
+.cycnote{display:flex;gap:9px;background:#F4EEF3;border:1px solid #E7DCE6;border-radius:14px;padding:12px;margin-top:16px;font-size:12px;color:var(--plum-d);line-height:1.45}
+.cycnote .ic{flex:none;color:var(--plum-d)}
+.foot{margin-top:46px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid #EEE0D8;padding-top:18px}
+
+.hintline{font-size:11.5px;color:var(--muted);margin-top:14px;line-height:1.5;text-align:center}
+.hintline b{color:var(--plum-d);font-weight:600}
+.sub{font-size:13px;color:var(--ink2);margin:2px 0 0}
+.logbtn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border:1.5px solid var(--plum);color:var(--plum-d);background:#fff;border-radius:999px;padding:11px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:8px}
+.logbtn:active{background:var(--plum-soft)}
+.pickgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.picktile{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:16px 12px;text-align:center;cursor:pointer}
+.picktile .atile{margin:0 auto 9px}
+.picktile .anm{font-size:13px;font-weight:600}
+.field{margin-top:13px}
+.field>label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.finput{display:flex;align-items:center;width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:14.5px;font-weight:600;color:var(--ink);background:#fff;cursor:pointer}
+.finput .fval{margin-left:auto;color:var(--plum-d)}
+.finput .funit{margin-left:auto;color:var(--muted);font-size:12px;font-weight:600}
+.field2{display:flex;gap:10px}.field2 .field{flex:1}
+.seg{display:flex;background:#F1E9DE;border-radius:12px;padding:3px;gap:2px}
+.seg button{flex:1;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--muted);padding:9px 0;border-radius:9px;cursor:pointer}
+.seg button.on{background:#fff;color:var(--plum-d);box-shadow:0 1px 3px rgba(70,40,30,.14)}
+.moodrow{display:flex;gap:6px}
+.mood{flex:1;text-align:center;border:1px solid var(--line);border-radius:12px;padding:8px 1px;font-size:9.5px;font-weight:600;color:var(--muted);cursor:pointer;background:#fff}
+.mood.on{border-color:var(--plum);color:var(--plum-d);background:var(--plum-soft)}
+.mood .me{font-size:18px;display:block;margin-bottom:3px}
+.btn{margin-top:20px;width:100%;border:0;background:var(--plum);color:#fff;border-radius:999px;padding:14px;font-size:14.5px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 10px 22px rgba(122,92,119,.26)}
+.btnghost{margin-top:10px;width:100%;border:0;background:none;color:var(--plum-d);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer}
+.bigstep{display:flex;align-items:center;justify-content:center;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--sh)}
+.bigstep .sbtn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--plum);color:var(--plum-d);background:#fff;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;font-family:inherit}
+.bigstep .sval{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--plum-d);min-width:96px;text-align:center}
+.bigstep .sval small{font-size:13px;color:var(--muted);font-weight:500}
+.effchips{display:flex;gap:8px}
+.effchip{flex:1;text-align:center;border-radius:12px;padding:11px 2px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--line);background:#fff;color:var(--muted)}
+.effchip.on.easy{border-color:var(--sage);color:var(--sage-d);background:var(--sage-soft)}
+.effchip.on.mod{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}
+.effchip.on.hard{border-color:var(--coral-d);color:var(--coral-d);background:var(--coral-soft)}
+.success{text-align:center;padding-top:26px}
+.scheck{width:72px;height:72px;border-radius:50%;background:var(--sage-soft);color:var(--sage-d);display:grid;place-items:center;margin:0 auto 16px}
+.success .st1{font-family:var(--serif);font-size:24px;font-weight:600}
+.success .st2{font-size:13px;color:var(--ink2);margin-top:6px;line-height:1.5}
+.acttile .ametric{margin-top:8px}
+</style></head><body><div class="page">
+
+<div class="ibadge">Movement · Iteration 4 · log a workout (grid)</div>
+<h1 class="ttl">Movement — log an activity</h1>
+<p class="hint">Building forward from the <b>Grid</b> Activities screen: how you <b>log a workout</b>. Tap an activity tile (or <b>+ Log an activity</b>) → pick the type → enter the details → a saved confirmation that ties it to your cycle. The entry form is the key screen, so it's shown two ways — a <b>structured form</b> vs a <b>quick visual</b> one. Both phones are live: tap a tile or <b>+ Log</b>, fill in, <b>Save</b>, ‹ back.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="ic-cycle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.9" class="fill"/></symbol>
+<symbol id="ic-run" viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="M13 6.2l-1.6 5 3 2.4 1.2 5.4M11.4 11.2l-4 1.3M14.4 13.6l3.3-1"/></symbol>
+<symbol id="ic-dumbbell" viewBox="0 0 24 24"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></symbol>
+<symbol id="ic-bike" viewBox="0 0 24 24"><circle cx="5.6" cy="17.4" r="3.2"/><circle cx="18.4" cy="17.4" r="3.2"/><path d="M5.6 17.4l4.6-8.4H14.5M9 9h5l4.4 8.4M12.6 9l1.5-2.6h2.2"/></symbol>
+<symbol id="ic-yoga" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M12 6.5v4.5M4.8 20.5c2.4-3.4 4.8-4.5 7.2-4.5s4.8 1.1 7.2 4.5M7.6 11h8.8"/></symbol>
+<symbol id="ic-walk" viewBox="0 0 24 24"><circle cx="13.2" cy="4" r="2"/><path d="M13.2 6.2l-1 4.8 2.6 2 1.4 5M12.4 11l-3 1.2M14.8 12l-1.4 8.5"/></symbol>
+<symbol id="ic-bolt" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11l-1 8.5 8.5-12H12z"/></symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></symbol>
+<symbol id="ic-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></symbol>
+<symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
+</defs></svg>
+
+<div class="stage">
+<div class="col">
+ <div class="phone"><div class="scr">
+  <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+  <div class="tview">
+   <section class="tscreen on" id="a-list"><div class="body">
+     <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+     <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Activities</h2></div>
+     <button class="logbtn" onclick="tnav('a-type')"><svg class="ic" style="width:17px;height:17px"><use href="#ic-plus"/></svg> Log an activity</button>
+     <div class="seclbl">This week · by activity</div>
+     <div class="actgrid">
+       <div class="acttile" onclick="tnav('a-form')"><div class="atile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-run"/></svg></div><div class="anm">Running</div><div class="ametric">12.4 mi</div></div>
+       <div class="acttile" onclick="tnav('a-form')"><div class="atile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg></div><div class="anm">Strength</div><div class="ametric">4,200 lb</div></div>
+       <div class="acttile" onclick="tnav('a-form')"><div class="atile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bike"/></svg></div><div class="anm">Cycling</div><div class="ametric">18.2 mi</div></div>
+       <div class="acttile" onclick="tnav('a-form')"><div class="atile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-yoga"/></svg></div><div class="anm">Yoga</div><div class="ametric">75 min</div></div>
+       <div class="acttile" onclick="tnav('a-form')"><div class="atile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-walk"/></svg></div><div class="anm">Walking</div><div class="ametric">8.4k</div></div>
+       <div class="acttile" onclick="tnav('a-form')"><div class="atile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bolt"/></svg></div><div class="anm">HIIT</div><div class="ametric">22 min</div></div>
+     </div>
+     <p class="hintline">Tap an activity to log it, or use <b>+ Log</b> to pick another.</p>
+   </div></section>
+   <section class="tscreen" id="a-type"><div class="body">
+     <div class="hdr" onclick="tnav('a-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <h2 class="h2" style="margin:6px 0 2px">What did you do?</h2>
+     <p class="sub">Pick an activity to log.</p>
+     <div class="pickgrid">
+       <div class="picktile" onclick="tnav('a-form')"><div class="atile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-run"/></svg></div><div class="anm">Running</div></div>
+       <div class="picktile" onclick="tnav('a-form')"><div class="atile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg></div><div class="anm">Strength</div></div>
+       <div class="picktile" onclick="tnav('a-form')"><div class="atile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bike"/></svg></div><div class="anm">Cycling</div></div>
+       <div class="picktile" onclick="tnav('a-form')"><div class="atile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-yoga"/></svg></div><div class="anm">Yoga</div></div>
+       <div class="picktile" onclick="tnav('a-form')"><div class="atile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-walk"/></svg></div><div class="anm">Walking</div></div>
+       <div class="picktile" onclick="tnav('a-form')"><div class="atile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bolt"/></svg></div><div class="anm">HIIT</div></div>
+       <div class="picktile" onclick="tnav('a-form')"><div class="atile" style="background:var(--line);color:var(--ink2)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-plus"/></svg></div><div class="anm">Other</div></div>
+     </div>
+   </div></section>
+   <section class="tscreen" id="a-form"><div class="body">
+     <div class="hdr" onclick="tnav('a-type')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Choose activity</div>
+     <div class="row" style="margin:4px 0 8px"><div class="tile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic"><use href="#ic-run"/></svg></div><h2 class="h2">Log run</h2></div>
+     <div class="field"><label>When</label><div class="finput"><svg class="ic" style="width:16px;height:16px;color:var(--muted);margin-right:9px"><use href="#ic-cal"/></svg>Today<span class="fval">7:34 AM ›</span></div></div>
+     <div class="field2"><div class="field"><label>Duration</label><div class="finput">38<span class="funit">min</span></div></div><div class="field"><label>Distance</label><div class="finput">4.2<span class="funit">mi</span></div></div></div>
+     <div class="field"><label>Effort</label><div class="seg"><button>Easy</button><button class="on">Moderate</button><button>Hard</button></div></div>
+     <div class="field"><label>How did it feel?</label><div class="moodrow"><div class="mood"><span class="me">😣</span>Drained</div><div class="mood"><span class="me">😐</span>Off</div><div class="mood"><span class="me">🙂</span>OK</div><div class="mood on"><span class="me">😄</span>Good</div><div class="mood"><span class="me">💪</span>Strong</div></div></div>
+     <div class="field"><label>Notes</label><div class="finput" style="color:var(--muted);font-weight:500">Easy shakeout, legs heavy…</div></div>
+     <button class="btn" onclick="tnav('a-saved')">Save activity</button>
+   </div></section>
+   <section class="tscreen" id="a-saved"><div class="body">
+     <div class="success">
+       <div class="scheck"><svg class="ic" style="width:34px;height:34px;stroke-width:2.2"><use href="#ic-check"/></svg></div>
+       <div class="st1">Activity logged</div>
+       <div class="st2">Nice work — your <b>4.2 mi run</b> is in.<br>It'll show up in Running &amp; this week's totals.</div>
+       <div class="cycnote" style="text-align:left;margin-top:22px"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Logged in your <b>luteal phase</b> — we'll factor it into your recovery and training-load read.</div></div>
+       <button class="btn" onclick="tnav('a-list')">Done</button>
+       <button class="btnghost" onclick="tnav('a-type')">Log another</button>
+     </div>
+   </div></section>
+  </div>
+  <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+ </div></div>
+ <div class="cap"><div class="v">Structured form <span class="badge">fields</span></div><span class="d">Labeled fields + segmented effort + a felt-mood row. Familiar, precise.</span></div>
+</div>
+<div class="col">
+ <div class="phone"><div class="scr">
+  <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+  <div class="tview">
+   <section class="tscreen on" id="b-list"><div class="body">
+     <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+     <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Activities</h2></div>
+     <button class="logbtn" onclick="tnav('b-type')"><svg class="ic" style="width:17px;height:17px"><use href="#ic-plus"/></svg> Log an activity</button>
+     <div class="seclbl">This week · by activity</div>
+     <div class="actgrid">
+       <div class="acttile" onclick="tnav('b-form')"><div class="atile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-run"/></svg></div><div class="anm">Running</div><div class="ametric">12.4 mi</div></div>
+       <div class="acttile" onclick="tnav('b-form')"><div class="atile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg></div><div class="anm">Strength</div><div class="ametric">4,200 lb</div></div>
+       <div class="acttile" onclick="tnav('b-form')"><div class="atile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bike"/></svg></div><div class="anm">Cycling</div><div class="ametric">18.2 mi</div></div>
+       <div class="acttile" onclick="tnav('b-form')"><div class="atile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-yoga"/></svg></div><div class="anm">Yoga</div><div class="ametric">75 min</div></div>
+       <div class="acttile" onclick="tnav('b-form')"><div class="atile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-walk"/></svg></div><div class="anm">Walking</div><div class="ametric">8.4k</div></div>
+       <div class="acttile" onclick="tnav('b-form')"><div class="atile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bolt"/></svg></div><div class="anm">HIIT</div><div class="ametric">22 min</div></div>
+     </div>
+     <p class="hintline">Tap an activity to log it, or use <b>+ Log</b> to pick another.</p>
+   </div></section>
+   <section class="tscreen" id="b-type"><div class="body">
+     <div class="hdr" onclick="tnav('b-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <h2 class="h2" style="margin:6px 0 2px">What did you do?</h2>
+     <p class="sub">Pick an activity to log.</p>
+     <div class="pickgrid">
+       <div class="picktile" onclick="tnav('b-form')"><div class="atile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-run"/></svg></div><div class="anm">Running</div></div>
+       <div class="picktile" onclick="tnav('b-form')"><div class="atile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg></div><div class="anm">Strength</div></div>
+       <div class="picktile" onclick="tnav('b-form')"><div class="atile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bike"/></svg></div><div class="anm">Cycling</div></div>
+       <div class="picktile" onclick="tnav('b-form')"><div class="atile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-yoga"/></svg></div><div class="anm">Yoga</div></div>
+       <div class="picktile" onclick="tnav('b-form')"><div class="atile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-walk"/></svg></div><div class="anm">Walking</div></div>
+       <div class="picktile" onclick="tnav('b-form')"><div class="atile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bolt"/></svg></div><div class="anm">HIIT</div></div>
+       <div class="picktile" onclick="tnav('b-form')"><div class="atile" style="background:var(--line);color:var(--ink2)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-plus"/></svg></div><div class="anm">Other</div></div>
+     </div>
+   </div></section>
+   <section class="tscreen" id="b-form"><div class="body">
+     <div class="hdr" onclick="tnav('b-type')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Choose activity</div>
+     <div class="row" style="margin:4px 0 12px"><div class="tile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic"><use href="#ic-run"/></svg></div><h2 class="h2">Log run</h2></div>
+     <div class="seclbl" style="margin-top:6px">Duration</div>
+     <div class="bigstep"><button class="sbtn">–</button><div class="sval">38<small> min</small></div><button class="sbtn">+</button></div>
+     <div class="seclbl">Distance</div>
+     <div class="bigstep"><button class="sbtn">–</button><div class="sval">4.2<small> mi</small></div><button class="sbtn">+</button></div>
+     <div class="seclbl">Effort</div>
+     <div class="effchips"><div class="effchip easy">Easy</div><div class="effchip mod on">Moderate</div><div class="effchip hard">Hard</div></div>
+     <div class="seclbl">How did it feel?</div>
+     <div class="moodrow"><div class="mood"><span class="me">😣</span>Drained</div><div class="mood"><span class="me">😐</span>Off</div><div class="mood"><span class="me">🙂</span>OK</div><div class="mood on"><span class="me">😄</span>Good</div><div class="mood"><span class="me">💪</span>Strong</div></div>
+     <button class="btn" onclick="tnav('b-saved')">Save activity</button>
+   </div></section>
+   <section class="tscreen" id="b-saved"><div class="body">
+     <div class="success">
+       <div class="scheck"><svg class="ic" style="width:34px;height:34px;stroke-width:2.2"><use href="#ic-check"/></svg></div>
+       <div class="st1">Activity logged</div>
+       <div class="st2">Nice work — your <b>4.2 mi run</b> is in.<br>It'll show up in Running &amp; this week's totals.</div>
+       <div class="cycnote" style="text-align:left;margin-top:22px"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Logged in your <b>luteal phase</b> — we'll factor it into your recovery and training-load read.</div></div>
+       <button class="btn" onclick="tnav('b-list')">Done</button>
+       <button class="btnghost" onclick="tnav('b-type')">Log another</button>
+     </div>
+   </div></section>
+  </div>
+  <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+ </div></div>
+ <div class="cap"><div class="v">Quick visual <span class="badge">steppers</span></div><span class="d">Big +/- steppers, colored effort chips, felt-mood. Faster &amp; more tactile.</span></div>
+</div>
+</div>
+
+<div class="foot">Movement module · Iteration 4 · log-a-workout flow · grid entry · two entry-form designs · experiment only (HiFi unchanged)</div>
+
+<script>
+function tnav(id){const el=document.getElementById(id);const v=el.closest('.tview');v.querySelectorAll('.tscreen').forEach(s=>s.classList.remove('on'));el.classList.add('on');const b=el.querySelector('.body');if(b)b.scrollTop=0;}
+</script>
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 4 · what came out of it</div>
+  <p style="margin:0">Building forward from the grid, this round defined how a workout gets logged: tap a tile or + Log an activity, choose the type, enter the details, and receive a confirmation tied to the cycle. Because logging is the action repeated most often, the entry form was deliberately shown two ways — structured fields, which are familiar and precise, against large steppers and effort chips, which are faster and more tactile.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>

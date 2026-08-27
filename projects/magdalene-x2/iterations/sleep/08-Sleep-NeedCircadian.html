@@ -1,0 +1,479 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sleep — sleep need & circadian rhythm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FCF7EF;--paper:#fff;--ink:#2A2431;--ink2:#574F5E;--muted:#968D9B;--line:#EFE6D9;
+ --clay:#C0613E;--clay-d:#9F4D2F;
+ --sky-soft:#E3ECF2;--sky:#4f6f8a;--sky-d:#3F6486;
+ --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --sh:0 1px 2px rgba(40,30,20,.04),0 8px 22px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F6EEE2,#E9E0D2);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:1480px;margin:0 auto;padding:42px 18px 80px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);font-weight:700}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:0 0 4px}
+.hint{color:var(--ink2);font-size:16px;margin:2px 0 22px;max-width:820px}
+.hint b{color:var(--sky-d)}
+.stage{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.col{width:330px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:17px;font-weight:600}
+.cap span.d{display:block;font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.phone{width:330px;background:#fff;border-radius:46px;padding:13px;box-shadow:0 30px 66px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--cream);border-radius:36px;overflow:hidden;height:724px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.body{flex:1;overflow:auto;padding:8px 20px 14px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--paper);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--clay);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .ic{width:22px;height:22px}
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500;cursor:pointer}
+.h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em}
+.row{display:flex;align-items:center;gap:13px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.reading{font-family:var(--serif);font-size:19px;font-weight:500;line-height:1.37;letter-spacing:-.01em;margin:0 0 14px}
+.reading em{font-style:normal;color:var(--sky)}
+/* chart */
+.chart{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:13px;box-shadow:var(--sh)}
+.chead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ctitle{font-size:12.5px;font-weight:600;color:var(--ink)}
+.ctag{font-size:10.5px;color:var(--muted);font-weight:600}
+.csvg{width:100%;display:block}
+.clegend{display:flex;gap:13px;flex-wrap:wrap;margin-top:8px;font-size:10px;color:var(--ink2)}
+.clegend .k{display:inline-flex;align-items:center;gap:5px}
+.clegend i.bar{width:9px;height:9px;border-radius:2px;background:#A7C0D6}
+.clegend i.avg{width:14px;height:0;border-top:2px solid #3F6486;align-self:center}
+.clegend i.base{width:14px;height:0;border-top:2px dashed #94A7B8;align-self:center}
+.srcline{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);margin-top:13px}
+.srcline .entry{margin-left:auto;border:0;border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;background:var(--sky);color:#fff;box-shadow:0 5px 12px rgba(79,111,138,.3)}
+/* nested navigation */
+.tview{position:relative;flex:1;overflow:hidden}
+.tscreen{position:absolute;inset:0;display:none;flex-direction:column}
+.tscreen.on{display:flex;animation:fade .24s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.seclbl2{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:18px 0 9px}
+.navrow{display:flex;align-items:center;gap:12px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:var(--sh);cursor:pointer;margin-bottom:10px}
+.nr-ic{width:36px;height:36px;border-radius:10px;background:var(--sky-soft);color:var(--sky);display:grid;place-items:center;flex:none}
+.nr-ic .ic{width:19px;height:19px}
+.nr-tx{flex:1}.nr-t{font-size:14px;font-weight:600}.nr-s{font-size:11.5px;color:var(--muted);margin-top:1px}
+.nr-ch{width:18px;height:18px;color:var(--muted);flex:none}
+/* sub-page pieces */
+.hero{background:linear-gradient(160deg,#EAF1F6,#F5F1EA);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center}
+.hero-num{font-family:var(--serif);font-size:34px;font-weight:600;color:var(--sky-d);line-height:1}
+.hero-lbl{font-size:13px;color:var(--ink2);margin-top:6px;font-weight:500}
+.hero-meta{font-size:11px;color:var(--muted);margin-top:5px}
+.steps{display:flex;flex-direction:column;gap:11px}
+.step{display:flex;gap:11px;font-size:13px;color:var(--ink2);line-height:1.45}
+.step b{color:var(--ink)}
+.stepn{flex:none;width:21px;height:21px;border-radius:50%;background:var(--sky);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--sh)}
+.scale{position:relative;height:12px;border-radius:6px;background:#EEF2F6;margin:2px 0 8px}
+.scale .band{position:absolute;top:0;bottom:0;left:50%;width:33.3%;background:var(--sky-soft);border-radius:6px}
+.scale .mark{position:absolute;top:-4px;bottom:-4px;left:55.6%;width:3px;background:var(--sky-d);border-radius:2px}
+.scaleax{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+.scalecap{font-size:11.5px;color:var(--ink2);margin-top:8px}
+.cyc{display:flex;gap:9px;align-items:flex-start;background:#FCF0EC;border:1px solid #F6E0D9;border-radius:14px;padding:12px;margin-top:14px;font-size:12.5px;color:#7a5550;line-height:1.45}
+.cyc b{color:#C2553F}.cyc .ic{flex:none}
+.wlist{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:4px 14px;box-shadow:var(--sh)}
+.wrow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.wrow:last-child{border-bottom:0}
+.wt{color:var(--ink2)}.wv{font-weight:600;color:var(--ink)}
+.btn2{margin-top:16px;width:100%;border:1.5px solid var(--sky);background:#fff;color:var(--sky-d);border-radius:999px;padding:12px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer}
+.disc{font-size:11px;color:var(--muted);margin-top:14px;text-align:center}
+.circ{width:100%;display:block}
+/* bottom sheet */
+.scrim{position:absolute;inset:0;background:rgba(34,28,22,.36);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:5}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:8px 18px 20px;box-shadow:0 -16px 44px rgba(40,30,20,.24);transform:translateY(100%);transition:transform .28s cubic-bezier(.3,.85,.3,1);z-index:6;max-height:90%;overflow:auto}
+.sheet::-webkit-scrollbar{display:none}
+.sheet.open{transform:none}
+.sheet-grip{width:38px;height:4px;border-radius:3px;background:#E4DACE;margin:4px auto 12px}
+.sheet-h{display:flex;align-items:center;margin-bottom:13px}
+.sheet-title{font-family:var(--serif);font-size:19px;font-weight:600}
+.sheet-x{margin-left:auto;border:0;background:#F1ECE4;width:28px;height:28px;border-radius:50%;font-size:17px;color:var(--ink2);cursor:pointer;line-height:1}
+.seg2{display:flex;background:#EDF1F5;border-radius:12px;padding:3px;margin-bottom:4px}
+.seg2 button{flex:1;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--muted);padding:8px 0;border-radius:9px;cursor:pointer}
+.seg2 button.on{background:#fff;color:var(--sky-d);box-shadow:0 1px 3px rgba(40,50,70,.16)}
+.panel{padding-top:4px}
+.panel-sub{font-size:12.5px;color:var(--muted);margin:10px 0 4px}
+.src{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line)}
+.src:last-child{border-bottom:0}
+.logo{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.src .nm{font-size:13.5px;font-weight:600}.src .meta{font-size:11px;color:var(--muted);margin-top:1px}
+.src .act{margin-left:auto}
+.act.connected{color:#5b7560;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.act.connect{border:1px solid var(--sky);color:var(--sky-d);background:#fff;border-radius:999px;padding:6px 15px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer}
+.field{margin-top:13px}
+.field>label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.fval{border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;background:#fff;cursor:pointer}
+.finput{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--ink);font-family:inherit;background:#fff;cursor:pointer}
+.finput:focus{outline:none;border-color:var(--sky)}
+.fval .cv{margin-left:auto;color:var(--muted);font-size:11px}
+.field2{display:flex;gap:10px}.field2 .field{flex:1}
+.dur{margin-top:14px;background:var(--sky-soft);border-radius:12px;padding:11px 14px;color:var(--sky-d);display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600}
+.dur b{font-family:var(--serif);font-size:19px;font-weight:600}
+.qlabel{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+.qchips{display:flex;gap:7px}
+.qchips button{flex:1;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 0;font-size:12px;font-weight:600;color:var(--ink2);font-family:inherit;cursor:pointer}
+.qchips button.on{background:var(--sky);border-color:var(--sky);color:#fff}
+.save{margin-top:17px;width:100%;border:0;background:var(--sky);color:#fff;border-radius:999px;padding:13px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 10px 22px rgba(79,111,138,.26)}
+/* action screens: recalibrate + chronotype quiz */
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 2px}
+.lead b{color:var(--ink)}
+.started{background:#E7EEE6;border:1px solid #CFE0CF;color:#4B6B50;border-radius:14px;padding:14px;font-size:13px;line-height:1.45;display:flex;gap:9px;align-items:flex-start;margin-top:16px}
+.started .ic{flex:none;color:#5B7560}
+.qprog{display:flex;align-items:center;gap:10px;margin:4px 0 18px}
+.qbar{flex:1;height:6px;border-radius:4px;background:#EEF2F6;overflow:hidden}
+.qbar i{display:block;height:100%;background:var(--sky);border-radius:4px;transition:width .25s ease}
+.qstep{font-size:11px;color:var(--muted);font-weight:600;flex:none}
+.qq{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.3;margin-bottom:16px;color:var(--ink)}
+.qopts{display:flex;flex-direction:column;gap:9px}
+.qopt{text-align:left;border:1px solid var(--line);background:#fff;border-radius:13px;padding:13px 15px;font-size:13.5px;font-weight:500;color:var(--ink);font-family:inherit;cursor:pointer}
+.qresult{text-align:center;padding-top:24px}
+.qr-badge{width:54px;height:54px;border-radius:50%;background:var(--sky-soft);color:var(--sky-d);display:grid;place-items:center;margin:0 auto 14px}
+.qr-t{font-family:var(--serif);font-size:23px;font-weight:600;color:var(--sky-d)}
+.qr-s{font-size:13px;color:var(--ink2);line-height:1.5;margin:8px 6px 0}
+.qopt.sel{border-color:var(--sky);background:#F2F7FA;color:var(--sky-d);font-weight:600}
+.qnav{display:flex;gap:10px;margin-top:20px}
+.qback{flex:1;border:1.5px solid var(--line);background:#fff;color:var(--ink2);border-radius:999px;padding:12px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer}
+.qnext{flex:1;border:0;background:var(--sky);color:#fff;border-radius:999px;padding:12px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer}
+.qnext[disabled]{background:#C9D6E0;cursor:default}
+.rg{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;font-size:13.5px;font-weight:600;color:var(--ink);font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.opt.on{border-color:var(--sky);background:#F2F7FA;color:var(--sky-d)}
+.opt.on::after{content:"✓";color:var(--sky-d);font-weight:700;font-size:13px}
+.toggles{display:flex;flex-direction:column;gap:9px}
+.tg{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 14px;font-size:13px;color:var(--ink);cursor:pointer}
+.tg>span:first-child{display:flex;align-items:center}
+.tg em{font-style:normal;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#5b7560;background:#E7EEE6;border-radius:999px;padding:2px 7px;margin-left:7px}
+.tg .sw{width:38px;height:22px;border-radius:999px;background:#DFD8CE;position:relative;flex:none;transition:background .15s}
+.tg .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .15s}
+.tg.on .sw{background:var(--sky)}
+.tg.on .sw::after{left:18px}
+.preview{display:flex;align-items:center;justify-content:space-between;background:var(--sky-soft);border-radius:14px;padding:13px 15px;margin-top:16px;font-size:13px;color:var(--sky-d);font-weight:600}
+.preview b.pv{font-family:var(--serif);font-size:22px;font-weight:600}
+.srcnote{font-size:11.5px;color:var(--muted);margin-top:10px}
+.recalc-done{text-align:center}
+.rd-badge{width:48px;height:48px;border-radius:50%;background:var(--sky-soft);color:var(--sky-d);display:grid;place-items:center;margin:6px auto 12px}
+.rd-t{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink)}
+.rd-t b{color:var(--sky-d)}
+.rd-s{font-size:12.5px;color:var(--ink2);line-height:1.5;margin:6px 8px 0}
+.js-view{margin-top:16px}
+/* calibration week screen */
+.pdots{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.pdots i{width:20px;height:6px;border-radius:3px;background:#DCE6EE}
+.pdots i.on{background:var(--sky)}
+.tonight{background:var(--sky-soft);border:1px solid #D7E3EC;border-radius:14px;padding:14px;font-size:13px;color:var(--sky-d);line-height:1.5}
+.tonight b{color:var(--sky-d)}
+.nights{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:4px 14px;box-shadow:var(--sh)}
+.nrow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.nrow:last-child{border-bottom:0}
+.nnum{width:22px;height:22px;border-radius:50%;background:#EEF2F6;color:var(--ink2);font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+.nrow.now .nnum{background:var(--sky);color:#fff}
+.nday{color:var(--ink2)}
+.nstat{margin-left:auto;font-size:11px;font-weight:600;color:var(--muted)}
+.nrow.now .nstat{color:var(--sky-d)}
+</style></head><body><div class="page">
+
+<div class="ibadge">Sleep · Iteration 8 · sleep need & circadian</div>
+<h1 class="ttl">Sleep need & circadian rhythm</h1>
+<p class="hint">Two nested pages off Sleep — <b>Your sleep need</b> and <b>Circadian rhythm</b> — and what every button opens. <b>Recalibrate</b> branches to a <b>7-night calibration</b> screen (Start → your calibration week) or <b>recalculate from existing data</b> (window + filters + live estimate). The <b>Chronotype quiz</b> runs 5 live questions → result. All seven phones are live and navigable — tap rows, buttons, toggles, and ‹ back.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+<symbol id="ic-sync" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v4h-4"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="ic-gauge" viewBox="0 0 24 24"><path d="M4 19a8 8 0 1 1 16 0"/><path d="M12 19l4.5-5.5"/></symbol>
+<symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3.2 2"/></symbol>
+<symbol id="ic-cycle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.9" style="fill:currentColor;stroke:none"/></symbol>
+</defs></svg>
+
+<div class="stage" id="stage"></div>
+
+<div style="margin-top:46px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid #EEE0D8;padding-top:18px">
+Sleep module · Iteration 8 · sleep need + circadian + recalibrate (calibration / recalculate-from-data) & chronotype-quiz flows · experiment only (HiFi unchanged)
+</div>
+
+<script>
+const NAV=`<div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>`;
+
+const SCREEN=(open,panel,initial)=>`
+<div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+<div class="tview">
+  <section class="tscreen${initial==='s-main'?' on':''}" data-sc="s-main"><div class="body">
+    <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+    <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-moon"/></svg></div><div class="h2">Sleep</div></div>
+    <div class="reading">You got <em>6h 12m</em> last night — short for you, three nights this week.</div>
+    <div class="chart">
+      <div class="chead"><div class="ctitle">Hours asleep</div><div class="ctag">Last 7 nights</div></div>
+      <svg class="csvg" viewBox="0 0 300 144" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="clegend"><span class="k"><i class="bar"></i>Sleep</span><span class="k"><i class="avg"></i>Avg 6h 41m</span><span class="k"><i class="base"></i>Baseline 7h 20m</span></div>
+    </div>
+    <div class="srcline"><svg class="ic" style="width:14px;height:14px;color:var(--sky)"><use href="#ic-sync"/></svg><span>Synced from Apple Health · 2h ago</span><button class="entry js-open" data-open="connect">Manage data</button></div>
+    <div class="seclbl2">Understand your sleep</div>
+    <div class="navrow" data-nav="s-need"><div class="nr-ic"><svg class="ic"><use href="#ic-gauge"/></svg></div><div class="nr-tx"><div class="nr-t">Your sleep need</div><div class="nr-s">Baseline 7h 20m · how it's computed</div></div><svg class="ic nr-ch"><use href="#ic-chevr"/></svg></div>
+    <div class="navrow" data-nav="s-rhythm"><div class="nr-ic"><svg class="ic"><use href="#ic-clock"/></svg></div><div class="nr-tx"><div class="nr-t">Circadian rhythm</div><div class="nr-s">Slightly early · your energy windows</div></div><svg class="ic nr-ch"><use href="#ic-chevr"/></svg></div>
+  </div></section>
+
+  <section class="tscreen${initial==='s-need'?' on':''}" data-sc="s-need"><div class="body">
+    <div class="hdr" data-nav="s-main"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Sleep</div>
+    <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-gauge"/></svg></div><div class="h2">Sleep need</div></div>
+    <div class="hero"><div class="hero-num">7h 20m</div><div class="hero-lbl">Your personalized baseline</div><div class="hero-meta">Learned from 62 nights · updated Jun 10</div></div>
+    <div class="seclbl2">How we compute this</div>
+    <div class="steps">
+      <div class="step"><span class="stepn">1</span><div>We learn from <b>your</b> nights — not a generic 8-hour rule.</div></div>
+      <div class="step"><span class="stepn">2</span><div>We weight <b>unrestricted</b> nights (weekends, holidays) more. Weekday nights are often cut short, so they would undercount your true need.</div></div>
+      <div class="step"><span class="stepn">3</span><div>It keeps refining as more data arrives, and shifts slowly if your patterns change.</div></div>
+    </div>
+    <div class="seclbl2">How you compare</div>
+    <div class="card"><div class="scale"><div class="band"></div><div class="mark"></div></div><div class="scaleax"><span>4h</span><span>7h</span><span>10h</span></div><div class="scalecap">Typical adult range 7–9h · <b style="color:var(--sky-d)">you 7h 20m</b></div></div>
+    <div class="cyc"><svg class="ic" style="width:16px;height:16px;color:#D86C62"><use href="#ic-cycle"/></svg><div>In your <b>luteal</b> phase, core temperature rises and REM dips — your effective need can climb ~15 min. Magdalene adjusts for this.</div></div>
+    <button class="btn2" data-nav="s-recal">Recalibrate sleep need</button>
+    <div class="disc">ⓘ Information, not medical advice.</div>
+  </div></section>
+
+  <section class="tscreen${initial==='s-rhythm'?' on':''}" data-sc="s-rhythm"><div class="body">
+    <div class="hdr" data-nav="s-main"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Sleep</div>
+    <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-clock"/></svg></div><div class="h2">Circadian rhythm</div></div>
+    <div class="hero"><div class="hero-num" style="font-size:27px">Slightly early</div><div class="hero-lbl">Lark-leaning chronotype · mid-sleep ~3:10 AM</div></div>
+    <div class="seclbl2">Your 24-hour rhythm</div>
+    <div class="card" style="padding:12px"><svg class="circ" viewBox="0 0 300 96" preserveAspectRatio="xMidYMid meet"></svg><div class="clegend" style="margin-top:6px"><span class="k"><i style="width:9px;height:9px;border-radius:2px;background:#E7EEF4;display:inline-block"></i>Sleep window</span><span class="k"><i style="width:9px;height:9px;border-radius:50%;background:#3F6486;display:inline-block"></i>Peak</span><span class="k"><i style="width:9px;height:9px;border-radius:50%;background:#C9A24E;display:inline-block"></i>Dip</span></div></div>
+    <div class="seclbl2">Your windows</div>
+    <div class="wlist">
+      <div class="wrow"><span class="wt">Wind-down (melatonin)</span><span class="wv">~10:30 PM</span></div>
+      <div class="wrow"><span class="wt">Ideal sleep</span><span class="wv">11:00 PM – 6:40 AM</span></div>
+      <div class="wrow"><span class="wt">Peak focus</span><span class="wv">9 – 11 AM</span></div>
+      <div class="wrow"><span class="wt">Afternoon dip</span><span class="wv">2 – 3 PM</span></div>
+    </div>
+    <div class="cyc"><svg class="ic" style="width:16px;height:16px;color:#D86C62"><use href="#ic-cycle"/></svg><div>Your <b>luteal</b> phase can push this later and raise core temperature — expect a later, lighter sleep that week.</div></div>
+    <button class="btn2" data-nav="s-quiz">Take the chronotype quiz</button>
+    <div class="disc">ⓘ Information, not medical advice.</div>
+  </div></section>
+
+  <section class="tscreen${initial==='s-recal'?' on':''}" data-sc="s-recal"><div class="body">
+    <div class="hdr" data-nav="s-need"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Sleep need</div>
+    <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-gauge"/></svg></div><div class="h2">Recalibrate</div></div>
+    <p class="lead">The most accurate way to find your <b>true</b> sleep need is a short <b>calibration week</b> — give yourself a full sleep opportunity, and we read what your body settles into.</p>
+    <div class="seclbl2">How it works</div>
+    <div class="steps">
+      <div class="step"><span class="stepn">1</span><div>For ~7 nights, allow extra time in bed — skip the alarm when you can.</div></div>
+      <div class="step"><span class="stepn">2</span><div>Keep a consistent wind-down. We track each night's duration and quality.</div></div>
+      <div class="step"><span class="stepn">3</span><div>We read the <b>plateau</b> your sleep settles into — your true need — and update your baseline.</div></div>
+    </div>
+    <div class="cyc"><svg class="ic" style="width:16px;height:16px;color:#D86C62"><use href="#ic-cycle"/></svg><div>We'll skip the late-<b>luteal</b> nights (naturally lighter and warmer) so they don't bias the read.</div></div>
+    <div class="recal-cta">
+      <button class="save" data-nav="s-calib">Start 7-night calibration</button>
+      <button class="btn2" data-nav="s-recalc">Recalculate from existing data</button>
+    </div>
+    <div class="disc">Takes ~1 week · you can stop anytime.</div>
+  </div></section>
+
+  <section class="tscreen${initial==='s-calib'?' on':''}" data-sc="s-calib"><div class="body">
+    <div class="hdr" data-nav="s-recal"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Recalibrate</div>
+    <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-moon"/></svg></div><div class="h2">Calibration week</div></div>
+    <div class="hero"><div class="hero-num">Night 1 <span style="font-size:18px;color:var(--muted)">of 7</span></div><div class="hero-lbl">Starts tonight · 7 nights</div><div class="pdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="seclbl2">Tonight</div>
+    <div class="tonight">Give yourself a <b>full sleep opportunity</b> — in bed by <b>~10:45 PM</b>, and skip the alarm if you can. We'll capture duration and quality automatically.</div>
+    <div class="seclbl2">Your 7 nights</div>
+    <div class="nights">
+      <div class="nrow now"><span class="nnum">1</span><span class="nday">Tonight · Jun 14</span><span class="nstat">In progress</span></div>
+      <div class="nrow"><span class="nnum">2</span><span class="nday">Jun 15</span><span class="nstat">Upcoming</span></div>
+      <div class="nrow"><span class="nnum">3</span><span class="nday">Jun 16</span><span class="nstat">Upcoming</span></div>
+      <div class="nrow"><span class="nnum">4</span><span class="nday">Jun 17</span><span class="nstat">Upcoming</span></div>
+      <div class="nrow"><span class="nnum">5</span><span class="nday">Jun 18</span><span class="nstat">Upcoming</span></div>
+      <div class="nrow"><span class="nnum">6</span><span class="nday">Jun 19</span><span class="nstat">Upcoming</span></div>
+      <div class="nrow"><span class="nnum">7</span><span class="nday">Jun 20</span><span class="nstat">Upcoming</span></div>
+    </div>
+    <div class="cyc"><svg class="ic" style="width:16px;height:16px;color:#D86C62"><use href="#ic-cycle"/></svg><div>We've scheduled around your late-<b>luteal</b> nights so they don't skew the result.</div></div>
+    <button class="btn2" data-nav="s-recal">Stop calibration</button>
+    <div class="disc">We'll nudge you each morning and update your baseline after night 7.</div>
+  </div></section>
+
+  <section class="tscreen${initial==='s-recalc'?' on':''}" data-sc="s-recalc"><div class="body">
+    <div class="hdr" data-nav="s-recal"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Recalibrate</div>
+    <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-gauge"/></svg></div><div class="h2">Use existing data</div></div>
+    <p class="lead">Recompute your baseline from nights you've already logged — no waiting. Pick the window and which nights to include.</p>
+    <div class="seclbl2">Time window</div>
+    <div class="rg">
+      <button class="opt" data-v="30">Last 30 nights</button>
+      <button class="opt on" data-v="90">Last 90 nights</button>
+      <button class="opt" data-v="180">Last 6 months</button>
+      <button class="opt" data-v="all">All time</button>
+    </div>
+    <div class="seclbl2">Include</div>
+    <div class="toggles">
+      <label class="tg on" data-k="unrestricted"><span>Unrestricted nights only<em>recommended</em></span><span class="sw"></span></label>
+      <label class="tg" data-k="excl-short"><span>Exclude very short nights (&lt;4h)</span><span class="sw"></span></label>
+      <label class="tg" data-k="excl-luteal"><span>Exclude late-luteal nights</span><span class="sw"></span></label>
+    </div>
+    <div class="srcnote">Source: Apple Health · 62 nights logged</div>
+    <div class="apply-wrap">
+      <button class="save js-recalc">Recalculate sleep need</button>
+      <div class="disc">We'll compute a fresh baseline from the nights you selected.</div>
+    </div>
+  </div></section>
+
+  <section class="tscreen${initial==='s-quiz'?' on':''}" data-sc="s-quiz"><div class="body">
+    <div class="hdr" data-nav="s-rhythm"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Circadian rhythm</div>
+    <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-clock"/></svg></div><div class="h2">Chronotype quiz</div></div>
+    <div class="quiz"></div>
+  </div></section>
+</div>
+${NAV}
+<div class="scrim${open?' show':''}"></div>
+<div class="sheet${open?' open':''}">
+  <div class="sheet-grip"></div>
+  <div class="sheet-h"><div class="sheet-title">Sleep data</div><button class="sheet-x" aria-label="Close">×</button></div>
+  <div class="seg2"><button class="${panel==='connect'?'on':''}" data-p="connect">Connect app</button><button class="${panel==='manual'?'on':''}" data-p="manual">Enter manually</button></div>
+  <div class="panel" data-panel="connect"${panel==='connect'?'':' hidden'}>
+    <p class="panel-sub">Sync sleep automatically from a device or app.</p>
+    <div class="src"><div class="logo" style="background:#FCEAEA;color:#E0556B">♥</div><div><div class="nm">Apple Health</div><div class="meta">Last sync 2h ago</div></div><span class="act connected"><svg class="ic" style="width:13px;height:13px;stroke-width:2.6"><use href="#ic-check"/></svg>Connected</span></div>
+    <div class="src"><div class="logo" style="background:#15151A;color:#fff">O</div><div><div class="nm">Oura Ring</div><div class="meta">Sleep stages · HRV</div></div><button class="act connect">Connect</button></div>
+    <div class="src"><div class="logo" style="background:#0B0B0F;color:#16E0A3">W</div><div><div class="nm">Whoop</div><div class="meta">Recovery · strain</div></div><button class="act connect">Connect</button></div>
+    <div class="src"><div class="logo" style="background:#E6F7F5;color:#00B0B9">F</div><div><div class="nm">Fitbit</div><div class="meta">Sleep score</div></div><button class="act connect">Connect</button></div>
+    <div class="src"><div class="logo" style="background:#EAF1FE;color:#4285F4">G</div><div><div class="nm">Google Fit</div><div class="meta">Duration</div></div><button class="act connect">Connect</button></div>
+  </div>
+  <div class="panel" data-panel="manual"${panel==='manual'?'':' hidden'}>
+    <p class="panel-sub">Add a night by hand.</p>
+    <div class="field"><label>Date</label><input type="date" class="finput" value="2026-06-14"></div>
+    <div class="field2"><div class="field"><label>Bedtime</label><input type="time" class="finput sl-bed" value="23:30"></div><div class="field"><label>Woke up</label><input type="time" class="finput sl-wake" value="06:42"></div></div>
+    <div class="dur"><span>Duration</span><b class="sl-dur">7h 12m</b></div>
+    <label class="qlabel">How rested?</label>
+    <div class="qchips"><button>Poor</button><button class="on">OK</button><button>Good</button><button>Great</button></div>
+    <button class="save">Save night</button>
+  </div>
+</div>`;
+
+function buildDaily(){
+  const vals=[7.0,6.5,5.8,7.3,6.2,7.8,6.2],labels=['M','T','W','T','F','S','S'];
+  const BASE=7+20/60,YMAX=9,L=26,R=292,T=8,B=116,n=vals.length,slot=(R-L)/n,bw=Math.min(24,slot*0.5);
+  let s='';
+  [3,6,9].forEach(g=>{const y=B-(g/YMAX)*(B-T);s+=`<line x1="${L}" y1="${y.toFixed(1)}" x2="${R}" y2="${y.toFixed(1)}" stroke="#EFE6D9" stroke-width="1"/><text x="${L-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#B9AEA0" font-family="Inter">${g}h</text>`;});
+  vals.forEach((v,i)=>{const cx=L+slot*i+slot/2,x=cx-bw/2,y=B-(v/YMAX)*(B-T),h=B-y,last=i===n-1;s+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${last?'#4f6f8a':'#A7C0D6'}"/>`;});
+  labels.forEach((lb,i)=>{const cx=L+slot*i+slot/2;s+=`<text x="${cx.toFixed(1)}" y="${(B+15).toFixed(1)}" text-anchor="middle" font-size="8.5" fill="#968D9B" font-family="Inter">${lb}</text>`;});
+  const yb=B-(BASE/YMAX)*(B-T);s+=`<line x1="${L}" y1="${yb.toFixed(1)}" x2="${R}" y2="${yb.toFixed(1)}" stroke="#94A7B8" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  const avg=vals.reduce((a,b)=>a+b,0)/n,ya=B-(avg/YMAX)*(B-T);s+=`<line x1="${L}" y1="${ya.toFixed(1)}" x2="${R}" y2="${ya.toFixed(1)}" stroke="#3F6486" stroke-width="2"/>`;
+  return s;
+}
+
+function buildCircadian(){
+  const L=16,R=284,top=12,base=66,W=R-L;
+  const pts=[[0,.74],[90,.82],[180,.6],[270,.42],[300,.26],[420,.12],[540,.08],[660,.1],[760,.22],[840,.56],[960,.86],[1080,.8],[1230,.5],[1320,.66],[1440,.74]];
+  const x=m=>L+(m/1440)*W, y=l=>base-l*(base-top);
+  let s='';
+  const sx1=x(300),sx2=x(760);
+  s+=`<rect x="${sx1.toFixed(1)}" y="8" width="${(sx2-sx1).toFixed(1)}" height="${(base-8).toFixed(1)}" rx="6" fill="#E7EEF4"/>`;
+  s+=`<text x="${((sx1+sx2)/2).toFixed(1)}" y="22" text-anchor="middle" font-size="8.5" fill="#7E93A6" font-family="Inter">Asleep</text>`;
+  const d=pts.map(p=>`${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join(' ');
+  s+=`<polyline points="${d}" fill="none" stroke="#4f6f8a" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+  s+=`<circle cx="${x(960).toFixed(1)}" cy="${y(.86).toFixed(1)}" r="3" fill="#3F6486"/>`;
+  s+=`<circle cx="${x(1230).toFixed(1)}" cy="${y(.5).toFixed(1)}" r="3" fill="#C9A24E"/>`;
+  s+=`<line x1="${L}" y1="${base}" x2="${R}" y2="${base}" stroke="#E7DDCF" stroke-width="1"/>`;
+  [['6 PM',0,'start'],['12 AM',360,'middle'],['6 AM',720,'middle'],['12 PM',1080,'middle'],['6 PM',1440,'end']].forEach(a=>{s+=`<text x="${x(a[1]).toFixed(1)}" y="${base+13}" text-anchor="${a[2]}" font-size="7.5" fill="#968D9B" font-family="Inter">${a[0]}</text>`;});
+  return s;
+}
+
+const VIEWS=[
+  ['s-main','Sleep · main','Overview, with two links under "Understand your sleep".'],
+  ['s-need','Your sleep need','Baseline method, how you compare, plus the luteal-phase adjustment.'],
+  ['s-recal','Recalibrate sleep need','What the Recalibrate button opens — calibration vs. recalculate, two real paths.'],
+  ['s-calib','7-night calibration','Where "Start 7-night calibration" now leads — the calibration week: what to do tonight and the 7-night schedule.'],
+  ['s-recalc','Recalculate from data','Where "Recalculate from existing data" now leads — pick a window + which nights, then Recalculate to compute a fresh baseline (shown as a result).'],
+  ['s-rhythm','Circadian rhythm','Chronotype, a 24-hour energy curve, your key windows, and the cycle shift.'],
+  ['s-quiz','Chronotype quiz','What the quiz button opens — 5 live questions, then your result. Tap through it.']
+];
+const stage=document.getElementById('stage');
+VIEWS.forEach(([init,title,desc])=>{
+  const col=document.createElement('div');col.className='col';
+  col.innerHTML=`<div class="phone"><div class="scr">${SCREEN(false,'connect',init)}</div></div><div class="cap"><div class="v">${title}</div><span class="d">${desc}</span></div>`;
+  stage.appendChild(col);
+});
+document.querySelectorAll('.csvg').forEach(svg=>svg.innerHTML=buildDaily());
+document.querySelectorAll('.circ').forEach(svg=>svg.innerHTML=buildCircadian());
+
+function tnav(scr,id){scr.querySelectorAll('.tscreen').forEach(s=>s.classList.toggle('on',s.dataset.sc===id));const b=scr.querySelector('.tscreen.on .body');if(b)b.scrollTop=0;}
+document.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click',()=>tnav(el.closest('.scr'),el.dataset.nav)));
+
+function setPanel(scr,p){scr.querySelectorAll('.seg2 button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));scr.querySelectorAll('.panel').forEach(pl=>pl.hidden=(pl.dataset.panel!==p));}
+function openS(scr,p){scr.querySelector('.scrim').classList.add('show');scr.querySelector('.sheet').classList.add('open');if(p)setPanel(scr,p);}
+function closeS(scr){scr.querySelector('.scrim').classList.remove('show');scr.querySelector('.sheet').classList.remove('open');}
+document.querySelectorAll('.js-open').forEach(b=>b.addEventListener('click',()=>openS(b.closest('.scr'),b.dataset.open)));
+document.querySelectorAll('.scrim').forEach(s=>s.addEventListener('click',()=>closeS(s.closest('.scr'))));
+document.querySelectorAll('.sheet-x').forEach(x=>x.addEventListener('click',()=>closeS(x.closest('.scr'))));
+document.querySelectorAll('.seg2 button').forEach(b=>b.addEventListener('click',()=>setPanel(b.closest('.scr'),b.dataset.p)));
+document.querySelectorAll('.qchips').forEach(g=>g.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');})));
+function slDur(sc){var bed=sc.querySelector('.sl-bed'),wake=sc.querySelector('.sl-wake'),out=sc.querySelector('.sl-dur');if(!bed||!wake||!out)return;function m(v){var p=v.split(':');return (+p[0])*60+(+p[1]);}var d=m(wake.value)-m(bed.value);if(d<=0)d+=1440;out.textContent=Math.floor(d/60)+'h '+String(d%60).padStart(2,'0')+'m';}
+document.querySelectorAll('.sl-bed,.sl-wake').forEach(function(inp){inp.addEventListener('input',function(){slDur(inp.closest('.sheet'));});});
+
+const QUIZ=[
+ ['Left to your own schedule, when would you wake?',['Before 6:30','6:30 – 7:45','7:45 – 9:30','After 9:30']],
+ ['…and when would you fall asleep?',['Before 10:00','10:00 – 11:15','11:15 – 12:45','After 12:45']],
+ ['How alert are you in your first 30 min awake?',['Very alert','Fairly alert','Fairly groggy','Very groggy']],
+ ['When are you at your best for demanding work?',['Early morning','Late morning','Afternoon','Evening']],
+ ['How easy is it to get up most mornings?',['Very easy','Fairly easy','Fairly hard','Very hard']]
+];
+function initQuiz(q){
+  let i=0; const ans={};
+  function render(){
+    if(i>=QUIZ.length){
+      q.innerHTML=`<div class="qresult"><div class="qr-badge"><svg class="ic" style="width:26px;height:26px;stroke-width:2.4"><use href="#ic-check"/></svg></div><div class="qr-t">You're slightly early</div><div class="qr-s">Lark-leaning · mid-sleep ~3:10 AM. You're sharpest mid-morning and dip mid-afternoon. We'll tune your wind-down and reminders to match.</div><button class="save js-qdone" style="margin-top:18px">Save to profile</button></div>`;
+      q.querySelector('.js-qdone').addEventListener('click',()=>tnav(q.closest('.scr'),'s-rhythm'));
+      return;
+    }
+    const it=QUIZ[i],last=i===QUIZ.length-1;
+    const opts=it[1].map((o,idx)=>`<button class="qopt${ans[i]===idx?' sel':''}" data-idx="${idx}">${o}</button>`).join('');
+    q.innerHTML=`<div class="qprog"><div class="qbar"><i style="width:${Math.round((i+1)/QUIZ.length*100)}%"></i></div><span class="qstep">${i+1} of ${QUIZ.length}</span></div><div class="qq">${it[0]}</div><div class="qopts">${opts}</div><div class="qnav">${i>0?'<button class="qback">Back</button>':''}<button class="qnext"${ans[i]==null?' disabled':''}>${last?'See result':'Next'}</button></div>`;
+    q.querySelectorAll('.qopt').forEach(b=>b.addEventListener('click',()=>{ans[i]=+b.dataset.idx;render();}));
+    const bk=q.querySelector('.qback');if(bk)bk.addEventListener('click',()=>{i--;render();});
+    q.querySelector('.qnext').addEventListener('click',()=>{if(ans[i]==null)return;i++;render();});
+  }
+  render();
+}
+document.querySelectorAll('.quiz').forEach(initQuiz);
+document.querySelectorAll('.js-start').forEach(b=>b.addEventListener('click',()=>{b.closest('.recal-cta').innerHTML=`<div class="started"><svg class="ic" style="width:18px;height:18px;stroke-width:2.4"><use href="#ic-check"/></svg><div>Calibration started — give yourself a full night's opportunity. We'll recheck your baseline after ~7 nights.</div></div>`;}));
+function computeNeed(scr){
+  const sel=scr.querySelector('.rg .opt.on');
+  const range=sel?sel.dataset.v:'90';
+  let mins=({'30':434,'90':438,'180':444,'all':440})[range]||438;
+  if(scr.querySelector('.tg.on[data-k="unrestricted"]'))mins+=6;
+  if(scr.querySelector('.tg.on[data-k="excl-short"]'))mins+=2;
+  if(scr.querySelector('.tg.on[data-k="excl-luteal"]'))mins+=3;
+  const h=Math.floor(mins/60),m=mins%60;
+  return h+'h '+(m<10?'0'+m:m)+'m';
+}
+document.querySelectorAll('.rg').forEach(rg=>rg.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{rg.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));o.classList.add('on');})));
+document.querySelectorAll('.tg').forEach(t=>t.addEventListener('click',()=>t.classList.toggle('on')));
+document.querySelectorAll('.js-recalc').forEach(b=>b.addEventListener('click',()=>{
+  const scr=b.closest('.scr'),val=computeNeed(scr);
+  const hero=scr.querySelector('[data-sc="s-need"] .hero-num');if(hero)hero.textContent=val;
+  const meta=scr.querySelector('[data-sc="s-need"] .hero-meta');if(meta)meta.textContent='Recalculated from existing data · just now';
+  const wrap=b.closest('.apply-wrap');
+  wrap.innerHTML=`<div class="recalc-done"><div class="rd-badge"><svg class="ic" style="width:24px;height:24px;stroke-width:2.4"><use href="#ic-check"/></svg></div><div class="rd-t">New sleep need · <b>${val}</b></div><div class="rd-s">Computed from your selected nights (was 7h 20m). Updated on Your sleep need.</div><button class="save js-view">View on Your sleep need</button></div>`;
+  wrap.querySelector('.js-view').addEventListener('click',()=>tnav(scr,'s-need'));
+}));
+</script>
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 8 · what came out of it</div>
+  <p style="margin:0">Sleep need and circadian rhythm were built as nested pages, with a chronotype quiz and two routes to recalibration. Requiring a seven-night calibration week as the only path was rejected: it is the accurate route, but a dead end for anyone wanting an answer today. Recalculating from nights already logged runs alongside it, with the window and night filters exposed so the estimate stays honest about what it rests on.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>

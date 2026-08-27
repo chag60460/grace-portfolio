@@ -1,0 +1,143 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cycle — Color Scheme Exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== semantic tokens (Warm Clay baseline) ===== */
+:root{
+ --bg:#FCF7EF; --surface:#FFFFFF; --ink:#2A2431; --ink2:#574F5E; --muted:#968D9B; --line:#EFE6D9;
+ --accent:#C0613E; --accent-d:#9F4D2F; --accent-soft:#F6E2D6;
+ --ph-period:#C0613E; --ph-foll:#7E9A82; --ph-fertile:#7A5C77; --ph-luteal:#E0A24E; --fertile-soft:#ECE2EB;
+ --serif:'Fraunces',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+.s-lavender{--bg:#F6F3FB;--surface:#fff;--ink:#2B2733;--ink2:#5A5466;--muted:#948DA4;--line:#ECE7F3;--accent:#7C5AA6;--accent-d:#5E3F86;--accent-soft:#ECE3F7;--ph-period:#C75C7A;--ph-foll:#88A39E;--ph-fertile:#B07CC9;--ph-luteal:#E2A765;--fertile-soft:#EFE3F7}
+.s-sage{--bg:#F3F5EE;--surface:#fff;--ink:#28302A;--ink2:#4F5A50;--muted:#8A958B;--line:#E5EADE;--accent:#5E8C6A;--accent-d:#456B50;--accent-soft:#E1ECE0;--ph-period:#C97A4E;--ph-foll:#6E9E78;--ph-fertile:#C99A4E;--ph-luteal:#8A7BA0;--fertile-soft:#F0E6D4}
+.s-dark{--bg:#1C1A22;--surface:#26232E;--ink:#F2EEF6;--ink2:#C9C3D2;--muted:#8E879B;--line:#34303D;--accent:#E6A85A;--accent-d:#E6A85A;--accent-soft:#312A22;--ph-period:#E8745E;--ph-foll:#6FB892;--ph-fertile:#B98BE0;--ph-luteal:#E6A85A;--fertile-soft:#322B3A}
+.s-editorial{--bg:#F7F4EC;--surface:#fff;--ink:#1A1714;--ink2:#4A443E;--muted:#8C857B;--line:#E7E0D2;--accent:#C8203C;--accent-d:#A01A30;--accent-soft:#F7DCE0;--ph-period:#C8203C;--ph-foll:#9A8F80;--ph-fertile:#C99A2E;--ph-luteal:#2F2A26;--fertile-soft:#F2E8CF}
+.s-blush{--bg:#FBF1EE;--surface:#fff;--ink:#33272A;--ink2:#5E4F52;--muted:#A38E92;--line:#F1E2DD;--accent:#C76B72;--accent-d:#A24E55;--accent-soft:#F7E2E2;--ph-period:#C76B72;--ph-foll:#87A398;--ph-fertile:#C9A06A;--ph-luteal:#B07C9A;--fertile-soft:#F3E6D6}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F1ECE2,#E6DDCF);font-family:var(--sans);color:#2A2431;-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:42px 18px 80px}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:0 0 4px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#C0613E;font-weight:700}
+.hint{color:#574F5E;font-size:16px;margin:2px 0 22px;max-width:760px}
+.hint b{color:#C0613E}
+.stage{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.col{width:320px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px}
+.cap .badge{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9F4D2F;background:#F6E2D6;border-radius:999px;padding:2px 8px}
+.cap span.d{display:block;font-size:12.5px;color:#968D9B;margin-top:3px;line-height:1.45}
+/* device */
+.phone{width:320px;background:#fff;border-radius:46px;padding:12px;box-shadow:0 28px 62px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--bg);border-radius:36px;overflow:hidden;height:752px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;color:var(--ink);flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.body{flex:1;overflow:auto;padding:8px 20px 14px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--surface);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--accent);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ic.fill{fill:currentColor;stroke:none}.nav .ic{width:22px;height:22px}
+/* cycle page */
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500}
+.trow{display:flex;align-items:center;gap:13px;margin:2px 0 4px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-d)}
+.h2{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:-.01em;margin:0;color:var(--ink)}
+.ring{position:relative;width:186px;height:186px;margin:10px auto 4px}
+.donut{width:100%;height:100%;border-radius:50%;background:conic-gradient(var(--ph-period) 0 17.2%,var(--ph-foll) 17.2% 41.4%,var(--ph-fertile) 41.4% 55.2%,var(--ph-luteal) 55.2% 100%)}
+.hole{position:absolute;inset:11%;border-radius:50%;background:var(--bg);display:grid;place-items:center;text-align:center}
+.hole .d{font-family:var(--serif);font-size:28px;font-weight:600;line-height:1;color:var(--ink)}
+.hole .ph{font-size:12px;color:var(--accent-d);font-weight:600;margin-top:3px}
+.hole .nx{font-size:10.5px;color:var(--muted);margin-top:4px}
+.marker{position:absolute;inset:0;transform:rotate(273deg)}
+.marker i{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.rlegend{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:4px 0;font-size:10.5px;color:var(--muted)}
+.rlegend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.rlegend i.p{background:var(--ph-period)}.rlegend i.fo{background:var(--ph-foll)}.rlegend i.fe{background:var(--ph-fertile)}.rlegend i.lu{background:var(--ph-luteal)}
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px}
+.cal .mh{font-family:var(--serif);font-weight:600;font-size:15px;margin-bottom:10px;text-align:center;color:var(--ink)}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.dow{font-size:9px;color:var(--muted);font-weight:700;padding-bottom:3px}
+.cell{aspect-ratio:1;display:grid;place-items:center;font-size:11.5px;border-radius:8px;color:var(--ink2)}
+.cell.period{background:var(--ph-period);color:#fff;font-weight:600}
+.cell.fertile{background:var(--fertile-soft);color:var(--ink2)}
+.cell.today{box-shadow:inset 0 0 0 2px var(--accent);font-weight:700;color:var(--accent-d)}
+.callegend{display:flex;gap:13px;flex-wrap:wrap;margin-top:11px;font-size:10px;color:var(--muted)}
+.callegend i{display:inline-block;width:10px;height:10px;border-radius:4px;margin-right:4px;vertical-align:-1px}
+.callegend i.lp{background:var(--ph-period)}.callegend i.lf{background:var(--fertile-soft)}.callegend i.lt{box-shadow:inset 0 0 0 2px var(--accent)}
+.reading{font-family:var(--serif);font-size:19px;font-weight:500;line-height:1.4;margin:16px 0 0;color:var(--ink)}
+.reading em{font-style:normal;color:var(--accent)}
+.seclbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:18px 0 10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px}
+.crow{display:flex;align-items:center;margin-top:0}.crow+.crow{margin-top:10px}
+.cs{font-size:11.5px;color:var(--muted)}.ct{font-size:13.5px;font-weight:600;color:var(--ink);margin-left:auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface);border:1px solid var(--accent);color:var(--accent-d);border-radius:999px;padding:7px 12px;font-size:12px}
+</style></head><body><div class="page">
+
+<div class="ibadge">Iteration 3 · color</div>
+<h1 class="ttl">Cycle — color scheme exploration</h1>
+<p class="hint">The same <b>Variant D</b> screen in six interface palettes. Just an experiment — the ring, calendar, accents &amp; text all recolor together. Tell me which mood feels right (or mix).</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-cycle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.9" class="fill"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+</defs></svg>
+
+<template id="tpl">
+  <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+  <div class="body">
+    <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+    <div class="trow"><div class="tile"><svg class="ic"><use href="#ic-cycle"/></svg></div><div class="h2">Cycle</div></div>
+    <div class="ring"><div class="donut"></div><div class="hole"><div><div class="d">Day 22</div><div class="ph">Luteal phase</div><div class="nx">Period in ~6 days</div></div></div><div class="marker"><i></i></div></div>
+    <div class="rlegend"><span><i class="p"></i>Period</span><span><i class="fo"></i>Follicular</span><span><i class="fe"></i>Fertile</span><span><i class="lu"></i>Luteal</span></div>
+    <div class="cal">
+      <div class="mh">June 2026</div>
+      <div class="wk"><div class="dow">S</div><div class="dow">M</div><div class="dow">T</div><div class="dow">W</div><div class="dow">T</div><div class="dow">F</div><div class="dow">S</div><div class="cell"></div><div class="cell">1</div><div class="cell">2</div><div class="cell fertile">3</div><div class="cell fertile">4</div><div class="cell fertile">5</div><div class="cell fertile">6</div><div class="cell fertile">7</div><div class="cell">8</div><div class="cell">9</div><div class="cell">10</div><div class="cell">11</div><div class="cell">12</div><div class="cell today">13</div><div class="cell">14</div><div class="cell">15</div><div class="cell">16</div><div class="cell">17</div><div class="cell">18</div><div class="cell period">19</div><div class="cell period">20</div><div class="cell period">21</div><div class="cell period">22</div><div class="cell period">23</div><div class="cell">24</div><div class="cell">25</div><div class="cell">26</div><div class="cell">27</div><div class="cell">28</div><div class="cell">29</div><div class="cell">30</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+      <div class="callegend"><span><i class="lp"></i>Predicted period</span><span><i class="lf"></i>Fertile window</span><span><i class="lt"></i>Today</span></div>
+    </div>
+    <div class="reading">You're on <em>Day 22 — luteal.</em> Period predicted in ~6 days.</div>
+    <div class="seclbl">This cycle</div>
+    <div class="card"><div class="crow"><span class="cs">Cycle length</span><span class="ct">29 days</span></div><div class="crow"><span class="cs">Next period</span><span class="ct">Jun 19 · in ~6 days</span></div><div class="crow"><span class="cs">Luteal started</span><span class="ct">Day 15</span></div></div>
+    <div class="seclbl">Connected to</div>
+    <div class="chips"><span class="chip">Sleep ↓REM</span><span class="chip">Glucose ↑</span><span class="chip">Recovery ↓</span></div>
+  </div>
+  <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+</template>
+
+<div class="stage">
+  <div class="col"><div class="phone"><div class="scr" data-tpl></div></div><div class="cap"><div class="v">Warm Clay <span class="badge">current</span></div><span class="d">The established palette — cream, clay, sage, plum, amber.</span></div></div>
+  <div class="col"><div class="phone s-lavender"><div class="scr" data-tpl></div></div><div class="cap"><div class="v">Lavender Calm</div><span class="d">Soft lilac base, violet accent — calming, feminine.</span></div></div>
+  <div class="col"><div class="phone s-sage"><div class="scr" data-tpl></div></div><div class="cap"><div class="v">Botanical Sage</div><span class="d">Green base, terracotta + gold — natural, wellness.</span></div></div>
+  <div class="col"><div class="phone s-dark"><div class="scr" data-tpl></div></div><div class="cap"><div class="v">Nordic Dark</div><span class="d">Near-black canvas, luminous accents — premium, glanceable.</span></div></div>
+  <div class="col"><div class="phone s-editorial"><div class="scr" data-tpl></div></div><div class="cap"><div class="v">Editorial</div><span class="d">Warm white, near-black ink, one bold berry accent — stark, modern.</span></div></div>
+  <div class="col"><div class="phone s-blush"><div class="scr" data-tpl></div></div><div class="cap"><div class="v">Blush Rose</div><span class="d">Warm blush base, rose + soft gold — gentle, warm.</span></div></div>
+</div>
+
+<div style="margin-top:46px;text-align:center;color:#968D9B;font-size:12.5px;border-top:1px solid #E6DDCF;padding-top:18px">
+Cycle module · Iteration 3 · color exploration · same screen, six palettes · experiment only (HiFi unchanged)
+</div>
+
+<script>
+const tpl=document.getElementById('tpl');
+document.querySelectorAll('[data-tpl]').forEach(s=>s.appendChild(tpl.content.cloneNode(true)));
+</script>
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 3 · what came out of it</div>
+  <p style="margin:0">Six interface palettes were themed live onto the settled Variant D screen, recolouring ring, calendar, accents and text together. Blush Rose was chosen for its warm and gentle base. Nordic Dark and Editorial were rejected for reading as performance dashboards, Botanical Sage for feeling like generic wellness, and the incumbent Warm Clay for being too muted to carry four distinct phases.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>

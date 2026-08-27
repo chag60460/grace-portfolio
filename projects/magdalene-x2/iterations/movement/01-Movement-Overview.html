@@ -1,0 +1,226 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Movement — overview concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FCF7EF;--paper:#fff;--ink:#2A2431;--ink2:#574F5E;--muted:#968D9B;--line:#EFE6D9;
+ --clay:#C0613E;--clay-d:#9F4D2F;
+ --plum:#7A5C77;--plum-soft:#ECE2EB;--plum-d:#5C4360;
+ --luteal:#E0A24E;--luteal-soft:#F8EAD4;--sage-d:#5b7560;--sage-soft:#E7EEE6;--amber:#B5701F;
+ --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --sh:0 1px 2px rgba(40,30,20,.04),0 8px 22px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F6EEE2,#E9E0D2);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:42px 18px 80px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);font-weight:700}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:2px 0 4px}
+.hint{color:var(--ink2);font-size:16px;margin:2px 0 8px;max-width:880px;line-height:1.55}
+.hint b{color:var(--plum-d)}
+.stage{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+.col{width:330px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px}
+.cap .badge{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--plum-d);background:var(--plum-soft);border-radius:999px;padding:2px 8px}
+.cap span.d{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.phone{width:330px;background:#fff;border-radius:46px;padding:13px;box-shadow:0 30px 66px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--cream);border-radius:36px;overflow:hidden;height:724px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.body{flex:1;overflow:auto;padding:8px 20px 16px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--paper);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--clay);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ic.fill{fill:currentColor;stroke:none}.nav .ic{width:22px;height:22px}
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500}
+.h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em;margin:0}
+.row{display:flex;align-items:center;gap:13px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--plum-soft);color:var(--plum)}
+.reading{font-family:var(--serif);font-size:21px;font-weight:500;line-height:1.4;letter-spacing:-.01em;margin:0}
+.reading em{font-style:normal;color:var(--plum-d)}
+.means{font-size:13.5px;color:var(--ink2);line-height:1.55;margin-top:11px}
+.seclbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:6px 15px;box-shadow:var(--sh)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{background:var(--paper);border:1px solid var(--plum);color:var(--plum-d);border-radius:999px;padding:8px 13px;font-size:12.5px;display:inline-flex;gap:6px;align-items:center;font-weight:600;cursor:pointer}
+.disc{font-size:11px;color:var(--muted);margin-top:16px;text-align:center}
+/* phase pill */
+.phasepill{display:inline-flex;align-items:center;gap:7px;background:var(--luteal-soft);color:#8a5a22;border-radius:999px;padding:5px 11px;font-size:11.5px;font-weight:600;margin:14px 0 2px}
+.phasepill i{width:8px;height:8px;border-radius:50%;background:var(--luteal)}
+/* readiness ring (A) */
+.rhero{display:flex;flex-direction:column;align-items:center;text-align:center;margin:10px 0 2px}
+.ring{position:relative;width:158px;height:158px}
+.ring .psvg{width:158px;height:158px;transform:rotate(-90deg)}
+.ptrack{fill:none;stroke:#ECE3D6;stroke-width:9}
+.pfill{fill:none;stroke:var(--plum);stroke-width:9;stroke-linecap:round;stroke-dasharray:263.9;stroke-dashoffset:163.6}
+.ring .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .rn{font-family:var(--serif);font-size:42px;font-weight:600;line-height:1;color:var(--plum-d)}
+.ring .rl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:4px}
+/* metric rows */
+.mrow{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+.mrow .mi{width:30px;height:30px;border-radius:9px;background:var(--plum-soft);color:var(--plum);display:grid;place-items:center;flex:none}
+.mrow .ml{font-size:13px;font-weight:600}
+.mrow .ms{font-size:11px;color:var(--muted);margin-top:1px}
+.mrow .mv{margin-left:auto;font-family:var(--serif);font-size:17px;font-weight:600;text-align:right;white-space:nowrap}
+.mrow .mv small{font-family:var(--sans);font-size:10px;color:var(--muted);font-weight:600}
+.dn{color:var(--clay-d)}.up{color:var(--amber)}
+/* phase arc (B) */
+.arc-wrap{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px 12px 10px;box-shadow:var(--sh)}
+.arcsvg{width:100%;display:block}
+.arc-x{display:flex;margin-top:4px;font-size:9px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+.arc-x span{text-align:center}
+.arc-x .now{color:var(--plum-d)}
+.mstrip{display:flex;gap:8px;margin-top:14px}
+.mcell{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 8px;text-align:center;box-shadow:var(--sh)}
+.mcell .v{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--plum-d);line-height:1}
+.mcell .k{font-size:9.5px;color:var(--muted);margin-top:5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+/* guidance / session (C) */
+.sess{background:linear-gradient(160deg,#F3EAF1,#FBF6F2);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--sh)}
+.sess .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--plum-d);font-weight:700}
+.sess .big{font-family:var(--serif);font-size:20px;font-weight:600;margin:7px 0 5px;line-height:1.25}
+.sess .meta{font-size:12.5px;color:var(--ink2);line-height:1.5}
+.sess .tags{display:flex;gap:7px;margin-top:13px;flex-wrap:wrap}
+.sess .tg{background:#fff;border:1px solid var(--plum);color:var(--plum-d);border-radius:999px;padding:5px 11px;font-size:11.5px;font-weight:600}
+.foot{margin-top:46px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid #EEE0D8;padding-top:18px}
+</style></head><body><div class="page">
+
+<div class="ibadge">Movement · Iteration 1 · module overview</div>
+<h1 class="ttl">Movement — cycle-aware training &amp; recovery</h1>
+<p class="hint">First pass at the 5th module. Movement's job is to answer one question every morning: <b>how hard should I train today?</b> — read through Grace's cycle. Plum accent (<b>#7A5C77</b>) matches the icon. Three concepts for the main screen: <b>A — readiness ring</b> (data-forward), <b>B — cycle phase-arc</b> (the signature cross-domain visual), <b>C — guidance-first</b> (product voice, one clear action). All show Day 22 · luteal, recovery low.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-cycle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.9" class="fill"/></symbol>
+<symbol id="ic-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+<symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 20.5C6.5 16.5 3 13.2 3 9.3 3 6.6 5 4.8 7.4 4.8c1.6 0 3 .9 3.6 2.1.6-1.2 2-2.1 3.6-2.1C19 4.8 21 6.6 21 9.3c0 3.9-3.5 7.2-9 11.2z"/></symbol>
+<symbol id="ic-bolt" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11l-1 8.5 8.5-12H12z"/></symbol>
+</defs></svg>
+
+<div class="stage">
+
+  <!-- ===================== A — READINESS RING ===================== -->
+  <div class="col">
+   <div class="phone"><div class="scr">
+     <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+     <div class="body">
+       <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+       <div class="row" style="margin:4px 0 8px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Movement</h2></div>
+       <div class="rhero">
+         <div class="ring">
+           <svg class="psvg" viewBox="0 0 100 100"><circle class="ptrack" cx="50" cy="50" r="42"/><circle class="pfill" cx="50" cy="50" r="42"/></svg>
+           <div class="ctr"><div class="rn">38</div><div class="rl">Recovery · low</div></div>
+         </div>
+         <div class="phasepill"><i></i> Day 22 · Luteal</div>
+       </div>
+       <div class="reading" style="margin-top:14px">Recovery's low — <em>ease up today.</em></div>
+       <div class="means">Lower HRV and a higher resting heart rate are luteal-typical. Pushing now costs more than it gives back.</div>
+       <div class="seclbl">This morning</div>
+       <div class="card">
+         <div class="mrow"><div class="mi"><svg class="ic" style="width:16px;height:16px"><use href="#ic-act"/></svg></div><div><div class="ml">HRV</div><div class="ms">overnight average</div></div><div class="mv">42<small> ms</small> <span class="dn">▼</span></div></div>
+         <div class="mrow"><div class="mi"><svg class="ic" style="width:16px;height:16px"><use href="#ic-heart"/></svg></div><div><div class="ml">Resting HR</div><div class="ms">vs 56 baseline</div></div><div class="mv">61<small> bpm</small> <span class="up">▲</span></div></div>
+         <div class="mrow"><div class="mi"><svg class="ic" style="width:16px;height:16px"><use href="#ic-bolt"/></svg></div><div><div class="ml">Yesterday's load</div><div class="ms">moderate session</div></div><div class="mv">11.4</div></div>
+       </div>
+       <div class="chips"><span class="chip"><svg class="ic" style="width:14px;height:14px"><use href="#ic-cycle"/></svg> Why luteal lowers recovery</span></div>
+       <div class="disc">ⓘ Information, not a diagnosis.</div>
+     </div>
+     <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+   </div></div>
+   <div class="cap"><div class="v">A · Readiness ring <span class="badge">data-forward</span></div><span class="d">A single recovery score leads, like Whoop/Oura — but framed by cycle phase. Familiar and glanceable; risks feeling like "just another wearable."</span></div>
+  </div>
+
+  <!-- ===================== B — CYCLE PHASE-ARC ===================== -->
+  <div class="col">
+   <div class="phone"><div class="scr">
+     <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+     <div class="body">
+       <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+       <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Movement</h2></div>
+       <div class="reading">You're in your <em>ease-down week.</em></div>
+       <div class="means">Strength and power come back as you move into your follicular phase — that's the window to schedule the hard sessions.</div>
+       <div class="seclbl">Your training-intensity cycle</div>
+       <div class="arc-wrap">
+         <svg class="arcsvg" viewBox="0 0 300 132" preserveAspectRatio="xMidYMid meet">
+           <defs><linearGradient id="arcfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A5C77" stop-opacity=".22"/><stop offset="1" stop-color="#7A5C77" stop-opacity="0"/></linearGradient></defs>
+           <!-- luteal band (now) -->
+           <rect x="170" y="10" width="124" height="98" fill="#ECE2EB" opacity=".5"/>
+           <!-- area under curve -->
+           <path d="M6,96 C24,96 32,90 46,87 C82,80 96,50 122,40 C134,35 140,27 150,27 C162,27 173,49 198,65 C232,88 268,95 294,97 L294,108 L6,108 Z" fill="url(#arcfill)"/>
+           <!-- intensity curve -->
+           <path d="M6,96 C24,96 32,90 46,87 C82,80 96,50 122,40 C134,35 140,27 150,27 C162,27 173,49 198,65 C232,88 268,95 294,97" fill="none" stroke="#7A5C77" stroke-width="2.5" stroke-linecap="round"/>
+           <!-- now guide + marker -->
+           <line x1="232" y1="20" x2="232" y2="108" stroke="#5C4360" stroke-width="1" stroke-dasharray="3 3" opacity=".55"/>
+           <circle cx="232" cy="88" r="5.5" fill="#fff" stroke="#5C4360" stroke-width="2.5"/>
+           <text x="232" y="16" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#5C4360">YOU'RE HERE</text>
+           <!-- baseline -->
+           <line x1="6" y1="108" x2="294" y2="108" stroke="#EFE6D9" stroke-width="1"/>
+         </svg>
+         <div class="arc-x"><span style="flex:5">Menstrual</span><span style="flex:8">Follicular</span><span style="flex:3">Ovul</span><span class="now" style="flex:12">Luteal · now</span></div>
+       </div>
+       <div class="mstrip">
+         <div class="mcell"><div class="v">38<span style="font-size:11px">%</span></div><div class="k">Recovery</div></div>
+         <div class="mcell"><div class="v">42<span style="font-size:11px">ms</span></div><div class="k">HRV ▼</div></div>
+         <div class="mcell"><div class="v">61</div><div class="k">RHR ▲</div></div>
+       </div>
+       <div class="chips"><span class="chip"><svg class="ic" style="width:14px;height:14px"><use href="#ic-spark"/></svg> Plan my training week</span></div>
+       <div class="disc">ⓘ Information, not a diagnosis.</div>
+     </div>
+     <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+   </div></div>
+   <div class="cap"><div class="v">B · Cycle phase-arc <span class="badge">signature</span></div><span class="d">Leads with the cross-domain insight no single app gives: where she sits on her own training-intensity curve. Most differentiated &amp; personalized; needs the most teaching the first time.</span></div>
+  </div>
+
+  <!-- ===================== C — GUIDANCE-FIRST ===================== -->
+  <div class="col">
+   <div class="phone"><div class="scr">
+     <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+     <div class="body">
+       <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+       <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Movement</h2></div>
+       <div class="phasepill"><i></i> Day 22 · Luteal</div>
+       <div class="reading" style="margin-top:12px">Your body's asking for an <em>easier day.</em></div>
+       <div class="means">Recovery is down and your luteal phase amplifies it. A gentle session today will leave you stronger than grinding through one.</div>
+       <div class="seclbl">Today's pick</div>
+       <div class="sess">
+         <div class="lbl">Suggested session</div>
+         <div class="big">Zone 2 or mobility · 30–40 min</div>
+         <div class="meta">Keep it conversational — nasal-breathing pace. Save intervals and heavy lifts for next week.</div>
+         <div class="tags"><span class="tg">Easy effort</span><span class="tg">Iron-aware</span><span class="tg">~40 min</span></div>
+       </div>
+       <div class="mstrip">
+         <div class="mcell"><div class="v">38<span style="font-size:11px">%</span></div><div class="k">Recovery</div></div>
+         <div class="mcell"><div class="v">42<span style="font-size:11px">ms</span></div><div class="k">HRV ▼</div></div>
+         <div class="mcell"><div class="v">61</div><div class="k">RHR ▲</div></div>
+       </div>
+       <div class="chips"><span class="chip">Swap the suggestion</span><span class="chip">See my week</span></div>
+       <div class="disc">ⓘ Information, not a diagnosis.</div>
+     </div>
+     <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+   </div></div>
+   <div class="cap"><div class="v">C · Guidance-first <span class="badge">product voice</span></div><span class="d">Leads with meaning + one clear action (PRD: "say what it means, not how it works"). Calmest and most on-voice; the numbers sit underneath for those who want them.</span></div>
+  </div>
+
+</div>
+
+<div class="foot">Movement module · Iteration 1 · 3 concepts for the main screen · experiment only (HiFi unchanged)</div>
+
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 1 · what came out of it</div>
+  <p style="margin:0">Movement's job is to answer a single question each morning — how hard should I train today — read through the cycle. Three concepts were built out in full rather than argued on paper: a readiness ring, familiar and glanceable but at risk of feeling like just another wearable; a cycle phase-arc, the most differentiated view but the one needing the most teaching; and a guidance-first screen, the calmest and most on-voice. The choice is a judgment about feel, which only real screens can settle.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>

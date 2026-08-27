@@ -1,0 +1,403 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Movement — activities, three layouts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FCF7EF;--paper:#fff;--ink:#2A2431;--ink2:#574F5E;--muted:#968D9B;--line:#EFE6D9;
+ --clay:#C0613E;--clay-d:#9F4D2F;--clay-soft:#F6E2D6;
+ --plum:#7A5C77;--plum-soft:#ECE2EB;--plum-d:#5C4360;
+ --luteal:#E0A24E;--luteal-soft:#F8EAD4;--sage:#7E9A82;--sage-soft:#E7EEE6;--sage-d:#5b7560;
+ --amber:#B5701F;--amber-soft:#FBEAD9;--sky:#4f6f8a;--sky-soft:#E3ECF2;--coral-d:#D86C62;--coral-soft:#FCE5DF;
+ --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --sh:0 1px 2px rgba(40,30,20,.04),0 8px 22px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F6EEE2,#E9E0D2);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:42px 18px 80px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);font-weight:700}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:2px 0 4px}
+.hint{color:var(--ink2);font-size:16px;margin:2px 0 8px;max-width:900px;line-height:1.55}
+.hint b{color:var(--plum-d)}
+.stage{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+.col{width:330px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.cap .badge{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--plum-d);background:var(--plum-soft);border-radius:999px;padding:2px 8px}
+.cap span.d{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.phone{width:330px;background:#fff;border-radius:46px;padding:13px;box-shadow:0 30px 66px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--cream);border-radius:36px;overflow:hidden;height:724px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.tview{position:relative;flex:1;overflow:hidden}
+.tscreen{position:absolute;inset:0;display:none;flex-direction:column}
+.tscreen.on{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.body{flex:1;overflow:auto;padding:8px 20px 14px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--paper);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--clay);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ic.fill{fill:currentColor;stroke:none}.nav .ic{width:22px;height:22px}
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500;cursor:pointer}
+.h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em;margin:0}
+.row{display:flex;align-items:center;gap:13px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--plum-soft);color:var(--plum)}
+.seclbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:18px 0 10px}
+.wkcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);display:flex;padding:13px 2px;margin-top:6px}
+.wkcell{flex:1;text-align:center;border-right:1px solid var(--line)}
+.wkcell:last-child{border-right:0}
+.wkv{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--plum-d);line-height:1}
+.wkk{font-size:8px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;margin-top:5px}
+.act{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.act:last-child{border-bottom:0}
+.atile{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none}
+.anm{font-size:13.5px;font-weight:600}
+.ameta{font-size:11px;color:var(--muted);margin-top:2px}
+.achev{margin-left:auto;color:var(--muted)}
+.actgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.acttile{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:13px;cursor:pointer}
+.acttile .atile{margin-bottom:9px}
+.acount{font-size:10.5px;color:var(--muted);margin-top:3px}
+.ametric{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--plum-d);margin-top:7px}
+.acard{display:flex;align-items:center;gap:12px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:12px 13px;margin-bottom:10px;cursor:pointer}
+.acard .atile{width:40px;height:40px;border-radius:12px}
+.acmain{min-width:0}
+.acn{font-size:13.5px;font-weight:600}
+.acc{font-size:10.5px;color:var(--muted);margin-top:1px}
+.aspark{width:72px;height:20px;display:block;margin-top:6px}
+.acm{margin-left:auto;text-align:right}
+.acmv{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--plum-d);line-height:1}
+.acmk{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:3px}
+.hero2{background:linear-gradient(160deg,#F4EEF3,#FBF6F2);border:1px solid var(--line);border-radius:18px;padding:15px;text-align:center}
+.hero2 .h2n{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--plum-d);line-height:1}
+.hero2 .h2n small{font-size:14px;color:var(--muted);font-weight:500}
+.hero2 .h2s{font-size:12px;color:var(--ink2);margin-top:5px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mg{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 12px;box-shadow:var(--sh)}
+.mgv{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--plum-d);line-height:1}
+.mgk{font-size:10px;color:var(--muted);font-weight:600;margin-top:4px}
+.listcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:4px 14px}
+.rl{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.rl:last-child{border-bottom:0}
+.rl .rd{font-weight:600;width:78px}
+.rl .rdist{color:var(--ink2);flex:1}
+.rl .rpace{color:var(--muted);font-weight:600}
+.rl .rup{color:var(--sage-d);font-weight:700}
+.chartcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:14px 14px 10px}
+.xlbl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-weight:600;margin-top:3px}
+.xlbl .now{color:var(--plum-d)}
+.cycnote{display:flex;gap:9px;background:#F4EEF3;border:1px solid #E7DCE6;border-radius:14px;padding:12px;margin-top:16px;font-size:12px;color:var(--plum-d);line-height:1.45}
+.cycnote .ic{flex:none;color:var(--plum-d)}
+.foot{margin-top:46px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid #EEE0D8;padding-top:18px}
+
+</style></head><body><div class="page">
+
+<div class="ibadge">Movement · Iteration 3 · activities &amp; metrics</div>
+<h1 class="ttl">Movement — track different activities</h1>
+<p class="hint">A new <b>Activities</b> section (Fitbit-style), shown in <b>three layout designs</b> — <b>List</b>, <b>Grid</b>, <b>Cards</b>. Each is fully live: a this-week summary, every activity type (Running, Strength, Cycling, Yoga, Walking, HIIT), and <b>tap any one</b> for a metric-rich detail tuned to that sport (pace &amp; HR, volume &amp; top lifts, power &amp; speed, steps…) with recent sessions, a weekly trend, and cycle context.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="ic-cycle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.9" class="fill"/></symbol>
+<symbol id="ic-run" viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="M13 6.2l-1.6 5 3 2.4 1.2 5.4M11.4 11.2l-4 1.3M14.4 13.6l3.3-1"/></symbol>
+<symbol id="ic-dumbbell" viewBox="0 0 24 24"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></symbol>
+<symbol id="ic-bike" viewBox="0 0 24 24"><circle cx="5.6" cy="17.4" r="3.2"/><circle cx="18.4" cy="17.4" r="3.2"/><path d="M5.6 17.4l4.6-8.4H14.5M9 9h5l4.4 8.4M12.6 9l1.5-2.6h2.2"/></symbol>
+<symbol id="ic-yoga" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M12 6.5v4.5M4.8 20.5c2.4-3.4 4.8-4.5 7.2-4.5s4.8 1.1 7.2 4.5M7.6 11h8.8"/></symbol>
+<symbol id="ic-walk" viewBox="0 0 24 24"><circle cx="13.2" cy="4" r="2"/><path d="M13.2 6.2l-1 4.8 2.6 2 1.4 5M12.4 11l-3 1.2M14.8 12l-1.4 8.5"/></symbol>
+<symbol id="ic-bolt" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11l-1 8.5 8.5-12H12z"/></symbol>
+</defs></svg>
+
+<div class="stage">
+<div class="col">
+ <div class="phone"><div class="scr">
+  <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+  <div class="tview">
+   <section class="tscreen on" id="lst-list"><div class="body">
+     <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+     <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Activities</h2></div>
+     <div class="seclbl" style="margin-top:4px">This week</div>
+     <div class="wkcard"><div class="wkcell"><div class="wkv">5</div><div class="wkk">Active days</div></div><div class="wkcell"><div class="wkv">312</div><div class="wkk">Active min</div></div><div class="wkcell"><div class="wkv">3,240</div><div class="wkk">Calories</div></div><div class="wkcell"><div class="wkv">28.6</div><div class="wkk">Miles</div></div></div>
+     <div class="seclbl">By activity</div>
+     <div class="act" onclick="tnav('lst-run')"><div class="atile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-run"/></svg></div><div><div class="anm">Running</div><div class="ameta">3 this week · 12.4 mi · 9:12/mi</div></div><svg class="ic achev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg></div>
+     <div class="act" onclick="tnav('lst-str')"><div class="atile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg></div><div><div class="anm">Strength</div><div class="ameta">3 this week · 4,200 lb volume</div></div><svg class="ic achev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg></div>
+     <div class="act" onclick="tnav('lst-cyc')"><div class="atile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bike"/></svg></div><div><div class="anm">Cycling</div><div class="ameta">1 this week · 18.2 mi · 142 W</div></div><svg class="ic achev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg></div>
+     <div class="act" onclick="tnav('lst-yog')"><div class="atile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-yoga"/></svg></div><div><div class="anm">Yoga</div><div class="ameta">2 this week · 75 min</div></div><svg class="ic achev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg></div>
+     <div class="act" onclick="tnav('lst-wlk')"><div class="atile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-walk"/></svg></div><div><div class="anm">Walking</div><div class="ameta">Daily · 8.4k steps/day avg</div></div><svg class="ic achev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg></div>
+     <div class="act" onclick="tnav('lst-hiit')"><div class="atile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bolt"/></svg></div><div><div class="anm">HIIT</div><div class="ameta">1 this week · 22 min · 168 bpm</div></div><svg class="ic achev" style="width:16px;height:16px"><use href="#ic-chevr"/></svg></div>
+   </div></section>
+   <section class="tscreen" id="lst-run"><div class="body">
+     <div class="hdr" onclick="tnav('lst-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic"><use href="#ic-run"/></svg></div><h2 class="h2">Running</h2></div>
+     <div class="hero2"><div class="h2n">12.4 <small>mi</small></div><div class="h2s">this week · 3 runs · ↑ 2.1 mi vs last week</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">9:12<small style="font-size:11px;color:var(--muted)"> /mi</small></div><div class="mgk">Avg pace</div></div><div class="mg"><div class="mgv">5.1 mi</div><div class="mgk">Longest run</div></div><div class="mg"><div class="mgv">152 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">1,180</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent runs</div>
+   <div class="listcard"><div class="rl"><span class="rd">Tue</span><span class="rdist">4.2 mi · 38 min</span><span class="rpace">9:05/mi</span></div><div class="rl"><span class="rd">Sun</span><span class="rdist">5.1 mi · 48 min</span><span class="rpace">9:24/mi</span></div><div class="rl"><span class="rd">Fri</span><span class="rdist">3.1 mi · 28 min</span><span class="rpace">8:58/mi</span></div></div>
+   <div class="seclbl">Weekly distance · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="40" width="28" height="30" rx="3"/><rect x="46" y="30" width="28" height="40" rx="3"/><rect x="86" y="46" width="28" height="24" rx="3"/><rect x="126" y="24" width="28" height="46" rx="3"/><rect x="166" y="34" width="28" height="36" rx="3"/></g><rect x="206" y="14" width="28" height="56" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>You log your highest mileage in your <b>follicular weeks</b> — runs feel easier when estrogen's higher.</div></div>
+   </div></section>
+   <section class="tscreen" id="lst-str"><div class="body">
+     <div class="hdr" onclick="tnav('lst-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic"><use href="#ic-dumbbell"/></svg></div><h2 class="h2">Strength</h2></div>
+     <div class="hero2"><div class="h2n">4,200 <small>lb</small></div><div class="h2s">volume this week · 3 sessions · ↑ 8%</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">48</div><div class="mgk">Total sets</div></div><div class="mg"><div class="mgv">52 min</div><div class="mgk">Avg session</div></div><div class="mg"><div class="mgv">720</div><div class="mgk">Active calories</div></div><div class="mg"><div class="mgv">↑ trend</div><div class="mgk">Est. 1-rep maxes</div></div></div>
+   <div class="seclbl">Top lifts · est. 1RM</div>
+   <div class="listcard"><div class="rl"><span class="rd">Squat</span><span class="rdist">165 lb</span><span class="rup">↑ 5 lb</span></div><div class="rl"><span class="rd">Deadlift</span><span class="rdist">205 lb</span><span class="rup">↑ 10 lb</span></div><div class="rl"><span class="rd">Bench</span><span class="rdist">105 lb</span><span class="rpace">→ even</span></div></div>
+   <div class="seclbl">Weekly volume · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="42" width="28" height="28" rx="3"/><rect x="46" y="36" width="28" height="34" rx="3"/><rect x="86" y="38" width="28" height="32" rx="3"/><rect x="126" y="28" width="28" height="42" rx="3"/><rect x="166" y="30" width="28" height="40" rx="3"/></g><rect x="206" y="20" width="28" height="50" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Strength gains come fastest in your <b>follicular phase</b> — load up heavy lifts there, ease off late luteal.</div></div>
+   </div></section>
+   <section class="tscreen" id="lst-cyc"><div class="body">
+     <div class="hdr" onclick="tnav('lst-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-bike"/></svg></div><h2 class="h2">Cycling</h2></div>
+     <div class="hero2"><div class="h2n">18.2 <small>mi</small></div><div class="h2s">this week · 1 ride · 1h 14m</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">142 W</div><div class="mgk">Avg power</div></div><div class="mg"><div class="mgv">14.6</div><div class="mgk">Avg speed (mph)</div></div><div class="mg"><div class="mgv">820 ft</div><div class="mgk">Elevation gain</div></div><div class="mg"><div class="mgv">640</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent rides</div>
+   <div class="listcard"><div class="rl"><span class="rd">Sat</span><span class="rdist">18.2 mi · 1h 14m</span><span class="rpace">14.6 mph</span></div><div class="rl"><span class="rd">Last wk</span><span class="rdist">22.0 mi · 1h 31m</span><span class="rpace">14.5 mph</span></div></div>
+   <div class="seclbl">Weekly distance · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="26" width="28" height="44" rx="3"/><rect x="46" y="34" width="28" height="36" rx="3"/><rect x="86" y="22" width="28" height="48" rx="3"/><rect x="126" y="40" width="28" height="30" rx="3"/><rect x="166" y="30" width="28" height="40" rx="3"/></g><rect x="206" y="36" width="28" height="34" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Your power holds steady across your cycle — cycling's a good low-impact option on your <b>ease-down</b> days.</div></div>
+   </div></section>
+   <section class="tscreen" id="lst-yog"><div class="body">
+     <div class="hdr" onclick="tnav('lst-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic"><use href="#ic-yoga"/></svg></div><h2 class="h2">Yoga</h2></div>
+     <div class="hero2"><div class="h2n">75 <small>min</small></div><div class="h2s">this week · 2 sessions</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">92 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">45 min</div><div class="mgk">Longest session</div></div><div class="mg"><div class="mgv">2</div><div class="mgk">Styles practiced</div></div><div class="mg"><div class="mgv">180</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent sessions</div>
+   <div class="listcard"><div class="rl"><span class="rd">Mon</span><span class="rdist">Vinyasa flow</span><span class="rpace">45 min</span></div><div class="rl"><span class="rd">Thu</span><span class="rdist">Restorative</span><span class="rpace">30 min</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Restorative yoga fits your <b>luteal &amp; menstrual</b> days — it supports recovery without adding strain.</div></div>
+   </div></section>
+   <section class="tscreen" id="lst-wlk"><div class="body">
+     <div class="hdr" onclick="tnav('lst-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic"><use href="#ic-walk"/></svg></div><h2 class="h2">Walking</h2></div>
+     <div class="hero2"><div class="h2n">8.4k <small>steps/day</small></div><div class="h2s">this week avg · ↑ 600 vs last week</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">58.6k</div><div class="mgk">Total steps</div></div><div class="mg"><div class="mgv">24.1 mi</div><div class="mgk">Distance</div></div><div class="mg"><div class="mgv">42</div><div class="mgk">Floors climbed</div></div><div class="mg"><div class="mgv">95 min</div><div class="mgk">Active minutes</div></div></div>
+   <div class="seclbl">Daily steps · this week</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="4" y="30" width="26" height="40" rx="3"/><rect x="39" y="22" width="26" height="48" rx="3"/><rect x="74" y="38" width="26" height="32" rx="3"/><rect x="109" y="26" width="26" height="44" rx="3"/><rect x="144" y="34" width="26" height="36" rx="3"/><rect x="179" y="42" width="26" height="28" rx="3"/></g><rect x="214" y="20" width="26" height="50" rx="3" fill="#7A5C77"/><line x1="4" y1="70" x2="240" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span class="now">S</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Walking is your reliable base — easy to keep up even on <b>low-recovery</b> luteal days.</div></div>
+   </div></section>
+   <section class="tscreen" id="lst-hiit"><div class="body">
+     <div class="hdr" onclick="tnav('lst-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic"><use href="#ic-bolt"/></svg></div><h2 class="h2">HIIT</h2></div>
+     <div class="hero2"><div class="h2n">22 <small>min</small></div><div class="h2s">this week · 1 session</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">168 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">184 bpm</div><div class="mgk">Max heart rate</div></div><div class="mg"><div class="mgv">280</div><div class="mgk">Active calories</div></div><div class="mg"><div class="mgv">40:20</div><div class="mgk">Work : rest (s)</div></div></div>
+   <div class="seclbl">Recent sessions</div>
+   <div class="listcard"><div class="rl"><span class="rd">Wed</span><span class="rdist">22 min · 280 cal</span><span class="rpace">168 bpm</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>High-intensity work feels best in your <b>follicular phase</b> — schedule HIIT there, skip it when recovery's low.</div></div>
+   </div></section>
+  </div>
+  <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+ </div></div>
+ <div class="cap"><div class="v">List <span class="badge">rows</span></div><span class="d">Compact rows with inline metrics. Densest — good for scanning many activities.</span></div>
+</div>
+<div class="col">
+ <div class="phone"><div class="scr">
+  <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+  <div class="tview">
+   <section class="tscreen on" id="grd-list"><div class="body">
+     <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+     <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Activities</h2></div>
+     <div class="seclbl" style="margin-top:4px">This week</div>
+     <div class="wkcard"><div class="wkcell"><div class="wkv">5</div><div class="wkk">Active days</div></div><div class="wkcell"><div class="wkv">312</div><div class="wkk">Active min</div></div><div class="wkcell"><div class="wkv">3,240</div><div class="wkk">Calories</div></div><div class="wkcell"><div class="wkv">28.6</div><div class="wkk">Miles</div></div></div>
+     <div class="seclbl">By activity</div>
+     <div class="actgrid">
+       <div class="acttile" onclick="tnav('grd-run')"><div class="atile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-run"/></svg></div><div class="anm">Running</div><div class="acount">3 this week</div><div class="ametric">12.4 mi</div></div>
+       <div class="acttile" onclick="tnav('grd-str')"><div class="atile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg></div><div class="anm">Strength</div><div class="acount">3 this week</div><div class="ametric">4,200 lb</div></div>
+       <div class="acttile" onclick="tnav('grd-cyc')"><div class="atile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bike"/></svg></div><div class="anm">Cycling</div><div class="acount">1 this week</div><div class="ametric">18.2 mi</div></div>
+       <div class="acttile" onclick="tnav('grd-yog')"><div class="atile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-yoga"/></svg></div><div class="anm">Yoga</div><div class="acount">2 this week</div><div class="ametric">75 min</div></div>
+       <div class="acttile" onclick="tnav('grd-wlk')"><div class="atile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-walk"/></svg></div><div class="anm">Walking</div><div class="acount">Daily</div><div class="ametric">8.4k</div></div>
+       <div class="acttile" onclick="tnav('grd-hiit')"><div class="atile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bolt"/></svg></div><div class="anm">HIIT</div><div class="acount">1 this week</div><div class="ametric">22 min</div></div>
+     </div>
+   </div></section>
+   <section class="tscreen" id="grd-run"><div class="body">
+     <div class="hdr" onclick="tnav('grd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic"><use href="#ic-run"/></svg></div><h2 class="h2">Running</h2></div>
+     <div class="hero2"><div class="h2n">12.4 <small>mi</small></div><div class="h2s">this week · 3 runs · ↑ 2.1 mi vs last week</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">9:12<small style="font-size:11px;color:var(--muted)"> /mi</small></div><div class="mgk">Avg pace</div></div><div class="mg"><div class="mgv">5.1 mi</div><div class="mgk">Longest run</div></div><div class="mg"><div class="mgv">152 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">1,180</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent runs</div>
+   <div class="listcard"><div class="rl"><span class="rd">Tue</span><span class="rdist">4.2 mi · 38 min</span><span class="rpace">9:05/mi</span></div><div class="rl"><span class="rd">Sun</span><span class="rdist">5.1 mi · 48 min</span><span class="rpace">9:24/mi</span></div><div class="rl"><span class="rd">Fri</span><span class="rdist">3.1 mi · 28 min</span><span class="rpace">8:58/mi</span></div></div>
+   <div class="seclbl">Weekly distance · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="40" width="28" height="30" rx="3"/><rect x="46" y="30" width="28" height="40" rx="3"/><rect x="86" y="46" width="28" height="24" rx="3"/><rect x="126" y="24" width="28" height="46" rx="3"/><rect x="166" y="34" width="28" height="36" rx="3"/></g><rect x="206" y="14" width="28" height="56" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>You log your highest mileage in your <b>follicular weeks</b> — runs feel easier when estrogen's higher.</div></div>
+   </div></section>
+   <section class="tscreen" id="grd-str"><div class="body">
+     <div class="hdr" onclick="tnav('grd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic"><use href="#ic-dumbbell"/></svg></div><h2 class="h2">Strength</h2></div>
+     <div class="hero2"><div class="h2n">4,200 <small>lb</small></div><div class="h2s">volume this week · 3 sessions · ↑ 8%</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">48</div><div class="mgk">Total sets</div></div><div class="mg"><div class="mgv">52 min</div><div class="mgk">Avg session</div></div><div class="mg"><div class="mgv">720</div><div class="mgk">Active calories</div></div><div class="mg"><div class="mgv">↑ trend</div><div class="mgk">Est. 1-rep maxes</div></div></div>
+   <div class="seclbl">Top lifts · est. 1RM</div>
+   <div class="listcard"><div class="rl"><span class="rd">Squat</span><span class="rdist">165 lb</span><span class="rup">↑ 5 lb</span></div><div class="rl"><span class="rd">Deadlift</span><span class="rdist">205 lb</span><span class="rup">↑ 10 lb</span></div><div class="rl"><span class="rd">Bench</span><span class="rdist">105 lb</span><span class="rpace">→ even</span></div></div>
+   <div class="seclbl">Weekly volume · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="42" width="28" height="28" rx="3"/><rect x="46" y="36" width="28" height="34" rx="3"/><rect x="86" y="38" width="28" height="32" rx="3"/><rect x="126" y="28" width="28" height="42" rx="3"/><rect x="166" y="30" width="28" height="40" rx="3"/></g><rect x="206" y="20" width="28" height="50" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Strength gains come fastest in your <b>follicular phase</b> — load up heavy lifts there, ease off late luteal.</div></div>
+   </div></section>
+   <section class="tscreen" id="grd-cyc"><div class="body">
+     <div class="hdr" onclick="tnav('grd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-bike"/></svg></div><h2 class="h2">Cycling</h2></div>
+     <div class="hero2"><div class="h2n">18.2 <small>mi</small></div><div class="h2s">this week · 1 ride · 1h 14m</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">142 W</div><div class="mgk">Avg power</div></div><div class="mg"><div class="mgv">14.6</div><div class="mgk">Avg speed (mph)</div></div><div class="mg"><div class="mgv">820 ft</div><div class="mgk">Elevation gain</div></div><div class="mg"><div class="mgv">640</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent rides</div>
+   <div class="listcard"><div class="rl"><span class="rd">Sat</span><span class="rdist">18.2 mi · 1h 14m</span><span class="rpace">14.6 mph</span></div><div class="rl"><span class="rd">Last wk</span><span class="rdist">22.0 mi · 1h 31m</span><span class="rpace">14.5 mph</span></div></div>
+   <div class="seclbl">Weekly distance · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="26" width="28" height="44" rx="3"/><rect x="46" y="34" width="28" height="36" rx="3"/><rect x="86" y="22" width="28" height="48" rx="3"/><rect x="126" y="40" width="28" height="30" rx="3"/><rect x="166" y="30" width="28" height="40" rx="3"/></g><rect x="206" y="36" width="28" height="34" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Your power holds steady across your cycle — cycling's a good low-impact option on your <b>ease-down</b> days.</div></div>
+   </div></section>
+   <section class="tscreen" id="grd-yog"><div class="body">
+     <div class="hdr" onclick="tnav('grd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic"><use href="#ic-yoga"/></svg></div><h2 class="h2">Yoga</h2></div>
+     <div class="hero2"><div class="h2n">75 <small>min</small></div><div class="h2s">this week · 2 sessions</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">92 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">45 min</div><div class="mgk">Longest session</div></div><div class="mg"><div class="mgv">2</div><div class="mgk">Styles practiced</div></div><div class="mg"><div class="mgv">180</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent sessions</div>
+   <div class="listcard"><div class="rl"><span class="rd">Mon</span><span class="rdist">Vinyasa flow</span><span class="rpace">45 min</span></div><div class="rl"><span class="rd">Thu</span><span class="rdist">Restorative</span><span class="rpace">30 min</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Restorative yoga fits your <b>luteal &amp; menstrual</b> days — it supports recovery without adding strain.</div></div>
+   </div></section>
+   <section class="tscreen" id="grd-wlk"><div class="body">
+     <div class="hdr" onclick="tnav('grd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic"><use href="#ic-walk"/></svg></div><h2 class="h2">Walking</h2></div>
+     <div class="hero2"><div class="h2n">8.4k <small>steps/day</small></div><div class="h2s">this week avg · ↑ 600 vs last week</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">58.6k</div><div class="mgk">Total steps</div></div><div class="mg"><div class="mgv">24.1 mi</div><div class="mgk">Distance</div></div><div class="mg"><div class="mgv">42</div><div class="mgk">Floors climbed</div></div><div class="mg"><div class="mgv">95 min</div><div class="mgk">Active minutes</div></div></div>
+   <div class="seclbl">Daily steps · this week</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="4" y="30" width="26" height="40" rx="3"/><rect x="39" y="22" width="26" height="48" rx="3"/><rect x="74" y="38" width="26" height="32" rx="3"/><rect x="109" y="26" width="26" height="44" rx="3"/><rect x="144" y="34" width="26" height="36" rx="3"/><rect x="179" y="42" width="26" height="28" rx="3"/></g><rect x="214" y="20" width="26" height="50" rx="3" fill="#7A5C77"/><line x1="4" y1="70" x2="240" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span class="now">S</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Walking is your reliable base — easy to keep up even on <b>low-recovery</b> luteal days.</div></div>
+   </div></section>
+   <section class="tscreen" id="grd-hiit"><div class="body">
+     <div class="hdr" onclick="tnav('grd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic"><use href="#ic-bolt"/></svg></div><h2 class="h2">HIIT</h2></div>
+     <div class="hero2"><div class="h2n">22 <small>min</small></div><div class="h2s">this week · 1 session</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">168 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">184 bpm</div><div class="mgk">Max heart rate</div></div><div class="mg"><div class="mgv">280</div><div class="mgk">Active calories</div></div><div class="mg"><div class="mgv">40:20</div><div class="mgk">Work : rest (s)</div></div></div>
+   <div class="seclbl">Recent sessions</div>
+   <div class="listcard"><div class="rl"><span class="rd">Wed</span><span class="rdist">22 min · 280 cal</span><span class="rpace">168 bpm</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>High-intensity work feels best in your <b>follicular phase</b> — schedule HIIT there, skip it when recovery's low.</div></div>
+   </div></section>
+  </div>
+  <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+ </div></div>
+ <div class="cap"><div class="v">Grid <span class="badge">tiles</span></div><span class="d">Two-column tiles (Apple-Fitness-style). Most visual, fewer per screen.</span></div>
+</div>
+<div class="col">
+ <div class="phone"><div class="scr">
+  <div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+  <div class="tview">
+   <section class="tscreen on" id="crd-list"><div class="body">
+     <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Movement</div>
+     <div class="row" style="margin:4px 0 12px"><div class="tile"><svg class="ic"><use href="#ic-act"/></svg></div><h2 class="h2">Activities</h2></div>
+     <div class="seclbl" style="margin-top:4px">This week</div>
+     <div class="wkcard"><div class="wkcell"><div class="wkv">5</div><div class="wkk">Active days</div></div><div class="wkcell"><div class="wkv">312</div><div class="wkk">Active min</div></div><div class="wkcell"><div class="wkv">3,240</div><div class="wkk">Calories</div></div><div class="wkcell"><div class="wkv">28.6</div><div class="wkk">Miles</div></div></div>
+     <div class="seclbl">By activity</div>
+     <div class="acard" onclick="tnav('crd-run')"><div class="atile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-run"/></svg></div><div class="acmain"><div class="acn">Running</div><div class="acc">3 this week</div><svg class="aspark" viewBox="0 0 72 22"><polyline points="0,16 14,14 29,17 43,10 58,12 72,5" fill="none" stroke="var(--plum)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="acm"><div class="acmv">12.4</div><div class="acmk">mi</div></div></div>
+     <div class="acard" onclick="tnav('crd-str')"><div class="atile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-dumbbell"/></svg></div><div class="acmain"><div class="acn">Strength</div><div class="acc">3 this week</div><svg class="aspark" viewBox="0 0 72 22"><polyline points="0,18 14,15 29,14 43,9 58,10 72,4" fill="none" stroke="var(--plum)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="acm"><div class="acmv">4,200</div><div class="acmk">lb</div></div></div>
+     <div class="acard" onclick="tnav('crd-cyc')"><div class="atile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bike"/></svg></div><div class="acmain"><div class="acn">Cycling</div><div class="acc">1 this week</div><svg class="aspark" viewBox="0 0 72 22"><polyline points="0,8 14,12 29,6 43,15 58,11 72,9" fill="none" stroke="var(--plum)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="acm"><div class="acmv">18.2</div><div class="acmk">mi</div></div></div>
+     <div class="acard" onclick="tnav('crd-yog')"><div class="atile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-yoga"/></svg></div><div class="acmain"><div class="acn">Yoga</div><div class="acc">2 this week</div><svg class="aspark" viewBox="0 0 72 22"><polyline points="0,12 14,11 29,13 43,10 58,12 72,11" fill="none" stroke="var(--plum)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="acm"><div class="acmv">75</div><div class="acmk">min</div></div></div>
+     <div class="acard" onclick="tnav('crd-wlk')"><div class="atile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-walk"/></svg></div><div class="acmain"><div class="acn">Walking</div><div class="acc">Daily</div><svg class="aspark" viewBox="0 0 72 22"><polyline points="0,14 14,8 29,15 43,9 58,13 72,6" fill="none" stroke="var(--plum)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="acm"><div class="acmv">8.4k</div><div class="acmk">steps</div></div></div>
+     <div class="acard" onclick="tnav('crd-hiit')"><div class="atile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic" style="width:19px;height:19px"><use href="#ic-bolt"/></svg></div><div class="acmain"><div class="acn">HIIT</div><div class="acc">1 this week</div><svg class="aspark" viewBox="0 0 72 22"><polyline points="0,10 14,16 29,9 43,14 58,12 72,8" fill="none" stroke="var(--plum)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="acm"><div class="acmv">22</div><div class="acmk">min</div></div></div>
+   </div></section>
+   <section class="tscreen" id="crd-run"><div class="body">
+     <div class="hdr" onclick="tnav('crd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--clay-soft);color:var(--clay-d)"><svg class="ic"><use href="#ic-run"/></svg></div><h2 class="h2">Running</h2></div>
+     <div class="hero2"><div class="h2n">12.4 <small>mi</small></div><div class="h2s">this week · 3 runs · ↑ 2.1 mi vs last week</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">9:12<small style="font-size:11px;color:var(--muted)"> /mi</small></div><div class="mgk">Avg pace</div></div><div class="mg"><div class="mgv">5.1 mi</div><div class="mgk">Longest run</div></div><div class="mg"><div class="mgv">152 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">1,180</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent runs</div>
+   <div class="listcard"><div class="rl"><span class="rd">Tue</span><span class="rdist">4.2 mi · 38 min</span><span class="rpace">9:05/mi</span></div><div class="rl"><span class="rd">Sun</span><span class="rdist">5.1 mi · 48 min</span><span class="rpace">9:24/mi</span></div><div class="rl"><span class="rd">Fri</span><span class="rdist">3.1 mi · 28 min</span><span class="rpace">8:58/mi</span></div></div>
+   <div class="seclbl">Weekly distance · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="40" width="28" height="30" rx="3"/><rect x="46" y="30" width="28" height="40" rx="3"/><rect x="86" y="46" width="28" height="24" rx="3"/><rect x="126" y="24" width="28" height="46" rx="3"/><rect x="166" y="34" width="28" height="36" rx="3"/></g><rect x="206" y="14" width="28" height="56" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>You log your highest mileage in your <b>follicular weeks</b> — runs feel easier when estrogen's higher.</div></div>
+   </div></section>
+   <section class="tscreen" id="crd-str"><div class="body">
+     <div class="hdr" onclick="tnav('crd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--plum-soft);color:var(--plum)"><svg class="ic"><use href="#ic-dumbbell"/></svg></div><h2 class="h2">Strength</h2></div>
+     <div class="hero2"><div class="h2n">4,200 <small>lb</small></div><div class="h2s">volume this week · 3 sessions · ↑ 8%</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">48</div><div class="mgk">Total sets</div></div><div class="mg"><div class="mgv">52 min</div><div class="mgk">Avg session</div></div><div class="mg"><div class="mgv">720</div><div class="mgk">Active calories</div></div><div class="mg"><div class="mgv">↑ trend</div><div class="mgk">Est. 1-rep maxes</div></div></div>
+   <div class="seclbl">Top lifts · est. 1RM</div>
+   <div class="listcard"><div class="rl"><span class="rd">Squat</span><span class="rdist">165 lb</span><span class="rup">↑ 5 lb</span></div><div class="rl"><span class="rd">Deadlift</span><span class="rdist">205 lb</span><span class="rup">↑ 10 lb</span></div><div class="rl"><span class="rd">Bench</span><span class="rdist">105 lb</span><span class="rpace">→ even</span></div></div>
+   <div class="seclbl">Weekly volume · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="42" width="28" height="28" rx="3"/><rect x="46" y="36" width="28" height="34" rx="3"/><rect x="86" y="38" width="28" height="32" rx="3"/><rect x="126" y="28" width="28" height="42" rx="3"/><rect x="166" y="30" width="28" height="40" rx="3"/></g><rect x="206" y="20" width="28" height="50" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Strength gains come fastest in your <b>follicular phase</b> — load up heavy lifts there, ease off late luteal.</div></div>
+   </div></section>
+   <section class="tscreen" id="crd-cyc"><div class="body">
+     <div class="hdr" onclick="tnav('crd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-bike"/></svg></div><h2 class="h2">Cycling</h2></div>
+     <div class="hero2"><div class="h2n">18.2 <small>mi</small></div><div class="h2s">this week · 1 ride · 1h 14m</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">142 W</div><div class="mgk">Avg power</div></div><div class="mg"><div class="mgv">14.6</div><div class="mgk">Avg speed (mph)</div></div><div class="mg"><div class="mgv">820 ft</div><div class="mgk">Elevation gain</div></div><div class="mg"><div class="mgv">640</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent rides</div>
+   <div class="listcard"><div class="rl"><span class="rd">Sat</span><span class="rdist">18.2 mi · 1h 14m</span><span class="rpace">14.6 mph</span></div><div class="rl"><span class="rd">Last wk</span><span class="rdist">22.0 mi · 1h 31m</span><span class="rpace">14.5 mph</span></div></div>
+   <div class="seclbl">Weekly distance · 6 weeks</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="6" y="26" width="28" height="44" rx="3"/><rect x="46" y="34" width="28" height="36" rx="3"/><rect x="86" y="22" width="28" height="48" rx="3"/><rect x="126" y="40" width="28" height="30" rx="3"/><rect x="166" y="30" width="28" height="40" rx="3"/></g><rect x="206" y="36" width="28" height="34" rx="3" fill="#7A5C77"/><line x1="6" y1="70" x2="234" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>Wk1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="now">Now</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Your power holds steady across your cycle — cycling's a good low-impact option on your <b>ease-down</b> days.</div></div>
+   </div></section>
+   <section class="tscreen" id="crd-yog"><div class="body">
+     <div class="hdr" onclick="tnav('crd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sage-soft);color:var(--sage-d)"><svg class="ic"><use href="#ic-yoga"/></svg></div><h2 class="h2">Yoga</h2></div>
+     <div class="hero2"><div class="h2n">75 <small>min</small></div><div class="h2s">this week · 2 sessions</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">92 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">45 min</div><div class="mgk">Longest session</div></div><div class="mg"><div class="mgv">2</div><div class="mgk">Styles practiced</div></div><div class="mg"><div class="mgv">180</div><div class="mgk">Active calories</div></div></div>
+   <div class="seclbl">Recent sessions</div>
+   <div class="listcard"><div class="rl"><span class="rd">Mon</span><span class="rdist">Vinyasa flow</span><span class="rpace">45 min</span></div><div class="rl"><span class="rd">Thu</span><span class="rdist">Restorative</span><span class="rpace">30 min</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Restorative yoga fits your <b>luteal &amp; menstrual</b> days — it supports recovery without adding strain.</div></div>
+   </div></section>
+   <section class="tscreen" id="crd-wlk"><div class="body">
+     <div class="hdr" onclick="tnav('crd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--luteal-soft);color:var(--amber)"><svg class="ic"><use href="#ic-walk"/></svg></div><h2 class="h2">Walking</h2></div>
+     <div class="hero2"><div class="h2n">8.4k <small>steps/day</small></div><div class="h2s">this week avg · ↑ 600 vs last week</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">58.6k</div><div class="mgk">Total steps</div></div><div class="mg"><div class="mgv">24.1 mi</div><div class="mgk">Distance</div></div><div class="mg"><div class="mgv">42</div><div class="mgk">Floors climbed</div></div><div class="mg"><div class="mgv">95 min</div><div class="mgk">Active minutes</div></div></div>
+   <div class="seclbl">Daily steps · this week</div>
+   <div class="chartcard"><svg viewBox="0 0 250 76" style="width:100%;display:block"><g fill="#E6DBCB"><rect x="4" y="30" width="26" height="40" rx="3"/><rect x="39" y="22" width="26" height="48" rx="3"/><rect x="74" y="38" width="26" height="32" rx="3"/><rect x="109" y="26" width="26" height="44" rx="3"/><rect x="144" y="34" width="26" height="36" rx="3"/><rect x="179" y="42" width="26" height="28" rx="3"/></g><rect x="214" y="20" width="26" height="50" rx="3" fill="#7A5C77"/><line x1="4" y1="70" x2="240" y2="70" stroke="#EFE6D9" stroke-width="1"/></svg><div class="xlbl"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span class="now">S</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>Walking is your reliable base — easy to keep up even on <b>low-recovery</b> luteal days.</div></div>
+   </div></section>
+   <section class="tscreen" id="crd-hiit"><div class="body">
+     <div class="hdr" onclick="tnav('crd-list')"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Activities</div>
+     <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--coral-soft);color:var(--coral-d)"><svg class="ic"><use href="#ic-bolt"/></svg></div><h2 class="h2">HIIT</h2></div>
+     <div class="hero2"><div class="h2n">22 <small>min</small></div><div class="h2s">this week · 1 session</div></div>
+   <div class="seclbl">This week</div>
+   <div class="mgrid"><div class="mg"><div class="mgv">168 bpm</div><div class="mgk">Avg heart rate</div></div><div class="mg"><div class="mgv">184 bpm</div><div class="mgk">Max heart rate</div></div><div class="mg"><div class="mgv">280</div><div class="mgk">Active calories</div></div><div class="mg"><div class="mgv">40:20</div><div class="mgk">Work : rest (s)</div></div></div>
+   <div class="seclbl">Recent sessions</div>
+   <div class="listcard"><div class="rl"><span class="rd">Wed</span><span class="rdist">22 min · 280 cal</span><span class="rpace">168 bpm</span></div></div>
+   <div class="cycnote"><svg class="ic" style="width:16px;height:16px"><use href="#ic-cycle"/></svg><div>High-intensity work feels best in your <b>follicular phase</b> — schedule HIIT there, skip it when recovery's low.</div></div>
+   </div></section>
+  </div>
+  <div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>
+ </div></div>
+ <div class="cap"><div class="v">Cards <span class="badge">with sparklines</span></div><span class="d">Full-width cards with a headline metric + a weekly sparkline. Richest at-a-glance.</span></div>
+</div>
+</div>
+
+<div class="foot">Movement module · Iteration 3 · activities &amp; per-activity metrics · three layouts, each with all six sport details · experiment only (HiFi unchanged)</div>
+
+<script>
+function tnav(id){const el=document.getElementById(id);const v=el.closest('.tview');v.querySelectorAll('.tscreen').forEach(s=>s.classList.remove('on'));el.classList.add('on');const b=el.querySelector('.body');if(b)b.scrollTop=0;}
+</script>
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 3 · what came out of it</div>
+  <p style="margin:0">A new Activities section was tried in three layouts. The grid of tiles was adopted and carried directly into the next iteration. List rows were rejected as the densest but flattest option, collapsing every sport into an identical row, and sparkline cards for showing too few activities at once; the grid keeps all six types visible while giving each a recognisable identity.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>

@@ -1,0 +1,518 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nutrition — progress meter variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FCF7EF;--paper:#fff;--ink:#2A2431;--ink2:#574F5E;--muted:#968D9B;--line:#EFE6D9;
+ --leaf:#5E8C5A;--leaf-d:#436E3F;--leaf-soft:#E6EFE0;
+ --sage:#7E9A82;--sage-d:#5b7560;--sage-soft:#E7EEE6;
+ --clay:#C0613E;--clay-d:#9F4D2F;--clay-soft:#F6E2D6;
+ --amber:#B5701F;--amber-soft:#FBEAD9;
+ --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --sh:0 1px 2px rgba(40,30,20,.04),0 8px 22px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F6EEE2,#E9E0D2);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:1110px;margin:0 auto;padding:42px 18px 80px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--leaf-d);font-weight:700}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:0 0 4px}
+.hint{color:var(--ink2);font-size:16px;margin:2px 0 22px;max-width:880px}
+.hint b{color:var(--leaf-d)}
+.stage{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.col{width:330px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:17px;font-weight:600}
+.cap span.d{display:block;font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.phone{width:330px;background:#fff;border-radius:46px;padding:13px;box-shadow:0 30px 66px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--cream);border-radius:36px;overflow:hidden;height:724px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.tview{position:relative;flex:1;overflow:hidden}
+.tscreen{position:absolute;inset:0;display:none;flex-direction:column}
+.tscreen.on{display:flex;animation:fade .24s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.body{flex:1;overflow:auto;padding:8px 20px 14px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--paper);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--leaf-d);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .ic{width:22px;height:22px}
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500;cursor:pointer}
+.h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em}
+.row{display:flex;align-items:center;gap:13px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.tile.leaf{background:var(--leaf-soft);color:var(--leaf-d)}
+.reading{font-family:var(--serif);font-size:19px;font-weight:500;line-height:1.4;margin:2px 0 14px}
+.reading em{font-style:normal;color:var(--leaf-d)}
+.srcline{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);margin-bottom:12px}
+.srcline .entry{margin-left:auto;border:0;border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;background:var(--leaf);color:#fff;box-shadow:0 5px 12px rgba(67,110,63,.26)}
+.ghero{display:flex;align-items:center;gap:12px;background:linear-gradient(160deg,#EDF4E9,#F4F8F0);border:1px solid #D9E7D2;border-radius:18px;padding:15px 16px;cursor:pointer;margin-bottom:6px}
+.gh-l{flex:1;min-width:0}
+.gh-k{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:#7E9486;font-weight:700}
+.gh-v{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--ink);margin-top:3px;line-height:1}
+.gh-v span{font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:600}
+.gh-v em{font-style:normal;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--leaf-d);margin-left:3px}
+.gh-s{font-size:11.5px;color:var(--ink2);margin-top:5px}
+.gh-ch{width:18px;height:18px;color:var(--muted);flex:none}
+.seclbl{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:18px 0 9px}
+.ptag{font-family:var(--sans);letter-spacing:.04em;text-transform:none;font-size:10px;font-weight:700;color:var(--leaf-d);background:var(--leaf-soft);border-radius:999px;padding:2px 8px}
+.mk{display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 13px;box-shadow:var(--sh);cursor:pointer;margin-bottom:8px}
+.mk-l{min-width:0}
+.mk-n{font-size:13.5px;font-weight:600;color:var(--ink)}
+.mk-s{font-size:11px;color:var(--muted);margin-top:1px}
+.mk-v{margin-left:auto;font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);white-space:nowrap}
+.mk-v span{font-family:var(--sans);font-size:10px;font-weight:600;color:var(--muted);margin-left:2px}
+.st{font-size:10.5px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.st.ok{background:var(--sage-soft);color:var(--sage-d)}
+.st.low{background:var(--amber-soft);color:var(--amber)}
+.mk-ch{width:17px;height:17px;color:var(--muted);flex:none}
+.disc{font-size:11px;color:var(--muted);margin-top:14px;text-align:center}
+.hero{background:linear-gradient(160deg,#EDF4E9,#F4F8F0);border:1px solid #D9E7D2;border-radius:18px;padding:18px;text-align:center}
+.hero-num{font-family:var(--serif);font-size:34px;font-weight:600;color:var(--leaf-d);line-height:1}
+.hero-num small{font-size:15px;color:var(--muted);font-weight:500}
+.hero-lbl{font-size:13px;color:var(--ink2);margin-top:6px;font-weight:500}
+.hero-meta{font-size:11px;color:var(--muted);margin-top:5px}
+.tsvg{width:100%;display:block}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--sh)}
+.tlegend{display:flex;gap:13px;flex-wrap:wrap;margin-top:8px;font-size:10px;color:var(--muted)}
+.tlegend .k{display:inline-flex;align-items:center;gap:5px}
+.cyc{display:flex;gap:9px;align-items:flex-start;background:#EEF4EA;border:1px solid #DCE8D6;border-radius:14px;padding:12px;margin-top:14px;font-size:12.5px;color:#4d6a4a;line-height:1.45}
+.cyc b{color:var(--leaf-d)}.cyc .ic{flex:none}
+.mean{font-size:13px;color:var(--ink2);line-height:1.55;margin-top:10px}
+.chrow{display:flex;gap:7px;flex-wrap:wrap}
+.chrow .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:600;color:var(--ink2)}
+.labcard{display:flex;gap:10px;align-items:flex-start;background:var(--clay-soft);border:1px solid #ECCDBC;border-radius:14px;padding:12px 13px;margin-top:14px}
+.labcard .lic{width:30px;height:30px;border-radius:8px;background:#fff;color:var(--clay-d);display:grid;place-items:center;flex:none}
+.labcard .lt{font-size:12.5px;color:#7a5550;line-height:1.45}
+.labcard .lt b{color:var(--clay-d)}
+.labcard .lk{display:block;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--clay-d);margin-bottom:3px}
+.okbox{display:flex;align-items:center;gap:9px;background:var(--sage-soft);border:1px solid #cfe0cf;border-radius:14px;padding:13px;font-size:13px;font-weight:600;color:var(--sage-d);margin-top:6px;line-height:1.4}
+.btn{margin-top:10px;width:100%;border:0;background:var(--leaf);color:#fff;border-radius:999px;padding:13px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 10px 22px rgba(67,110,63,.24)}
+.btn.islogged{background:var(--sage-soft);color:var(--sage-d);box-shadow:none;cursor:default}
+.btn2{margin-top:10px;width:100%;border:1.5px solid var(--leaf);background:#fff;color:var(--leaf-d);border-radius:999px;padding:12px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer}
+.btn2.isdone{border-color:#cfe0cf;color:var(--sage-d);background:var(--sage-soft);cursor:default}
+.scrim{position:absolute;inset:0;background:rgba(34,28,22,.36);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:5}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:8px 18px 20px;box-shadow:0 -16px 44px rgba(40,30,20,.24);transform:translateY(100%);transition:transform .28s cubic-bezier(.3,.85,.3,1);z-index:6;max-height:92%;overflow:auto}
+.sheet::-webkit-scrollbar{display:none}
+.sheet.open{transform:none}
+.sheet-grip{width:38px;height:4px;border-radius:3px;background:#E4DACE;margin:4px auto 12px}
+.sheet-h{display:flex;align-items:center;margin-bottom:13px}
+.sheet-title{font-family:var(--serif);font-size:19px;font-weight:600}
+.sheet-x{margin-left:auto;border:0;background:#F1F4EE;width:28px;height:28px;border-radius:50%;font-size:17px;color:var(--ink2);cursor:pointer;line-height:1}
+.seg2{display:flex;background:#EEF1EB;border-radius:12px;padding:3px;margin-bottom:4px}
+.seg2 button{flex:1;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--muted);padding:8px 0;border-radius:9px;cursor:pointer}
+.seg2 button.on{background:#fff;color:var(--leaf-d);box-shadow:0 1px 3px rgba(50,70,40,.14)}
+.panel{padding-top:4px}
+.panel-sub{font-size:12.5px;color:var(--muted);margin:10px 0 8px}
+.note{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:10px}
+.upload{display:flex;align-items:center;gap:11px;border:1.5px dashed #C7D6BF;border-radius:14px;padding:14px;cursor:pointer;background:#F6FAF3;margin-bottom:6px}
+.upload .uic{width:36px;height:36px;border-radius:10px;background:var(--leaf-soft);color:var(--leaf-d);display:grid;place-items:center;flex:none}
+.upload .ut{font-size:13.5px;font-weight:600}.upload .us{font-size:11px;color:var(--muted);margin-top:1px}
+.orline{display:flex;align-items:center;gap:10px;margin:15px 0 4px;color:var(--muted);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.orline:before,.orline:after{content:"";flex:1;height:1px;background:var(--line)}
+.src{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line)}
+.src:last-child{border-bottom:0}
+.logo{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+.src .nm{font-size:13.5px;font-weight:600}.src .meta{font-size:11px;color:var(--muted);margin-top:1px}
+.src .act{margin-left:auto}
+.act.connected{color:var(--leaf-d);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.act.connect{border:1px solid var(--leaf);color:var(--leaf-d);background:#fff;border-radius:999px;padding:6px 15px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer}
+.field{margin-top:13px}
+.field>label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.finput{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--ink);font-family:inherit;background:#fff;cursor:pointer}
+.finput:focus{outline:none;border-color:var(--leaf)}
+.field2{display:flex;gap:10px}.field2 .field{flex:1}
+.qadd{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.qadd .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600;color:var(--ink2);cursor:pointer}
+.save{margin-top:18px;width:100%;border:0;background:var(--leaf);color:#fff;border-radius:999px;padding:13px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 10px 22px rgba(67,110,63,.24)}
+.hide{display:none}
+</style></head><body><div class="page">
+
+<div class="ibadge">Nutrition · Iteration 11 · progress meter variations</div>
+<h1 class="ttl">Nutrition — variations on the original progress meter</h1>
+<p class="hint">All based on the <b>original progress meter from iteration 10</b> with "Add to goals" buttons: <b>(1) Original</b> — the one you liked from iter 10; <b>(2) With percentage</b> — adds "50%" label; <b>(3) Dual numbers</b> — 9 mg and 18 mg separated for clearer comparison; <b>(4) Compact inline</b> — numbers and bar in one line; <b>(5) Colored background</b> — soft green box around whole section; <b>(6) Bold action text</b> — larger, bolder action text. 9 phones total.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 4 13C4 6.5 10.5 3 20 3c0 9.5-3.5 16-9 17z"/><path d="M8 17c2.5-3 5.5-5 9-6.5"/></symbol>
+<symbol id="ic-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.4 6 10.5a6 6 0 0 1-12 0C6 9.4 12 3 12 3z"/></symbol>
+<symbol id="ic-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></symbol>
+<symbol id="ic-cam" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h5L17 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.4"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="ic-cycle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.9" style="fill:currentColor;stroke:none"/></symbol>
+</defs></svg>
+
+<div class="stage" id="stage"></div>
+
+<div style="margin-top:46px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid #EEE0D8;padding-top:18px">
+Nutrition module · Iteration 4 · food source design variations (chips / list / cards)
+</div>
+
+<script>
+const NAV=`<div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>`;
+
+const F={
+ iron:{name:'Iron',icon:'ic-drop',unit:'mg',val:'9',stat:'Low ▼',cls:'low',sub:'9 of 18 mg · lost monthly with your period',
+   kind:'bars',trend:[7,8,6,10,8,9,9],tl:['Mo','Tu','We','Th','Fr','Sa','Su'],ymax:20,targetline:18,
+   hero:'9 <small>/ 18 mg</small>',herolbl:'Today\u2019s iron — about half your target',meta:'7-day avg 8.1 mg · synced from MyFitnessPal',
+   why:'You lose iron with every period, and your Labs ferritin is low-normal (18 ng/mL). Food-first iron helps rebuild stores before fatigue, hair-shedding and slow recovery set in.',
+   cyc:'You\u2019re near your <b>period</b> — the best week to prioritise iron-rich meals.',
+   sourcelbl:'Eat more of',sources:['Lentils','Spinach','Red meat','Tofu','Pumpkin seeds','+ Vitamin C','Skip coffee at meals'],
+   lab:{k:'Linked to Labs',txt:'Your <b>ferritin is low-normal</b> (18 ng/mL). Eating iron-first supports your <b>Iron experiment</b>.'},
+   act:null,positive:'You\u2019re getting about half your iron target — prioritize the foods below to close the gap.'},
+ magnesium:{name:'Magnesium',icon:'ic-leaf',unit:'mg',val:'230',stat:'Low ▼',cls:'low',sub:'230 of 320 mg · eases cramps & sleep',
+   kind:'bars',trend:[210,250,200,235,220,240,230],tl:['Mo','Tu','We','Th','Fr','Sa','Su'],ymax:360,targetline:320,
+   hero:'230 <small>/ 320 mg</small>',herolbl:'Today\u2019s magnesium — below target',meta:'7-day avg 226 mg',
+   why:'Magnesium eases cramps, PMS and supports deeper sleep. Demand rises in the days before your period — exactly where you are now.',
+   cyc:'<b>Luteal phase</b> → magnesium helps cramps and sleep most right now.',
+   sourcelbl:'Eat more of',sources:['Dark chocolate','Pumpkin seeds','Almonds','Black beans','Spinach','Oats'],
+   lab:null,act:'Log magnesium-rich foods',logged:'Logged — about +70 mg magnesium today.'},
+ protein:{name:'Protein',icon:'ic-leaf',unit:'g',val:'82',stat:'On track ✓',cls:'ok',sub:'82 of 80 g · steadies sugar & cravings',
+   kind:'bars',trend:[70,78,85,80,82,79,82],tl:['Mo','Tu','We','Th','Fr','Sa','Su'],ymax:100,targetline:80,
+   hero:'82 <small>/ 80 g</small>',herolbl:'Today\u2019s protein — on target',meta:'7-day avg 79 g',
+   why:'Protein blunts glucose spikes and curbs luteal cravings. Front-loading it at breakfast is what\u2019s steadying your mornings.',
+   cyc:'Luteal cravings are normal — protein keeps them in check.',
+   sourcelbl:'Good sources',sources:['Greek yogurt','Eggs','Chicken','Lentils','Cottage cheese','Tofu'],
+   lab:null,act:null,positive:'On track — and it\u2019s steadying your morning glucose. Keep it up.'},
+ fiber:{name:'Fiber',icon:'ic-leaf',unit:'g',val:'21',stat:'A bit low ▼',cls:'low',sub:'21 of 28 g · helps clear excess estrogen',
+   kind:'bars',trend:[18,22,19,24,20,23,21],tl:['Mo','Tu','We','Th','Fr','Sa','Su'],ymax:35,targetline:28,
+   hero:'21 <small>/ 28 g</small>',herolbl:'Today\u2019s fiber — a little under',meta:'7-day avg 21 g',
+   why:'Fiber helps your body clear excess estrogen and slows glucose absorption — both useful in the luteal phase.',
+   cyc:'Supports <b>estrogen clearance</b> as you move toward your period.',
+   sourcelbl:'Eat more of',sources:['Oats','Beans','Berries','Chia','Lentils','Veg'],
+   lab:null,act:'Log fiber-rich foods',logged:'Logged — about +8 g fiber today.'},
+ glucose:{name:'Glucose steadiness',icon:'ic-bolt',unit:'mg/dL',val:'112',stat:'Steadier ↑',cls:'ok',sub:'88% of mornings in range',
+   kind:'line',trend:[128,121,118,112,110,108,109],tl:['Mo','Tu','We','Th','Fr','Sa','Su'],ymax:140,band:[80,110],
+   hero:'112 <small>mg/dL</small>',herolbl:'Avg morning glucose — steadier this week',meta:'88% of mornings in range ↑',
+   why:'In your luteal phase, mild insulin resistance is normal. Protein-first mornings and a short walk after meals keep glucose — and cravings — steady.',
+   cyc:'<b>Luteal phase</b> → steady mornings matter more right now.',
+   sourcelbl:'What\u2019s steadying it',sources:['Protein-first breakfast','10-min walk after meals','Fiber before carbs','Limit liquid sugar'],
+   lab:{k:'Linked to Labs',txt:'Mirrors your <b>HbA1c 5.2%</b> in Labs — comfortably normal. Keep the habit.'},
+   act:null,positive:'Trending the right way — keep your protein-first mornings.'}
+};
+const ORDER=[['Prioritise this cycle',['iron','magnesium']],['Steady',['protein','fiber']]];
+
+function mkRow(id){const m=F[id];return `<div class="mk" data-focus="${id}"><div class="mk-l"><div class="mk-n">${m.name}</div><div class="mk-s">${m.sub}</div></div><div class="mk-v">${m.val}<span>${m.unit}</span></div><span class="st ${m.cls}">${m.stat}</span><svg class="ic mk-ch"><use href="#ic-chevr"/></svg></div>`;}
+function groups(){return ORDER.map(g=>`<div class="seclbl">${g[0]}${g[0]==='Prioritise this cycle'?' <span class="ptag">luteal · Day 22</span>':''}</div>`+g[1].map(mkRow).join('')).join('');}
+
+function spark(f){const v=f.trend,W=66,H=30,pad=4,mn=Math.min(...v),mx=Math.max(...v);
+ const x=i=>pad+(W-2*pad)*i/(v.length-1),y=val=>H-pad-((val-mn)/((mx-mn)||1))*(H-2*pad);
+ const pts=v.map((val,i)=>`${x(i).toFixed(1)},${y(val).toFixed(1)}`).join(' ');
+ return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="flex:none"><polyline points="${pts}" fill="none" stroke="#5E8C5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${x(v.length-1).toFixed(1)}" cy="${y(v[v.length-1]).toFixed(1)}" r="2.7" fill="#436E3F"/></svg>`;}
+
+const SCREEN=(initial,open,panel)=>`
+<div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+<div class="tview">
+  <section class="tscreen${initial==='n-main'?' on':''}" data-sc="n-main"><div class="body">
+    <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+    <div class="row" style="margin:4px 0 12px"><div class="tile leaf"><svg class="ic"><use href="#ic-leaf"/></svg></div><div class="h2">Nutrition</div></div>
+    <div class="reading">You\u2019re on <em>Day 22 · luteal</em> — mild insulin resistance is normal now, so <em>protein</em> and <em>iron-rich</em> meals matter more this week.</div>
+    <div class="srcline"><svg class="ic" style="width:14px;height:14px;color:var(--leaf-d)"><use href="#ic-leaf"/></svg><span>Synced from MyFitnessPal · today</span><button class="entry js-open" data-open="import">Manage data</button></div>
+    <div class="ghero js-hero" data-focus="glucose">
+      <div class="gh-l"><div class="gh-k">Morning glucose · this week</div><div class="gh-v">112 <span>mg/dL</span><em>steadier ↑</em></div><div class="gh-s">88% of mornings in range</div></div>
+      ${spark(F.glucose)}
+      <svg class="ic gh-ch"><use href="#ic-chevr"/></svg>
+    </div>
+    ${groups()}
+    <div class="disc">ⓘ Guidance, not medical advice.</div>
+  </div></section>
+
+  <section class="tscreen${initial==='n-focus'?' on':''}" data-sc="n-focus"><div class="body">
+    <div class="hdr" data-nav="n-main"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Nutrition</div>
+    <div class="row" style="margin:4px 0 12px"><div class="tile leaf"><svg class="ic nf-icon"><use href="#ic-leaf"/></svg></div><div class="h2 nf-name"></div></div>
+    <div class="hero"><div class="hero-num nf-hero"></div><div class="hero-lbl nf-herolbl"></div><div class="hero-meta nf-meta"></div></div>
+    <div class="seclbl">Trend · this week</div>
+    <div class="card"><svg class="tsvg nf-trend" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid meet"></svg><div class="tlegend nf-tleg"></div></div>
+    <div class="cyc nf-cyc"><svg class="ic" style="width:16px;height:16px;color:var(--leaf-d)"><use href="#ic-cycle"/></svg><div class="nf-cyctext"></div></div>
+    <div class="seclbl">Why it matters now</div>
+    <p class="mean nf-why"></p>
+    <div class="seclbl nf-sourcelbl">Eat more of</div>
+    <div class="chrow nf-sources"></div>
+    <div class="labcard nf-lab"><div class="lic"><svg class="ic" style="width:16px;height:16px"><use href="#ic-drop"/></svg></div><div><span class="lk nf-labk"></span><div class="lt nf-labtext"></div></div></div>
+    <div class="nf-actions"></div>
+    <div class="disc">ⓘ Guidance, not medical advice.</div>
+  </div></section>
+</div>
+${NAV}
+<div class="scrim${open?' show':''}"></div>
+<div class="sheet${open?' open':''}">
+  <div class="sheet-grip"></div>
+  <div class="sheet-h"><div class="sheet-title">Nutrition data</div><button class="sheet-x" aria-label="Close">×</button></div>
+  <div class="seg2"><button class="${panel==='import'?'on':''}" data-p="import">Import</button><button class="${panel==='manual'?'on':''}" data-p="manual">Log a meal</button></div>
+  <div class="panel${panel==='import'?'':' hide'}" data-panel="import">
+    <p class="panel-sub">Sync an app to import your nutrition automatically.</p>
+    <div class="src"><div class="logo" style="background:#E7EEF6;color:#2C5FA8">M</div><div><div class="nm">MyFitnessPal</div><div class="meta">Connected · last sync today</div></div><span class="act connected"><svg class="ic" style="width:13px;height:13px;stroke-width:2.6"><use href="#ic-check"/></svg>Connected</span></div>
+    <div class="src"><div class="logo" style="background:#E6F1EE;color:#1E8E7E">C</div><div><div class="nm">Cronometer</div><div class="meta">Micronutrient detail</div></div><button class="act connect">Connect</button></div>
+    <div class="src"><div class="logo" style="background:#FCEAEA;color:#E0556B">♥</div><div><div class="nm">Apple Health</div><div class="meta">Nutrition records</div></div><button class="act connect">Connect</button></div>
+    <p class="note">We read your intake through your cycle — flagging iron near your period and protein in the luteal phase.</p>
+  </div>
+  <div class="panel${panel==='manual'?'':' hide'}" data-panel="manual">
+    <p class="panel-sub">Snap it, scan a barcode, or type it in — we estimate the nutrients for you.</p>
+    <div class="upload"><div class="uic"><svg class="ic"><use href="#ic-cam"/></svg></div><div><div class="ut">Snap a meal or scan a barcode</div><div class="us">We estimate calories, protein, iron &amp; more</div></div></div>
+    <div class="orline"><span>or enter it yourself</span></div>
+    <div class="field"><label>Meal</label><select class="finput"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option></select></div>
+    <div class="field"><label>What you ate</label><input type="text" class="finput" placeholder="e.g. Lentil &amp; spinach bowl"></div>
+    <div class="qadd"><span class="chip">+ Spinach</span><span class="chip">+ Lentils</span><span class="chip">+ Greek yogurt</span><span class="chip">+ Pumpkin seeds</span></div>
+    <div class="field"><label>When</label><input type="datetime-local" class="finput" value="2026-06-16T08:30"></div>
+    <button class="save">Save meal</button>
+  </div>
+</div>`;
+
+function buildTrend(f){
+  const v=f.trend,lab=f.tl,YMAX=f.ymax,L=30,R=290,T=12,B=120,n=v.length;
+  const x=i=>L+(R-L)*i/(n-1),y=val=>B-(val/YMAX)*(B-T);
+  let s='';
+  if(f.kind==='line'&&f.band){const yhi=y(f.band[1]),ylo=y(f.band[0]);
+    s+=`<rect x="${L}" y="${yhi.toFixed(1)}" width="${R-L}" height="${(ylo-yhi).toFixed(1)}" fill="#E6EFE0"/>`;
+    s+=`<text x="${R}" y="${(yhi-3).toFixed(1)}" text-anchor="end" font-size="8" fill="#9BAE93" font-family="Inter">in range</text>`;}
+  if(f.targetline){s+=`<line x1="${L}" y1="${y(f.targetline).toFixed(1)}" x2="${R}" y2="${y(f.targetline).toFixed(1)}" stroke="#5E8C5A" stroke-width="1.4" stroke-dasharray="4 3"/><text x="${L-5}" y="${(y(f.targetline)+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#9BAE93" font-family="Inter">${f.targetline}</text>`;}
+  if(f.kind==='bars'){const bw=(R-L)/n*0.46;
+    v.forEach((val,i)=>{const xx=x(i)-bw/2,yy=y(val),h=B-yy,below=f.targetline&&val<f.targetline;
+      s+=`<rect x="${xx.toFixed(1)}" y="${yy.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="2.5" fill="${below?'#BFD9B6':'#5E8C5A'}"/>`;});
+  }else{const pts=v.map((val,i)=>`${x(i).toFixed(1)},${y(val).toFixed(1)}`).join(' ');
+    s+=`<polyline points="${pts}" fill="none" stroke="#5E8C5A" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+    v.forEach((val,i)=>{const last=i===n-1;s+=`<circle cx="${x(i).toFixed(1)}" cy="${y(val).toFixed(1)}" r="${last?4:3}" fill="${last?'#436E3F':'#5E8C5A'}"/>`;});}
+  lab.forEach((t,i)=>{s+=`<text x="${x(i).toFixed(1)}" y="${B+15}" text-anchor="middle" font-size="8.5" fill="#968D9B" font-family="Inter">${t}</text>`;});
+  return s;
+}
+function legend(f){if(f.kind==='line')return '<span class="k"><i style="width:14px;height:0;border-top:2px solid #5E8C5A;display:inline-block"></i>Morning glucose</span><span class="k"><i style="width:9px;height:9px;border-radius:2px;background:#E6EFE0;display:inline-block"></i>In range '+f.band[0]+'–'+f.band[1]+'</span>';
+  return '<span class="k"><i style="width:10px;height:10px;border-radius:2px;background:#5E8C5A;display:inline-block"></i>Daily intake</span><span class="k"><i style="width:14px;height:0;border-top:2px dashed #5E8C5A;display:inline-block"></i>Target '+f.targetline+'</span>';}
+
+function openFocus(scr,id,variant='chips'){
+  const f=F[id];scr.dataset.focus=id;
+  scr.querySelector('.nf-icon use').setAttribute('href','#'+f.icon);
+  scr.querySelector('.nf-name').textContent=f.name;
+  scr.querySelector('.nf-hero').innerHTML=f.hero;
+  scr.querySelector('.nf-herolbl').textContent=f.herolbl;
+  scr.querySelector('.nf-meta').textContent=f.meta;
+  scr.querySelector('.nf-trend').innerHTML=buildTrend(f);
+  scr.querySelector('.nf-tleg').innerHTML=legend(f);
+  scr.querySelector('.nf-cyctext').innerHTML=f.cyc;
+  scr.querySelector('.nf-why').innerHTML=f.why;
+  
+  const slbl=scr.querySelector('.nf-sourcelbl');
+  const srcs=scr.querySelector('.nf-sources');
+  const al=scr.querySelector('.nf-actions');
+  
+  const foods=[
+    {name:'Lentils',emoji:'\u{1F957}',portion:'1 cup cooked',amt:'6.6 mg'},
+    {name:'Spinach',emoji:'\u{1F96C}',portion:'1 cup cooked',amt:'6.4 mg'},
+    {name:'Red meat',emoji:'\u{1F969}',portion:'3 oz beef',amt:'2.1 mg'},
+    {name:'Tofu',emoji:'\u{1FAD8}',portion:'½ cup',amt:'3.4 mg'},
+    {name:'Pumpkin seeds',emoji:'\u{1F330}',portion:'1 oz',amt:'2.5 mg'}
+  ];
+  
+  const foodCards=foods.map(f=>`<div style="background:var(--leaf-soft);border-radius:10px;padding:12px 14px 10px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><span style="font-size:24px">${f.emoji}</span><div style="flex:1"><div style="font-weight:500;font-size:15px">${f.name}</div><div style="font-size:13px;color:#666;margin-top:2px">${f.portion} \u00B7 <b>${f.amt}</b></div></div></div><button class="js-addgoal" style="width:100%;background:white;border:1.5px solid var(--leaf);color:var(--leaf-d);font-weight:500;font-size:13px;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all .15s">+ Add to goals</button></div>`).join('')+'<div style="margin-top:14px;font-size:13px;color:#666;padding:0 4px">\u{1F4A1} Pair with Vitamin C \u00B7 Skip coffee at meals</div>';
+  
+  if(variant==='original'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#999">of 18 mg iron</span></div><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden;margin-bottom:10px"><div style="background:var(--leaf);width:50%;height:100%"></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='percentage-label'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#999">of 18 mg iron</span></div><div style="position:relative;margin-bottom:10px"><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden"><div style="background:var(--leaf);width:50%;height:100%"></div></div><span style="position:absolute;right:0;top:-20px;font-size:12px;font-weight:600;color:var(--leaf-d)">50%</span></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='dual-numbers'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:16px;font-weight:700;color:var(--leaf-d)">9 mg</span></div><span style="font-size:16px;font-weight:700;color:#999">18 mg</span></div><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden;margin-bottom:10px"><div style="background:var(--leaf);width:50%;height:100%"></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='compact-inline'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:18px">\u{1F4CA}</span><div style="flex:1"><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden"><div style="background:var(--leaf);width:50%;height:100%"></div></div></div><span style="font-size:13px;font-weight:600;color:var(--leaf-d)">9/18 mg</span></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='colored-bg'){
+    slbl.innerHTML='<div style="background:var(--leaf-soft);border-radius:10px;padding:12px 14px;margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#666">of 18 mg iron</span></div><div style="background:#D4E7D0;height:6px;border-radius:3px;overflow:hidden;margin-bottom:10px"><div style="background:var(--leaf);width:50%;height:100%"></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='bold-action'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#999">of 18 mg iron</span></div><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden;margin-bottom:12px"><div style="background:var(--leaf);width:50%;height:100%"></div></div><div style="font-size:16px;font-weight:600;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='thick-rounded'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#999">of 18 mg iron</span></div><div style="background:#E6EFE0;height:12px;border-radius:20px;overflow:hidden;margin-bottom:10px"><div style="background:var(--leaf);width:50%;height:100%;border-radius:20px"></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='gradient-fill'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#999">of 18 mg iron</span></div><div style="background:#E6EFE0;height:8px;border-radius:4px;overflow:hidden;margin-bottom:10px"><div style="background:linear-gradient(90deg, var(--leaf) 0%, #7BA96F 100%);width:50%;height:100%"></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='milestone-marks'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#999">of 18 mg iron</span></div><div style="position:relative;margin-bottom:18px"><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden;margin-bottom:4px"><div style="background:var(--leaf);width:50%;height:100%"></div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:#999"><span>0%</span><span style="color:var(--leaf-d);font-weight:600">50%</span><span>75%</span><span>100%</span></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='vertical-stack'){
+    slbl.innerHTML='<div style="margin-bottom:16px;text-align:center"><div style="display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:6px"><span style="font-size:20px;font-weight:700;color:var(--leaf-d)">9</span><span style="font-size:14px;color:#999">/ 18 mg</span></div><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden;margin-bottom:10px"><div style="background:var(--leaf);width:50%;height:100%"></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='circular-ring'){
+    slbl.innerHTML='<div style="margin-bottom:16px;display:flex;align-items:center;gap:14px"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" fill="none" stroke="#E6EFE0" stroke-width="8"/><circle cx="30" cy="30" r="24" fill="none" stroke="var(--leaf)" stroke-width="8" stroke-dasharray="75.4 150.8" stroke-dashoffset="37.7" transform="rotate(-90 30 30)" stroke-linecap="round"/><text x="30" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="var(--leaf-d)">50%</text></svg><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--leaf-d);margin-bottom:2px">9 of 18 mg iron</div><div style="font-size:14px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='side-split'){
+    slbl.innerHTML='<div style="margin-bottom:16px;display:flex;gap:14px"><div style="flex:1"><div style="background:#E6EFE0;height:100%;min-height:80px;border-radius:8px;overflow:hidden;position:relative"><div style="background:var(--leaf);width:50%;height:100%;position:absolute;bottom:0;left:0"></div><div style="position:relative;padding:10px;text-align:center"><div style="font-size:24px;font-weight:700;color:var(--leaf-d)">50%</div><div style="font-size:11px;color:#666">9 of 18 mg</div></div></div></div><div style="flex:1.5;display:flex;flex-direction:column;justify-content:center"><div style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:4px">Iron intake today</div><div style="font-size:13px;color:#666">Close the gap with these foods:</div></div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='progress-meter'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">\u{1F4CA}</span><span style="font-size:14px;font-weight:600;color:var(--leaf-d)">9 mg</span><span style="font-size:13px;color:#999">of 18 mg iron</span></div><div style="background:#E6EFE0;height:6px;border-radius:3px;overflow:hidden;margin-bottom:10px"><div style="background:var(--leaf);width:50%;height:100%"></div></div><div style="font-size:15px;font-weight:500;color:var(--ink)">Eat more of these to close the gap:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='friendly-wave'){
+    slbl.innerHTML='<div style="background:var(--leaf-soft);border-radius:12px;padding:12px 14px;margin-bottom:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:20px">\u{1F44B}</span><span style="font-size:15px;font-weight:600;color:var(--ink)">Hey there!</span></div><div style="font-size:14px;color:#666;line-height:1.5">You\u2019re halfway to your iron goal today. These foods will help you get there:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='status-card'){
+    slbl.innerHTML='<div style="background:white;border:1.5px solid var(--leaf-soft);border-radius:10px;padding:12px 14px;margin-bottom:16px"><div style="display:flex;gap:16px;margin-bottom:10px"><div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#999;margin-bottom:4px">Current</div><div style="font-size:18px;font-weight:600;color:var(--ink)">50%</div></div><div style="width:1px;background:#E6EFE0"></div><div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#999;margin-bottom:4px">Target</div><div style="font-size:18px;font-weight:600;color:var(--leaf-d)">18 mg</div></div></div><div style="height:1px;background:#E6EFE0;margin-bottom:10px"></div><div style="font-size:14px;font-weight:500;color:var(--ink)">Prioritize:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='split-color'){
+    slbl.innerHTML='<div style="margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:18px">\u{1F4CC}</span><span style="font-size:15px;font-weight:500;color:var(--ink)">You\u2019re at</span><span style="background:var(--leaf-soft);color:var(--leaf-d);padding:4px 10px;border-radius:6px;font-size:15px;font-weight:700">50%</span><span style="font-size:15px;font-weight:500;color:var(--ink)">of your</span><span style="background:#F5EFE6;color:#C4914B;padding:4px 10px;border-radius:6px;font-size:15px;font-weight:700">18 mg target</span><span style="font-size:15px;font-weight:500;color:var(--ink)">\u2014 eat more of:</span></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='badge-row'){
+    slbl.innerHTML='<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px"><span style="font-size:16px">\u{1F3AF}</span><span style="background:var(--leaf-soft);color:var(--leaf-d);padding:3px 8px;border-radius:10px;font-size:12px;font-weight:600">9 mg today</span><span style="color:#999">/</span><span style="background:#F0F0F0;color:#666;padding:3px 8px;border-radius:10px;font-size:12px;font-weight:600">18 mg goal</span><span style="background:#FFF4E6;color:#C4914B;padding:3px 8px;border-radius:10px;font-size:12px;font-weight:600">50%</span></div><div style="font-size:14px;font-weight:500;color:var(--ink)">Close the gap with:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='corner-frame'){
+    slbl.innerHTML='<div style="position:relative;padding:14px 12px;margin-bottom:16px"><div style="position:absolute;top:0;left:0;width:16px;height:16px;border-top:3px solid var(--leaf);border-left:3px solid var(--leaf);border-radius:4px 0 0 0"></div><div style="position:absolute;top:0;right:0;width:16px;height:16px;border-top:3px solid var(--leaf);border-right:3px solid var(--leaf);border-radius:0 4px 0 0"></div><div style="position:absolute;bottom:0;left:0;width:16px;height:16px;border-bottom:3px solid var(--leaf);border-left:3px solid var(--leaf);border-radius:0 0 0 4px"></div><div style="position:absolute;bottom:0;right:0;width:16px;height:16px;border-bottom:3px solid var(--leaf);border-right:3px solid var(--leaf);border-radius:0 0 4px 0"></div><div style="text-align:center"><div style="font-size:20px;margin-bottom:6px">\u{1F31F}</div><div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px">Halfway There!</div><div style="font-size:13px;color:#666">Boost your iron with these foods:</div></div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='soft-box'){
+    slbl.innerHTML='<div style="background:var(--leaf-soft);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="font-size:22px">\u2139\uFE0F</span><div style="font-size:15px;font-weight:500;color:var(--ink);line-height:1.4">You\u2019re at half your target \u2014 eat more of:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='two-line'){
+    slbl.innerHTML='<div style="margin-bottom:16px;display:flex;align-items:flex-start;gap:8px"><span style="font-size:20px;margin-top:2px">\u2139\uFE0F</span><div style="line-height:1.4"><div style="font-size:14px;color:#666;margin-bottom:2px">You\u2019re at half your target</div><div style="font-size:16px;font-weight:600;color:var(--leaf-d)">Eat more of:</div></div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='highlight-words'){
+    slbl.innerHTML='<div style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;line-height:1.5"><span style="font-size:18px">\u2139\uFE0F</span><div>You\u2019re at <span style="background:var(--leaf-soft);color:var(--leaf-d);padding:2px 8px;border-radius:12px;font-weight:600">half your target</span> \u2014 eat more of:</div></div>';
+    srcs.innerHTML=foodCards;
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='highlight-plus'){
+    slbl.innerHTML='<div style="background:var(--leaf-soft);border-left:4px solid var(--leaf);padding:12px 16px;border-radius:8px;font-size:15px;font-weight:500;color:var(--ink);margin-bottom:16px;line-height:1.4">You\u2019re at half your target \u2014 eat more of:</div>';
+    srcs.innerHTML=foods.map(f=>`<div class="js-add" style="background:var(--leaf-soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s"><span style="font-size:24px">${f.emoji}</span><div style="flex:1"><div style="font-weight:500;font-size:15px">${f.name}</div><div style="font-size:13px;color:#666;margin-top:2px">${f.portion} \u00B7 <b>${f.amt}</b></div></div><svg class="ic" style="width:20px;height:20px;stroke:var(--leaf);stroke-width:2.5"><circle cx="10" cy="10" r="9" fill="none"/><path d="M10 5v10M5 10h10"/></svg></div>`).join('')+'<div style="margin-top:14px;font-size:13px;color:#666;padding:0 4px">\u{1F4A1} Pair with Vitamin C \u00B7 Skip coffee at meals</div>';
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='large-checkbox'){
+    slbl.innerHTML='<div style="font-size:16px;font-weight:600;color:var(--leaf-d);margin-bottom:16px;line-height:1.4">You\u2019re at half your target \u2014<br>eat more of:</div>';
+    srcs.innerHTML=foods.map(f=>`<div class="js-check" style="background:var(--leaf-soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer"><div style="width:20px;height:20px;border:2px solid var(--leaf);border-radius:4px;flex-shrink:0"></div><span style="font-size:24px">${f.emoji}</span><div style="flex:1"><div style="font-weight:500;font-size:15px">${f.name}</div><div style="font-size:13px;color:#666;margin-top:2px">${f.portion} \u00B7 <b>${f.amt}</b></div></div></div>`).join('')+'<div style="margin-top:14px;font-size:13px;color:#666;padding:0 4px">\u{1F4A1} Pair with Vitamin C \u00B7 Skip coffee at meals</div>';
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='icon-buttons'){
+    slbl.innerHTML='<div style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">\u2139\uFE0F</span>You\u2019re at half your target \u2014 eat more of:</div>';
+    srcs.innerHTML=foods.map(f=>`<div style="background:var(--leaf-soft);border-radius:10px;padding:12px 14px 10px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><span style="font-size:24px">${f.emoji}</span><div style="flex:1"><div style="font-weight:500;font-size:15px">${f.name}</div><div style="font-size:13px;color:#666;margin-top:2px">${f.portion} \u00B7 <b>${f.amt}</b></div></div></div><button class="js-addgoal" style="width:100%;background:white;border:1.5px solid var(--leaf);color:var(--leaf-d);font-weight:500;font-size:13px;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all .15s">+ Add to goals</button></div>`).join('')+'<div style="margin-top:14px;font-size:13px;color:#666;padding:0 4px">\u{1F4A1} Pair with Vitamin C \u00B7 Skip coffee at meals</div>';
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='bold-emoji'){
+    slbl.innerHTML='<span style="font-size:15px;font-weight:600;color:var(--ink)">You\u2019re at half your target \u2014 eat more of:</span>';
+    srcs.innerHTML=foods.map(f=>`<div style="background:var(--leaf-soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px"><span style="font-size:24px">${f.emoji}</span><div style="flex:1"><div style="font-weight:500;font-size:15px">${f.name}</div><div style="font-size:13px;color:#666;margin-top:2px">${f.portion} \u00B7 <b>${f.amt}</b></div></div></div>`).join('')+'<div style="margin-top:14px;font-size:13px;color:#666;padding:0 4px">\u{1F4A1} Pair with Vitamin C \u00B7 Skip coffee at meals</div>';
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='highlight-minimal'){
+    slbl.innerHTML='<div style="background:var(--leaf-soft);border-left:3px solid var(--leaf);padding:10px 14px;border-radius:6px;font-size:15px;font-weight:500;color:var(--ink);margin-bottom:14px">You\u2019re at half your target \u2014 eat more of:</div>';
+    srcs.innerHTML=foods.map(f=>`<div style="padding:8px 4px;border-bottom:1px solid #E6EFE0;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:500">${f.name}</span><span style="font-size:14px;color:var(--leaf-d);font-weight:600">${f.amt}</span></div>`).join('')+'<div style="margin-top:12px;font-size:13px;color:#666;padding:0 4px">\u{1F4A1} Pair with Vitamin C \u00B7 Skip coffee at meals</div>';
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else if(variant==='large-grid'){
+    slbl.innerHTML='<div style="font-size:16px;font-weight:600;color:var(--ink);margin-bottom:16px;line-height:1.4">You\u2019re at half your target \u2014<br>eat more of:</div>';
+    srcs.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+foods.map(f=>`<div style="background:var(--leaf-soft);border-radius:10px;padding:12px;text-align:center"><div style="font-size:28px;margin-bottom:6px">${f.emoji}</div><div style="font-weight:500;font-size:14px;margin-bottom:2px">${f.name}</div><div style="font-size:12px;color:var(--leaf-d);font-weight:600">${f.amt}</div></div>`).join('')+'</div><div style="margin-top:14px;font-size:13px;color:#666;text-align:center">\u{1F4A1} Pair with Vitamin C \u00B7 Skip coffee at meals</div>';
+    srcs.style.cssText='display:block';
+    al.innerHTML='';
+  }else{
+    // Default
+    slbl.textContent=f.sourcelbl;
+    srcs.innerHTML=f.sources.map(s=>`<span class="chip">${s}</span>`).join('');
+    srcs.style.cssText='';
+    if(f.act)al.innerHTML=`<button class="btn js-log">${f.act}</button>`;
+    else if(f.positive)al.innerHTML=`<div class="okbox"><svg class="ic" style="width:16px;height:16px;stroke-width:2.4"><use href="#ic-check"/></svg>${f.positive}</div>`;
+    else al.innerHTML='';
+  }
+  
+  const lc=scr.querySelector('.nf-lab');
+  if(f.lab){lc.classList.remove('hide');scr.querySelector('.nf-labk').textContent=f.lab.k;scr.querySelector('.nf-labtext').innerHTML=f.lab.txt;}
+  else lc.classList.add('hide');
+  al.querySelectorAll('.js-log').forEach(b=>b.addEventListener('click',()=>logMeal(b,id)));
+}
+function logMeal(b,id){if(b.classList.contains('islogged'))return;b.classList.add('islogged');b.innerHTML='✓ '+F[id].logged;}
+function saveMeal(b){if(b.classList.contains('saved'))return;b.classList.add('saved');b.style.cssText='background:var(--sage-soft);color:var(--sage-d);box-shadow:none';b.textContent='✓ Meal saved';}
+
+const VIEWS=[
+  ['main',null,false,null,'Nutrition overview','Cycle phase up top, a glucose-steadiness hero (tap it), then nutrients grouped Prioritise / Steady. Every focus is tappable.'],
+  ['manage-import',null,true,null,'Manage data · Import tab','The Import tab — purely app-syncing. MyFitnessPal (connected), Cronometer, Apple Health.'],
+  ['manage-manual',null,true,null,'Manage data · Log a meal tab','The Log a meal tab — snap/scan at top, then "or enter it yourself" divider, then manual fields + quick-add chips.'],
+  ['focus','iron',false,'original','Iron · Original (iter 10)','The original progress meter you liked - thin bar, chart emoji, clean layout.'],
+  ['focus','iron',false,'percentage-label','Iron · With percentage','Shows "50%" label next to the bar, makes progress explicit.'],
+  ['focus','iron',false,'dual-numbers','Iron · Dual numbers','9 mg and 18 mg as separate emphasized numbers, clearer comparison.'],
+  ['focus','iron',false,'compact-inline','Iron · Compact inline','Numbers and bar in one compact line, space-efficient.'],
+  ['focus','iron',false,'colored-bg','Iron · Colored background','Whole section in soft green box, bar stands out more.'],
+  ['focus','iron',false,'bold-action','Iron · Bold action text','Larger, bolder action text, clearer call-to-action.'],
+  ['focus','glucose',false,null,'Focus · Glucose','The placeholder hero, expanded: morning glucose trending into range, the habits steadying it, luteal context.']
+];
+
+const stage=document.getElementById('stage');
+VIEWS.forEach(([mode,focus,open,variant,title,desc])=>{
+  const init=mode==='focus'?'n-focus':'n-main';
+  const panel=mode==='manage-manual'?'manual':'import';
+  const col=document.createElement('div');col.className='col';
+  col.innerHTML=`<div class="phone"><div class="scr">${SCREEN(init,open,panel)}</div></div><div class="cap"><div class="v">${title}</div><span class="d">${desc}</span></div>`;
+  stage.appendChild(col);
+  const scr=col.querySelector('.scr');
+  if(focus)openFocus(scr,focus,variant);
+});
+
+function lnav(scr,id){scr.querySelectorAll('.tscreen').forEach(s=>s.classList.toggle('on',s.dataset.sc===id));const b=scr.querySelector('.tscreen.on .body');if(b)b.scrollTop=0;}
+document.querySelectorAll('.mk').forEach(r=>r.addEventListener('click',function(){const scr=r.closest('.scr');openFocus(scr,r.dataset.focus);lnav(scr,'n-focus');}));
+document.querySelectorAll('.js-hero').forEach(h=>h.addEventListener('click',function(){const scr=h.closest('.scr');openFocus(scr,h.dataset.focus);lnav(scr,'n-focus');}));
+document.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click',()=>lnav(el.closest('.scr'),el.dataset.nav)));
+function setPanel(scr,p){scr.querySelectorAll('.seg2 button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));scr.querySelectorAll('.panel').forEach(pl=>pl.classList.toggle('hide',pl.dataset.panel!==p));}
+function openS(scr,p){scr.querySelector('.scrim').classList.add('show');scr.querySelector('.sheet').classList.add('open');if(p)setPanel(scr,p);}
+function closeS(scr){scr.querySelector('.scrim').classList.remove('show');scr.querySelector('.sheet').classList.remove('open');}
+document.querySelectorAll('.js-open').forEach(b=>b.addEventListener('click',()=>openS(b.closest('.scr'),b.dataset.open)));
+document.querySelectorAll('.scrim').forEach(s=>s.addEventListener('click',()=>closeS(s.closest('.scr'))));
+document.querySelectorAll('.sheet-x').forEach(x=>x.addEventListener('click',()=>closeS(x.closest('.scr'))));
+document.querySelectorAll('.seg2 button').forEach(b=>b.addEventListener('click',()=>setPanel(b.closest('.scr'),b.dataset.p)));
+document.querySelectorAll('.qadd .chip').forEach(c=>c.addEventListener('click',()=>c.style.cssText='background:var(--leaf-soft);color:var(--leaf-d);border-color:#cfe0cf'));
+document.querySelectorAll('.save').forEach(b=>b.addEventListener('click',()=>saveMeal(b)));
+</script>
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 11 · what came out of it</div>
+  <p style="margin:0">Six variations refined the meter itself. The version carrying a percentage label was chosen: the bar communicates the shape of the gap while the number pins it down. Dual numbers were rejected for making the reader perform the division herself, and the compact inline treatment for shrinking the bar until the gap stopped being legible.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>

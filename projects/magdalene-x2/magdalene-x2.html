@@ -641,6 +641,133 @@
       .hero { height: 150px; }
       .hero-overlay h1 { font-size: 18px; }
     }
+
+    /* ── Prototype iteration viewer ── */
+    .iter-viewer {
+      border: 0.5px solid rgba(200, 180, 220, 0.4);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      overflow: hidden;
+      margin: 14px 0;
+    }
+    .iter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px 14px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .iter-tab {
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b5a7d;
+      background: rgba(200, 180, 220, 0.16);
+      border: 0.5px solid transparent;
+      border-radius: 99px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .iter-tab:hover { background: rgba(200, 180, 220, 0.32); }
+    .iter-tab[aria-selected="true"] {
+      background: rgba(200, 180, 220, 0.5);
+      border-color: rgba(200, 180, 220, 0.6);
+      color: #4a3f5c;
+      font-weight: 600;
+    }
+    .iter-tab span { opacity: 0.65; font-weight: 400; }
+
+    .iter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .iter-nav {
+      font-family: inherit;
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: #6a4a9a;
+      background: rgba(200, 180, 220, 0.28);
+      border: 0.5px solid rgba(200, 180, 220, 0.45);
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .iter-nav:hover:not(:disabled) { background: rgba(200, 180, 220, 0.5); }
+    .iter-nav:disabled { opacity: 0.35; cursor: default; }
+
+    .iter-meta { min-width: 0; flex: 1; }
+    .iter-step {
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #a08ab5;
+    }
+    .iter-caption {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3f5c;
+      line-height: 1.35;
+    }
+    .iter-open {
+      flex-shrink: 0;
+      font-size: 10.5px;
+      color: #6a4a9a;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(106, 74, 154, 0.3);
+    }
+
+    .iter-notes {
+      display: block;
+      padding: 14px;
+      border-top: 0.5px solid rgba(200, 180, 220, 0.3);
+      background: rgba(255, 255, 255, 0.4);
+    }
+    .iter-note {
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: #5a4a6a;
+      margin: 0 0 7px;
+    }
+    .iter-note:last-child { margin-bottom: 0; }
+    .iter-note-label {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-radius: 99px;
+      padding: 2px 7px;
+      margin-right: 6px;
+      vertical-align: 1px;
+    }
+    .iter-note-label.take { background: rgba(168, 230, 207, 0.45); color: #2f6b53; }
+    .iter-note-label.drop { background: rgba(232, 160, 200, 0.28); color: #99416f; }
+    .iter-note-label.why  { background: rgba(200, 180, 220, 0.38); color: #5c4483; }
+
+    @media (max-width: 700px) {
+      .iter-notes { padding: 12px; }
+    }
+    .iter-frame {
+      display: block;
+      width: 100%;
+      height: 560px;
+      border: 0;
+      background: #fff;
+    }
+    @media (max-width: 600px) {
+      .iter-frame { height: 420px; }
+      .iter-open { display: none; }
+    }
 </style>
 </head>
 <body>
@@ -957,6 +1084,100 @@
             <li><strong>Deviation &amp; rest = information, not failure</strong> — anti-guilt framing throughout</li>
           </ul>
 
+          <!-- ════════════ PROTOTYPE ITERATIONS ════════════ -->
+          <h2>Prototype Iterations</h2>
+          <p>Every module was designed in code, not in a static canvas. Each step below is one iteration: a real, working comparison build put side by side so the choice could be judged on the actual screen rather than a description of it. The five modules here took <strong>41 iterations</strong>: color families, ring geometry, message tone, and data-entry placement, each one narrowing the next decision.</p>
+
+          <div class="iter-viewer">
+            <div class="iter-tabs" role="tablist" aria-label="Prototype modules">
+              <button type="button" class="iter-tab" role="tab" data-module="cycle" aria-selected="true">Cycle <span>11</span></button>
+              <button type="button" class="iter-tab" role="tab" data-module="sleep" aria-selected="false">Sleep <span>8</span></button>
+              <button type="button" class="iter-tab" role="tab" data-module="labs" aria-selected="false">Labs <span>3</span></button>
+              <button type="button" class="iter-tab" role="tab" data-module="nutrition" aria-selected="false">Nutrition <span>12</span></button>
+              <button type="button" class="iter-tab" role="tab" data-module="movement" aria-selected="false">Movement <span>7</span></button>
+            </div>
+
+            <div class="iter-bar">
+              <button type="button" class="iter-nav" id="iter-prev" aria-label="Previous iteration">‹</button>
+              <button type="button" class="iter-nav" id="iter-next" aria-label="Next iteration">›</button>
+              <div class="iter-meta" aria-live="polite">
+                <div class="iter-step" id="iter-step"></div>
+                <div class="iter-caption" id="iter-caption"></div>
+              </div>
+              <a class="iter-open" id="iter-open" href="#" target="_blank" rel="noopener noreferrer">open full size ↗</a>
+            </div>
+
+            <iframe class="iter-frame" id="iter-frame" title="Prototype iteration" loading="lazy"></iframe>
+
+            <div class="iter-notes" aria-live="polite">
+              <p class="iter-note"><span class="iter-note-label take">Took</span><span id="iter-took"></span></p>
+              <p class="iter-note"><span class="iter-note-label drop">Left</span><span id="iter-left"></span></p>
+              <p class="iter-note"><span class="iter-note-label why">Why</span><span id="iter-why"></span></p>
+            </div>
+          </div>
+
+          <!-- ════════════ ARCHITECTURE ════════════ -->
+          <h2>System Architecture</h2>
+          <p>The product loop: <strong>Ingest → Detect → Explain → Hypothesize → Experiment → Learn.</strong> The experiment engine writing outcomes back to the timeline is what closes the loop — the core differentiator.</p>
+
+          <div class="tech-pipeline">
+            <div class="tech-node">
+              <div class="tech-icon">📊</div>
+              <div class="tech-label">Ingest</div>
+              <div class="tech-detail">Wearables, cycle, labs, CGM, nutrition → unified health timeline, cycle-phase tagged</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🔍</div>
+              <div class="tech-label">Detect</div>
+              <div class="tech-detail">Autonomous change &amp; pattern detection across all domains — no user prompt required</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🤖</div>
+              <div class="tech-label">Reason</div>
+              <div class="tech-detail">Multi-agent orchestrator coordinates domain agents, hypothesis engine, experiment designer</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">🛡️</div>
+              <div class="tech-label">Guard</div>
+              <div class="tech-detail">Safety layer screens outputs — no diagnostic claims, honest uncertainty, clinician escalation</div>
+            </div>
+            <span class="tech-arrow">→</span>
+            <div class="tech-node">
+              <div class="tech-icon">💬</div>
+              <div class="tech-label">Surface</div>
+              <div class="tech-detail">Plain-language insights, experiments, weekly summary, clinician report</div>
+            </div>
+          </div>
+
+          <!-- ════════════ UX PRINCIPLES ════════════ -->
+          <h2>UX Principles</h2>
+
+          <div class="principle-grid">
+            <div class="principle-card">
+              <div class="principle-num">💡</div>
+              <div class="principle-title">Say what it means, not how it works</div>
+              <p>Lead with the insight, hide the machinery. The user sees the meaning — not the multi-agent pipeline behind it.</p>
+            </div>
+            <div class="principle-card">
+              <div class="principle-num">🎯</div>
+              <div class="principle-title">One clear next action</div>
+              <p>Every insight offers at most one small experiment. Reduce decision fatigue to a single "yes."</p>
+            </div>
+            <div class="principle-card">
+              <div class="principle-num">⚖️</div>
+              <div class="principle-title">Honest uncertainty</div>
+              <p>Never over-claim. Show confidence levels, defer to clinicians, and always frame as "information, not a diagnosis."</p>
+            </div>
+            <div class="principle-card">
+              <div class="principle-num">🔒</div>
+              <div class="principle-title">Privacy you can feel</div>
+              <p>End-to-end encryption, no third-party data sharing, granular consent. Visible control over data as a trust signal — especially for reproductive data.</p>
+            </div>
+          </div>
+
           <!-- ════════════ DESIGN SHOWCASE ════════════ -->
           <h2>Product Design</h2>
           <p>The final design uses a warm, editorial voice paired with modular data cards. The cycle phase is a first-class variable that contextualizes every insight.</p>
@@ -1070,68 +1291,6 @@
             </div>
           </div>
 
-          <!-- ════════════ ARCHITECTURE ════════════ -->
-          <h2>System Architecture</h2>
-          <p>The product loop: <strong>Ingest → Detect → Explain → Hypothesize → Experiment → Learn.</strong> The experiment engine writing outcomes back to the timeline is what closes the loop — the core differentiator.</p>
-
-          <div class="tech-pipeline">
-            <div class="tech-node">
-              <div class="tech-icon">📊</div>
-              <div class="tech-label">Ingest</div>
-              <div class="tech-detail">Wearables, cycle, labs, CGM, nutrition → unified health timeline, cycle-phase tagged</div>
-            </div>
-            <span class="tech-arrow">→</span>
-            <div class="tech-node">
-              <div class="tech-icon">🔍</div>
-              <div class="tech-label">Detect</div>
-              <div class="tech-detail">Autonomous change &amp; pattern detection across all domains — no user prompt required</div>
-            </div>
-            <span class="tech-arrow">→</span>
-            <div class="tech-node">
-              <div class="tech-icon">🤖</div>
-              <div class="tech-label">Reason</div>
-              <div class="tech-detail">Multi-agent orchestrator coordinates domain agents, hypothesis engine, experiment designer</div>
-            </div>
-            <span class="tech-arrow">→</span>
-            <div class="tech-node">
-              <div class="tech-icon">🛡️</div>
-              <div class="tech-label">Guard</div>
-              <div class="tech-detail">Safety layer screens outputs — no diagnostic claims, honest uncertainty, clinician escalation</div>
-            </div>
-            <span class="tech-arrow">→</span>
-            <div class="tech-node">
-              <div class="tech-icon">💬</div>
-              <div class="tech-label">Surface</div>
-              <div class="tech-detail">Plain-language insights, experiments, weekly summary, clinician report</div>
-            </div>
-          </div>
-
-          <!-- ════════════ UX PRINCIPLES ════════════ -->
-          <h2>UX Principles</h2>
-
-          <div class="principle-grid">
-            <div class="principle-card">
-              <div class="principle-num">💡</div>
-              <div class="principle-title">Say what it means, not how it works</div>
-              <p>Lead with the insight, hide the machinery. The user sees the meaning — not the multi-agent pipeline behind it.</p>
-            </div>
-            <div class="principle-card">
-              <div class="principle-num">🎯</div>
-              <div class="principle-title">One clear next action</div>
-              <p>Every insight offers at most one small experiment. Reduce decision fatigue to a single "yes."</p>
-            </div>
-            <div class="principle-card">
-              <div class="principle-num">⚖️</div>
-              <div class="principle-title">Honest uncertainty</div>
-              <p>Never over-claim. Show confidence levels, defer to clinicians, and always frame as "information, not a diagnosis."</p>
-            </div>
-            <div class="principle-card">
-              <div class="principle-num">🔒</div>
-              <div class="principle-title">Privacy you can feel</div>
-              <p>End-to-end encryption, no third-party data sharing, granular consent. Visible control over data as a trust signal — especially for reproductive data.</p>
-            </div>
-          </div>
-
           <!-- ════════════ OUTCOME ════════════ -->
           <h2>Outcome &amp; Status</h2>
           <div class="outcome-box">
@@ -1161,7 +1320,7 @@
     <div class="status-links">
       <a href="https://github.com/chag60460" target="_blank">github</a>
       <a href="https://www.linkedin.com/in/grace-chang-112300cs/" target="_blank">linkedin</a>
-      <a href="mailto:chag60460@gmail.com">email</a>
+      <a href="mailto:changgracegc1@gmail.com">email</a>
     </div>
   </div>
 
@@ -1187,6 +1346,236 @@
       sessionStorage.setItem('openSection', el.dataset.openSection);
     });
   });
+</script>
+<script type="application/json" id="iter-data">
+{
+  "cycle": [
+    {"file":"01-Cycle-Directions.html","label":"Three directions: ring, calendar, or both",
+     "took":"All three directions built out full size — ring plus calendar (A), calendar only (B), and ring only (C).",
+     "left":"Picking from the descriptions. Nothing was eliminated at this stage.",
+     "why":"Each option gives up the same thing in a different place: B is the most familiar and the best for exact dates, but never shows the phase at a glance; C is the cleanest and most distinctive, but drops the date grid entirely. That trade is invisible in a sentence and obvious on a screen."},
+    {"file":"02-Cycle-Chosen.html","label":"The chosen combination",
+     "took":"Variant D — C's glanceable ring stacked on B's month calendar, with the duplicated phase sentence removed.",
+     "left":"Ring only, calendar only, and Variant A's redundant phase text.",
+     "why":"The ring answers \"where am I in my cycle\" in one glance; the calendar answers \"which dates\". Neither question is optional, so the two had to coexist — and once the ring states the phase, repeating it in a sentence underneath is just noise."},
+    {"file":"03-Cycle-Color-Schemes.html","label":"Color scheme exploration",
+     "took":"Blush Rose.",
+     "left":"Warm Clay, Lavender Calm, Botanical Sage, Nordic Dark and Editorial.",
+     "why":"The palette had to feel gentle and personal rather than clinical or premium-tech. Nordic Dark and Editorial read as performance dashboards, Botanical Sage as generic wellness, and the incumbent Warm Clay was too muted to carry four distinct phases."},
+    {"file":"04-Cycle-Color-Blush.html","label":"Blush Rose variations",
+     "took":"The warm-pink direction, though no single variant was locked here.",
+     "left":"Dusty Rose, Rose Mauve and Rosé Gold.",
+     "why":"Each pulled the mood somewhere unintended — muted and sophisticated, moody and elegant, or luxe. The family was right and the exact temperature wasn't, so the search widened into pastels rather than settling."},
+    {"file":"05-Cycle-Color-Flo.html","label":"Flo-inspired pastels",
+     "took":"Coral Pastel, later locked in as the calendar palette.",
+     "left":"Flo Classic, Lavender Soft, Periwinkle, Soft Petal and Plum Rose.",
+     "why":"The lavender and periwinkle bases read as a direct Flo impression rather than an identity of its own. Coral Pastel keeps the softness without borrowing the competitor's signature background."},
+    {"file":"06-Cycle-Color-Peach.html","label":"Gentle peach pastels",
+     "took":"Blush Peach as the overall scheme.",
+     "left":"Apricot, Soft Coral, Petal Peach and Honey Cream.",
+     "why":"Purple was dropped entirely this round. Apricot and Honey Cream skewed sunny and cozy, and Petal Peach was so low in saturation that the phases stopped separating — Blush Peach stays warm while leaving enough contrast for four of them."},
+    {"file":"07-Cycle-Ring-Concepts.html","label":"Circle and ring concepts",
+     "took":"Day Dots — one dot per day, colored by phase, today enlarged.",
+     "left":"Soft Gradient, Minimal Progress, Soft Segments, Day Ticks and Single-Hue Bloom, along with the original hard four-color pie.",
+     "why":"The gentler treatments all bought calm by giving up precision: Minimal Progress shows how far through you are but not which phase, and Single-Hue Bloom names the phase but loses the shape of the cycle. Day Dots stays soft while still showing every individual day."},
+    {"file":"08-Cycle-DayDots-Luteal.html","label":"Day Dots: making period and luteal distinct",
+     "took":"A distinctly pinker luteal.",
+     "left":"The existing shade, which sat almost on top of the coral period.",
+     "why":"Two adjacent phases in near-identical colors make the ring unreadable exactly where it matters most — the run-up to a period. The tuning was constrained to stay warm so no purple crept back into the palette."},
+    {"file":"09-Cycle-DayDots-Period.html","label":"Day Dots: making the period dots obvious",
+     "took":"Two finalists — Bigger + Bolder, and Soft Halo.",
+     "left":"The baseline, plus the size-only and shade-only treatments.",
+     "why":"Size alone or color alone left period competing with three other phases for attention. The halo was worth keeping because it creates prominence without recoloring anything, which leaves the palette intact."},
+    {"file":"10-Cycle-DayDots-PeriodHalo.html","label":"Bigger and bolder, now with a halo",
+     "took":"The merge — the larger, deeper period dot wrapped in the soft halo.",
+     "left":"Either finalist on its own.",
+     "why":"The two solved different halves of the problem: weight makes the dot register, the halo draws the eye to it. Combining beat choosing. The halo's exact character — crisp ring, tighter, or soft glow — was left open."},
+    {"file":"11-Cycle-ManageData.html","label":"Import from Flo or log by hand",
+     "took":"A single Manage data entry beside the sync status, offering Import (Flo, Clue, Apple Health) or manual period logging.",
+     "left":"Hand-backfilling past cycles.",
+     "why":"Cycle history is the one dataset a new user already has somewhere else, and retyping months of periods would lose her before the app could say anything useful. This entry pattern went on to become the convention for every other module."}
+  ],
+  "sleep": [
+    {"file":"01-Sleep-Identity.html","label":"Blue accent, matching the icon",
+     "took":"Sleep blue for the reading and the link chips.",
+     "left":"The app's default clay accent.",
+     "why":"The module icon was already slate-blue, so a clay number sitting beside it read as a mistake. Giving each module its own accent also makes the domain recognizable before the label is read."},
+    {"file":"02-Sleep-Chart.html","label":"Duration chart",
+     "took":"A duration chart with Daily / Weekly / Monthly, an average line and the 7h 20m baseline.",
+     "left":"A single nightly number with nothing to compare against.",
+     "why":"\"6h 12m\" only means something measured against her own norm. The baseline turns a raw figure into a judgment — short for her — without the app having to scold."},
+    {"file":"03-Sleep-Logging.html","label":"Connect an app or add manually",
+     "took":"One bottom sheet with two paths: Connect app, or Enter manually.",
+     "left":"Separate flows for syncing and hand entry.",
+     "why":"Both serve the same intent — get sleep data in. Splitting them into different entry points forces a decision about mechanism before the user has even stated the goal."},
+    {"file":"04-Sleep-ManageData.html","label":"One entry for sync and manual",
+     "took":"Renaming the entry Manage data, since the sheet does both jobs.",
+     "left":"\"Add manually\".",
+     "why":"The label promised less than the sheet delivered, so anyone who owns a tracker would skip a button that appeared to offer only typing. Naming the destination instead of one action inside it makes syncing discoverable."},
+    {"file":"05-Sleep-SingleEntry.html","label":"Single entry point",
+     "took":"One entry, beside the sync status.",
+     "left":"The header +.",
+     "why":"Two controls opening the identical sheet is a false choice, and the + implied \"add one night\" rather than \"manage where this data comes from\"."},
+    {"file":"06-Sleep-EntryProminence.html","label":"Manage data: how prominent?",
+     "took":"A pill treatment, tested at three weights: outlined, soft-filled and solid.",
+     "left":"Leaving the entry as a quiet inline text link.",
+     "why":"Once it became the only way in, it could no longer look incidental — but it also shouldn't outrank the sleep reading it sits beneath, so the weight had to be seen rather than assumed."},
+    {"file":"07-Sleep-EntryFinal.html","label":"Manage data: solid pill",
+     "took":"The solid blue pill.",
+     "left":"The outlined and soft-filled weights, and the small manage icon.",
+     "why":"The lighter weights disappeared against the card background. The icon added no meaning the word \"manage\" wasn't already carrying, so it was cut."},
+    {"file":"08-Sleep-NeedCircadian.html","label":"Sleep need and circadian rhythm",
+     "took":"Sleep need and circadian rhythm as nested pages, with a chronotype quiz and two ways to recalibrate.",
+     "left":"Forcing a seven-night wait before showing a baseline.",
+     "why":"A calibration week is the accurate path but a dead end for anyone who wants an answer today, so recalculating from nights already logged runs alongside it — with the window and filters exposed so the estimate stays honest about what it's based on."}
+  ],
+  "labs": [
+    {"file":"01-Labs-Overview.html","label":"Panel, marker detail and manage data",
+     "took":"Markers grouped by body system, each opening a detail with trend, normal versus optimal range, and cycle context.",
+     "left":"A flat table of values.",
+     "why":"A lab PDF already is a table, and it's exactly what leaves people none the wiser. Grouping by system gives an untrained reader somewhere to start, and separating normal from optimal explains why an in-range number can still be worth acting on."},
+    {"file":"02-Labs-Actions.html","label":"The two actions, made clear",
+     "took":"Self-describing action cards: Start an iron experiment, and Add to clinician report.",
+     "left":"Bare buttons that never said what tapping them would do.",
+     "why":"Both actions commit the user to something real — a ten-week protocol, or a document she'll hand to a doctor — and neither is guessable from a label alone. The cards state the consequence before the tap."},
+    {"file":"03-Labs-Experiment.html","label":"Each marker, its own detail and experiment",
+     "took":"Per-marker detail, with an experiment offered only where there is something to act on.",
+     "left":"Offering experiments on in-range markers.",
+     "why":"HbA1c at 5.2% has no intervention worth running, and showing one anyway would manufacture a problem — undercutting the product's claim to be information rather than alarm. In-range markers still get the clinician report."}
+  ],
+  "nutrition": [
+    {"file":"01-Nutrition-Overview.html","label":"Eat with your cycle, not against it",
+     "took":"The Labs shape reused — cycle phase first, a glucose hero, then the nutrients to prioritise, with iron linked straight to ferritin.",
+     "left":"Generic calorie-first tracking.",
+     "why":"Calories are the one thing every other app already counts, and they explain nothing about a luteal-phase crash. Reusing the Labs structure also meant the second module cost far less to learn than the first."},
+    {"file":"02-Nutrition-ManageData.html","label":"Scan and snap belong under manual",
+     "took":"Import as pure app syncing; snap and scan moved into Log a meal, above the manual fields.",
+     "left":"Filing snap and scan under Import.",
+     "why":"Import implies a connected source that keeps updating on its own; a photo is a one-off entry the user makes herself. Grouping capture with typing matches how it actually behaves."},
+    {"file":"03-Nutrition-IronMessage.html","label":"Make the iron focus more actionable",
+     "took":"\"You're getting about half your iron target — prioritize the foods below.\"",
+     "left":"\"Low stores — the food sources below help rebuild before fatigue sets in.\"",
+     "why":"The old line described a state and named a consequence but never said how far off she was or what to do first. The replacement quantifies the gap and points at the next action."},
+    {"file":"04-Nutrition-FoodSources.html","label":"Show the actual food sources",
+     "took":"Real food sources on screen, tested three ways: chips, a bulleted list, and cards with portions and iron content.",
+     "left":"A message pointing at foods that were never there.",
+     "why":"The copy had been written ahead of the content. Cards were the richest option because iron is only actionable with a portion attached — \"spinach\" isn't advice, \"½ cup, 3.2 mg\" is."},
+    {"file":"05-Nutrition-MessagePlacement.html","label":"Fix message placement against real layout",
+     "took":"The integrated order — the message becomes the section header, with foods beneath it.",
+     "left":"The copy-only fix (swapping \"below\" for \"above\"), and leaving the mismatch alone.",
+     "why":"Changing the word would make the sentence true while leaving the reading order backwards. An instruction should arrive before the thing it refers to, not after it."},
+    {"file":"06-Nutrition-IntegratedVariations.html","label":"Bigger message, prettier food list",
+     "took":"Food cards with emoji.",
+     "left":"The highlighted-minimal list and the large-header grid layout.",
+     "why":"The emoji work as a fast visual key when scanning for something to actually eat, and the grid pushed the message so far up that the foods lost their connection to it."},
+    {"file":"07-Nutrition-MessageStyleGoals.html","label":"Prettier message, foods addable",
+     "took":"The emoji prefix plus a per-food \"Add to goals\" button.",
+     "left":"Checkbox items and the tap-to-add icon variants.",
+     "why":"Checkboxes imply \"did I eat this today\" — a logging gesture. The intent here is forward-looking: commit to eating more of it, which belongs in goals rather than a diary."},
+    {"file":"08-Nutrition-PrettierIconMessage.html","label":"Refining the icon message",
+     "took":"The emoji prefix and Add to goals held fixed, so only the message styling moved.",
+     "left":"Nothing locked — soft box, two-line, and highlighted-phrase all stayed in play.",
+     "why":"With the structure settled, the only remaining question was emphasis, so every other variable was frozen to keep the comparison honest."},
+    {"file":"09-Nutrition-MoreMessageStyles.html","label":"More message style options",
+     "took":"Six further treatments — border accent, circled icon, gradient, large emoji, underline and badge.",
+     "left":"Still nothing locked.",
+     "why":"Every option decorated the message without making the size of the gap any clearer. Three rounds in, that pointed at the format being wrong rather than the styling."},
+    {"file":"10-Nutrition-CreativeStyles.html","label":"Getting more creative with messaging",
+     "took":"The progress meter — the 50% gap drawn rather than described.",
+     "left":"Friendly callout, status card, split emphasis, badge row and playful frame.",
+     "why":"This was the round that broke the deadlock. The others restated \"half your target\" in different clothes; only the meter lets the shortfall be seen instantly, which is precisely what the sentence had been failing to do."},
+    {"file":"11-Nutrition-ProgressMeterVariations.html","label":"Variations on the progress meter",
+     "took":"The progress meter with a percentage label.",
+     "left":"Dual numbers, compact inline, colored background and bold action text.",
+     "why":"The bar communicates the shape of the gap and the number pins it down. Dual numbers made the reader do the division herself, and the compact inline version shrank the bar until the gap stopped being legible."},
+    {"file":"12-Nutrition-Final.html","label":"Finalized screens ready for hi-fi",
+     "took":"The full set — progress meter with percentage, plus a new Add to goals sheet with a servings target and cycle timing.",
+     "left":"Nothing open.",
+     "why":"The chain that began with an unclear iron message ends with a specific gap, named foods with portions, and a way to commit to one — which is the point at which the module was worth handing to hi-fi."}
+  ],
+  "movement": [
+    {"file":"01-Movement-Overview.html","label":"Cycle-aware training and recovery",
+     "took":"Three concepts built out in full — readiness ring, cycle phase-arc, and guidance-first.",
+     "left":"Choosing on paper.",
+     "why":"Each answers \"how hard should I train today\" differently: the ring is familiar but risks feeling like just another wearable, the phase-arc is the most differentiated but needs the most teaching, and guidance-first is the calmest and most on-voice. That is a judgment about feel, not logic."},
+    {"file":"02-Movement-Directions.html","label":"Three directions, side by side",
+     "took":"The guidance-led reading as the default, with the phase-arc kept swappable.",
+     "left":"Committing to the fitness-rings dashboard.",
+     "why":"Guidance-first matches the product principle \"say what it means, not how it works\", while rings lead with numbers the user has to interpret herself. The phase-arc stays available because it is the one view no competitor offers."},
+    {"file":"03-Movement-Activities.html","label":"Tracking different activities",
+     "took":"The Grid of activity tiles.",
+     "left":"List rows and full-width sparkline cards.",
+     "why":"List was the densest but flattened every sport into an identical row; cards were the richest but showed too few at once. The grid keeps all six activity types visible while still giving each a recognizable identity."},
+    {"file":"04-Movement-LogActivity.html","label":"Logging an activity",
+     "took":"The flow — tile or + Log, then type, then details, then a confirmation tied to the cycle.",
+     "left":"A single generic form.",
+     "why":"Logging is the one thing done over and over, so the entry screen was tested two ways: structured fields (familiar, precise) against steppers and chips (faster, more tactile). Speed and accuracy pull in opposite directions here, so it needed a real comparison."},
+    {"file":"05-Movement-Activities-Complete.html","label":"Activities, all together",
+     "took":"Summary, grid, tap-for-detail and logging combined into one screen.",
+     "left":"Keeping logging off in a section of its own.",
+     "why":"Reviewing the week and adding to it happen in the same sitting; splitting them would mean navigating away in the middle of the task."},
+    {"file":"06-Movement-Activities-ManageData.html","label":"Activities, the module way",
+     "took":"The shared Manage data sheet — Connect app versus Log manually.",
+     "left":"A Movement-only pattern for adding data.",
+     "why":"The pattern had already proved itself across Sleep, Labs and Nutrition, so reusing it means the fifth module asks the user to learn nothing new. Consistency is worth more here than a locally better alternative."},
+    {"file":"07-Movement-Module-Full.html","label":"The whole module",
+     "took":"Everything wired together — overview into Activities or Fitness level, and on into per-activity detail.",
+     "left":"Nothing dropped.",
+     "why":"The overview lead stays swappable to the phase-arc or the rings, so the one question left open back in iteration 2 can still be answered without rebuilding the module around it."}
+  ]
+}
+</script>
+<script>
+  /* Prototype iteration viewer: module tabs + stepper over the real build files */
+  (function () {
+    const ITERATIONS = JSON.parse(document.getElementById('iter-data').textContent);
+
+    const frame = document.getElementById('iter-frame');
+    if (!frame) return;
+
+    const tabs = [...document.querySelectorAll('.iter-tab')];
+    const stepEl = document.getElementById('iter-step');
+    const captionEl = document.getElementById('iter-caption');
+    const tookEl = document.getElementById('iter-took');
+    const leftEl = document.getElementById('iter-left');
+    const whyEl = document.getElementById('iter-why');
+    const openEl = document.getElementById('iter-open');
+    const prevBtn = document.getElementById('iter-prev');
+    const nextBtn = document.getElementById('iter-next');
+
+    let module = 'cycle';
+    let index = 0;
+
+    function render() {
+      const list = ITERATIONS[module];
+      const item = list[index];
+      const src = 'iterations/' + module + '/' + item.file;
+      frame.src = src;
+      frame.title = item.label + ' (iteration ' + (index + 1) + ' of ' + list.length + ')';
+      openEl.href = src;
+      stepEl.textContent = 'Iteration ' + (index + 1) + ' of ' + list.length;
+      captionEl.textContent = item.label;
+      tookEl.textContent = item.took;
+      leftEl.textContent = item.left;
+      whyEl.textContent = item.why;
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === list.length - 1;
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.module === module)));
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        module = tab.dataset.module;
+        index = 0;
+        render();
+      });
+    });
+
+    prevBtn.addEventListener('click', () => { if (index > 0) { index--; render(); } });
+    nextBtn.addEventListener('click', () => { if (index < ITERATIONS[module].length - 1) { index++; render(); } });
+
+    render();
+  })();
 </script>
 </body>
 </html>

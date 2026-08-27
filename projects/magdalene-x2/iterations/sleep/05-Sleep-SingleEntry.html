@@ -1,0 +1,199 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sleep — log sleep (connect or manual)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FCF7EF;--paper:#fff;--ink:#2A2431;--ink2:#574F5E;--muted:#968D9B;--line:#EFE6D9;
+ --clay:#C0613E;--clay-d:#9F4D2F;
+ --sky-soft:#E3ECF2;--sky:#4f6f8a;--sky-d:#3F6486;
+ --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --sh:0 1px 2px rgba(40,30,20,.04),0 8px 22px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 70% at 50% -8%,#F6EEE2,#E9E0D2);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:560px;margin:0 auto;padding:42px 18px 80px}
+.ibadge{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);font-weight:700}
+.ttl{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:-.01em;margin:0 0 4px}
+.hint{color:var(--ink2);font-size:16px;margin:2px 0 22px;max-width:760px}
+.hint b{color:var(--sky-d)}
+.stage{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.col{width:330px}
+.cap{margin:14px 4px 0}
+.cap .v{font-family:var(--serif);font-size:17px;font-weight:600}
+.cap span.d{display:block;font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.phone{width:330px;background:#fff;border-radius:46px;padding:13px;box-shadow:0 30px 66px rgba(70,45,25,.22);border:1px solid #e7ddcd}
+.scr{background:var(--cream);border-radius:36px;overflow:hidden;height:724px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 22px 4px;font-size:12.5px;font-weight:600;flex:none}
+.sbr{display:flex;gap:6px;align-items:center}
+.bat{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;position:relative;opacity:.85;display:inline-block}
+.bat:after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:13px;background:var(--ink);border-radius:1px}
+.body{flex:1;overflow:auto;padding:8px 20px 14px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:11px 6px 16px;background:var(--paper);border-top:1px solid var(--line);flex:none}
+.nav .item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:10px;font-weight:500}
+.nav .item.act{color:var(--clay);font-weight:600}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav .ic{width:22px;height:22px}
+.hdr{display:inline-flex;align-items:center;gap:6px;padding:10px 4px 6px;color:var(--muted);font-size:13.5px;font-weight:500}
+.h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em}
+.row{display:flex;align-items:center;gap:13px}
+.tile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.addbtn{width:34px;height:34px;border-radius:50%;border:0;background:var(--sky);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none;box-shadow:0 6px 14px rgba(79,111,138,.32)}
+.reading{font-family:var(--serif);font-size:19px;font-weight:500;line-height:1.37;letter-spacing:-.01em;margin:0 0 14px}
+.reading em{font-style:normal;color:var(--sky)}
+/* chart */
+.chart{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:13px;box-shadow:var(--sh)}
+.chead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ctitle{font-size:12.5px;font-weight:600;color:var(--ink)}
+.ctag{font-size:10.5px;color:var(--muted);font-weight:600}
+.csvg{width:100%;display:block}
+.clegend{display:flex;gap:13px;flex-wrap:wrap;margin-top:8px;font-size:10px;color:var(--ink2)}
+.clegend .k{display:inline-flex;align-items:center;gap:5px}
+.clegend i.bar{width:9px;height:9px;border-radius:2px;background:#A7C0D6}
+.clegend i.avg{width:14px;height:0;border-top:2px solid #3F6486;align-self:center}
+.clegend i.base{width:14px;height:0;border-top:2px dashed #94A7B8;align-self:center}
+.srcline{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);margin-top:13px}
+.srcline .link{margin-left:auto;border:0;background:none;color:var(--sky-d);font-weight:600;font-size:11.5px;font-family:inherit;cursor:pointer;text-decoration:underline}
+/* bottom sheet */
+.scrim{position:absolute;inset:0;background:rgba(34,28,22,.36);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:5}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:8px 18px 20px;box-shadow:0 -16px 44px rgba(40,30,20,.24);transform:translateY(100%);transition:transform .28s cubic-bezier(.3,.85,.3,1);z-index:6;max-height:90%;overflow:auto}
+.sheet::-webkit-scrollbar{display:none}
+.sheet.open{transform:none}
+.sheet-grip{width:38px;height:4px;border-radius:3px;background:#E4DACE;margin:4px auto 12px}
+.sheet-h{display:flex;align-items:center;margin-bottom:13px}
+.sheet-title{font-family:var(--serif);font-size:19px;font-weight:600}
+.sheet-x{margin-left:auto;border:0;background:#F1ECE4;width:28px;height:28px;border-radius:50%;font-size:17px;color:var(--ink2);cursor:pointer;line-height:1}
+.seg2{display:flex;background:#EDF1F5;border-radius:12px;padding:3px;margin-bottom:4px}
+.seg2 button{flex:1;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--muted);padding:8px 0;border-radius:9px;cursor:pointer}
+.seg2 button.on{background:#fff;color:var(--sky-d);box-shadow:0 1px 3px rgba(40,50,70,.16)}
+.panel{padding-top:4px}
+.panel-sub{font-size:12.5px;color:var(--muted);margin:10px 0 4px}
+.src{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line)}
+.src:last-child{border-bottom:0}
+.logo{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.src .nm{font-size:13.5px;font-weight:600}.src .meta{font-size:11px;color:var(--muted);margin-top:1px}
+.src .act{margin-left:auto}
+.act.connected{color:#5b7560;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.act.connect{border:1px solid var(--sky);color:var(--sky-d);background:#fff;border-radius:999px;padding:6px 15px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer}
+.field{margin-top:13px}
+.field>label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.fval{border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;background:#fff;cursor:pointer}
+.fval .cv{margin-left:auto;color:var(--muted);font-size:11px}
+.field2{display:flex;gap:10px}.field2 .field{flex:1}
+.dur{margin-top:14px;background:var(--sky-soft);border-radius:12px;padding:11px 14px;color:var(--sky-d);display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600}
+.dur b{font-family:var(--serif);font-size:19px;font-weight:600}
+.qlabel{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+.qchips{display:flex;gap:7px}
+.qchips button{flex:1;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 0;font-size:12px;font-weight:600;color:var(--ink2);font-family:inherit;cursor:pointer}
+.qchips button.on{background:var(--sky);border-color:var(--sky);color:#fff}
+.save{margin-top:17px;width:100%;border:0;background:var(--sky);color:#fff;border-radius:999px;padding:13px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 10px 22px rgba(79,111,138,.26)}
+</style></head><body><div class="page">
+
+<div class="ibadge">Sleep · Iteration 5 · single entry point</div>
+<h1 class="ttl">Sleep data — single entry point</h1>
+<p class="hint">Removed the header <b>+</b> — the <b>Manage data</b> link by the sync status is now the <b>single</b> entry point for both syncing and manual entry. Tap it to open the <b>Sleep data</b> sheet — <b>Connect app</b> (auto-sync) or <b>Enter manually</b>. It's live.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+<symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.2V3"/><path d="M7.5 14h9"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="ic-act" viewBox="0 0 24 24"><path d="M3 12h4l2.5 7 5-15 2.5 8H21"/></symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="ic-sync" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v4h-4"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+</defs></svg>
+
+<div class="stage" id="stage"></div>
+
+<div style="margin-top:46px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid #EEE0D8;padding-top:18px">
+Sleep module · Iteration 5 · single "Manage data" entry, no header + · experiment only (HiFi unchanged)
+</div>
+
+<script>
+const NAV=`<div class="nav"><div class="item"><svg class="ic"><use href="#ic-sun"/></svg>Today</div><div class="item act"><svg class="ic"><use href="#ic-grid"/></svg>Modules</div><div class="item"><svg class="ic"><use href="#ic-spark"/></svg>Ask</div><div class="item"><svg class="ic"><use href="#ic-flask"/></svg>Experiments</div><div class="item"><svg class="ic"><use href="#ic-user"/></svg>Me</div></div>`;
+
+const SCREEN=(open,panel)=>`
+<div class="sb"><span>9:41</span><span class="sbr"><svg class="ic" style="width:15px;height:15px;stroke-width:2"><use href="#ic-act"/></svg><span class="bat"></span></span></div>
+<div class="body">
+  <div class="hdr"><svg class="ic" style="width:16px;height:16px"><use href="#ic-chev"/></svg> Modules</div>
+  <div class="row" style="margin:4px 0 14px"><div class="tile" style="background:var(--sky-soft);color:var(--sky)"><svg class="ic"><use href="#ic-moon"/></svg></div><div class="h2">Sleep</div></div>
+  <div class="reading">You got <em>6h 12m</em> last night — short for you, three nights this week.</div>
+  <div class="chart">
+    <div class="chead"><div class="ctitle">Hours asleep</div><div class="ctag">Last 7 nights</div></div>
+    <svg class="csvg" viewBox="0 0 300 144" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="clegend"><span class="k"><i class="bar"></i>Sleep</span><span class="k"><i class="avg"></i>Avg 6h 41m</span><span class="k"><i class="base"></i>Baseline 7h 20m</span></div>
+  </div>
+  <div class="srcline"><svg class="ic" style="width:14px;height:14px;color:var(--sky)"><use href="#ic-sync"/></svg><span>Synced from Apple Health · 2h ago</span><button class="link js-open" data-open="connect">Manage data</button></div>
+</div>
+${NAV}
+<div class="scrim${open?' show':''}"></div>
+<div class="sheet${open?' open':''}">
+  <div class="sheet-grip"></div>
+  <div class="sheet-h"><div class="sheet-title">Sleep data</div><button class="sheet-x" aria-label="Close">×</button></div>
+  <div class="seg2"><button class="${panel==='connect'?'on':''}" data-p="connect">Connect app</button><button class="${panel==='manual'?'on':''}" data-p="manual">Enter manually</button></div>
+  <div class="panel" data-panel="connect"${panel==='connect'?'':' hidden'}>
+    <p class="panel-sub">Sync sleep automatically from a device or app.</p>
+    <div class="src"><div class="logo" style="background:#FCEAEA;color:#E0556B">♥</div><div><div class="nm">Apple Health</div><div class="meta">Last sync 2h ago</div></div><span class="act connected"><svg class="ic" style="width:13px;height:13px;stroke-width:2.6"><use href="#ic-check"/></svg>Connected</span></div>
+    <div class="src"><div class="logo" style="background:#15151A;color:#fff">O</div><div><div class="nm">Oura Ring</div><div class="meta">Sleep stages · HRV</div></div><button class="act connect">Connect</button></div>
+    <div class="src"><div class="logo" style="background:#0B0B0F;color:#16E0A3">W</div><div><div class="nm">Whoop</div><div class="meta">Recovery · strain</div></div><button class="act connect">Connect</button></div>
+    <div class="src"><div class="logo" style="background:#E6F7F5;color:#00B0B9">F</div><div><div class="nm">Fitbit</div><div class="meta">Sleep score</div></div><button class="act connect">Connect</button></div>
+    <div class="src"><div class="logo" style="background:#EAF1FE;color:#4285F4">G</div><div><div class="nm">Google Fit</div><div class="meta">Duration</div></div><button class="act connect">Connect</button></div>
+  </div>
+  <div class="panel" data-panel="manual"${panel==='manual'?'':' hidden'}>
+    <p class="panel-sub">Add a night by hand.</p>
+    <div class="field"><label>Date</label><div class="fval">Last night · Jun 13<span class="cv">▾</span></div></div>
+    <div class="field2"><div class="field"><label>Bedtime</label><div class="fval">11:30 PM<span class="cv">▾</span></div></div><div class="field"><label>Woke up</label><div class="fval">6:42 AM<span class="cv">▾</span></div></div></div>
+    <div class="dur"><span>Duration</span><b>7h 12m</b></div>
+    <label class="qlabel">How rested?</label>
+    <div class="qchips"><button>Poor</button><button class="on">OK</button><button>Good</button><button>Great</button></div>
+    <button class="save">Save night</button>
+  </div>
+</div>`;
+
+function buildDaily(){
+  const vals=[7.0,6.5,5.8,7.3,6.2,7.8,6.2],labels=['M','T','W','T','F','S','S'];
+  const BASE=7+20/60,YMAX=9,L=26,R=292,T=8,B=116,n=vals.length,slot=(R-L)/n,bw=Math.min(24,slot*0.5);
+  let s='';
+  [3,6,9].forEach(g=>{const y=B-(g/YMAX)*(B-T);s+=`<line x1="${L}" y1="${y.toFixed(1)}" x2="${R}" y2="${y.toFixed(1)}" stroke="#EFE6D9" stroke-width="1"/><text x="${L-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#B9AEA0" font-family="Inter">${g}h</text>`;});
+  vals.forEach((v,i)=>{const cx=L+slot*i+slot/2,x=cx-bw/2,y=B-(v/YMAX)*(B-T),h=B-y,last=i===n-1;s+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${last?'#4f6f8a':'#A7C0D6'}"/>`;});
+  labels.forEach((lb,i)=>{const cx=L+slot*i+slot/2;s+=`<text x="${cx.toFixed(1)}" y="${(B+15).toFixed(1)}" text-anchor="middle" font-size="8.5" fill="#968D9B" font-family="Inter">${lb}</text>`;});
+  const yb=B-(BASE/YMAX)*(B-T);s+=`<line x1="${L}" y1="${yb.toFixed(1)}" x2="${R}" y2="${yb.toFixed(1)}" stroke="#94A7B8" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  const avg=vals.reduce((a,b)=>a+b,0)/n,ya=B-(avg/YMAX)*(B-T);s+=`<line x1="${L}" y1="${ya.toFixed(1)}" x2="${R}" y2="${ya.toFixed(1)}" stroke="#3F6486" stroke-width="2"/>`;
+  return s;
+}
+
+const STATES=[
+  [false,'connect','Sleep data','Tap Manage data (by the sync status) to open the sheet, then switch between Connect app and Enter manually. Pick a quality, or close with × / the dimmed backdrop.']
+];
+const stage=document.getElementById('stage');
+STATES.forEach(([o,p,title,desc])=>{
+  const col=document.createElement('div');col.className='col';
+  col.innerHTML=`<div class="phone"><div class="scr">${SCREEN(o,p)}</div></div><div class="cap"><div class="v">${title}</div><span class="d">${desc}</span></div>`;
+  stage.appendChild(col);
+});
+document.querySelectorAll('.csvg').forEach(svg=>svg.innerHTML=buildDaily());
+
+function setPanel(scr,p){scr.querySelectorAll('.seg2 button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));scr.querySelectorAll('.panel').forEach(pl=>pl.hidden=(pl.dataset.panel!==p));}
+function openS(scr,p){scr.querySelector('.scrim').classList.add('show');scr.querySelector('.sheet').classList.add('open');if(p)setPanel(scr,p);}
+function closeS(scr){scr.querySelector('.scrim').classList.remove('show');scr.querySelector('.sheet').classList.remove('open');}
+document.querySelectorAll('.js-open').forEach(b=>b.addEventListener('click',()=>openS(b.closest('.scr'),b.dataset.open)));
+document.querySelectorAll('.scrim').forEach(s=>s.addEventListener('click',()=>closeS(s.closest('.scr'))));
+document.querySelectorAll('.sheet-x').forEach(x=>x.addEventListener('click',()=>closeS(x.closest('.scr'))));
+document.querySelectorAll('.seg2 button').forEach(b=>b.addEventListener('click',()=>setPanel(b.closest('.scr'),b.dataset.p)));
+document.querySelectorAll('.qchips').forEach(g=>g.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');})));
+</script>
+
+<!-- iteration-writeup -->
+<div style="max-width:760px;margin:44px auto 0;padding:22px 24px 4px;border-top:1px solid rgba(0,0,0,.10);font-size:14px;line-height:1.75;color:#4a4450;text-align:left">
+  <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.55;margin-bottom:12px">Iteration 5 · what came out of it</div>
+  <p style="margin:0">The header + was removed, leaving the entry beside the sync status as the single way in. Two controls opening an identical sheet is a false choice, and the + carried the wrong promise — adding one night, rather than managing where the data comes from.</p>
+</div>
+<!-- /iteration-writeup -->
+</div></body></html>
