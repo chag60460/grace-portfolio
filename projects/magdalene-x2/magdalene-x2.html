@@ -754,6 +754,45 @@
     .iter-note-label.drop { background: rgba(232, 160, 200, 0.28); color: #99416f; }
     .iter-note-label.why  { background: rgba(200, 180, 220, 0.38); color: #5c4483; }
 
+    /* ── Hi-fi prototype embed ── */
+    .proto-frame {
+      border: 0.5px solid rgba(200, 180, 220, 0.4);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      overflow: hidden;
+      margin: 14px 0;
+    }
+    .proto-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
+    }
+    .proto-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a3f5c;
+    }
+    .proto-open {
+      margin-left: auto;
+      flex-shrink: 0;
+      font-size: 10.5px;
+      color: #6a4a9a;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(106, 74, 154, 0.3);
+    }
+    .proto-embed {
+      display: block;
+      width: 100%;
+      height: 720px;
+      border: 0;
+      background: #fff;
+    }
+    @media (max-width: 600px) {
+      .proto-embed { height: 480px; }
+    }
+
     @media (max-width: 700px) {
       .iter-notes { padding: 12px; }
     }
@@ -1180,115 +1219,14 @@
 
           <!-- ════════════ DESIGN SHOWCASE ════════════ -->
           <h2>Product Design</h2>
-          <p>The final design uses a warm, editorial voice paired with modular data cards. The cycle phase is a first-class variable that contextualizes every insight.</p>
+          <p>The final design uses a warm, editorial voice paired with modular data cards, with the cycle phase treated as a first-class variable that contextualizes every insight. The live hi-fi prototype is embedded below — the design system first, then six screens. Onboarding, Modules, Experiments and Me are interactive: tap their cards and buttons to walk the nested pages.</p>
 
-          <div class="mockup-stage">
-            <!-- Today -->
-            <div class="mockup-col">
-              <div class="mockup-phone">
-                <div class="mockup-screen">
-                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
-                  <div class="m-body">
-                    <div class="m-greeting">Good morning, Olivia</div>
-                    <div class="m-phase"><i></i> Mon · Cycle day 22 · Luteal</div>
-                    <div class="m-reading">Your body's running warmer this week. Expect a little <em>less energy and more hunger</em> — that's your luteal phase, not a setback.</div>
-                    <div class="m-seclbl">Today, consider</div>
-                    <div style="margin-bottom: 8px;">
-                      <span class="m-chip">Protein-first breakfast</span>
-                      <span class="m-chip">Gentle movement</span>
-                      <span class="m-chip">Wind down by 10</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:6px;background:#ECE2EB;border-radius:8px;padding:7px 8px;font-size:6px;">
-                      <span style="font-size:10px">✨</span>
-                      <div><div style="font-weight:600;color:#2A2431">1 new insight</div><div style="color:#968D9B;font-size:5px">Sleep × glucose × cycle</div></div>
-                      <span style="margin-left:auto;color:#7A5C77">›</span>
-                    </div>
-                  </div>
-                  <div class="m-nav"><span class="act">☀️ Today</span><span>🪟 Modules</span><span>✦ Ask</span><span>🧫 Exp</span><span>👤 Me</span></div>
-                </div>
-              </div>
-              <div class="mockup-caption">Today<span>The personalized daily reading — a voice that knows you</span></div>
+          <div class="proto-frame">
+            <div class="proto-bar">
+              <span class="proto-label">Magdalene X² — hi-fi prototype</span>
+              <a class="proto-open" href="prototype/Magdalene-HiFi.html" target="_blank" rel="noopener noreferrer">open full size ↗</a>
             </div>
-
-            <!-- Modules -->
-            <div class="mockup-col">
-              <div class="mockup-phone">
-                <div class="mockup-screen">
-                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
-                  <div class="m-body">
-                    <div class="m-h2">Your body, in modules</div>
-                    <div class="m-grid">
-                      <div class="m-mod"><div class="m-mod-icon">🌙</div><div class="m-mod-name">Cycle</div><div class="m-mod-sub">Day 22 · Luteal</div></div>
-                      <div class="m-mod"><div class="m-mod-icon">🌗</div><div class="m-mod-name">Sleep</div><div class="m-mod-sub">6h12 last night ↓</div></div>
-                      <div class="m-mod"><div class="m-mod-icon">🧪</div><div class="m-mod-name">Labs</div><div class="m-mod-sub">Ferritin low-normal</div></div>
-                      <div class="m-mod"><div class="m-mod-icon">🍽️</div><div class="m-mod-name">Nutrition</div><div class="m-mod-sub">Glucose steadier ↑</div></div>
-                      <div class="m-mod"><div class="m-mod-icon">🏃‍♀️</div><div class="m-mod-name">Movement</div><div class="m-mod-sub">Recovery: ease up</div></div>
-                      <div class="m-mod"><div class="m-mod-icon">✨</div><div class="m-mod-name">Insights</div><div class="m-mod-sub">1 new</div></div>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:6px;background:#2A2431;border-radius:8px;padding:7px 8px;margin-top:5px;">
-                      <span style="font-size:10px">🧫</span>
-                      <div style="color:#fff"><div style="font-size:6px;font-weight:600">Experiment · Protect 7.5h sleep</div><div style="font-size:5px;color:#cdbfd0">Day 6 of 14</div>
-                        <div style="height:3px;border-radius:2px;background:rgba(255,255,255,0.15);margin-top:3px;overflow:hidden"><div style="width:43%;height:100%;background:#C0613E;border-radius:2px"></div></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="m-nav"><span>☀️ Today</span><span class="act">🪟 Modules</span><span>✦ Ask</span><span>🧫 Exp</span><span>👤 Me</span></div>
-                </div>
-              </div>
-              <div class="mockup-caption">Modules<span>One calm, illustrated card per domain</span></div>
-            </div>
-
-            <!-- Insight → Experiment -->
-            <div class="mockup-col">
-              <div class="mockup-phone">
-                <div class="mockup-screen">
-                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
-                  <div class="m-body">
-                    <div class="m-tag">Sleep × Glucose × Cycle</div>
-                    <div class="m-voice">When you sleep under 6½ hours, your mornings spike higher — and it's worse in your luteal phase.</div>
-                    <div class="m-means">Protecting sleep now keeps your metabolism steadier through the back half of your cycle.</div>
-                    <div class="m-conf">●●●○ based on 18 nights</div>
-                    <div style="font-size:5.5px;color:#968D9B;margin-bottom:8px">ⓘ Information, not a diagnosis.</div>
-                    <div class="m-action">
-                      <div class="m-action-label">Try this</div>
-                      <div class="m-action-title">Protect 7.5h sleep for 2 weeks — we'll compare your morning glucose.</div>
-                      <div class="m-action-btn">Start experiment</div>
-                    </div>
-                  </div>
-                  <div class="m-nav"><span>☀️ Today</span><span>🪟 Modules</span><span>✦ Ask</span><span class="act">🧫 Exp</span><span>👤 Me</span></div>
-                </div>
-              </div>
-              <div class="mockup-caption">Insight → Experiment<span>Voice → meaning → one clear action</span></div>
-            </div>
-
-            <!-- Ask -->
-            <div class="mockup-col">
-              <div class="mockup-phone">
-                <div class="mockup-screen">
-                  <div class="m-statusbar"><span>9:41</span><span style="opacity:0.5">●●●</span></div>
-                  <div class="m-askbar">
-                    <span style="font-size:10px">✦</span>
-                    <span class="m-askbar-label">Ask Magdalene</span>
-                    <span style="margin-left:auto;font-size:5px;background:#F6E2D6;color:#9a4a32;padding:2px 5px;border-radius:99px;">🎙 Voice</span>
-                  </div>
-                  <div class="m-body" style="padding-top:4px">
-                    <div class="m-msg me">Why am I so tired this week?</div>
-                    <div class="m-msg ai">A few of your signals line up: you're in your <b>luteal phase</b>, you slept under 6½h on three nights, and your <b>ferritin</b> came back low-normal. Together they explain the drag.<span style="display:block;font-size:4.5px;color:#968D9B;margin-top:3px">ⓘ Information, not a diagnosis.</span></div>
-                    <div class="m-msg me">What can I do?</div>
-                    <div class="m-msg ai">Two gentle levers this week: protect your sleep, and lean into iron-rich meals. Want me to set up a 2-week experiment?</div>
-                    <div style="margin-top:3px">
-                      <span class="m-chip">Yes, set it up</span>
-                      <span class="m-chip">Explain my ferritin</span>
-                    </div>
-                  </div>
-                  <div class="m-input">
-                    <div class="m-input-box">Ask about your body…</div>
-                    <div class="m-input-mic">🎙</div>
-                  </div>
-                </div>
-              </div>
-              <div class="mockup-caption">Ask<span>Conversational AI grounded in her own data</span></div>
-            </div>
+            <iframe class="proto-embed" src="prototype/Magdalene-HiFi.html" title="Magdalene X² hi-fi prototype" loading="lazy"></iframe>
           </div>
 
           <!-- ════════════ OUTCOME ════════════ -->
