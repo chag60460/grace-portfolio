@@ -352,97 +352,6 @@
       margin: 0;
     }
 
-    /* ── Design showcase (phone mockups) ── */
-    .mockup-stage {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
-    .mockup-col { width: 160px; }
-    .mockup-phone {
-      width: 160px;
-      background: #fff;
-      border-radius: 24px;
-      padding: 6px;
-      box-shadow: 0 14px 36px rgba(60,40,20,.16);
-      border: 1px solid #e7ddcd;
-    }
-    .mockup-screen {
-      background: #FCF7EF;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 320px;
-      display: flex;
-      flex-direction: column;
-    }
-    .m-statusbar {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 10px 2px;
-      font-size: 6px;
-      font-weight: 600;
-      color: #2A2431;
-    }
-    .m-body { flex: 1; padding: 4px 10px; overflow: hidden; }
-    .m-nav {
-      display: flex;
-      justify-content: space-around;
-      padding: 6px 4px 8px;
-      background: #fff;
-      border-top: 0.5px solid #EFE6D9;
-      font-size: 5px;
-      color: #968D9B;
-    }
-    .m-nav .act { color: #C0613E; font-weight: 600; }
-    .m-greeting { font-size: 6px; color: #968D9B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin: 4px 0 3px; }
-    .m-phase { display: inline-flex; align-items: center; gap: 3px; background: #F8EAD4; color: #8a5a22; border-radius: 99px; padding: 2px 6px; font-size: 5.5px; font-weight: 600; margin-bottom: 8px; }
-    .m-phase i { width: 5px; height: 5px; border-radius: 50%; background: #E0A24E; }
-    .m-reading { font-family: Georgia, serif; font-size: 8px; line-height: 1.35; color: #2A2431; margin-bottom: 8px; }
-    .m-reading em { font-style: normal; color: #C0613E; }
-    .m-seclbl { font-size: 5px; color: #968D9B; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin: 8px 0 4px; }
-    .m-chip { display: inline-block; background: #fff; border: 0.5px solid #C0613E; color: #9a4a32; border-radius: 99px; padding: 2px 6px; font-size: 5px; margin: 1px; }
-    .m-h2 { font-family: Georgia, serif; font-size: 10px; font-weight: 600; margin: 4px 0 8px; color: #2A2431; }
-    .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-    .m-mod { background: #fff; border: 0.5px solid #EFE6D9; border-radius: 8px; padding: 6px; }
-    .m-mod-icon { font-size: 12px; margin-bottom: 4px; }
-    .m-mod-name { font-size: 6px; font-weight: 600; color: #2A2431; }
-    .m-mod-sub { font-size: 5px; color: #968D9B; }
-    .m-tag { font-size: 5px; color: #C0613E; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin: 6px 0 6px; }
-    .m-voice { font-family: Georgia, serif; font-size: 8px; line-height: 1.35; color: #2A2431; margin-bottom: 6px; }
-    .m-means { font-size: 6.5px; color: #574F5E; line-height: 1.5; margin-bottom: 6px; }
-    .m-conf { font-size: 5px; color: #968D9B; margin-bottom: 4px; }
-    .m-action { background: linear-gradient(160deg, #C0613E, #A8502F); color: #fff; border-radius: 10px; padding: 7px 8px; margin-top: 6px; }
-    .m-action-label { font-size: 4.5px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.9; }
-    .m-action-title { font-family: Georgia, serif; font-size: 7px; margin: 3px 0 5px; }
-    .m-action-btn { background: #fff; color: #9a4a32; border-radius: 99px; text-align: center; padding: 4px; font-size: 5.5px; font-weight: 600; }
-    .m-msg { max-width: 85%; padding: 4px 6px; font-size: 5.5px; line-height: 1.4; margin-bottom: 4px; border-radius: 8px; }
-    .m-msg.me { background: #C0613E; color: #fff; margin-left: auto; border-bottom-right-radius: 3px; }
-    .m-msg.ai { background: #fff; border: 0.5px solid #EFE6D9; border-bottom-left-radius: 3px; }
-    .m-msg.ai b { color: #C0613E; }
-    .m-askbar { display: flex; align-items: center; gap: 4px; padding: 6px 10px 2px; }
-    .m-askbar-label { font-family: Georgia, serif; font-size: 8px; font-weight: 600; }
-    .m-input { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: #fff; border-top: 0.5px solid #EFE6D9; }
-    .m-input-box { flex: 1; background: #FCF7EF; border: 0.5px solid #EFE6D9; border-radius: 99px; padding: 4px 8px; font-size: 5px; color: #968D9B; }
-    .m-input-mic { width: 16px; height: 16px; border-radius: 50%; background: #C0613E; color: #fff; display: grid; place-items: center; font-size: 6px; }
-
-    .mockup-caption {
-      font-size: 11px;
-      font-weight: 600;
-      color: #4a3f5c;
-      margin: 10px 4px 0;
-      text-align: center;
-    }
-    .mockup-caption span {
-      display: block;
-      font-size: 10px;
-      color: #6b5a7d;
-      font-weight: 400;
-      margin-top: 2px;
-      line-height: 1.4;
-    }
-
     /* ── Tech pipeline ── */
     .tech-pipeline {
       display: flex;
@@ -624,7 +533,6 @@
   .persona-grid,
   .gap-grid,
   .process-flow,
-  .m-grid,
   .scenario-grid,
   .principle-grid,
   .stat-row,
