@@ -10,6 +10,8 @@ embed launcher, not its Node backend.
 The prototype is the final section of the case study. **Try interactive
 prototype** near the top jumps straight to it without reloading or launching the
 app. The link also works with a keyboard and without JavaScript.
+It stays at the top while scrolling through the case study. Its sticky container
+ends before the prototype so the button cannot cover app controls.
 Its blue-violet glow radiates outward in two slow, staggered rings.
 Reduced-motion preferences retain a static glow.
 
