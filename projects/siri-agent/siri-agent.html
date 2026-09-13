@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Siri Agent - Grace Chang</title>
+  <meta name="description" content="Siri Agent: an AI-native iOS concept that orchestrates transparent, permissioned actions across apps." />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <style>
+    .window-area { grid-template-columns: 1fr !important; }
+    .main-window { min-height: auto; }
+    .main-content { padding: 0; overflow-y: auto; max-height: 75vh; }
+    .back-link { display: inline-flex; padding: 16px 24px 0; color: #6b5a7d; font-size: 12px; text-decoration: none; }
+    .back-link:hover { color: #334f7d; }
+
+    .hero { position: relative; height: 300px; margin-top: 12px; overflow: hidden; background: #142039; }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 16% 22%, rgba(40, 206, 227, .85), transparent 27%),
+        radial-gradient(circle at 82% 18%, rgba(240, 72, 139, .75), transparent 30%),
+        radial-gradient(circle at 75% 90%, rgba(244, 173, 54, .75), transparent 30%);
+    }
+    .hero-stage { position: relative; display: flex; height: 100%; align-items: center; justify-content: center; gap: 18px; padding: 12px 28px 42px; }
+    .siri-orb { width: 100px; height: 100px; flex: 0 0 auto; border: 12px solid rgba(255,255,255,.78); border-radius: 50%; box-shadow: 0 0 36px rgba(255,255,255,.65), inset 0 0 24px rgba(255,255,255,.7); }
+    .agent-sheet { width: 280px; padding: 14px; border: 1px solid rgba(255,255,255,.5); border-radius: 18px; background: rgba(250,252,255,.9); box-shadow: 0 18px 50px rgba(5,14,34,.3); backdrop-filter: blur(18px); }
+    .agent-eyebrow { color: #657286; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .agent-title { margin: 3px 0 9px; color: #142039; font-size: 13px; font-weight: 700; }
+    .agent-task { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 7px; padding: 6px 0; border-top: 1px solid rgba(75,91,115,.12); color: #445267; font-size: 9px; }
+    .agent-icon { display: grid; width: 18px; height: 18px; place-items: center; border-radius: 5px; background: #e9f2ff; color: #2f6cb2; font-size: 9px; }
+    .agent-status { color: #27835c; font-size: 8px; font-weight: 700; }
+    .hero-copy { position: absolute; right: 0; bottom: 0; left: 0; padding: 42px 28px 18px; background: linear-gradient(to top, rgba(12,22,42,.9), transparent); }
+    .hero-copy h1 { color: #fff; font-size: 26px; }
+    .hero-copy p { margin-top: 3px; color: rgba(255,255,255,.82); font-size: 13px; }
+
+    .case-study { --case-blue: #315f8f; --case-green: #27835c; --case-line: rgba(120,145,170,.3); padding: 24px 28px 36px; }
+    .project-meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 28px; padding: 16px; border: .5px solid rgba(200,180,220,.35); border-radius: 8px; background: rgba(255,255,255,.55); }
+    .meta-label { margin-bottom: 4px; color: #9b82ad; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .meta-value { color: #4a3f5c; font-size: 12px; line-height: 1.4; }
+    .case-study h2 { margin: 30px 0 10px; padding-bottom: 6px; border-bottom: .5px solid rgba(200,180,220,.3); color: #4a3f5c; font-size: 15px; }
+    .case-study h3 { margin: 18px 0 6px; color: #315f8f; font-size: 13px; }
+    .case-study p, .case-study li { color: #5a4a6a; font-size: 13px; line-height: 1.75; }
+    .case-study p { margin-bottom: 12px; }
+    .case-study ul, .case-study ol { margin: 0 0 14px; padding-left: 20px; }
+    .case-study li { margin-bottom: 8px; }
+    .case-study .prompt-box { margin: 16px 0; padding: 18px 20px; border-left: 3px solid #40a4bd; border-radius: 0 8px 8px 0; background: rgba(216,244,247,.55); color: #285b68; font-size: 13px; line-height: 1.8; }
+    .tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+    .tags-row .project-tag { padding: 4px 12px; background: #e4eef7; color: #315f8f; font-size: 11px; }
+
+    .siri-prototype { margin-bottom: 28px; }
+    #interactive-prototype { scroll-margin-top: 16px; }
+    .siri-prototype .proto-frame { position: relative; margin: 14px 0; overflow: hidden; border: 1px solid var(--case-line); border-radius: 12px; background: rgba(255,255,255,.5); }
+    .siri-prototype .proto-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 14px; border-bottom: 1px solid var(--case-line); }
+    .siri-prototype .proto-label { color: #4a3f5c; font-size: 11px; font-weight: 600; }
+    .siri-prototype .proto-open { margin-left: auto; color: #315f8f; font-size: 11px; text-underline-offset: 3px; }
+    .siri-prototype .proto-placeholder { display: grid; justify-items: center; gap: 14px; min-height: 240px; padding: 32px 24px; text-align: center; background: linear-gradient(140deg, #e5eff8, #edf5f5, #f1eaf4); }
+    .siri-prototype .proto-placeholder p { max-width: 460px; margin: 0; }
+    .prototype-jump, .siri-prototype .proto-launch { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 12px 22px; border: 0; border-radius: 24px; background: #315f8f; color: #fff; font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
+    .prototype-jump { --prototype-aura: -12px 0 28px 4px rgba(35,153,255,.38), 12px 0 30px 5px rgba(162,75,242,.36); position: relative; justify-content: space-between; width: min(100%, 360px); min-height: 60px; padding: 14px 22px; border: 1px solid rgba(255,255,255,.7); border-radius: 18px; background: linear-gradient(115deg, #175ec9, #5b3bb4 60%, #853d9b); box-shadow: var(--prototype-aura), 0 0 16px rgba(128,102,239,.4), 0 8px 22px rgba(76,58,151,.28), 0 0 0 4px rgba(102,80,198,.12); font-size: 16px; line-height: 1.3; font-weight: 700; transition: transform 160ms ease, box-shadow 160ms ease; }
+    .prototype-jump::before, .prototype-jump::after { content: ''; position: absolute; inset: -4px; border: 2px solid rgba(106,151,255,.75); border-radius: 22px; box-shadow: 0 0 12px rgba(101,151,255,.45); opacity: 0; pointer-events: none; animation: prototype-radiate 3.8s ease-out infinite; }
+    .prototype-jump::after { border-color: rgba(177,112,242,.7); box-shadow: 0 0 14px rgba(170,104,242,.4); animation-delay: -1.9s; }
+    .prototype-jump > span { display: grid; place-items: center; flex: 0 0 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.16); font-size: 20px; line-height: 1; }
+    .prototype-jump:hover { transform: translateY(-2px); box-shadow: var(--prototype-aura), 0 0 22px rgba(128,102,239,.5), 0 12px 28px rgba(76,58,151,.36), 0 0 0 4px rgba(102,80,198,.16); }
+    .prototype-jump:active { transform: translateY(0); }
+    @keyframes prototype-radiate {
+      0% { opacity: 0; transform: scale(1); }
+      15% { opacity: .7; }
+      100% { opacity: 0; transform: scale(1.06, 1.6); }
+    }
+    .siri-prototype .proto-launch:disabled { background: #6a7c91; cursor: wait; }
+    .siri-prototype .proto-launch:hover:not(:disabled) { background: #244e76; }
+    .prototype-jump:focus-visible, #interactive-prototype:focus-visible, .siri-prototype .proto-launch:focus-visible, .siri-prototype .proto-open:focus-visible { outline: 2px solid #315f8f; outline-offset: 4px; }
+    .siri-prototype .proto-embed { display: block; width: 100%; height: 820px; border: 0; background: #0b1019; }
+    .siri-prototype .proto-embed--loading { position: absolute; top: 0; left: 0; opacity: 0; pointer-events: none; }
+    .siri-prototype .proto-caption { color: #657286; font-size: 11px; }
+    .siri-prototype [hidden] { display: none; }
+
+    .goal-grid, .persona-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+    .goal-card, .persona-card { min-width: 0; padding: 16px; border: 1px solid var(--case-line); border-radius: 8px; background: rgba(255,255,255,.6); }
+    .card-kicker { display: block; margin-bottom: 7px; color: var(--case-green); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0; }
+    .goal-card h3 { margin: 0 0 12px; color: #28384c; line-height: 1.5; }
+    .goal-card ul { padding: 0; margin: 0; list-style: none; }
+    .goal-card li { margin: 0; font-size: 12px; line-height: 1.7; }
+    .goal-card li + li { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(39,131,92,.2); color: #246b50; }
+    .case-study .persona-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 0; list-style: none; }
+    .case-study .persona-card { margin: 0; border-top: 3px solid #77a9d4; }
+    .persona-card:nth-child(2) { border-top-color: #79bca5; }
+    .persona-card:nth-child(3) { border-top-color: #d89eae; }
+    .persona-card strong { color: #28384c; font-size: inherit; }
+    .persona-card span { color: #6b5a7d; font-size: 12px; }
+    .goal-card p { margin: 0; font-size: 11.5px; line-height: 1.6; }
+    .persona-card .persona-heading { margin: 0 0 12px; color: #28384c; font-size: 15px; line-height: 1.5; }
+    .persona-card p { margin: 0; font-size: 12px; line-height: 1.75; }
+    .persona-card p + p { margin-top: 10px; }
+    .persona-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 18px 0; }
+    .persona-comparison > div { min-width: 0; padding-top: 12px; border-top: 2px solid #aab7c3; }
+    .persona-comparison > div + div { border-top-color: #79bca5; }
+    .persona-comparison h4 { margin: 0 0 10px; color: #435569; font-size: 12px; line-height: 1.6; }
+    .persona-comparison ol, .persona-card .persona-notes { margin: 0; padding-left: 20px; }
+    .persona-card li { font-size: 12px; line-height: 1.75; }
+    .persona-comparison li::marker { color: var(--case-blue); font-weight: 600; }
+    .persona-resolution { padding-top: 14px; border-top: 1px solid var(--case-line); }
+    .persona-resolution h4 { margin: 18px 0 10px; padding: 12px 14px; border-left: 4px solid var(--case-green); background: #e0f3e8; color: #164f39; font-size: 14px; font-weight: 700; line-height: 1.5; }
+    .persona-resolution p:last-child { color: #276951; }
+
+    .case-study .flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0; padding: 0; list-style: none; counter-reset: flow-step; }
+    .case-study .flow-step { position: relative; min-width: 0; min-height: 150px; margin: 0; padding: 14px; border: 1px solid var(--case-line); border-radius: 8px; background: rgba(255,255,255,.62); font-size: 12px; line-height: 1.7; }
+    .flow-step::before { counter-increment: flow-step; content: counter(flow-step, decimal-leading-zero); display: grid; width: 26px; height: 26px; margin-bottom: 12px; place-items: center; border-radius: 6px; background: var(--case-blue); color: #fff; font-size: 11px; font-weight: 600; }
+    .flow-step:nth-child(5)::before, .flow-step:nth-child(7)::before, .flow-step:nth-child(8)::before { background: var(--case-green); }
+    .flow-num { display: grid; width: 19px; height: 19px; margin-bottom: 7px; place-items: center; border-radius: 50%; background: #315f8f; color: #fff; font-size: 9px; font-weight: 700; }
+    .flow-step strong { color: #28384c; font-size: 12px; }
+    .flow-step span { color: #687589; font-size: 9px; line-height: 1.4; }
+
+    .case-study .scenario-flow { margin: 16px 0 20px 8px; padding: 0 0 0 20px; border-left: 2px solid #a9c7df; list-style: none; }
+    .scenario-flow li { padding: 12px 0; margin: 0; border-bottom: 1px solid var(--case-line); }
+    .scenario-flow li:first-child { padding-top: 0; color: var(--case-blue); font-weight: 500; }
+    .scenario-flow li:last-child { border-bottom: 0; padding-bottom: 0; }
+    .scenario-flow em { color: var(--case-blue); font-style: normal; font-weight: 600; }
+    .case-study .scope-list, .case-study .principles-list, .case-study .support-list { padding-left: 22px; }
+    .scope-list li, .principles-list li, .support-list li { padding: 10px 0 12px 4px; margin: 0; border-bottom: 1px solid var(--case-line); }
+    .scope-list li:last-child, .principles-list li:last-child, .support-list li:last-child { border-bottom: 0; }
+    .scope-list li:nth-child(3) { margin: 8px 0; padding: 14px; border: 0; border-left: 3px solid #c76b76; background: rgba(255,240,240,.65); color: #813f49; }
+    .requirements li::marker, .principles-list li::marker, .support-list li::marker { color: var(--case-blue); font-weight: 700; }
+    .case-study .edge-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; padding-left: 22px; }
+    .edge-list li { padding: 12px 0 14px 4px; margin: 0; border-bottom: 1px solid var(--case-line); }
+    .edge-list li::marker { color: #9a5665; font-weight: 700; }
+
+    .architecture { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 12px; align-items: stretch; margin: 18px 0; }
+    .architecture-col { padding: 14px; border: .5px solid rgba(120,145,170,.3); border-radius: 8px; background: rgba(255,255,255,.58); }
+    .architecture-col.center { border-color: rgba(49,95,143,.55); background: rgba(228,238,247,.8); }
+    .architecture-col strong { display: block; margin-bottom: 8px; color: #28384c; font-size: 11px; }
+    .architecture-pill { margin-top: 6px; padding: 6px 8px; border-radius: 5px; background: #fff; color: #5b687a; font-size: 10px; }
+
+    .boundary { margin: 18px 0; padding: 18px; border: 1px solid rgba(193,81,81,.3); border-radius: 8px; background: rgba(255,240,240,.65); }
+    .boundary strong { display: block; margin-bottom: 5px; color: #9a3636; font-size: 12px; }
+    .boundary p { margin: 0; }
+    .requirements { columns: 2; column-gap: 36px; }
+    .requirements li { break-inside: avoid; margin-bottom: 14px; padding: 0 0 12px 2px; border-bottom: 1px solid var(--case-line); }
+
+    .wireframes { margin-top: 16px; }
+    .wireframes details { border-bottom: 1px dashed #bfc7cc; }
+    .wireframes summary { min-height: 48px; padding: 14px 4px; color: #525b64; font-size: 12px; font-weight: 600; line-height: 1.5; cursor: pointer; }
+    .wireframes summary::marker { color: #78838c; }
+    .wireframes details[open] summary { color: #28384c; }
+    .wireframe-view { height: min(520px, 65vh); margin-bottom: 20px; padding: 24px 16px; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; border: 1px solid #ced6db; border-radius: 6px; background-color: #f0f3f4; background-image: linear-gradient(rgba(115,137,149,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(115,137,149,.1) 1px, transparent 1px); background-size: 20px 20px; }
+    .wireframe-view a { display: block; width: fit-content; max-width: min(100%, 520px); margin-inline: auto; background: #fff; box-shadow: 0 3px 14px rgba(46,62,74,.12); }
+    .wireframe-view img { display: block; max-width: 100%; height: auto; }
+    .wireframes summary:focus-visible, .wireframe-view:focus-visible, .wireframe-view a:focus-visible { outline: 2px solid #315f8f; outline-offset: -2px; }
+
+    .high-fi details { border-bottom: 1px solid var(--case-line); }
+    .high-fi summary { min-height: 44px; padding: 12px 0; color: #315f8f; font-size: 13px; font-weight: 600; line-height: 1.5; cursor: pointer; }
+    .screen-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; margin: 8px 0 24px; }
+    .screen-figure { min-width: 0; }
+    .screen-figure a { display: block; aspect-ratio: 414 / 896; }
+    .screen-figure img { display: block; width: 100%; height: auto; }
+    .screen-figure figcaption { margin-top: 8px; color: #5a4a6a; font-size: 12px; line-height: 1.5; }
+    .high-fi summary:focus-visible, .screen-figure a:focus-visible { outline: 2px solid #315f8f; outline-offset: 3px; }
+
+    .high-fi-tabs { display: flex; gap: 0 8px; margin-top: 16px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: #8aa2b8 #e6edf3; border-bottom: 1px solid #cad7e1; }
+    .high-fi-tab { flex: 0 0 auto; min-height: 44px; padding: 10px 12px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #64748a; font-family: inherit; font-size: 12px; line-height: 1.5; cursor: pointer; }
+    .high-fi-tab:hover { color: #28384c; background: #edf3f8; }
+    .high-fi-tab[aria-selected="true"] { border-bottom-color: #27835c; background: #e6eef7; color: #244e76; font-weight: 600; }
+    .high-fi-tab:focus-visible { outline: 2px solid #315f8f; outline-offset: -2px; }
+    .high-fi-panel[hidden] { display: none; }
+    .high-fi-enhanced .screen-grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(220px, 88%); gap: 24px; margin: 0 0 24px; padding: 28px 20px 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; scrollbar-width: thin; scrollbar-color: #8aa2b8 #e6edf3; border-bottom: 1px solid #cad7e1; background: linear-gradient(180deg, #edf3f7, #f8fafc 65%, #f2f0f6); }
+    .high-fi-enhanced .screen-grid:focus-visible { outline: 2px solid #315f8f; outline-offset: -2px; }
+    .high-fi-enhanced .screen-figure { scroll-snap-align: start; }
+    .high-fi-enhanced .screen-figure img { filter: drop-shadow(0 8px 10px rgba(26,43,60,.16)); }
+    .high-fi-enhanced .screen-figure figcaption { margin-top: 14px; color: #36516b; font-size: 11px; font-weight: 600; }
+
+    @media (max-width: 900px) { .main-content { max-height: none; } }
+    @media (max-width: 700px) {
+      .main-content { max-height: none; overflow-y: visible; }
+      .hero { height: 245px; }
+      .hero-stage { gap: 10px; padding-inline: 14px; }
+      .siri-orb { width: 68px; height: 68px; border-width: 8px; }
+      .agent-sheet { width: 220px; }
+      .project-meta, .goal-grid, .persona-grid, .architecture { grid-template-columns: 1fr; }
+      .case-study .persona-grid, .case-study .flow, .case-study .edge-list { grid-template-columns: 1fr; }
+      .persona-comparison { grid-template-columns: minmax(0, 1fr); }
+      .case-study .flow-step { min-height: auto; }
+      .requirements { columns: 1; }
+      .screen-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .wireframe-view { padding: 16px 10px; }
+      .siri-prototype .proto-embed { height: 740px; }
+      .siri-prototype .proto-placeholder { padding: 24px 16px; }
+    }
+    @media (max-width: 420px) {
+      .hero { height: 215px; }
+      .siri-orb { display: none; }
+      .agent-sheet { width: 90%; }
+      .hero-copy h1 { font-size: 21px; }
+      .case-study { padding-inline: 18px; }
+      .flow { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+      .screen-grid { grid-template-columns: minmax(0, 1fr); }
+      .screen-figure { width: 100%; max-width: 360px; margin-inline: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .prototype-jump { transition: none; }
+      .prototype-jump:hover { transform: none; }
+      .prototype-jump::before, .prototype-jump::after { animation: none; opacity: .4; transform: scale(1.01, 1.1); }
+      .prototype-jump::after { opacity: .2; transform: scale(1.04, 1.35); }
+    }
+  </style>
+</head>
+<body>
+<div class="desktop">
+  <div class="menubar">
+    <div class="menubar-left"><span class="menubar-brand">grace.dev</span><span>File</span><span>View</span><span>Go</span><span>Help</span></div>
+    <div class="menubar-right"><span>Open to work</span><span id="clock"></span></div>
+  </div>
+  <div class="window-area">
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots" aria-hidden="true"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+        <span class="titlebar-title">siri-agent - product concept</span>
+      </div>
+      <main class="main-content">
+        <a href="../../index.html" class="back-link" data-open-section="about">&larr; back to portfolio</a>
+
+        <section class="hero" aria-labelledby="project-title">
+          <div class="hero-stage" aria-hidden="true">
+            <div class="siri-orb"></div>
+            <div class="agent-sheet">
+              <div class="agent-eyebrow">Siri Agent is working</div>
+              <div class="agent-title">Plan a trip to Chicago</div>
+              <div class="agent-task"><span class="agent-icon">F</span><span>Compare flights</span><span class="agent-status">Ready</span></div>
+              <div class="agent-task"><span class="agent-icon">H</span><span>Find lodging</span><span class="agent-status">3 found</span></div>
+              <div class="agent-task"><span class="agent-icon">A</span><span>Build an itinerary</span><span class="agent-status">Working</span></div>
+            </div>
+          </div>
+          <div class="hero-copy"><h1 id="project-title">Siri Agent</h1><p>An AI-native orchestration layer for iOS</p></div>
+        </section>
+
+        <article class="case-study">
+          <p><strong>PRD: AI-Native iOS: Orchestrated Task Completion via Siri Agent</strong></p>
+          <div class="project-meta">
+            <div><div class="meta-label">Author</div><div class="meta-value">Grace Chang</div></div>
+            <div><div class="meta-label">Status</div><div class="meta-value">Active Draft</div></div>
+          </div>
+
+          <p><a class="prototype-jump" href="#interactive-prototype">Try interactive prototype <span aria-hidden="true">&darr;</span></a></p>
+
+          <section aria-labelledby="context">
+            <h2 id="context">Context</h2>
+            <p>AI is now everywhere in our lives, so knowledge gap and accessibility are no longer the most prevalent issues. Instead, how we interact with AI becomes the most important component.</p>
+          </section>
+
+          <section aria-labelledby="problem-statement">
+            <h2 id="problem-statement">Problem Statement</h2>
+            <p class="prompt-box">In traditional mobile ecosystem, actions are app based. Users need to navigate from app to app to accomplish a particular task. This means they need to keep track of a series of actions and how each action corresponds to a certain app. AI is embedded within each individual app, but there is no single orchestrator that ties everything together. User is still the bearer of this coordination tax, thus increasing their cognitive load. Thus, <strong><em>I want to design an AI-Native iOS ecosystem, such that we can directly address and reduce this coordination tax</em></strong>.</p>
+          </section>
+
+          <section aria-labelledby="personas-and-scenarios">
+            <h2 id="personas-and-scenarios">Personas and Scenarios</h2>
+            <ol class="persona-grid" role="list">
+              <li class="persona-card">
+                <h3 class="persona-heading"><strong>Emily</strong><span>, Female, 25</span></h3>
+                <p>Emily wants to plan a trip.</p>
+                <div class="persona-comparison">
+                  <div>
+                    <h4>In a traditional mobile environment, she has to:</h4>
+                    <ol>
+                      <li>Check her calendar</li>
+                      <li>Check her bank account</li>
+                      <li>Look through different sites to find flights and book one</li>
+                      <li>Look through different sides to find lodgings and book one</li>
+                      <li>Look through different recommendations to find activities and plan an itinerary</li>
+                    </ol>
+                  </div>
+                  <div>
+                    <h4>In an AI-assisted mobile environment, she has to:</h4>
+                    <ol>
+                      <li>Check her calendar</li>
+                      <li>Check her bank account</li>
+                      <li>Ask ChatGPT or Claude to look through different sites to find flights, then book one herself</li>
+                      <li>Ask ChatGPT or Claude to look through different sides to find lodgings, then book one herself</li>
+                      <li>Ask ChatGPT or Claude to look through different recommendations to find activities and generate an itinerary</li>
+                    </ol>
+                  </div>
+                </div>
+                <div class="persona-resolution">
+                  <p><strong>The need:</strong> Even with AI embedded in each step, she still has to navigate from task to task, thus paying the coordination tax</p>
+                  <h4>In an AI-native mobile environment:</h4>
+                  <p><strong>The Solution:</strong> With Siri as agent, Emily can directly ask Siri to plan the trip, and Siri will take care of everything. Emily simply needs to give her preference, then review and book.</p>
+                </div>
+              </li>
+              <li class="persona-card">
+                <h3 class="persona-heading"><strong>Jasper</strong><span>, Male, 67</span></h3>
+                <p>Jasper is trying to learn how to use an iPhone, specifically on how to navigate certain apps. For example, he might want to sell some of his stocks in Fidelity, but has trouble figuring out how.</p>
+                <div class="persona-comparison">
+                  <div>
+                    <h4>In a traditional mobile environment, he has to:</h4>
+                    <ol>
+                      <li>Search online for tutorials, which can be outdated or there might be none</li>
+                      <li>Follow the tutorials if they exist, which can be outdated</li>
+                      <li>Repeat 1 and 2 until he figures it out</li>
+                    </ol>
+                  </div>
+                  <div>
+                    <h4>In an AI-assisted mobile environment, he has to:</h4>
+                    <ol>
+                      <li>Ask ChatGPT or Claude for guidance and steps to following (which can be outdated)</li>
+                      <li>Follow the steps, which might not be accurate</li>
+                      <li>Repeat Step 1 and 2 until he figures it out</li>
+                    </ol>
+                  </div>
+                </div>
+                <div class="persona-resolution">
+                  <p><strong>The need:</strong> While AI tools reduced the wild goose chase for tutorials and instructions, Jasper still needs to try again and again until he figures it out. He does not receive any real-time guidance from anyone, and is still on his own.</p>
+                  <h4>In an AI-native mobile environment:</h4>
+                  <p><strong>The solution:</strong> Jasper can tell Siri agent his needs, and Siri will navigate to the app and perform his tasks for him.</p>
+                </div>
+              </li>
+              <li class="persona-card">
+                <h3 class="persona-heading"><strong>Lola</strong><span>, Female, 35</span></h3>
+                <ul class="persona-notes">
+                  <li>Lola still prefers using individual apps and navigating through them herself</li>
+                  <li>She can simply swipe left or right to use it or disable it.</li>
+                  <li>The feature is thus always backward compatible.</li>
+                </ul>
+              </li>
+            </ol>
+          </section>
+
+          <section aria-labelledby="goals-and-success-metrics">
+            <h2 id="goals-and-success-metrics">Goals &amp; Success Metrics</h2>
+            <div class="goal-grid">
+              <div class="goal-card">
+                <h3><span class="card-kicker">Goal 1:</span> Reduce coordination tax for multi-step tasks</h3>
+                <ul role="list">
+                  <li>Success looks like: users completing multi-step cross-app tasks without manually switching between apps to relay information</li>
+                  <li>Hypothetical metric: reduce number of app switches per task by 50%+ compared to manual or single-app-AI workflows.</li>
+                </ul>
+              </div>
+              <div class="goal-card">
+                <h3><span class="card-kicker">Goal 2:</span> Lower the barrier for less tech-confident users</h3>
+                <ul role="list">
+                  <li>Success looks like: users like Jasper completing mobile native action (including but not limited to using an app, figuring out how to perform a particular task on iOS platform) via natural language, without needing external tutorials or trial-and-error</li>
+                  <li>Hypothetical metric: reduce "task abandonment rate" (user gives up before completing the action) for first-time flows</li>
+                </ul>
+              </div>
+              <div class="goal-card">
+                <h3><span class="card-kicker">Goal 3:</span> Maintain trust through transparency and control</h3>
+                <ul role="list">
+                  <li>Success looks like: users feel informed and in control at each handoff point, not surprised by actions taken on their behalf</li>
+                  <li>Hypothetical metric: % of agent-suggested actions confirmed without modification vs. edited/rejected &mdash; a high edit/reject rate signals a trust or accuracy problem, while a low rate signal/YOLO mode enabled signals a higher trust level.</li>
+                </ul>
+              </div>
+              <div class="goal-card">
+                <h3><span class="card-kicker">Goal 4:</span> Preserve backward compatibility and opt-out</h3>
+                <ul role="list">
+                  <li>Success looks like: users can simply not use the agent layer entirely with no loss of core app functionality or disruption in their user experience.</li>
+                  <li>Metric: opt-out rate &mdash; expected nonzero, but should not trend upward over time (rising opt-out == declining trust or utility)</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section aria-labelledby="non-goals">
+            <h2 id="non-goals">Non-Goals / Out of Scope</h2>
+            <ul class="scope-list">
+              <li><strong>Not building a general-purpose AI assistant</strong> &mdash; Siri Agent orchestrates <em>existing</em> app actions toward user-defined tasks; it's not a knowledge/conversation tool competing with ChatGPT or Claude directly</li>
+              <li><strong>Not cross-platform</strong> &mdash; iOS/Siri-specific for v1, not Android or web</li>
+              <li><strong>Not autonomous high-stakes actions without confirmation</strong> &mdash; the agent can plan and suggest (bookings, purchases, transactions), but performing irreversible or high-stakes actions require explicit user confirmation before execution &mdash; a permanent boundary, not a v1 limitation to relax later</li>
+              <li><strong>Not redesigning individual apps</strong> &mdash; Conductor operates on top of the existing app ecosystem via permissions/access, not by requiring third-party apps to change their own UI or logic</li>
+              <li><strong>Not eliminating manual app use</strong> &mdash; direct app interaction remains fully available and unaffected; Siri Agent is additive, not a replacement layer</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="user-flow">
+            <h2 id="user-flow">User Flow</h2>
+            <ol class="flow" role="list">
+              <li class="flow-step"><strong>Invocation</strong> &mdash; User swipes to invoke Siri agent; interface is left current summary screen, non-disruptive to existing context</li>
+              <li class="flow-step"><strong>Task statement</strong> &mdash; User states a goal in natural language</li>
+              <li class="flow-step"><strong>Planning</strong> &mdash; Agent will plan based on user requirements, mapping them to concrete actions.</li>
+              <li class="flow-step"><strong>Information gathering</strong> &mdash; Agent identifies what it needs to fulfill the goal and gathers that from the users sequentially.</li>
+              <li class="flow-step"><strong>Permission checkpoints</strong> &mdash; At each access request, user can grant or decline.</li>
+              <li class="flow-step"><strong>Delegation to sub-agents</strong> &mdash; Once inputs are gathered, a Planning Agent coordinates sub-agents in parallel, surfaced to the user as visible progress states.</li>
+              <li class="flow-step"><strong>Review and confirm</strong> &mdash; User is presented with:</li>
+              <li class="flow-step"><strong>Action execution</strong> &mdash; Upon receiving action permission from the user, Siri Agent will perform each task on user's phone, asking for user permission as needed.</li>
+              <li class="flow-step"><strong>Exit</strong> &mdash; Upon goal completion, user can swipe back to the main screen.</li>
+            </ol>
+          </section>
+
+          <section aria-labelledby="example-flow-1">
+            <h2 id="example-flow-1">Example Flow 1: Trip Planning (Emily)</h2>
+            <ul class="scenario-flow" role="list">
+              <li><em>Task statement:</em> "I want to plan a trip to Chicago. Help me."</li>
+              <li><em>Information gathering:</em> Dates &rarr; Budget &rarr; Preferences (activities, food, lodging), each with an optional data-access offer (calendar, bank) or manual entry fallback</li>
+              <li><em>Delegation to sub-agents:</em> Planning Agent coordinates Flight, Lodging, and Activity/Food sub-agents in parallel</li>
+              <li><em>Review and confirm:</em> Suggested itinerary + per-category booking options ("Book" per item) + single "Book All for Me"</li>
+              <li><em>Action execution:</em> Confirmed bookings redirect to the relevant app or Safari, requiring user input of their information. Upon individual task completion, agent will execute the next one in the same manner until goal completion.</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="example-flow-2">
+            <h2 id="example-flow-2">Example Flow 2: In-App Task Guidance (Jasper)</h2>
+            <p>Maps to the general flow above:</p>
+            <ul class="scenario-flow" role="list">
+              <li><em>Task statement:</em> "Help me sell some shares in Fidelity"</li>
+              <li><em>Planning:</em> Agent maps the goal to a concrete in-app action plan.</li>
+              <li><em>Permission checkpoints:</em> Agent requests whatever access is needed to act view the Fidelity app</li>
+              <li><strong>Plan execution:</strong> Agent presents plan to user. Upon receiving permission, agent performs the action directly, prompting for confirmation before the trade executes.</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="functional-requirements">
+            <h2 id="functional-requirements">Functional Requirements</h2>
+            <ol class="requirements">
+              <li>The agent must be invocable via a lightweight gesture without requiring app navigation</li>
+              <li>The agent must accept a task stated in natural language, without the user specifying which apps or steps are required</li>
+              <li>The agent must decompose a stated goal into an ordered sequence of concrete actions across one or more apps</li>
+              <li>The agent must identify what information or data access it needs to fulfill the goal, and request it from the user sequentially</li>
+              <li>For each data-access request, the user must be able to grant or decline; declining must not block task completion &mdash; the agent must fall back to manual input</li>
+              <li>The agent must be able to delegate sub-tasks to parallel sub-agents/processes and surface visible progress to the user (not a silent wait state)</li>
+              <li>Before any action with real-world consequence (purchase, transaction, irreversible change) is executed, the agent must present the plan to the user and obtain explicit confirmation</li>
+              <li>The user must be able to approve actions individually (per category/item) or collectively (all at once)</li>
+              <li>Where an action requires sensitive user input that the agent does not hold on the user's behalf, the agent must hand off to the relevant app/browser for the user to complete that step directly</li>
+              <li>The user must be able to exit the agent flow at any point and resume later without losing prior progress (state persistence)</li>
+            </ol>
+          </section>
+
+          <section aria-labelledby="non-functional-requirements">
+            <h2 id="non-functional-requirements">Non-Functional Requirements</h2>
+            <ol class="principles-list">
+              <li><strong>Permissions are scoped and revocable</strong> &mdash; any data or app access granted to the agent must be specific to what's needed for the stated task, and revocable by the user at any time (not a one-time blanket grant)</li>
+              <li><strong>No autonomous execution of high-stakes actions</strong> &mdash; this is a permanent behavioral boundary, not a v1 limitation (ties to Non-Goals)</li>
+              <li><strong>Backward compatibility</strong> &mdash; enabling the agent must not alter or restrict existing single-app functionality for users who opt out (Lola's persona)</li>
+              <li><strong>Transparency of agent state</strong> &mdash; at every step, the user must be able to see what the agent is doing or has done (progress states, not a black box) &mdash; supports trust metric from Goals</li>
+              <li><strong>Graceful degradation, with required-input transparency</strong> &mdash; if a data source is unavailable or access is declined, the agent must continue the task with reduced automation <em>where the missing information is optional</em>; if the missing information is essential to completing the task, the agent must clearly tell the user what's required and why, rather than silently failing or proceeding with an invalid plan</li>
+            </ol>
+          </section>
+
+          <section aria-labelledby="edge-cases">
+            <h2 id="edge-cases">Edge Cases</h2>
+            <ol class="edge-list">
+              <li><strong>Required information is unavailable or declined</strong> &mdash; e.g., user declines calendar access and won't provide dates manually either &rarr; agent cannot proceed with that sub-task; must clearly state what's blocking completion (per Requirement #5)</li>
+              <li><strong>No options satisfy stated constraints</strong> &mdash; e.g., no flights fit the stated budget &rarr; agent surfaces the specific failed constraint (budget) rather than silently dropping the flight step or presenting an incomplete itinerary as final (per Requirement #11)</li>
+              <li><strong>Partial permission grants</strong> &mdash; user grants calendar access but declines bank access &rarr; agent must handle mixed-permission states gracefully, not treat it as all-or-nothing</li>
+              <li><strong>User exits mid-flow before any inputs are gathered</strong> &mdash; does the agent discard the task entirely, or retain the initial task statement for a possible later resume?</li>
+              <li><strong>User changes their mind mid-review</strong> &mdash; e.g., user rejects the suggested itinerary after seeing it &mdash; does the agent replan from scratch, or allow targeted edits to one category (e.g., "find different lodging, keep everything else")?</li>
+              <li><strong>Conflicting information across sources</strong> &mdash; e.g., calendar shows the user is busy on their stated travel dates &mdash; does the agent flag the conflict, or defer entirely to what the user explicitly stated?</li>
+              <li><strong>Action fails after user confirmation</strong> &mdash; e.g., user approves a flight booking, but by the time the agent executes, the price/availability has changed &mdash; how is this discrepancy communicated?</li>
+              <li><strong>Sensitive or irreversible actions with ambiguous risk level</strong> &mdash; e.g., Jasper's stock sale: is a single trade always treated as high-stakes (always requires confirmation), or does that depend on trade size? Worth defining a threshold or defaulting to "always confirm" for financial actions.</li>
+            </ol>
+          </section>
+
+          <section aria-labelledby="dependencies">
+            <h2 id="dependencies">Dependencies</h2>
+            <ol class="support-list">
+              <li><strong>Third-party app/MCP cooperation</strong> &mdash; Conductor's ability to act within apps (Fidelity, airline sites, etc.) depends on those apps exposing actionable APIs or supporting some form of agent-accessible integration; apps with no such support limit the agent to guidance-only (Jasper-style) rather than direct action</li>
+              <li><strong>System-level permissions infrastructure</strong> &mdash; calendar, financial account, and app-action access depend on iOS providing granular, revocable permission scopes for agent-mediated access, beyond what exists for standard app permissions today</li>
+              <li><strong>Siri/agent reliability</strong> &mdash; the entire experience depends on the underlying agent's ability to correctly interpret natural-language goals and decompose them accurately; misinterpretation directly undermines the core value proposition (reduced coordination tax)</li>
+            </ol>
+          </section>
+
+          <section aria-labelledby="risks">
+            <h2 id="risks">Risks</h2>
+            <ol class="support-list">
+              <li><strong>Trust erosion from incorrect actions</strong> &mdash; if the agent books the wrong thing or misreads a constraint even occasionally, user trust may drop sharply, given the high-stakes nature of the actions involved (financial, travel)</li>
+              <li><strong>Permission fatigue</strong> &mdash; if too many individual permission requests are surfaced, users may reflexively decline access, undermining the automation the feature depends on</li>
+              <li><strong>Third-party resistance</strong> &mdash; apps/platforms may have incentive to resist agent-mediated actions that bypass their own UI (e.g., ad revenue, upsell opportunities lost if a booking flow is automated away)</li>
+              <li><strong>Scope ambiguity risk</strong> &mdash; since v1 targets "any multi-step task" rather than a fixed set, there's a risk of the product feeling inconsistent &mdash; reliable for well-integrated tasks (trip planning) but unreliable/guidance-only for others (Jasper's), which could confuse user expectations about what the agent can and can't do</li>
+            </ol>
+          </section>
+
+          <section aria-labelledby="low-fi-wireframes">
+            <h2 id="low-fi-wireframes" tabindex="-1">Low-Fi Wireframes</h2>
+            <h3>Trip Planning (Emily)</h3>
+            <div class="wireframes">
+              <details name="siri-wireframes" open>
+                <summary id="wireframe-invocation">01. Invocation and task statement</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-invocation" tabindex="0">
+                  <a href="media/wireframes/Preview-28.png" target="_blank" rel="noopener" aria-label="Open original invocation and task statement wireframes in a new tab">
+                    <img src="media/wireframes/Preview-28.png" width="610" height="3080" loading="lazy" alt="Siri swipe-right invocation, greeting, Chicago trip request, and the agent's initial response." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-dates">02. Dates and calendar permissions</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-dates" tabindex="0">
+                  <a href="media/wireframes/Preview-36.png" target="_blank" rel="noopener" aria-label="Open original dates and calendar permission wireframes in a new tab">
+                    <img src="media/wireframes/Preview-36.png" width="274" height="3086" loading="lazy" alt="Date selection branches for manual entry and calendar access, including declined-access, loading, proposed dates, and July 1-7 confirmation states." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-budget">03. Budget and bank permissions</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-budget" tabindex="0">
+                  <a href="media/wireframes/Preview-40.png" target="_blank" rel="noopener" aria-label="Open original budget and bank permission wireframes in a new tab">
+                    <img src="media/wireframes/Preview-40.png" width="272" height="3088" loading="lazy" alt="Budget entry and Choose for me branches, Bank of America access request, declined-access state, and a proposed $500 trip budget." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-activities">04. Activity preferences</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-activities" tabindex="0">
+                  <a href="media/wireframes/Preview-30.png" target="_blank" rel="noopener" aria-label="Open original activity preference wireframes in a new tab">
+                    <img src="media/wireframes/Preview-30.png" width="1146" height="3074" loading="lazy" alt="Activity preference prompt followed by a summary of July 1-7 dates, a $500 budget, and a boat tour preference or no preference." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-food">05. Food preferences</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-food" tabindex="0">
+                  <a href="media/wireframes/Preview-38.png" target="_blank" rel="noopener" aria-label="Open original food preference wireframes in a new tab">
+                    <img src="media/wireframes/Preview-38.png" width="1140" height="3078" loading="lazy" alt="Food preference prompt and accumulated trip summary, including pizza and Culver's." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-lodging">06. Lodging preferences and input summary</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-lodging" tabindex="0">
+                  <a href="media/wireframes/Preview-24.png" target="_blank" rel="noopener" aria-label="Open original lodging preference and input summary wireframes in a new tab">
+                    <img src="media/wireframes/Preview-24.png" width="946" height="3078" loading="lazy" alt="Lodging preference prompt and summary of dates, budget, activities, food, and lodging near the Loop." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-progress">07. Sub-agent progress and swipe-back</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-progress" tabindex="0">
+                  <a href="media/wireframes/Preview-34.png" target="_blank" rel="noopener" aria-label="Open original sub-agent progress wireframe in a new tab">
+                    <img src="media/wireframes/Preview-34.png" width="1536" height="2262" loading="lazy" alt="Progress screen showing finding flights, finding lodgings, planning activities, and finding food, with an annotation about swiping back to the main screen anytime." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-itinerary">08. Suggested itinerary</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-itinerary" tabindex="0">
+                  <a href="media/wireframes/Preview-26.png" target="_blank" rel="noopener" aria-label="Open original suggested itinerary wireframe in a new tab">
+                    <img src="media/wireframes/Preview-26.png" width="1536" height="2554" loading="lazy" alt="Suggested itinerary screen with placeholder entries for July 1-7, a scroll indicator, and a close control." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-flights">09. Flight booking and Book All for Me</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-flights" tabindex="0">
+                  <a href="media/wireframes/Preview-32.png" target="_blank" rel="noopener" aria-label="Open original flight booking wireframe in a new tab">
+                    <img src="media/wireframes/Preview-32.png" width="1536" height="2460" loading="lazy" alt="Flight options with individual Book, category Book for Me, and Book All for Me actions, plus an app or Safari handoff annotation." />
+                  </a>
+                </div>
+              </details>
+              <details name="siri-wireframes">
+                <summary id="wireframe-hotels">10. Hotel booking and app handoff</summary>
+                <div class="wireframe-view" role="region" aria-labelledby="wireframe-hotels" tabindex="0">
+                  <a href="media/wireframes/Preview-42.png" target="_blank" rel="noopener" aria-label="Open original hotel booking wireframe in a new tab">
+                    <img src="media/wireframes/Preview-42.png" width="1536" height="2366" loading="lazy" alt="Hotel options with individual Book and category Book for Me actions, plus an app or Safari handoff annotation." />
+                  </a>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <section aria-labelledby="high-fi-designs">
+            <h2 id="high-fi-designs">High-Fi Designs</h2>
+            <h3>Siri Trip Flow</h3>
+            <div class="high-fi">
+              <details name="siri-high-fi" open>
+                <summary>Entry</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="5837fc6ae3200f1b">
+                    <a href="media/high-fi/a1-invoke.png" target="_blank" rel="noopener" aria-label="Open A1 - Invoke at full resolution in a new tab">
+                      <img src="media/high-fi/a1-invoke.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: A1 - Invoke" />
+                    </a>
+                    <figcaption>A1 - Invoke</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="0a090e5ce2c8d876">
+                    <a href="media/high-fi/a2-greeting.png" target="_blank" rel="noopener" aria-label="Open A2 - Greeting at full resolution in a new tab">
+                      <img src="media/high-fi/a2-greeting.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: A2 - Greeting" />
+                    </a>
+                    <figcaption>A2 - Greeting</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="5f8efb6b4eee49ac">
+                    <a href="media/high-fi/a3-ask.png" target="_blank" rel="noopener" aria-label="Open A3 - Ask at full resolution in a new tab">
+                      <img src="media/high-fi/a3-ask.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: A3 - Ask" />
+                    </a>
+                    <figcaption>A3 - Ask</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="e3d88642907d095e">
+                    <a href="media/high-fi/a4-reply.png" target="_blank" rel="noopener" aria-label="Open A4 - Reply at full resolution in a new tab">
+                      <img src="media/high-fi/a4-reply.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: A4 - Reply" />
+                    </a>
+                    <figcaption>A4 - Reply</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="12df492bade5d3e8">
+                    <a href="media/high-fi/a5-ask-dates.png" target="_blank" rel="noopener" aria-label="Open A5 - Ask dates at full resolution in a new tab">
+                      <img src="media/high-fi/a5-ask-dates.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: A5 - Ask dates" />
+                    </a>
+                    <figcaption>A5 - Ask dates</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Dates - yes path</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="25122fb12886c0b8">
+                    <a href="media/high-fi/b2-calendar-picker.png" target="_blank" rel="noopener" aria-label="Open B2 - Calendar picker at full resolution in a new tab">
+                      <img src="media/high-fi/b2-calendar-picker.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B2 - Calendar picker" />
+                    </a>
+                    <figcaption>B2 - Calendar picker</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="6492be26007ccc5a">
+                    <a href="media/high-fi/b3-dates-set.png" target="_blank" rel="noopener" aria-label="Open B3 - Dates set at full resolution in a new tab">
+                      <img src="media/high-fi/b3-dates-set.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B3 - Dates set" />
+                    </a>
+                    <figcaption>B3 - Dates set</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Dates - no path</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="27dd2a78fc640778">
+                    <a href="media/high-fi/b4-no-dates.png" target="_blank" rel="noopener" aria-label="Open B4 - No dates at full resolution in a new tab">
+                      <img src="media/high-fi/b4-no-dates.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B4 - No dates" />
+                    </a>
+                    <figcaption>B4 - No dates</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="93644dcf6a71b050">
+                    <a href="media/high-fi/b5-calendar-permission.png" target="_blank" rel="noopener" aria-label="Open B5 - Calendar permission at full resolution in a new tab">
+                      <img src="media/high-fi/b5-calendar-permission.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B5 - Calendar permission" />
+                    </a>
+                    <figcaption>B5 - Calendar permission</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="6a91b417996a7ec6">
+                    <a href="media/high-fi/b6-no-access.png" target="_blank" rel="noopener" aria-label="Open B6 - No access at full resolution in a new tab">
+                      <img src="media/high-fi/b6-no-access.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B6 - No access" />
+                    </a>
+                    <figcaption>B6 - No access</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="f2ef5330f244d74a">
+                    <a href="media/high-fi/b7-thinking.png" target="_blank" rel="noopener" aria-label="Open B7 - Thinking at full resolution in a new tab">
+                      <img src="media/high-fi/b7-thinking.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B7 - Thinking" />
+                    </a>
+                    <figcaption>B7 - Thinking</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="d619826eac9df635">
+                    <a href="media/high-fi/b8-propose-dates.png" target="_blank" rel="noopener" aria-label="Open B8 - Propose dates at full resolution in a new tab">
+                      <img src="media/high-fi/b8-propose-dates.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B8 - Propose dates" />
+                    </a>
+                    <figcaption>B8 - Propose dates</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="a0cec01f685d38ee">
+                    <a href="media/high-fi/b9-dates-set.png" target="_blank" rel="noopener" aria-label="Open B9 - Dates set at full resolution in a new tab">
+                      <img src="media/high-fi/b9-dates-set.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: B9 - Dates set" />
+                    </a>
+                    <figcaption>B9 - Dates set</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Budget - yes path</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="b5291bf37924f484">
+                    <a href="media/high-fi/c1-ask-budget.png" target="_blank" rel="noopener" aria-label="Open C1 - Ask budget at full resolution in a new tab">
+                      <img src="media/high-fi/c1-ask-budget.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C1 - Ask budget" />
+                    </a>
+                    <figcaption>C1 - Ask budget</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="80ce63fdd63bf92b">
+                    <a href="media/high-fi/c2-typed-budget.png" target="_blank" rel="noopener" aria-label="Open C2 - Typed budget at full resolution in a new tab">
+                      <img src="media/high-fi/c2-typed-budget.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C2 - Typed budget" />
+                    </a>
+                    <figcaption>C2 - Typed budget</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="7d1aafa2ec3cef6f">
+                    <a href="media/high-fi/c3-budget-set.png" target="_blank" rel="noopener" aria-label="Open C3 - Budget set at full resolution in a new tab">
+                      <img src="media/high-fi/c3-budget-set.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C3 - Budget set" />
+                    </a>
+                    <figcaption>C3 - Budget set</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Budget - no path</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="d91b322f804ab923">
+                    <a href="media/high-fi/c4-choose-for-me.png" target="_blank" rel="noopener" aria-label="Open C4 - Choose for me at full resolution in a new tab">
+                      <img src="media/high-fi/c4-choose-for-me.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C4 - Choose for me" />
+                    </a>
+                    <figcaption>C4 - Choose for me</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="191c662847807339">
+                    <a href="media/high-fi/c5-bank-permission.png" target="_blank" rel="noopener" aria-label="Open C5 - Bank permission at full resolution in a new tab">
+                      <img src="media/high-fi/c5-bank-permission.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C5 - Bank permission" />
+                    </a>
+                    <figcaption>C5 - Bank permission</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="de0c36c67f70fa7f">
+                    <a href="media/high-fi/c6-no-bank-access.png" target="_blank" rel="noopener" aria-label="Open C6 - No bank access at full resolution in a new tab">
+                      <img src="media/high-fi/c6-no-bank-access.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C6 - No bank access" />
+                    </a>
+                    <figcaption>C6 - No bank access</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="25df6a2387d584b0">
+                    <a href="media/high-fi/c7-propose-budget.png" target="_blank" rel="noopener" aria-label="Open C7 - Propose budget at full resolution in a new tab">
+                      <img src="media/high-fi/c7-propose-budget.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C7 - Propose budget" />
+                    </a>
+                    <figcaption>C7 - Propose budget</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="0c3e4cb7cc969d54">
+                    <a href="media/high-fi/c8-budget-set.png" target="_blank" rel="noopener" aria-label="Open C8 - Budget set at full resolution in a new tab">
+                      <img src="media/high-fi/c8-budget-set.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: C8 - Budget set" />
+                    </a>
+                    <figcaption>C8 - Budget set</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Activities</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="e816738e3864d7e9">
+                    <a href="media/high-fi/d1-ask-activities.png" target="_blank" rel="noopener" aria-label="Open D1 - Ask activities at full resolution in a new tab">
+                      <img src="media/high-fi/d1-ask-activities.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D1 - Ask activities" />
+                    </a>
+                    <figcaption>D1 - Ask activities</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="753f978d1ce1029d">
+                    <a href="media/high-fi/d2-typed-activities.png" target="_blank" rel="noopener" aria-label="Open D2 - Typed activities at full resolution in a new tab">
+                      <img src="media/high-fi/d2-typed-activities.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D2 - Typed activities" />
+                    </a>
+                    <figcaption>D2 - Typed activities</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="49613494264a9857">
+                    <a href="media/high-fi/d3-siri-picks-activities.png" target="_blank" rel="noopener" aria-label="Open D3 - Siri picks activities at full resolution in a new tab">
+                      <img src="media/high-fi/d3-siri-picks-activities.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D3 - Siri picks activities" />
+                    </a>
+                    <figcaption>D3 - Siri picks activities</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Food</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="4ad9d0c0e42b28bb">
+                    <a href="media/high-fi/d4-ask-food.png" target="_blank" rel="noopener" aria-label="Open D4 - Ask food at full resolution in a new tab">
+                      <img src="media/high-fi/d4-ask-food.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D4 - Ask food" />
+                    </a>
+                    <figcaption>D4 - Ask food</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="0c046433c1226072">
+                    <a href="media/high-fi/d5-typed-food.png" target="_blank" rel="noopener" aria-label="Open D5 - Typed food at full resolution in a new tab">
+                      <img src="media/high-fi/d5-typed-food.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D5 - Typed food" />
+                    </a>
+                    <figcaption>D5 - Typed food</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="3dd148fb1c4955f1">
+                    <a href="media/high-fi/d6-siri-picks-food.png" target="_blank" rel="noopener" aria-label="Open D6 - Siri picks food at full resolution in a new tab">
+                      <img src="media/high-fi/d6-siri-picks-food.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D6 - Siri picks food" />
+                    </a>
+                    <figcaption>D6 - Siri picks food</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Lodging</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="8afe53b6975b5be6">
+                    <a href="media/high-fi/d7-ask-lodging.png" target="_blank" rel="noopener" aria-label="Open D7 - Ask lodging at full resolution in a new tab">
+                      <img src="media/high-fi/d7-ask-lodging.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D7 - Ask lodging" />
+                    </a>
+                    <figcaption>D7 - Ask lodging</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="e177919ccc04c55c">
+                    <a href="media/high-fi/d8-typed-lodging.png" target="_blank" rel="noopener" aria-label="Open D8 - Typed lodging at full resolution in a new tab">
+                      <img src="media/high-fi/d8-typed-lodging.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D8 - Typed lodging" />
+                    </a>
+                    <figcaption>D8 - Typed lodging</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="2fad169f7f4c9339">
+                    <a href="media/high-fi/d9-siri-picks-lodging.png" target="_blank" rel="noopener" aria-label="Open D9 - Siri picks lodging at full resolution in a new tab">
+                      <img src="media/high-fi/d9-siri-picks-lodging.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: D9 - Siri picks lodging" />
+                    </a>
+                    <figcaption>D9 - Siri picks lodging</figcaption>
+                  </figure>
+                </div>
+              </details>
+              <details name="siri-high-fi">
+                <summary>Plan and book</summary>
+                <div class="screen-grid">
+                  <figure class="screen-figure" data-brilliant-id="f59c2edbd3bf6083">
+                    <a href="media/high-fi/e1-all-gathered.png" target="_blank" rel="noopener" aria-label="Open E1 - All gathered at full resolution in a new tab">
+                      <img src="media/high-fi/e1-all-gathered.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: E1 - All gathered" />
+                    </a>
+                    <figcaption>E1 - All gathered</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="9d98c98c5bbc6033">
+                    <a href="media/high-fi/e2-generating.png" target="_blank" rel="noopener" aria-label="Open E2 - Generating at full resolution in a new tab">
+                      <img src="media/high-fi/e2-generating.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: E2 - Generating" />
+                    </a>
+                    <figcaption>E2 - Generating</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="2d13e2b7c04a0eeb">
+                    <a href="media/high-fi/e3-plan-ready.png" target="_blank" rel="noopener" aria-label="Open E3 - Plan ready at full resolution in a new tab">
+                      <img src="media/high-fi/e3-plan-ready.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: E3 - Plan ready" />
+                    </a>
+                    <figcaption>E3 - Plan ready</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="89ec4c71589d80b1">
+                    <a href="media/high-fi/e4-flight-options.png" target="_blank" rel="noopener" aria-label="Open E4 - Flight options at full resolution in a new tab">
+                      <img src="media/high-fi/e4-flight-options.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: E4 - Flight options" />
+                    </a>
+                    <figcaption>E4 - Flight options</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="71ff5a785838e96e">
+                    <a href="media/high-fi/e5-hotel-options.png" target="_blank" rel="noopener" aria-label="Open E5 - Hotel options at full resolution in a new tab">
+                      <img src="media/high-fi/e5-hotel-options.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: E5 - Hotel options" />
+                    </a>
+                    <figcaption>E5 - Hotel options</figcaption>
+                  </figure>
+                  <figure class="screen-figure" data-brilliant-id="322a0dc6e651780d">
+                    <a href="media/high-fi/e6-itinerary.png" target="_blank" rel="noopener" aria-label="Open E6 - Itinerary at full resolution in a new tab">
+                      <img src="media/high-fi/e6-itinerary.png" width="828" height="1792" loading="lazy" alt="Siri Agent high-fi screen: E6 - Itinerary" />
+                    </a>
+                    <figcaption>E6 - Itinerary</figcaption>
+                  </figure>
+                </div>
+              </details>
+            </div>
+          </section>
+          <section class="siri-prototype" aria-labelledby="interactive-prototype" data-siri-prototype data-prototype-url="">
+            <h2 id="interactive-prototype" tabindex="-1">Interactive prototype</h2>
+            <p>Type your own goal, answer preferences, and explore the calendar and trip plan directly below. The Home and Today controls let you try the swipe navigation too.</p>
+            <div class="proto-frame">
+              <div class="proto-bar">
+                <span class="proto-label">Siri Agent &mdash; live-AI prototype</span>
+                <a class="proto-open" data-prototype-open target="_blank" rel="noopener noreferrer" hidden>open full size &nearr;</a>
+              </div>
+              <div class="proto-placeholder" data-prototype-placeholder>
+                <p data-prototype-status role="status" aria-live="polite">The live-AI prototype is being prepared for public access. The design screens above are available now.</p>
+                <button class="proto-launch" data-prototype-launch type="button" hidden>Launch prototype</button>
+              </div>
+            </div>
+            <p class="proto-caption" data-prototype-caption>Home and Today are simulated screens. Calendar, Bank, Maps, and booking offers use demo data; nothing is purchased or reserved.</p>
+            <noscript><p>Enable JavaScript to launch the interactive prototype. The case study and design screens remain available without it.</p></noscript>
+          </section>
+        </article>
+      </main>
+    </div>
+  </div>
+  <div class="status-bar"><span><span class="status-dot"></span>Available for new opportunities</span><div class="status-links"><a href="../../index.html">Portfolio</a></div></div>
+</div>
+<script src="prototype.js" defer></script>
+<script>
+  const clock = document.getElementById('clock');
+  const updateClock = () => { clock.textContent = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); };
+  updateClock();
+  setInterval(updateClock, 30000);
+  document.querySelector('[data-open-section]').addEventListener('click', () => sessionStorage.setItem('openSection', 'about'));
+
+  const highFiGallery = document.querySelector('.high-fi');
+  const highFiGroups = Array.from(highFiGallery.querySelectorAll(':scope > details'));
+  const highFiTabs = document.createElement('div');
+  highFiTabs.className = 'high-fi-tabs';
+  highFiTabs.setAttribute('role', 'tablist');
+  highFiTabs.setAttribute('aria-label', 'High-fi flow groups');
+
+  const highFiViews = highFiGroups.map((group, index) => {
+    const title = group.querySelector('summary').textContent.trim();
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'high-fi-tab';
+    tab.id = `high-fi-tab-${index}`;
+    tab.textContent = title;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', `high-fi-panel-${index}`);
+    tab.setAttribute('aria-selected', String(index === 0));
+    tab.tabIndex = index === 0 ? 0 : -1;
+
+    const panel = document.createElement('section');
+    panel.className = 'high-fi-panel';
+    panel.id = `high-fi-panel-${index}`;
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', tab.id);
+    panel.hidden = index !== 0;
+    const screens = group.querySelector('.screen-grid');
+    screens.tabIndex = 0;
+    screens.setAttribute('role', 'region');
+    screens.setAttribute('aria-label', `${title} screens`);
+    panel.append(screens);
+    group.replaceWith(panel);
+    highFiTabs.append(tab);
+    return { tab, panel };
+  });
+
+  function selectHighFiView(index, moveFocus = false) {
+    highFiViews.forEach((view, viewIndex) => {
+      const selected = viewIndex === index;
+      view.tab.setAttribute('aria-selected', String(selected));
+      view.tab.tabIndex = selected ? 0 : -1;
+      view.panel.hidden = !selected;
+    });
+    const selectedTab = highFiViews[index].tab;
+    if (moveFocus) selectedTab.focus();
+    selectedTab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  highFiViews.forEach((view, index) => {
+    view.tab.addEventListener('click', () => selectHighFiView(index));
+    view.tab.addEventListener('keydown', event => {
+      let nextIndex;
+      if (event.key === 'ArrowRight') nextIndex = (index + 1) % highFiViews.length;
+      else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + highFiViews.length) % highFiViews.length;
+      else if (event.key === 'Home') nextIndex = 0;
+      else if (event.key === 'End') nextIndex = highFiViews.length - 1;
+      else return;
+      event.preventDefault();
+      selectHighFiView(nextIndex, true);
+    });
+  });
+  highFiGallery.prepend(highFiTabs);
+  highFiGallery.classList.add('high-fi-enhanced');
+</script>
+</body>
+</html>
