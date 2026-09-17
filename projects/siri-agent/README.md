@@ -43,20 +43,19 @@ the app.
 
 ## Publishing
 
-The `data-prototype-url` attribute on the `data-siri-prototype` section is
-deliberately empty. On a public website, that means the page explains that the
-live prototype is not yet available; it does not display a broken chat window.
+The `data-prototype-url` attribute on the `data-siri-prototype` section points to
+`https://siri-agent-prototype.onrender.com/?screen=siri`, the deployed app. Clearing
+it returns the page to explaining that the live prototype is not yet available,
+rather than displaying a broken chat window.
 
-After deploying the app and its authenticated, usage-limited backend, set that
-attribute to its actual HTTPS URL. Keep credentials out of the URL, HTML, and
-repository. The host must allow the portfolio origin to embed it. Its frontend
-must include the `?embed=1` layout and `siri-prototype:ready` notification from
-the Siri source project.
+The host must allow the portfolio origin to embed it, and its frontend must include
+the `?embed=1` layout and `siri-prototype:ready` notification from the Siri source
+project. Keep credentials out of the URL, HTML, and repository.
 
-Do not copy the static Siri build into GitHub Pages and expect Copilot replies:
-Pages cannot run its Node backend. A hosted backend still requires a supported
-Copilot authentication/billing arrangement or a separately configured provider.
-There is no public backend configured by this integration.
+The deployed backend runs on Render with a server-side model key, so visitors need
+no account of their own. GitHub Pages cannot host it: Pages serves static files and
+cannot run the Node server the AI connection requires. A personal Copilot account is
+never used for public visitors.
 
 The Pages workflow deploys everything committed on `main`. Keep publication
 scoped to Siri; do not stage or push unfinished projects. Include only the Siri
