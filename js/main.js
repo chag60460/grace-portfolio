@@ -11,7 +11,6 @@
 const SECTION_TITLES = {
   about:  'portfolio',
   faith:  'faith',
-  resume: 'resume',
 };
 
 function showSection(name, el) {
