@@ -1,0 +1,11 @@
+{
+  "name": "MediaPipe Hand Landmarker",
+  "source": "https://developers.google.com/edge/mediapipe/solutions/vision/hand_landmarker",
+  "model_url": "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+  "sha256": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
+  "bytes": 7819105,
+  "sdk": "@mediapipe/tasks-vision 1.0.1",
+  "sdk_license": "Apache-2.0",
+  "processing": "Local browser worker; no video, images, landmarks, or biometric identifiers are uploaded or recorded.",
+  "touchdesigner": "Optional loopback transport sends transient gesture names and numeric control features, not camera images."
+}

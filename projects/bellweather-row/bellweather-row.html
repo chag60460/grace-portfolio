@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bellweather Row - Grace Chang</title>
+  <meta name="description" content="Bellweather Row: game design and development for The World's Worst Thief, a five-act 3D browser mystery with miniature worlds, clue-driven puzzles, and a player-authored ending." />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/game-player.js" defer></script>
+</head>
+<body class="game-case-study">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="desktop">
+  <div class="menubar">
+    <div class="menubar-left"><span class="menubar-brand">grace.dev</span></div>
+    <div class="menubar-right"><span>game design + development</span></div>
+  </div>
+  <div class="window-area">
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots" aria-hidden="true">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">bellweather row &middot; game case study</span>
+      </div>
+      <main class="main-content" id="main-content">
+        <article aria-labelledby="game-title">
+          <header class="game-case-header">
+            <a class="game-back-link" href="../../index.html#card-bellweather-row"><span aria-hidden="true">&lsaquo;</span> Back to portfolio</a>
+            <p class="game-case-kicker">Game design &amp; development</p>
+            <h1 id="game-title">Bellweather Row</h1>
+            <p class="game-case-subtitle">The World's Worst Thief &middot; A five-act neighborhood mystery</p>
+          </header>
+          <div class="game-player" data-game-src="play/index.html" data-game-title="Bellweather Row">
+            <div class="game-player-toolbar">
+              <button type="button" class="game-start" hidden disabled><span aria-hidden="true">&#9654;</span> Reopen game</button>
+              <span class="game-player-status" role="status" hidden></span>
+              <div class="game-player-tools" hidden>
+                <button type="button" class="game-control game-fullscreen" aria-label="Enter fullscreen" aria-pressed="false" title="Enter fullscreen" hidden>&#x26F6;</button>
+                <button type="button" class="game-control game-close" aria-label="Close game" title="Close game">&times;</button>
+              </div>
+            </div>
+            <div class="game-player-stage">
+              <img src="media/cover.jpg" alt="A rotatable miniature location and evidence casebook in The World's Worst Thief, set on Bellweather Row" width="1280" height="720" />
+            </div>
+          </div>
+          <dl class="game-facts" aria-label="Game at a glance">
+            <div><dt>Role</dt><dd>Game design &amp; development</dd></div>
+            <div><dt>Genre</dt><dd>Narrative puzzle adventure</dd></div>
+            <div><dt>Platform</dt><dd>Browser &middot; desktop &amp; mobile</dd></div>
+            <div><dt>Engine</dt><dd>Three.js + TypeScript</dd></div>
+          </dl>
+
+          <div class="game-case-body">
+            <section class="game-case-section" aria-labelledby="game-concept">
+              <h2 id="game-concept"><span class="game-section-number" aria-hidden="true">01</span> Game Concept</h2>
+              <p>An absurd newspaper story sends a reporter through Bellweather Row to investigate stolen doorbells. What begins as a mystery becomes a story about a neighborhood, a caretaker's secret, and a final gathering.</p>
+              <div class="game-design-note"><p><strong>Player fantasy:</strong> become the neighborhood reporter, connect the clues, and decide how this small street's story is remembered.</p></div>
+              <div class="game-case-tags">
+                <span class="project-tag">Puzzle Design</span>
+                <span class="project-tag">Narrative Design</span>
+                <span class="project-tag">3D World Building</span>
+                <span class="project-tag">Accessible Play</span>
+              </div>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="core-loop">
+              <h2 id="core-loop"><span class="game-section-number" aria-hidden="true">02</span> Core Gameplay Loop</h2>
+              <ol class="game-loop">
+                <li><h3>Investigate</h3><p>Rotate the miniature world and look for something out of place.</p></li>
+                <li><h3>Collect</h3><p>Inspect objects, talk to residents, and record evidence in the casebook.</p></li>
+                <li><h3>Deduce</h3><p>Compare the clues and solve the location's puzzle.</p></li>
+                <li><h3>Follow the Lead</h3><p>Discover the next address and build a fuller picture of the street.</p></li>
+              </ol>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="game-mechanics">
+              <h2 id="game-mechanics"><span class="game-section-number" aria-hidden="true">03</span> Puzzle Design &amp; Player Feedback</h2>
+              <div class="game-design-grid">
+                <div><h3>Evidence Before Answers</h3><p>Nine puzzles span four formats. Clue notes remain accessible inside each puzzle, keeping the player's reasoning connected to the evidence.</p></div>
+                <div><h3>Flexible Investigation</h3><p>Players can inspect clues freely and follow two neighborhood leads in either order. The casebook points toward unread evidence when they need direction.</p></div>
+                <div><h3>Room to Be Wrong</h3><p>Wrong answers carry no game-over penalty, and there is no real-time deadline. The challenge comes from connecting details, not racing a timer.</p></div>
+              </div>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="world-narrative">
+              <h2 id="world-narrative"><span class="game-section-number" aria-hidden="true">04</span> World &amp; Narrative Design</h2>
+              <p>Five original rotatable 3D locations make the street explorable at the scale of a miniature. Object inspections offer fixed close-ups, and chapter transitions explain what changed and why the next destination matters.</p>
+              <dl class="game-scope" aria-label="Campaign scope">
+                <div><dt>5</dt><dd>3D locations</dd></div>
+                <div><dt>24</dt><dd>inspectable clues</dd></div>
+                <div><dt>9</dt><dd>authored puzzles</dd></div>
+              </dl>
+              <p>Across five acts, conversations with five residents, four personal goodbyes, and a complete epilogue turn the investigation into a character-driven arc. The player's final headline and chosen quotation appear in the published newspaper.</p>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="game-development">
+              <h2 id="game-development"><span class="game-section-number" aria-hidden="true">05</span> Game Development</h2>
+              <p><strong>Living miniatures.</strong> Three.js and TypeScript power original 3D locations, characters, and changing reunion states. The world is rendered geometry, not a sequence of screenshots.</p>
+              <p><strong>Campaign state.</strong> Typed story state controls progression, puzzle outcomes, and save migration. Local storage preserves clues, conversations, unread scenes, and the final article between visits.</p>
+              <p><strong>Sound as evidence.</strong> Optional doorbell chimes are synthesized locally. Every audio pattern is also represented in text, so hearing is never required to solve a puzzle.</p>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="game-playability">
+              <h2 id="game-playability"><span class="game-section-number" aria-hidden="true">06</span> Playability &amp; Testing</h2>
+              <p>Keyboard rotation and a casebook alternative to 3D object selection offer multiple ways into the same investigation. Readable close-ups, native dialogs, reduced-motion support, and sound that is off by default keep the story approachable.</p>
+              <p>Automated browser tests play the campaign through publication and exercise clue selection, wrong answers, resumed scenes, older saves, mobile layouts, and reduced-motion controls.</p>
+            </section>
+          </div>
+        </article>
+      </main>
+    </div>
+  </div>
+  <div class="status-bar">
+    <span>Bellweather Row</span>
+    <nav class="status-links" aria-label="Project navigation"><a href="../../index.html#card-bellweather-row">portfolio</a></nav>
+  </div>
+</div>
+</body>
+</html>

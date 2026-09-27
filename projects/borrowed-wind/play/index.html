@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#183c36" />
+    <meta name="description" content="Borrowed Wind: a small, original Chinese-fantasy adventure above the clouds. One talisman. Three ways to change the world." />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>Borrowed Wind | The Names Beneath the Bridge</title>
+    <script type="module" crossorigin src="./assets/index-BocXnSld.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/three-DUtYi84Z.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-DsKcmBRZ.css">
+  </head>
+  <body>
+    <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-wind" viewBox="0 0 32 32">
+        <path d="M3 12h18c6 0 6-8 1-8-3 0-4 2-4 4M3 17h23c5 0 5 7 0 7-2 0-3-1-3-3M7 22h7c5 0 5 7 1 7M2 7h9"/>
+      </symbol>
+      <symbol id="icon-sword" viewBox="0 0 32 32">
+        <path d="m8 24 15-18 6-3-1 7-17 17M7 19l7 7M4 28l4-4M3 25l4 4"/>
+      </symbol>
+      <symbol id="icon-dodge" viewBox="0 0 32 32">
+        <path d="m18 5-8 12h9l-5 11L28 12H17l5-7M3 9h8M1 14h6M4 22h6"/>
+      </symbol>
+      <symbol id="icon-jump" viewBox="0 0 32 32">
+        <path d="M16 25V7m-7 7 7-7 7 7M5 27h22"/>
+      </symbol>
+      <symbol id="icon-sound" viewBox="0 0 32 32">
+        <path d="m14 7-7 6H3v7h4l7 5V7M20 11c4 3 4 7 0 10M24 7c7 6 7 12 0 18"/>
+      </symbol>
+      <symbol id="icon-mute" viewBox="0 0 32 32">
+        <path d="m14 7-7 6H3v7h4l7 5V7m7 5 7 9m0-9-7 9"/>
+      </symbol>
+      <symbol id="icon-pause" viewBox="0 0 32 32">
+        <path d="M11 8v16M21 8v16"/>
+      </symbol>
+      <symbol id="icon-arrow" viewBox="0 0 32 32">
+        <path d="M5 16h21m-8-8 8 8-8 8"/>
+      </symbol>
+      <symbol id="icon-bell" viewBox="0 0 32 32">
+        <path d="M9 22V12a7 7 0 0 1 14 0v10l3 2H6l3-2m4 5h6M15 3h2"/>
+      </symbol>
+      <symbol id="icon-talk" viewBox="0 0 32 32">
+        <path d="M5 6h22v15H15l-7 6v-6H5V6m6 7h10m-10 4h6"/>
+      </symbol>
+      <symbol id="icon-book" viewBox="0 0 32 32">
+        <path d="M16 8C12 5 7 5 3 6v20c4-1 9-1 13 2 4-3 9-3 13-2V6c-4-1-9-1-13 2v20"/>
+      </symbol>
+      <symbol id="icon-hand" viewBox="0 0 32 32">
+        <path d="M9 16V9a2 2 0 0 1 4 0v7-11a2 2 0 0 1 4 0v11-9a2 2 0 0 1 4 0v9-5a2 2 0 0 1 4 0v10c0 6-4 9-9 9-4 0-6-3-8-6l-4-6a2 2 0 0 1 3-3l2 3"/>
+      </symbol>
+      <symbol id="icon-move" viewBox="0 0 24 24">
+        <path d="M12 3v18M3 12h18m-13-4-5 4 5 4m8-8 5 4-5 4M8 8l4-5 4 5m-8 8 4 5 4-5"/>
+      </symbol>
+      <symbol id="icon-collapse" viewBox="0 0 24 24">
+        <path d="m6 15 6-6 6 6"/>
+      </symbol>
+      <symbol id="icon-minimize" viewBox="0 0 24 24">
+        <path d="M5 17h14"/>
+      </symbol>
+      <symbol id="guide-palm" viewBox="0 0 64 64">
+        <path d="M23 58l-2-7C17 46 13 42 8 35q-3-4 1-6 3-1 6 3l5 5-2-20q0-4 4-4 3 0 3 4l1 13V10q0-4 4-4t4 4v19l2-16q1-4 4-3t3 4l-2 18 4-11q1-4 4-3t2 5l-5 19q-2 8-6 11l-1 5M24 42q7-7 14-4M24 58h15"/>
+      </symbol>
+      <symbol id="guide-fold" viewBox="0 0 96 80">
+        <path d="m32 69-3-12C22 52 14 45 9 37q-2-3 1-5t7 2l10 10-3-17q-1-7 4-8 5-1 7 5l3 14-3-16q-1-7 4-7 5 0 7 7l2 14 1-11q0-7 5-6 4 1 5 7l1 13 1-9q0-5 5-4 4 1 4 6l-1 18q-1 9-8 14l-1 5M32 69h28M27 35q5-4 9 0m4-4q4-4 7 0m4 5q4-4 7 0m4 5q3-3 6 0"/>
+      </symbol>
+      <symbol id="guide-wave" viewBox="0 0 96 80">
+        <use href="#guide-fold" width="96" height="80"/>
+        <path d="M77 18c12 9 12 24 1 34m-4-8 4 8 8-3"/>
+      </symbol>
+      <symbol id="guide-push" viewBox="0 0 96 80">
+        <use href="#guide-palm" x="4" y="26" width="38" height="38" opacity=".45"/>
+        <use href="#guide-palm" x="37" y="2" width="64" height="64"/>
+        <path d="M16 74h54m-8-6 8 6-8 6"/>
+      </symbol>
+      <symbol id="guide-pinch" viewBox="0 0 96 80">
+        <path d="M30 69l-3-10-11-18q-2-4 1-6 3-2 6 2l7 10 9-10q2-3-1-5l-6-1q-5-1-4-5 1-4 6-3l10 1q8 2 8 9v8l-1-23q0-4 4-4t4 4l1 19 1-16q0-4 4-4t4 4l-1 17 2-10q1-4 4-3t2 5l-4 22q-1 9-8 14l-1 3M30 69h34"/>
+        <circle cx="31" cy="31" r="12" stroke-dasharray="3 3"/>
+        <path d="m13 17 6 6M13 23l6 0 0-6"/>
+      </symbol>
+      <symbol id="guide-fist" viewBox="0 0 96 80">
+        <path d="M29 67l-3-11q-8-5-9-15V30q0-5 5-5t5 5v9-17q0-5 5-5t5 5v15-18q0-5 5-5t5 5v18-14q0-5 5-5t5 5v16-8q0-5 5-5t5 5v18q0 11-9 17l-1 1M29 67h28M26 45l17-6q5-2 7 2t-2 7l-12 5"/>
+        <path d="M76 19a20 20 0 0 1 0 40m0-30v12l6 4" stroke-dasharray="3 3"/>
+      </symbol>
+    </svg>
+
+    <main id="app" data-phase="title">
+      <canvas id="world" aria-label="Borrowed Wind 3D game world" tabindex="0"></canvas>
+      <div class="vignette" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <a class="wordmark" href="./" aria-label="Borrowed Wind home">
+          <span class="wordmark-seal" aria-hidden="true">&#39118;</span>
+          <span>BORROWED WIND<small>A SMALL ADVENTURE</small></span>
+        </a>
+        <div class="topbar-right">
+          <span class="build-tag">PROTOTYPE <b>01</b></span>
+          <button id="camera-button" class="icon-button" aria-label="Hand gesture controls" title="Camera / TouchDesigner controls">
+            <svg><use href="#icon-hand"></use></svg>
+          </button>
+          <button id="sound-button" class="icon-button" aria-label="Enable sound" title="Enable sound" aria-pressed="false">
+            <svg><use href="#icon-mute"></use></svg>
+          </button>
+          <button id="pause-button" class="icon-button playing-only" aria-label="Pause game" title="Pause / controls (Esc)">
+            <svg><use href="#icon-pause"></use></svg>
+          </button>
+          <button id="journal-button" class="icon-button playing-only" aria-label="Open story journal" title="Story journal">
+            <svg><use href="#icon-book"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <section id="intro" class="intro overlay" aria-labelledby="intro-title">
+        <div class="intro-content">
+          <div class="eyebrow"><span class="tiny-diamond"></span> THE NAMES BENEATH THE BRIDGE</div>
+          <div class="chinese-title" aria-label="Jie feng, borrowed wind">&#20511;&#39118;</div>
+          <h1 id="intro-title">Borrowed<br /><em>Wind</em><span class="title-period">.</span></h1>
+          <p class="intro-line">A wind borrowed for one winter.<br />A promise that outlived the people who made it.</p>
+          <button id="start-button" class="primary-button" disabled>
+            <span>Opening the valley</span><svg><use href="#icon-arrow"></use></svg>
+          </button>
+          <div class="intro-meta"><span>FIVE CHAPTERS</span><i></i><span>TWO FINAL ENDINGS</span><i></i><span>20&ndash;30 MIN</span></div>
+        </div>
+        <div class="intro-footer">
+          <span>EXPLORE. UNBIND. AWAKEN.</span>
+          <p>Original world &amp; detailed 3D art.<br />Camera gestures, keyboard, or touch. Sound is optional.</p>
+        </div>
+        <div class="location-card"><span>QINGLAN VALLEY</span><b>The Windless Courtyard</b><small>Above the clouds, a path is waiting.</small></div>
+      </section>
+
+      <section id="hud" class="playing-only" aria-label="Game interface">
+        <div class="quest-panel">
+          <div class="eyebrow">THE WINDLESS COURTYARD</div>
+          <div class="quest-heading"><span id="quest-number">01</span><h2 id="quest-title">Borrow the wind</h2></div>
+          <p id="quest-hint">Cast at the teal seal beside the teahouse.</p>
+          <div class="quest-steps" aria-label="Quest progress">
+            <span id="step-sigil"><i></i> CLOUD SEAL</span>
+            <span id="step-sentinel"><i></i> SENTINEL</span>
+            <span id="step-shrine"><i></i> SHRINE</span>
+          </div>
+        </div>
+        <div class="compass" aria-label="Compass">
+          <span>N</span><div id="compass-needle"></div><small>QINGLAN</small>
+        </div>
+        <div id="objective-marker" class="world-marker" aria-hidden="true">
+          <span class="marker-diamond"></span><span id="marker-label">CLOUD SEAL</span>
+        </div>
+        <div id="enemy-label" class="enemy-label" hidden>
+          <span id="enemy-state">WIND-BOUND SENTINEL</span>
+          <div class="enemy-health"><i id="enemy-health-fill"></i></div>
+        </div>
+        <div id="keeper-label" class="keeper-label" aria-hidden="true" hidden>LIAN <span>KEEPER OF QINGLAN</span></div>
+        <div class="player-panel">
+          <div class="player-avatar" aria-hidden="true"><svg><use href="#icon-bell"></use></svg></div>
+          <div><span class="player-name">YUN <small>TALISMAN KEEPER</small></span>
+            <div id="health" class="health" role="meter" aria-label="Health" aria-valuemin="0" aria-valuemax="5" aria-valuenow="5">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+        </div>
+        <div id="context-prompt" class="context-prompt"><kbd>E</kbd><span id="context-text">Borrow the wind</span></div>
+        <button id="talk-button" class="talk-button" aria-label="Talk to Lian" hidden>
+          <svg><use href="#icon-talk"></use></svg><span>Talk to Lian</span><kbd>F</kbd>
+        </button>
+        <div class="keyboard-guide"><span><kbd>W A S D</kbd> Move</span><span><kbd>DRAG</kbd> Look</span><span><kbd>R</kbd> Recenter</span></div>
+        <div id="joystick" class="joystick" aria-label="Touch movement joystick"><span id="joystick-thumb"></span></div>
+        <div class="action-controls">
+          <button id="attack-button" class="action-button action-small" aria-label="Sword attack" title="Sword attack (J / click)">
+            <svg><use href="#icon-sword"></use></svg><span>STRIKE</span><kbd>J</kbd>
+          </button>
+          <button id="cast-button" class="action-button action-wind" aria-label="Cast wind talisman" title="Wind talisman (E)">
+            <span class="cooldown-ring"></span><svg><use href="#icon-wind"></use></svg><span id="cast-label">TALISMAN</span><kbd>E</kbd>
+          </button>
+          <div class="action-stack">
+            <button id="dodge-button" class="action-button action-small" aria-label="Dodge" title="Dodge (Shift)">
+              <svg><use href="#icon-dodge"></use></svg><span>DODGE</span><kbd>SHIFT</kbd>
+            </button>
+            <button id="jump-button" class="jump-button" aria-label="Jump" title="Jump (Space)">
+              <svg><use href="#icon-jump"></use></svg><span>JUMP</span><kbd>SPACE</kbd>
+            </button>
+          </div>
+        </div>
+      </section>
+      <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+      <div id="camera-preview-home">
+        <aside id="camera-preview" class="camera-preview" aria-label="Live local camera preview" hidden>
+          <div class="panel-header">
+            <button id="camera-preview-drag" class="panel-drag" data-panel-drag aria-label="Move camera guide" title="Drag to move. Arrow keys move; Home or double-click resets.">
+              <svg aria-hidden="true"><use href="#icon-move"></use></svg><span>CAMERA &amp; GUIDE<small id="camera-panel-status">Camera off</small></span>
+            </button>
+            <div class="panel-tools">
+              <button id="camera-preview-collapse" data-panel-collapse aria-label="Collapse camera guide" aria-expanded="true" aria-controls="camera-preview-body" title="Collapse camera guide"><svg aria-hidden="true"><use href="#icon-collapse"></use></svg></button>
+              <button id="camera-preview-minimize" aria-label="Minimize camera guide" title="Minimize camera guide"><svg aria-hidden="true"><use href="#icon-minimize"></use></svg></button>
+            </div>
+          </div>
+          <div id="camera-preview-body" class="panel-body" data-panel-content>
+            <div class="camera-preview-header"><span>LOCAL CAMERA</span><div><button id="camera-guide" aria-label="Open gesture practice">Guide</button><button id="camera-preview-play" aria-label="Return to game from hand practice">Play</button><button id="camera-quick-stop" aria-label="Stop camera and restore keyboard actions">Stop</button></div></div>
+            <div class="camera-action-banner" role="status">
+              <strong id="camera-action-state">Hand actions not active</strong>
+              <p id="camera-action-help">Start the camera to connect gestures.</p>
+              <button id="camera-live-direct" class="primary-button" hidden>Play with camera only</button>
+            </div>
+            <div class="camera-image"><video id="hand-video" autoplay playsinline muted></video><canvas id="hand-overlay" width="640" height="480"></canvas></div>
+            <div class="camera-tracking"><strong id="camera-hand-state">Looking for a hand</strong><span id="camera-fingers">No hand detected</span></div>
+            <div class="camera-progress"><progress id="camera-calibration" max="1" value="0" aria-label="Open-palm calibration progress"></progress><span id="camera-calibration-percent" aria-hidden="true">0%</span></div>
+            <p id="camera-live-status">Show either palm to the camera.</p>
+            <p id="camera-connection" class="camera-connection" hidden></p>
+            <p id="camera-recognized" class="camera-recognized" role="status" hidden></p>
+            <p id="camera-game-action" class="camera-game-action" role="status" hidden></p>
+            <div class="camera-game-cue"><svg aria-hidden="true"><use id="camera-cue-icon" href="#guide-push"></use></svg><span id="camera-cue-text">Wind: push your open palm toward the lens.</span></div>
+            <p class="camera-compact-legend">Held fist = attack &middot; Push = wind<br />Pinch = interact &middot; Finger fold + open = dodge</p>
+          </div>
+        </aside>
+      </div>
+      <div id="camera-minimized" class="camera-minimized" aria-label="Minimized hand controls" hidden>
+        <button id="camera-restore" aria-label="Restore hand controls" title="Restore hand controls">
+          <svg aria-hidden="true"><use href="#icon-hand"></use></svg><span>Restore guide<small id="camera-minimized-status">Camera off</small></span>
+        </button>
+        <button id="camera-minimized-stop" aria-label="Stop minimized camera and restore keyboard actions" hidden>Stop</button>
+      </div>
+
+      <dialog id="camera-dialog" class="camera-dialog" aria-labelledby="camera-title">
+        <div class="panel-header camera-dialog-header">
+          <button id="camera-dialog-drag" class="panel-drag" data-panel-drag aria-label="Move tutorial panel" title="Drag to move. Arrow keys move; Home or double-click resets.">
+            <svg aria-hidden="true"><use href="#icon-move"></use></svg><span><strong id="camera-title">Hold the wind.</strong><small>Hand tutorial &middot; practice pauses the game</small></span>
+          </button>
+          <div class="panel-tools">
+            <button id="camera-dialog-collapse" data-panel-collapse aria-label="Collapse tutorial panel" aria-expanded="true" aria-controls="camera-dialog-body" title="Collapse tutorial panel"><svg aria-hidden="true"><use href="#icon-collapse"></use></svg></button>
+            <button id="camera-dialog-minimize" aria-label="Minimize tutorial and return to game" title="Minimize tutorial and return to game"><svg aria-hidden="true"><use href="#icon-minimize"></use></svg></button>
+          </div>
+        </div>
+        <div id="camera-dialog-body" class="panel-body" data-panel-content>
+          <p>Use either hand. Keep your other hand on WASD; Space still jumps.</p>
+          <div class="camera-layout">
+            <div class="camera-setup">
+              <label class="camera-source-label" for="camera-source">Control source</label>
+              <select id="camera-source">
+                <option value="camera">Camera only (recommended; controls the game directly)</option>
+                <option value="touchdesigner">Camera + TouchDesigner (requires a connected TD patch)</option>
+              </select>
+              <p class="camera-setup-note">Camera only uses your gestures directly. TouchDesigner is optional: its mode needs both the bridge and connected TD patch before the character can act. Neither mode changes automatically.</p>
+              <div id="camera-tutorial-home">
+                <section id="camera-tutorial" class="camera-tutorial" aria-labelledby="camera-tutorial-title">
+                  <div class="tutorial-heading"><span>GUIDED MOTION TUTORIAL</span><strong data-tutorial-progress>Step 1 of 5</strong></div>
+                  <ol class="tutorial-steps" aria-label="Gesture tutorial steps">
+                    <li data-tutorial-step>1 Palm</li><li data-tutorial-step>2 Fist</li><li data-tutorial-step>3 Push</li><li data-tutorial-step>4 Pinch</li><li data-tutorial-step>5 Wave</li>
+                  </ol>
+                  <div class="tutorial-demo" data-tutorial-demo data-motion="palm" role="img" aria-label="Open your palm toward the lens">
+                    <svg viewBox="0 0 240 112" aria-hidden="true">
+                      <rect class="tutorial-frame" x="55" y="7" width="130" height="96" rx="10"></rect>
+                      <g class="tutorial-hand-primary"><use data-tutorial-primary href="#guide-palm" x="80" y="14" width="80" height="80"></use></g>
+                      <g class="tutorial-hand-alternate"><use data-tutorial-alternate href="#guide-pinch" x="72" y="14" width="96" height="80"></use></g>
+                      <path class="tutorial-wave-arrow" d="M170 30c20 8 21 34 2 47m-3-9 3 9 10-2"></path>
+                      <path class="tutorial-push-arrows" d="m62 36-15-15m0 10V21h10m121 15 15-15m-10 0h10v10"></path>
+                    </svg>
+                    <span data-tutorial-caption>Palm toward the lens</span>
+                  </div>
+                  <h3 id="camera-tutorial-title" data-tutorial-title>Show an open palm</h3>
+                  <p data-tutorial-instruction></p>
+                  <p class="tutorial-status" data-tutorial-status role="status" aria-live="polite"></p>
+                  <div class="tutorial-actions">
+                    <button id="camera-tutorial-skip" class="text-button" hidden>Skip tutorial</button>
+                    <button id="camera-tutorial-replay" class="text-button" hidden>Replay tutorial</button>
+                    <button id="camera-tutorial-motion" class="text-button" hidden aria-pressed="false">Pause demonstration</button>
+                    <button id="camera-tutorial-finish" class="primary-button" hidden>Play with hand controls</button>
+                    <button id="camera-tutorial-direct" class="primary-button" hidden>Play with camera only</button>
+                  </div>
+                </section>
+              </div>
+              <p id="camera-status" class="camera-status" role="status" aria-live="polite">Camera off. Keyboard and touch actions are active.</p>
+              <button id="camera-start" class="primary-button">Start camera controls</button>
+              <button id="camera-direct" class="text-button" hidden>Use camera without TouchDesigner</button>
+              <div class="camera-settings-actions">
+                <button id="camera-recalibrate" class="text-button" hidden>Recalibrate hand</button>
+                <button id="camera-stop" class="text-button" hidden>Stop hand controls / restore keyboard</button>
+              </div>
+              <button id="camera-close" class="primary-button">Return to the game</button>
+            </div>
+            <div id="camera-setup-preview" class="camera-setup-preview">
+              <div id="camera-preview-placeholder"><svg aria-hidden="true"><use href="#guide-palm"></use></svg><p>Your live hand appears here after you start the camera.</p></div>
+            </div>
+          </div>
+          <p id="camera-practice-note" class="camera-practice-note">Practice only: no attacks, wind casts, or story choices run here. The tutorial teaches the default TouchDesigner bindings; camera-only mode uses the same motions.</p>
+          <details class="gesture-reference">
+            <summary>All gestures at a glance</summary>
+            <div class="gesture-guide-grid" aria-label="Hand gesture examples">
+              <div class="gesture-guide" data-gesture-example="fist"><svg viewBox="0 0 96 80" aria-hidden="true"><use href="#guide-fist"></use></svg><strong>ATTACK &middot; FIST</strong><p>Close your fist. Hold for 0.6 seconds, then open to reset.</p></div>
+              <div class="gesture-guide" data-gesture-example="push"><svg viewBox="0 0 96 80" aria-hidden="true"><use href="#guide-push"></use></svg><strong>WIND &middot; PUSH</strong><p>Open your hand. Move it toward the lens so it looks larger, then pull back.</p></div>
+              <div class="gesture-guide" data-gesture-example="pinch"><svg viewBox="0 0 96 80" aria-hidden="true"><use href="#guide-pinch"></use></svg><strong>INTERACT &middot; PINCH</strong><p>Touch thumb to index. Keep other fingers open. Separate to repeat.</p></div>
+              <div class="gesture-guide" data-gesture-example="wave"><svg viewBox="0 0 96 80" aria-hidden="true"><use href="#guide-wave"></use></svg><strong>DODGE &middot; FINGER WAVE</strong><p>Fold four fingers forward and reopen within half a second. Keep your wrist in place.</p></div>
+            </div>
+          </details>
+          <p class="camera-privacy">Video is processed locally, off the game thread. No audio, recording, uploads, or saved hand landmarks. TouchDesigner receives only transient control features and gestures. Hand tracking: MediaPipe (<a href="./models/MEDIAPIPE-LICENSE.txt" target="_blank" rel="noopener">Apache 2.0</a>).</p>
+        </div>
+      </dialog>
+
+      <section id="dialogue" class="dialogue-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="dialogue-title" aria-describedby="dialogue-text" hidden>
+        <div class="dialogue-card">
+          <div id="dialogue-portrait" class="dialogue-portrait" aria-hidden="true"></div>
+          <div class="dialogue-content">
+            <div class="dialogue-topline"><span id="dialogue-title" class="eyebrow"></span><span id="dialogue-progress"></span></div>
+            <h2 id="dialogue-speaker"></h2>
+            <div id="dialogue-role"></div>
+            <p id="dialogue-text" aria-live="polite"></p>
+            <div id="dialogue-choices" class="dialogue-choices" aria-label="Choose the wind's future" hidden></div>
+            <div class="dialogue-footer">
+              <span>THE WORLD WAITS WHILE YOU READ</span>
+              <button id="dialogue-camera-button" class="text-button">Hand controls</button>
+              <button id="dialogue-skip" class="text-button">Skip conversation</button>
+              <button id="dialogue-next" class="dialogue-next">Continue <svg><use href="#icon-arrow"></use></svg></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pause" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pause-title" hidden>
+        <div class="modal-card">
+          <div class="eyebrow">A MOMENT OF STILLNESS</div>
+          <h2 id="pause-title">Catch your breath.</h2>
+          <p>Your journey is paused. Discoveries are recorded below.</p>
+          <details id="journal" class="journal">
+            <summary>Story journal <span id="journal-count">0 / 3</span></summary>
+            <p class="journal-chapter">CHAPTER I &middot; THE PROMISE THAT STAYED</p>
+            <div id="journal-entries"></div>
+          </details>
+          <dl class="controls-list">
+            <div><dt>Move / look</dt><dd>WASD / drag the world</dd></div>
+            <div><dt>Wind talisman</dt><dd id="control-wind">E / talisman button</dd></div>
+            <div><dt>Sword attack</dt><dd id="control-sword">J / click / sword button</dd></div>
+            <div><dt>Dodge / jump</dt><dd id="control-dodge">Shift / Space</dd></div>
+            <div><dt>Recenter / pause</dt><dd>R / Esc</dd></div>
+          </dl>
+          <p id="interaction-help" class="touch-note">Talk to Lian or gather a memory with F. Use Continue or F to advance dialogue. Skipping never chooses an ending for you.</p>
+          <p class="touch-note">On touch: use the left stick to move, drag the world to look, and tap the action buttons.</p>
+          <label class="setting"><input type="checkbox" id="reduced-motion" /> Reduce decorative motion</label>
+          <button id="resume-button" class="primary-button">Return to the wind <svg><use href="#icon-arrow"></use></svg></button>
+          <button id="restart-button" class="text-button">Start a fresh journey</button>
+        </div>
+      </section>
+
+      <section id="completion" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="complete-title" hidden>
+        <div class="modal-card completion-card">
+          <div class="completion-seal" aria-hidden="true">&#39118;</div>
+          <div id="completion-eyebrow" class="eyebrow">CHAPTER I COMPLETE</div>
+          <h2 id="complete-title"></h2>
+          <p id="complete-story"></p>
+          <p id="complete-next" class="chapter-hook"></p>
+          <div class="results">
+            <div><strong id="result-time">0:00</strong><span>ACTIVE PLAY</span></div>
+            <div><strong id="result-casts">0</strong><span>TALISMANS</span></div>
+            <div><strong id="result-reflections">0</strong><span>RETURNS</span></div>
+          </div>
+          <button id="continue-button" class="primary-button" hidden>Continue the story</button>
+          <button id="replay-button" class="primary-button">Wander once more <svg><use href="#icon-arrow"></use></svg></button>
+          <button id="export-button" class="text-button">Download local playtest data</button>
+          <small class="privacy-note">No accounts. No external analytics. Nothing is uploaded.</small>
+        </div>
+      </section>
+
+      <section id="fatal" class="modal-overlay" role="alert" hidden>
+        <div class="modal-card">
+          <div class="eyebrow">THE VALLEY COULD NOT OPEN</div>
+          <h2>A browser detour.</h2>
+          <p id="fatal-message"></p>
+          <button id="reload-button" class="primary-button">Reload the valley</button>
+        </div>
+      </section>
+      <noscript><div class="noscript">Borrowed Wind needs JavaScript and a WebGL 2-capable browser to run.</div></noscript>
+    </main>
+  </body>
+</html>

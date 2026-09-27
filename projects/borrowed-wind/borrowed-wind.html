@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Borrowed Wind - Grace Chang</title>
+  <meta name="description" content="Borrowed Wind: game design and development for an original five-chapter 3D action-adventure, with branching narrative, wind-and-sword combat, and optional gesture controls." />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/game-player.js" defer></script>
+</head>
+<body class="game-case-study">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="desktop">
+  <div class="menubar">
+    <div class="menubar-left"><span class="menubar-brand">grace.dev</span></div>
+    <div class="menubar-right"><span>game design + development</span></div>
+  </div>
+  <div class="window-area">
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="dots" aria-hidden="true">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <span class="titlebar-title">borrowed wind &middot; game case study</span>
+      </div>
+      <main class="main-content" id="main-content">
+        <article aria-labelledby="game-title">
+          <header class="game-case-header">
+            <a class="game-back-link" href="../../index.html#card-borrowed-wind"><span aria-hidden="true">&lsaquo;</span> Back to portfolio</a>
+            <p class="game-case-kicker">Game design &amp; development</p>
+            <h1 id="game-title">Borrowed Wind</h1>
+            <p class="game-case-subtitle">The Names Beneath the Bridge &middot; An original 3D action-adventure</p>
+          </header>
+          <div class="game-player" data-game-src="play/index.html" data-game-title="Borrowed Wind">
+            <div class="game-player-toolbar">
+              <button type="button" class="game-start" hidden disabled><span aria-hidden="true">&#9654;</span> Reopen game</button>
+              <span class="game-player-status" role="status" hidden></span>
+              <div class="game-player-tools" hidden>
+                <button type="button" class="game-control game-fullscreen" aria-label="Enter fullscreen" aria-pressed="false" title="Enter fullscreen" hidden>&#x26F6;</button>
+                <button type="button" class="game-control game-close" aria-label="Close game" title="Close game">&times;</button>
+              </div>
+            </div>
+            <div class="game-player-stage">
+              <img src="media/cover.jpg" alt="The playable mountain courtyard in Borrowed Wind, with its third-person character and wind-talisman controls" width="1280" height="720" />
+            </div>
+          </div>
+          <dl class="game-facts" aria-label="Game at a glance">
+            <div><dt>Role</dt><dd>Game design &amp; development</dd></div>
+            <div><dt>Genre</dt><dd>3D action-adventure</dd></div>
+            <div><dt>Platform</dt><dd>Browser &middot; keyboard &amp; touch</dd></div>
+            <div><dt>Engine</dt><dd>Three.js + TypeScript</dd></div>
+          </dl>
+
+          <div class="game-case-body">
+            <section class="game-case-section" aria-labelledby="game-concept">
+              <h2 id="game-concept"><span class="game-section-number" aria-hidden="true">01</span> Game Concept</h2>
+              <p>A wandering talisman keeper arrives to free a borrowed wind and discovers thirty lives hidden beneath a perfectly fulfilled promise. This original browser game brings together third-person exploration, wind-and-sword combat, and a complete five-chapter story.</p>
+              <div class="game-design-note"><p><strong>Player fantasy:</strong> become a talisman keeper whose wind magic can reveal a memory, change the environment, or turn a fight.</p></div>
+              <div class="game-case-tags">
+                <span class="project-tag">Combat Design</span>
+                <span class="project-tag">Level Design</span>
+                <span class="project-tag">Branching Narrative</span>
+                <span class="project-tag">Gesture Interaction</span>
+              </div>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="core-loop">
+              <h2 id="core-loop"><span class="game-section-number" aria-hidden="true">02</span> Core Gameplay Loop</h2>
+              <ol class="game-loop">
+                <li><h3>Explore</h3><p>Walk, jump, and find a route through the courtyard.</p></li>
+                <li><h3>Read the World</h3><p>Find a memory, speak to a character, or identify a wind target.</p></li>
+                <li><h3>Act</h3><p>Cast a talisman, fight a sentinel, or change the environment.</p></li>
+                <li><h3>Discover</h3><p>Uncover the next fragment of the promise and choose how to respond.</p></li>
+              </ol>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="game-mechanics">
+              <h2 id="game-mechanics"><span class="game-section-number" aria-hidden="true">03</span> Mechanics &amp; Player Feedback</h2>
+              <div class="game-design-grid">
+                <div><h3>One Power, Several Uses</h3><p>The wind talisman affects seals, vanes, memories, and sentinels, and reflects hostile embers. The same action connects exploration and combat.</p></div>
+                <div><h3>Readable Combat</h3><p>Sword attacks and dodges complement wind casting. A target ring and contextual prompt identify the next cast before the player commits.</p></div>
+                <div><h3>Embodied Input</h3><p>A palm push casts wind, a held fist attacks, a finger fold-and-reopen dodges, and a pinch interacts. Deliberate holds and releases separate intentions.</p></div>
+              </div>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="world-narrative">
+              <h2 id="world-narrative"><span class="game-section-number" aria-hidden="true">04</span> World, Levels &amp; Narrative</h2>
+              <p>The original Qinglan courtyard combines Huizhou-inspired architecture with Huangshan-inspired granite, pines, and mist. Modeled roof tiles, latticework, weathered materials, and everyday objects establish an inhabited setting.</p>
+              <p>Shared shrine-wall bounds keep the architecture, movement rules, and third-person camera consistent. Memory fragments and character conversations connect the player's route through the world to the story.</p>
+              <dl class="game-scope" aria-label="Narrative scope">
+                <div><dt>5</dt><dd>story chapters</dd></div>
+                <div><dt>3</dt><dd>story decisions</dd></div>
+                <div><dt>2</dt><dd>final endings</dd></div>
+              </dl>
+              <p>Three decisions lead to two bittersweet endings. Story choices remain deliberate on-screen actions, including when camera controls are enabled.</p>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="game-development">
+              <h2 id="game-development"><span class="game-section-number" aria-hidden="true">05</span> Game Development</h2>
+              <p><strong>World building.</strong> Three.js and TypeScript power original procedural characters, architecture, terrain, effects, and optional synthesized sound. Locally bundled CC0 surface textures support the material detail.</p>
+              <p><strong>Rendering budget.</strong> Touch rendering uses a lower pixel-ratio cap, and bloom is disabled on narrow screens. The game waits for local material maps before enabling play.</p>
+              <p><strong>Gesture pipeline.</strong> MediaPipe hand tracking runs in a worker, keeping inference off the game thread. Camera frames remain in the browser. An optional TouchDesigner bridge provides a second, explicitly selected control route in the local setup.</p>
+            </section>
+
+            <section class="game-case-section" aria-labelledby="game-playability">
+              <h2 id="game-playability"><span class="game-section-number" aria-hidden="true">06</span> Playability &amp; Testing</h2>
+              <p>Keyboard and touch controls work without a camera. A replayable guided tutorial separates gesture practice from live actions, and reduced-motion support makes the interaction experiment easier to approach.</p>
+              <p>Automated coverage exercises story choices, movement, touch controls, and gesture gating. Camera recognition still depends on lighting, occlusion, and hand pose; synthetic tracking tests do not replace real-hand playtesting.</p>
+            </section>
+          </div>
+        </article>
+      </main>
+    </div>
+  </div>
+  <div class="status-bar">
+    <span>Borrowed Wind</span>
+    <nav class="status-links" aria-label="Project navigation"><a href="../../index.html#card-borrowed-wind">portfolio</a></nav>
+  </div>
+</div>
+</body>
+</html>

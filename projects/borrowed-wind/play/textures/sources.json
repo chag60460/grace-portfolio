@@ -1,0 +1,41 @@
+{
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "resolution": "1024x1024",
+  "modifications": "Original JPEG files; in-game tinting, UV scale, and normal strength are adjusted.",
+  "assets": [
+    {
+      "id": "wood_table_001",
+      "source": "https://polyhaven.com/a/wood_table_001",
+      "use": "Timber beams, latticework, furniture, and props",
+      "files": {
+        "wood_table_001_diff_1k.jpg": "56652a7339b16a76afad20d3585f66ea",
+        "wood_table_001_nor_gl_1k.jpg": "6360e09967add8baecaa5ecc55fb5e03",
+        "wood_table_001_rough_1k.jpg": "05b60bd20a1cc4355c5d73a99b245d44"
+      }
+    },
+    {
+      "id": "grey_plaster",
+      "source": "https://polyhaven.com/a/grey_plaster",
+      "use": "Limewashed courtyard walls and stepped gables",
+      "files": {
+        "grey_plaster_diff_1k.jpg": "42d2ffe5338fcc0065e28076cbe15eba",
+        "grey_plaster_nor_gl_1k.jpg": "add2064b193d083c892aead5eaf461d2",
+        "grey_plaster_rough_1k.jpg": "b97159bbbb4817965892ec7ab6efe46f"
+      }
+    },
+    {
+      "id": "rock_boulder_dry",
+      "source": "https://polyhaven.com/a/rock_boulder_dry",
+      "use": "Weathered stone, rocks, paving, and granite-inspired mountain forms",
+      "files": {
+        "rock_boulder_dry_diff_1k.jpg": "da794cd9be3db91e3160cf081109f322",
+        "rock_boulder_dry_nor_gl_1k.jpg": "6f1c575ceed560ae253f65518cf748e2",
+        "rock_boulder_dry_rough_1k.jpg": "0c8b15df3e31c15256da5f8e1b0d0759"
+      }
+    }
+  ],
+  "checksum_algorithm": "MD5",
+  "runtime_external_requests": false
+}

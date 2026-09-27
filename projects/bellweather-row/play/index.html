@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f2eee3" />
+    <meta name="description" content="A peculiar little newspaper mystery. Explore Bellweather Row, inspect the clues, and find out what is really going missing." />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>The World's Worst Thief | Bellweather Row</title>
+    <script type="module" crossorigin src="./assets/index-Dbe0EfeS.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BMc7p1ag.css">
+  </head>
+  <body>
+    <svg class="svg-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <symbol id="arrow-icon" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" /></symbol>
+        <symbol id="left-icon" viewBox="0 0 24 24"><path d="M8 4 3 9l5 5M3 9h10a7 7 0 0 1 0 14" transform="translate(0 -2)" /></symbol>
+        <symbol id="right-icon" viewBox="0 0 24 24"><path d="m16 4 5 5-5 5m5-5H11a7 7 0 0 0 0 14" transform="translate(0 -2)" /></symbol>
+        <symbol id="home-icon" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M6 9v12h12V9m-8 12v-7h4v7" /></symbol>
+        <symbol id="paper-icon" viewBox="0 0 24 24"><path d="M4 3h16v18H4zM7 7h10M7 11h4v4H7zm7 0h3m-3 4h3M7 18h10" /></symbol>
+        <symbol id="close-icon" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></symbol>
+        <symbol id="check-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></symbol>
+        <symbol id="search-icon" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></symbol>
+        <symbol id="map-icon" viewBox="0 0 24 24"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16" /></symbol>
+      </defs>
+    </svg>
+
+    <main>
+      <section id="paper-screen" class="paper-screen" aria-label="The opening newspaper">
+        <div class="edition-label"><span class="edition-dot"></span>A SMALL-TOWN MYSTERY</div>
+        <article class="newspaper">
+          <header class="paper-masthead">
+            <div class="paper-meta"><span>EST. 1936 &nbsp; / &nbsp; INDEPENDENT. MOSTLY.</span><span>SATURDAY EDITION &nbsp; / &nbsp; 35p</span></div>
+            <h1>The Bellweather Post</h1>
+            <div class="paper-tagline"><span>LOCAL NEWS. SMALL TROUBLES. LONG MEMORIES.</span><span>VOL. LXXI &nbsp; NO. 146</span></div>
+          </header>
+          <div class="paper-section-line"><span>AROUND THE NEIGHBORHOOD</span><span class="paper-exclusive">A RATHER PECULIAR CASE</span></div>
+          <h2 class="paper-headline">Forty-six doorbells stolen.<br /><em>Not a penny missing.</em></h2>
+          <div class="paper-columns">
+            <div class="paper-copy">
+              <p class="byline">BY THE LOCAL NEWS DESK &nbsp; | &nbsp; BELLWEATHER ROW</p>
+              <p class="drop-cap">A thief with remarkably poor business sense has been at work on Bellweather Row. Among the missing items: forty-six doorbells, a crooked cafe sign, and the bottom step of a staircase.</p>
+              <p>Cash tills remain untouched. At one address, the intruder even tightened a loose hinge.</p>
+              <p>&ldquo;If it was a burglar, they were tidier than my last employee,&rdquo; said Ada, owner of the corner cafe at <strong>No. 18.</strong></p>
+              <p>Police have described the case as &ldquo;technically a priority.&rdquo;</p>
+            </div>
+            <figure class="paper-photo">
+              <div class="printed-photo"><img src="./images/cafe-study.png" alt="A miniature corner cafe with a green awning and an empty space where its sign should be." /></div>
+              <figcaption>FIG. 01 &nbsp; / &nbsp; No. 18 Bellweather Row. Still serving coffee. Temporarily without a name.</figcaption>
+              <blockquote>&ldquo;They left the till.<br />They took the welcome.&rdquo;<cite>ADA, CAFE OWNER</cite></blockquote>
+            </figure>
+            <aside class="classifieds" aria-label="Small notices">
+              <h3>Small notices</h3>
+              <div class="classified"><b>FOUND</b><p>One red mitten. Too small for a criminal. Ask at the bakery.</p></div>
+              <div class="classified"><b>PUBLIC NOTICE</b><p>Bellweather Row closes for demolition on Monday. Residents are reminded to collect their belongings and return their keys.</p></div>
+              <div class="classified classified-last"><b>CORRECTION</b><p>Last week's prize marrow was grown by Mrs. Bell, not Mr. Bell. We regret the domestic consequences.</p></div>
+            </aside>
+          </div>
+          <footer class="paper-bottom">
+            <div class="editor-slip">
+              <span class="slip-label">A NOTE FROM YOUR EDITOR</span>
+              <p>&ldquo;Your first assignment. Go to the cafe.<br />Find out what a thief could possibly want with a doorbell.&rdquo;</p>
+            </div>
+            <div class="paper-actions">
+              <button id="start-investigation" class="button button-primary">Follow the cafe lead <svg class="icon"><use href="#arrow-icon" /></svg></button>
+              <button id="return-to-street" class="text-button" hidden>Return to the street</button>
+              <span id="paper-playtime" class="quiet-label">A COMPLETE STORY IN FIVE ACTS &nbsp; / &nbsp; TAKE YOUR TIME</span>
+            </div>
+          </footer>
+        </article>
+        <p class="paper-footnote">The World's Worst Thief <span>&middot;</span> A little street. A lot to lose.</p>
+      </section>
+
+      <section id="game-screen" class="game-screen" aria-label="Investigate Bellweather Row" hidden>
+        <header class="game-header">
+          <a href="#" id="brand-link" class="game-brand" aria-label="Read the newspaper"><img src="./favicon.svg" alt="" /><span>The World's<br /><b>Worst Thief</b></span></a>
+          <div class="chapter-label"><span class="edition-dot"></span><span id="act-label">ACT I</span><span id="chapter-name" class="chapter-name">A very small crime</span></div>
+          <nav class="header-actions" aria-label="Investigation tools">
+            <button id="open-map" class="button button-paper"><svg class="icon"><use href="#map-icon" /></svg><span>Map</span></button>
+            <button id="read-paper" class="button button-paper"><svg class="icon"><use href="#paper-icon" /></svg><span>Newspaper</span></button>
+            <button id="sound-toggle" class="text-button" aria-pressed="false">Sound off</button>
+            <button id="restart" class="text-button">Start over</button>
+          </nav>
+        </header>
+
+        <div class="mission-strip" role="region" aria-label="Your part in the story">
+          <span class="mini-label">YOUR STORY</span><p id="case-mission"></p>
+        </div>
+        <div class="game-layout">
+          <aside class="casebook" aria-labelledby="casebook-title">
+            <div class="casebook-heading"><span class="eyebrow">YOUR CASEBOOK</span><span id="campaign-progress" class="case-number">0 / 9</span></div>
+            <h2 id="casebook-title">Nothing valuable.<br /> <em>Everything familiar.</em></h2>
+            <span id="case-context-label" class="mini-label case-context-label">WHY YOU'RE HERE</span>
+            <p id="case-intro" class="case-intro"></p>
+            <div class="objective"><span class="objective-dot"></span><div><span id="objective-label" class="mini-label">WHAT YOU'RE LOOKING FOR</span><p id="objective-text"></p><button id="next-step-button" class="text-button objective-next" aria-describedby="objective-text" hidden></button></div></div>
+            <button id="continue-story" class="button button-primary button-wide next-action" hidden></button>
+            <div id="people-list" class="people-list" aria-label="People here"></div>
+            <div id="clue-section">
+              <div class="clue-heading"><h3>Look a little closer</h3><span id="clue-count">0 / 3</span></div>
+              <div id="clue-list" class="clue-list" aria-label="Inspectable clues"></div>
+            </div>
+            <div id="deduction-area" class="deduction-area">
+              <button id="connect-clues" class="button button-primary button-wide" disabled>Connect the clues <svg class="icon"><use href="#arrow-icon" /></svg></button>
+              <p id="deduction-caption" class="deduction-caption">Inspect all three clues to make your first deduction.</p>
+            </div>
+            <button id="hint-button" class="text-button hint-button">Need a small nudge?</button>
+            <p id="hint-text" class="hint-text" role="status" hidden></p>
+            <div id="farewell-list" class="farewell-list" aria-label="The last goodbyes" hidden></div>
+            <div class="casebook-tools"><button id="open-journal" class="text-button">Field notes</button><button id="open-inventory" class="text-button">In your pockets <span id="inventory-count">0</span></button></div>
+            <div class="casebook-footer"><span class="tiny-star">+</span><p>Things are rarely just things.</p></div>
+          </aside>
+
+          <section id="scene-panel" class="scene-panel" aria-label="Explore the miniature neighborhood">
+            <div class="location-label"><span id="location-address" class="eyebrow">BELLWEATHER ROW</span><h2 id="location-title" aria-live="polite">No. 18, the corner cafe</h2><span id="location-time" class="location-time">4:12 PM / STILL WARM OUTSIDE</span></div>
+            <div id="canvas-wrap" class="canvas-wrap">
+              <canvas id="scene-canvas" tabindex="0" aria-label="Rotatable miniature scene. Drag to rotate, use Left and Right arrow keys, or press Home to reset the view. Clues and people are also available in your casebook."></canvas>
+              <div id="hotspot-overlay" class="hotspot-overlay" aria-label="Clues in the scene"></div>
+              <div id="scene-loading" class="scene-loading" role="status"><div class="loading-bell"></div><p>Following the street...</p></div>
+              <div id="scene-error" class="scene-error" role="alert" hidden><h3>The 3D scene could not start.</h3><p id="scene-error-message"></p><button id="retry-scene" class="button button-primary">Try the scene again</button></div>
+            </div>
+            <div class="scene-caption"><span class="caption-line"></span><p id="scene-caption">Someone has taken the things that said welcome.</p><span class="caption-line"></span></div>
+            <div class="scene-controls" aria-label="Camera controls">
+              <div class="camera-buttons"><button id="rotate-left" class="icon-button" aria-label="Rotate scene left"><svg class="icon"><use href="#left-icon" /></svg></button><button id="home-view" class="icon-button" aria-label="Reset camera view"><svg class="icon"><use href="#home-icon" /></svg></button><button id="rotate-right" class="icon-button" aria-label="Rotate scene right"><svg class="icon"><use href="#right-icon" /></svg></button></div>
+              <span class="control-help">DRAG TO ROTATE<span>NUMBERS ARE CLUES / LETTERS ARE PEOPLE</span></span>
+              <div class="scene-legend"><span class="legend-dot"></span>Something worth noticing</div>
+            </div>
+          </section>
+        </div>
+        <footer class="game-footer"><span>A LITTLE STREET. A LOT TO LOSE.</span><span id="save-status">PROGRESS SAVES IN THIS BROWSER</span><span>THE WORLD'S WORST THIEF / FIVE ACTS</span></footer>
+      </section>
+
+      <section id="final-paper-screen" class="paper-screen final-paper-screen" aria-label="Your published newspaper" hidden>
+        <div class="edition-label"><span class="edition-dot"></span>A STORY WORTH KEEPING</div>
+        <article class="newspaper">
+          <header class="paper-masthead">
+            <div class="paper-meta"><span>EST. 1936 / INDEPENDENT. MOSTLY.</span><span>SUNDAY / SPECIAL EDITION</span></div>
+            <h1>The Bellweather Post</h1>
+            <div class="paper-tagline"><span>LOCAL NEWS. SMALL TROUBLES. LONG MEMORIES.</span><span>VOL. LXXI / NO. 147</span></div>
+          </header>
+          <div class="paper-section-line"><span>THE PEOPLE BEHIND THE HEADLINE</span><span class="paper-exclusive">YOUR FIRST FRONT PAGE</span></div>
+          <h2 id="final-headline" class="paper-headline"></h2>
+          <div class="paper-columns final-columns">
+            <div class="paper-copy">
+              <p class="byline">BY THE REPORTER WHO STAYED FOR THE LAST BUS</p>
+              <p class="drop-cap">Last night, a street gathered inside a warehouse. Its sign hung at the wrong angle, its lamps faced the right way, and every doorbell rang a tune somebody knew.</p>
+              <p>Nell, Bellweather Row's retired caretaker, had borrowed its smallest landmarks to build a place for one last evening together. What began as an absurd crime report became a collection of names.</p>
+              <p>Ada brought coffee and an ordinary Tuesday on a cassette. Mina brought a light that had stayed on for children with torn uniforms. June and Ivo carried twenty years of pencil marks without once arguing about who should take which end.</p>
+              <p>They gave Nell a doorplate with her own name on it. For forty years she had known where everyone belonged. They wanted her to know that she belonged somewhere too.</p>
+              <p>Then the buses came. People took their things, their plans, and their imperfect promises to stay in touch. The little street came apart because its pieces still had lives to go to.</p>
+              <p>The old buildings will still come down on Monday. There was no last-minute rescue for them. This was not that kind of story.</p>
+              <p>But nobody who left the warehouse was merely an address being cleared from a map.</p>
+            </div>
+            <figure class="paper-photo">
+              <div class="printed-photo"><img src="./images/cafe-study.png" alt="The corner cafe before the gathering, with its familiar green awning." /></div>
+              <figcaption>No. 18, on Saturday afternoon. The woman behind the counter is Ada. This time we remembered to include her name.</figcaption>
+              <blockquote><span id="final-quote"></span><cite id="final-quote-by"></cite></blockquote>
+              <div class="final-editor-note"><span class="mini-label">FROM THE EDITOR</span><p>I called it a small story.<br />I'm glad you stayed.</p></div>
+            </figure>
+            <aside class="classifieds">
+              <h3>Small notices</h3>
+              <div class="classified"><b>OPENING SATURDAY</b><p>Ada's coffee cart. Outside the library. A familiar sign, a slightly wrong bell, and room to stand together.</p></div>
+              <div class="classified"><b>ALTERATIONS</b><p>Mina has a new window and a visitor's chair. Leave a little room in the sleeves.</p></div>
+              <div class="classified classified-last"><b>FOUND</b><p>The other red mitten. They were in the same pocket. Nobody is pressing charges.</p></div>
+            </aside>
+          </div>
+          <footer class="paper-bottom"><span class="the-end-stamp">THE END</span><div class="paper-actions"><button id="revisit-warehouse" class="button button-primary">Visit the quiet warehouse</button><button id="read-original" class="text-button">Read the original crime report</button><button id="restart-from-ending" class="text-button">Begin a new story</button></div></footer>
+        </article>
+        <aside class="epilogue-card"><span class="eyebrow">THREE WEEKS LATER</span><p>The first reunion is rained off. They try again.</p><p>At Ada's cart, somebody straightens the old sign. Three people immediately object. Mina unpacks a visitor's chair. June arrives carrying Ivo's umbrella.</p><p>Nell comes last, because for once she did not have to open up.</p><p>The little bell rings two notes. The second is still wrong.</p></aside>
+      </section>
+    </main>
+
+    <dialog id="clue-dialog" class="inspection-dialog" aria-labelledby="clue-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close inspection"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <div id="clue-art" class="clue-art"></div>
+      <div class="inspection-copy">
+        <span id="clue-eyebrow" class="eyebrow"></span><h2 id="clue-title"></h2><p id="clue-description"></p>
+        <blockquote id="clue-quote"></blockquote><span id="clue-attribution" class="mini-label"></span>
+        <div class="inspection-footer"><span class="recorded-label"><svg class="icon"><use href="#check-icon" /></svg>Noted in your casebook</span><button class="button button-primary" data-close-dialog>Back to the street <svg class="icon"><use href="#arrow-icon" /></svg></button></div>
+      </div>
+    </dialog>
+
+    <dialog id="deduction-dialog" class="deduction-dialog" aria-labelledby="deduction-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close deduction"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <span class="eyebrow">PUT TWO AND TWO TOGETHER</span><h2 id="deduction-title"></h2>
+      <p id="puzzle-prompt"></p>
+      <section id="puzzle-evidence" class="puzzle-evidence" aria-label="Clues from your casebook"></section>
+      <div id="puzzle-workspace"></div>
+      <p id="deduction-feedback" class="deduction-feedback" role="status"></p>
+    </dialog>
+
+    <dialog id="story-dialog" class="ending-dialog story-dialog" aria-labelledby="story-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close field note"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <div id="story-stamp" class="ending-stamp"></div><span class="eyebrow">FROM YOUR FIELD NOTES</span>
+      <h2 id="story-title"></h2><div id="story-paragraphs" class="story-paragraphs"></div>
+      <div class="address-slip"><span class="mini-label">WHAT YOU FOUND</span><p id="story-keepsake"></p></div>
+      <div id="story-next-lead" class="story-next-lead" hidden><span id="story-next-label" class="mini-label">YOUR NEXT LEAD</span><h3 id="story-next-place"></h3><p id="story-next-target"></p></div>
+      <button id="story-continue" class="button button-primary"></button>
+    </dialog>
+
+    <dialog id="map-dialog" class="map-dialog" aria-labelledby="map-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close map"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <span class="eyebrow">A SMALL PART OF THE CITY</span><h2 id="map-title">Follow the people.</h2><p>Every address has a story. Places open as you find their leads.</p><div id="map-grid" class="map-grid"></div>
+    </dialog>
+
+    <dialog id="conversation-dialog" class="conversation-dialog" aria-labelledby="person-name">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close conversation"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <div class="person-heading"><div id="person-portrait"></div><div><span id="person-role" class="mini-label"></span><h2 id="person-name"></h2></div></div>
+      <p id="person-greeting" class="person-greeting"></p><div id="conversation-response" class="conversation-response" aria-live="polite" hidden></div><div id="conversation-topics" class="conversation-topics"></div><button class="text-button" data-close-dialog>Leave them to it, for now</button>
+    </dialog>
+
+    <dialog id="farewell-dialog" class="ending-dialog farewell-dialog" aria-labelledby="farewell-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Stay a little longer"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <span id="farewell-name" class="eyebrow"></span><h2 id="farewell-title"></h2><div id="farewell-paragraphs" class="story-paragraphs"></div><button id="depart-guest" class="button button-primary"></button><button class="text-button" data-close-dialog>Not quite yet</button>
+    </dialog>
+
+    <dialog id="journal-dialog" class="journal-dialog" aria-labelledby="journal-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close field notes"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <span class="eyebrow">THE WHOLE INVESTIGATION</span><h2 id="journal-title">Your field notes</h2><div id="journal-entries"></div><button class="button button-primary" data-close-dialog>Back to the street</button>
+    </dialog>
+
+    <dialog id="inventory-dialog" class="journal-dialog" aria-labelledby="inventory-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close pockets"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <span class="eyebrow">THINGS ENTRUSTED TO YOU</span><h2 id="inventory-title">In your pockets</h2><div id="inventory-entries"></div><button class="button button-primary" data-close-dialog>Back to the street</button>
+    </dialog>
+
+    <dialog id="article-dialog" class="article-dialog" aria-labelledby="article-title">
+      <button class="dialog-close icon-button" data-close-dialog aria-label="Close writing desk"><svg class="icon"><use href="#close-icon" /></svg></button>
+      <span class="eyebrow">ONE LIGHT LEFT ON</span><h2 id="article-title">What should the town remember?</h2><p>The crime report is no longer the story. Choose the headline and the voice you want on the front page. There is no wrong answer.</p>
+      <form id="article-form"><fieldset><legend>Your headline</legend><div id="headline-options"></div></fieldset><fieldset><legend>A voice worth keeping</legend><div id="quote-options"></div></fieldset><button class="button button-primary" type="submit">Turn out the light. Send the story.</button></form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
