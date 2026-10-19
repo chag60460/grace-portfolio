@@ -73,6 +73,44 @@ when publishing the portfolio.
 
 ## Project Structure
 
+### Corner Cafe case study
+
+`projects/corner-cafe/corner-cafe.html` presents the product decisions, service
+workflow, component states, token-to-CSS mapping, and planned validation. Its
+interactive prototype is bundled under `projects/corner-cafe/play/` and loads
+only when a visitor launches it; it can also open in a full tab. No separate
+server, account, or build step is required on GitHub Pages.
+
+The case study includes tabbed Figma prototype and design-system embeds, plus
+separate customer and coffee-team walkthroughs. The embeds retain Figma's access
+rules; verify view-only link sharing for public visitors. The coded demo does not
+need a Figma account and uses an explicit app-ready message rather than guessing
+when an iframe has initialized.
+
+The library uses Figma's working presentation viewer for its foundations, with a
+link to the full component canvas. The regular design-file viewer returned a
+Figma-side 403 during validation; both presentation URLs loaded without a login.
+
+The demo is shipped as a classic JavaScript bundle, so it does not depend on
+browser ES-module loading when opened from a downloaded file. For development,
+run these commands from `projects/corner-cafe/`:
+
+```sh
+npm install
+npm run build:demo
+npx playwright install chromium --only-shell
+npm run capture
+npm test
+```
+
+Capture and HTTP tests expect this portfolio to be served on
+`http://127.0.0.1:4174`; set `PORTFOLIO_PREVIEW` to use another origin. The tests
+also cover file-URL startup, iframe readiness, both role entry points, and narrow
+milk-choice layouts. Browser binaries and `node_modules/` are development-only;
+the published site needs neither. Rebuild the bundle after changing the demo
+source. The case study remains labeled as a prototype, not a launched or
+field-validated service.
+
 ```
 index.html          — The whole page
 css/styles.css      — All the styling magic

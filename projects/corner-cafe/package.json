@@ -1,0 +1,15 @@
+{
+  "name": "corner-cafe-portfolio-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:demo": "esbuild play/entry.js --bundle --format=iife --target=es2020 --outfile=play/app.bundle.js",
+    "capture": "node capture.mjs",
+    "test": "node verify.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "playwright": "^1.56.0"
+  }
+}
