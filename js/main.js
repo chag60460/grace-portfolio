@@ -9,8 +9,9 @@
    ─────────────────────────────────────────────────────────── */
 
 const SECTION_TITLES = {
-  about:  'portfolio',
-  faith:  'faith',
+  about:    'portfolio',
+  thoughts: 'scribbles',
+  faith:    'faith',
 };
 
 function showSection(name, el) {
@@ -38,6 +39,7 @@ function showSection(name, el) {
 
   // Update the window titlebar
   document.getElementById('window-title').textContent = SECTION_TITLES[name] ?? name;
+  if (name !== 'thoughts') document.getElementById('thought-reader').close();
 }
 
 /* ── Wire up tabs: click + arrow keys ── */
@@ -94,374 +96,321 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 30_000);
 
-/* ── Small Wins Calendar ────────────────────────────────────
-   A flippable month grid under the Faith section.
-   Days with wins show a flower marker; clicking opens an
-   overlay card with that day's list of small wins.
-   ─────────────────────────────────────────────────────────── */
+/* ── Scribbles journal ── */
 
-const SMALL_WINS = {
-  // Format: 'YYYY-MM-DD': ['win1', 'win2', ...]
-  '2026-07-26': ['I applied to my dream job'],
-  '2026-04-08': ['Feeling lost about the future but faced my emotions honestly'],
-  '2026-04-07': ['Went to an EiC networking event and learned some very helpful tips'],
-  '2026-04-06': ['Figured out how to reverse a linked list for the first time ever!'],
-  '2026-04-05': ['Easter! Yapped with friends after church and saw sunset later'],
-  '2026-04-04': ['Had a nice conversation with Michael about Shanghai and our shared experience'],
-  '2026-04-03': ['Processed my emotions'],
-};
+const THOUGHT_ENTRIES = [
+  {
+    date: '2026-07-26',
+    title: 'A step toward my dream job',
+    category: 'small beginnings',
+    paragraphs: ['I applied to my dream job'],
+  },
+  {
+    date: '2026-04-08',
+    title: 'Facing the unknown',
+    category: 'an honest day',
+    paragraphs: ['Feeling lost about the future but faced my emotions honestly'],
+  },
+  {
+    date: '2026-04-07',
+    title: 'Showing up & learning',
+    category: 'notes & connections',
+    paragraphs: ['Went to an EiC networking event and learned some very helpful tips'],
+  },
+  {
+    date: '2026-04-06',
+    title: 'A linked list, finally reversed',
+    category: 'something clicked',
+    paragraphs: ['Figured out how to reverse a linked list for the first time ever!'],
+  },
+  {
+    date: '2026-04-05',
+    title: 'Easter, friends & a sunset',
+    category: 'life lately',
+    paragraphs: ['Easter! Yapped with friends after church and saw sunset later'],
+  },
+  {
+    date: '2026-04-04',
+    title: 'A little Shanghai connection',
+    category: 'a conversation',
+    paragraphs: ['Had a nice conversation with Michael about Shanghai and our shared experience'],
+  },
+  {
+    date: '2026-04-03',
+    title: 'Making space for feelings',
+    category: 'a quiet moment',
+    paragraphs: ['Processed my emotions'],
+  },
+];
 
-let currentDate = new Date();
-currentDate.setHours(0, 0, 0, 0);
-let openedDay = null;
-
-const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-// Escape text before it is injected as HTML
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, c => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
   ));
 }
 
-// Simple hash to derive a number from text
-function hashStr(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
-  return Math.abs(h);
+function formatThoughtDate(date, long = false) {
+  // Parse locally so an entry's calendar date does not shift with the time zone.
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+    month: long ? 'long' : 'short',
+    day: 'numeric',
+    year: 'numeric',
+    ...(long ? { weekday: 'long' } : {}),
+  });
 }
 
-// Pastel color palette
-const PASTEL = ['#f5c0e0','#c5b8f0','#b8d8f0','#b8e8d0','#f5d8b0','#e8c5f0','#c5e0f5','#f0c5c5'];
+const SCRIBBLES_CODE_SNIPPETS = [
+  'const { fn, ...cfg } = ctx ?? {};',
+  'const run = (...args) => fn?.(...args);',
+  'type Ref<T> = { v: T; ref?: Ref<T> };',
+  'type Fn<T> = (...args: T[]) => Promise<T>;',
+  'const ast = src?.trim()?.split(/\\s+/);',
+  'if (ctx !== null && ctx?.ref) { fn(ctx); }',
+  'const out = [...buf].map((x) => ({ ...x }));',
+  'await fn?.({ ...cfg, ...opts });',
+  'const get = (k) => cfg?.[k] ?? null;',
+  'type Map<T> = { [K in keyof T]?: T[K] };',
+  'for (const [k, v] of map) { fn?.(k, v); }',
+  'const chain = (a) => (b) => fn?.(a)?.(b);',
+];
 
-// Generate inline SVG cartoon based on win text
-function getWinIllustration(wins) {
-  const text = wins.join(' ').toLowerCase();
-  const h = hashStr(text);
-  const c1 = PASTEL[h % PASTEL.length];
-  const c2 = PASTEL[(h + 3) % PASTEL.length];
-
-  // Keyword-to-scene mapping
-  const scenes = [
-    { keywords: ['code','bug','linked list','reverse','debug','feature','shipped','program'],
-      draw: (c1, c2) => `
-        <rect x="25" y="22" width="50" height="36" rx="4" fill="${c1}" stroke="#9a70d0" stroke-width="1.5"/>
-        <rect x="30" y="28" width="40" height="24" rx="2" fill="#fff" opacity="0.8"/>
-        <text x="50" y="38" text-anchor="middle" font-size="6" fill="#6a4a9a" font-family="monospace">&lt;/&gt;</text>
-        <text x="50" y="46" text-anchor="middle" font-size="5" fill="#9a85aa" font-family="monospace">01101</text>
-        <circle cx="70" cy="20" r="6" fill="${c2}"/><text x="70" y="22" text-anchor="middle" font-size="7">✨</text>
-        <rect x="35" y="58" width="30" height="3" rx="1.5" fill="#d0b8f0"/>
-      ` },
-    { keywords: ['church','easter','bible','pray','god','faith','service','verse'],
-      draw: (c1, c2) => `
-        <rect x="30" y="35" width="40" height="35" rx="2" fill="${c1}" stroke="#d0a0c8" stroke-width="1"/>
-        <polygon points="50,15 30,35 70,35" fill="${c2}"/>
-        <rect x="47" y="20" width="6" height="15" rx="1" fill="#fff" opacity="0.8"/>
-        <rect x="43" y="25" width="14" height="5" rx="1" fill="#fff" opacity="0.8"/>
-        <circle cx="50" cy="50" r="6" fill="#fff" opacity="0.5"/>
-        <circle cx="20" cy="25" r="3" fill="${c2}" opacity="0.5"/>
-        <circle cx="78" cy="28" r="4" fill="${c1}" opacity="0.6"/>
-      ` },
-    { keywords: ['shanghai','shared experience','michael'],
-      draw: (c1, c2) => `
-        <!-- cute coffee cup -->
-        <!-- saucer -->
-        <ellipse cx="50" cy="68" rx="30" ry="6" fill="${c2}" stroke="#c8a0b8" stroke-width="1"/>
-        <ellipse cx="50" cy="66" rx="28" ry="5" fill="#fff" opacity="0.3"/>
-        <!-- cup body -->
-        <path d="M28 35 L32 64 Q50 70 68 64 L72 35 Z" fill="#fff" stroke="${c1}" stroke-width="1.5"/>
-        <!-- cup rim -->
-        <ellipse cx="50" cy="35" rx="22" ry="6" fill="${c1}" stroke="#c8a0b8" stroke-width="1"/>
-        <ellipse cx="50" cy="35" rx="19" ry="4.5" fill="#8B6B4B" opacity="0.7"/>
-        <!-- latte art heart -->
-        <path d="M50 42 L47 39 A3 3 0 0 1 50 36 A3 3 0 0 1 53 39 Z" fill="#fff" opacity="0.6"/>
-        <!-- handle -->
-        <path d="M72 42 Q82 42 82 50 Q82 58 72 58" stroke="${c1}" fill="none" stroke-width="3" stroke-linecap="round"/>
-        <!-- steam -->
-        <path d="M40 24 Q42 16 40 8" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.4" stroke-linecap="round"/>
-        <path d="M50 22 Q52 14 50 6" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.5" stroke-linecap="round"/>
-        <path d="M60 24 Q62 16 60 8" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.4" stroke-linecap="round"/>
-        <!-- tiny sparkles -->
-        <circle cx="18" cy="14" r="2.5" fill="${c2}" opacity="0.5"/>
-        <circle cx="84" cy="10" r="2" fill="${c2}" opacity="0.4"/>
-        <text x="14" y="28" font-size="5" fill="#d0a0c8">♡</text>
-      ` },
-    { keywords: ['friend','yap','conversation','talk','chat','call'],
-      draw: (c1, c2) => `
-        <circle cx="35" cy="45" r="14" fill="${c1}"/>
-        <circle cx="35" cy="38" r="8" fill="#fff" opacity="0.7"/>
-        <circle cx="33" cy="37" r="1.5" fill="#5a4a6a"/><circle cx="37" cy="37" r="1.5" fill="#5a4a6a"/>
-        <path d="M32 40 Q35 43 38 40" stroke="#e8a0c8" fill="none" stroke-width="1.2"/>
-        <circle cx="65" cy="45" r="14" fill="${c2}"/>
-        <circle cx="65" cy="38" r="8" fill="#fff" opacity="0.7"/>
-        <circle cx="63" cy="37" r="1.5" fill="#5a4a6a"/><circle cx="67" cy="37" r="1.5" fill="#5a4a6a"/>
-        <path d="M62 40 Q65 43 68 40" stroke="#e8a0c8" fill="none" stroke-width="1.2"/>
-        <path d="M44 30 Q50 22 56 30" stroke="#d0b8f0" fill="none" stroke-width="1.5" stroke-dasharray="2 2"/>
-      ` },
-    { keywords: ['sunset','walk','sunshine','spring','nature','outside'],
-      draw: (c1, c2) => `
-        <circle cx="50" cy="35" r="16" fill="#ffcc80" opacity="0.8"/>
-        <line x1="50" y1="12" x2="50" y2="18" stroke="#ffcc80" stroke-width="2" stroke-linecap="round"/>
-        <line x1="28" y1="35" x2="22" y2="35" stroke="#ffcc80" stroke-width="2" stroke-linecap="round"/>
-        <line x1="72" y1="35" x2="78" y2="35" stroke="#ffcc80" stroke-width="2" stroke-linecap="round"/>
-        <line x1="35" y1="20" x2="31" y2="16" stroke="#ffcc80" stroke-width="2" stroke-linecap="round"/>
-        <line x1="65" y1="20" x2="69" y2="16" stroke="#ffcc80" stroke-width="2" stroke-linecap="round"/>
-        <path d="M15 60 Q30 45 45 55 Q55 40 70 50 Q80 42 90 55 L90 70 L10 70 Z" fill="${c1}" opacity="0.6"/>
-        <circle cx="30" cy="62" r="3" fill="${c2}"/><circle cx="60" cy="58" r="2.5" fill="${c2}"/>
-      ` },
-    { keywords: ['cook','meal','recipe','bake','food'],
-      draw: (c1, c2) => `
-        <ellipse cx="50" cy="55" rx="28" ry="10" fill="${c1}" stroke="#d0a0c8" stroke-width="1"/>
-        <path d="M22 55 Q22 35 50 35 Q78 35 78 55" fill="${c2}" opacity="0.6"/>
-        <path d="M42 30 Q44 20 46 30" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.6"/>
-        <path d="M50 28 Q52 18 54 28" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.6"/>
-        <path d="M56 30 Q58 22 60 30" stroke="#d0b8f0" fill="none" stroke-width="1.5" opacity="0.6"/>
-      ` },
-    { keywords: ['lost','future','faced','honest','brave','uncertain','vulnerability','vulnerable'],
-      draw: (c1, c2) => `
-        <!-- foggy path with a small lantern — facing the unknown -->
-        <rect x="0" y="50" width="100" height="30" rx="0" fill="${c1}" opacity="0.3"/>
-        <path d="M10 70 Q30 50 50 55 Q70 48 90 65" stroke="${c2}" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-        <!-- fog layers -->
-        <ellipse cx="25" cy="40" rx="20" ry="8" fill="#e0d8f0" opacity="0.35"/>
-        <ellipse cx="70" cy="35" rx="22" ry="9" fill="#d8e0f5" opacity="0.3"/>
-        <ellipse cx="50" cy="45" rx="30" ry="10" fill="#e8d5f0" opacity="0.25"/>
-        <!-- small lantern glow -->
-        <circle cx="50" cy="42" r="12" fill="#ffcc80" opacity="0.25"/>
-        <circle cx="50" cy="42" r="7" fill="#ffe8a0" opacity="0.4"/>
-        <!-- lantern body -->
-        <rect x="47" y="38" width="6" height="8" rx="1" fill="#ffcc80" stroke="#d0a060" stroke-width="0.8"/>
-        <rect x="46" y="37" width="8" height="2" rx="1" fill="#d0a060"/>
-        <line x1="50" y1="35" x2="50" y2="37" stroke="#d0a060" stroke-width="1" stroke-linecap="round"/>
-        <!-- tiny heart near lantern -->
-        <text x="60" y="36" font-size="6" fill="#e8a0c8" opacity="0.7">♡</text>
-        <!-- stars in the haze -->
-        <circle cx="20" cy="18" r="1.5" fill="#fff" opacity="0.5"/>
-        <circle cx="75" cy="15" r="1" fill="#fff" opacity="0.4"/>
-        <circle cx="50" cy="12" r="1.2" fill="#fff" opacity="0.45"/>
-        <circle cx="35" cy="22" r="1" fill="#fff" opacity="0.35"/>
-      ` },
-    { keywords: ['emotion','process','journal','gratitude','grateful','reflect'],
-      draw: (c1, c2) => `
-        <rect x="28" y="20" width="44" height="50" rx="4" fill="#fff" stroke="${c1}" stroke-width="1.5"/>
-        <line x1="34" y1="32" x2="66" y2="32" stroke="#d0b8f0" stroke-width="1"/>
-        <line x1="34" y1="39" x2="60" y2="39" stroke="#d0b8f0" stroke-width="1"/>
-        <line x1="34" y1="46" x2="63" y2="46" stroke="#d0b8f0" stroke-width="1"/>
-        <line x1="34" y1="53" x2="55" y2="53" stroke="#d0b8f0" stroke-width="1"/>
-        <path d="M50 18 L53 24 L47 24 Z" fill="${c2}"/>
-        <circle cx="72" cy="22" r="5" fill="${c1}" opacity="0.5"/>
-        <text x="72" y="24" text-anchor="middle" font-size="6">♡</text>
-      ` },
-    { keywords: ['read','book','chapter'],
-      draw: (c1, c2) => `
-        <path d="M50 25 L25 30 L25 65 L50 60 Z" fill="${c1}" stroke="#d0a0c8" stroke-width="1"/>
-        <path d="M50 25 L75 30 L75 65 L50 60 Z" fill="${c2}" stroke="#d0a0c8" stroke-width="1"/>
-        <line x1="50" y1="25" x2="50" y2="60" stroke="#d0a0c8" stroke-width="1.5"/>
-        <line x1="30" y1="38" x2="45" y2="35" stroke="#fff" stroke-width="1" opacity="0.6"/>
-        <line x1="30" y1="44" x2="45" y2="41" stroke="#fff" stroke-width="1" opacity="0.6"/>
-        <line x1="55" y1="35" x2="70" y2="38" stroke="#fff" stroke-width="1" opacity="0.6"/>
-        <line x1="55" y1="41" x2="70" y2="44" stroke="#fff" stroke-width="1" opacity="0.6"/>
-        <circle cx="50" cy="18" r="4" fill="#ffcc80" opacity="0.5"/>
-      ` },
-    { keywords: ['network','event','career','tips','conference','meetup','workshop','learn'],
-      draw: (c1, c2) => `
-        <!-- cartoon girl at networking event -->
-        <!-- hair (long, flowing) -->
-        <path d="M36 12 Q28 10 26 22 Q24 34 28 42 L32 42 Q30 32 32 22 Q34 14 50 12 Q66 14 68 22 Q70 32 68 42 L72 42 Q76 34 74 22 Q72 10 64 12 Z" fill="#4a3728"/>
-        <!-- face -->
-        <ellipse cx="50" cy="24" rx="16" ry="17" fill="#ffe0cc"/>
-        <!-- bangs -->
-        <path d="M34 18 Q38 8 50 10 Q62 8 66 18 Q62 14 50 13 Q38 14 34 18 Z" fill="#4a3728"/>
-        <!-- eyes -->
-        <ellipse cx="43" cy="24" rx="3" ry="3.5" fill="#fff"/>
-        <ellipse cx="43" cy="25" rx="2" ry="2.5" fill="#3a2a1a"/>
-        <circle cx="42" cy="23.5" r="1" fill="#fff"/>
-        <ellipse cx="57" cy="24" rx="3" ry="3.5" fill="#fff"/>
-        <ellipse cx="57" cy="25" rx="2" ry="2.5" fill="#3a2a1a"/>
-        <circle cx="56" cy="23.5" r="1" fill="#fff"/>
-        <!-- eyebrows -->
-        <path d="M39 19 Q43 17 46 19" stroke="#4a3728" fill="none" stroke-width="1" stroke-linecap="round"/>
-        <path d="M54 19 Q57 17 61 19" stroke="#4a3728" fill="none" stroke-width="1" stroke-linecap="round"/>
-        <!-- smile -->
-        <path d="M45 31 Q50 35 55 31" stroke="#d4727a" fill="none" stroke-width="1.2" stroke-linecap="round"/>
-        <!-- blush -->
-        <ellipse cx="38" cy="30" rx="3.5" ry="2" fill="#f5c0c0" opacity="0.4"/>
-        <ellipse cx="62" cy="30" rx="3.5" ry="2" fill="#f5c0c0" opacity="0.4"/>
-        <!-- neck -->
-        <rect x="46" y="40" width="8" height="5" fill="#ffe0cc"/>
-        <!-- body / blouse -->
-        <path d="M36 45 Q50 42 64 45 L68 70 L32 70 Z" fill="${c1}"/>
-        <!-- collar -->
-        <path d="M44 45 L50 50 L56 45" stroke="#fff" fill="none" stroke-width="1.2"/>
-        <!-- arms -->
-        <line x1="36" y1="50" x2="22" y2="58" stroke="#ffe0cc" stroke-width="4" stroke-linecap="round"/>
-        <line x1="64" y1="50" x2="78" y2="55" stroke="#ffe0cc" stroke-width="4" stroke-linecap="round"/>
-        <!-- hand holding notepad -->
-        <rect x="74" y="50" width="12" height="16" rx="2" fill="#fff" stroke="${c2}" stroke-width="1"/>
-        <line x1="77" y1="54" x2="83" y2="54" stroke="#d0b8f0" stroke-width="0.7"/>
-        <line x1="77" y1="57" x2="82" y2="57" stroke="#d0b8f0" stroke-width="0.7"/>
-        <line x1="77" y1="60" x2="81" y2="60" stroke="#d0b8f0" stroke-width="0.7"/>
-        <!-- other hand waving -->
-        <circle cx="20" cy="56" r="3" fill="#ffe0cc"/>
-        <!-- speech bubble -->
-        <rect x="6" y="6" width="22" height="14" rx="4" fill="#fff" stroke="${c2}" stroke-width="0.8"/>
-        <polygon points="20,20 22,26 16,20" fill="#fff" stroke="${c2}" stroke-width="0.8"/>
-        <text x="17" y="15" text-anchor="middle" font-size="6" fill="#9a85aa">Hi!</text>
-        <!-- sparkle -->
-        <text x="82" y="14" text-anchor="middle" font-size="7">✨</text>
-      ` },
-    { keywords: ['help','volunteer','serve','encourage','kind'],
-      draw: (c1, c2) => `
-        <path d="M50 65 L35 48 A14 14 0 0 1 50 30 A14 14 0 0 1 65 48 Z" fill="${c1}" stroke="#e8a0c8" stroke-width="1.5"/>
-        <circle cx="35" cy="25" r="4" fill="${c2}" opacity="0.5"/>
-        <circle cx="68" cy="22" r="3" fill="${c2}" opacity="0.5"/>
-        <circle cx="22" cy="50" r="2.5" fill="${c1}" opacity="0.4"/>
-        <circle cx="78" cy="48" r="3" fill="${c1}" opacity="0.4"/>
-      ` },
-  ];
-
-  for (const { keywords, draw } of scenes) {
-    for (const kw of keywords) {
-      if (text.includes(kw)) {
-        return `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">${draw(c1, c2)}</svg>`;
-      }
-    }
-  }
-
-  // Default: star + sparkles
-  return `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="50,15 56,35 78,35 60,47 67,67 50,54 33,67 40,47 22,35 44,35" fill="${c1}" stroke="#d0a0c8" stroke-width="1"/>
-    <circle cx="25" cy="22" r="4" fill="${c2}" opacity="0.5"/>
-    <circle cx="78" cy="20" r="3" fill="${c2}" opacity="0.5"/>
-    <circle cx="18" cy="55" r="2.5" fill="${c1}" opacity="0.4"/>
-    <circle cx="82" cy="58" r="3.5" fill="${c1}" opacity="0.4"/>
-  </svg>`;
-}
-
-function renderCalendar() {
-  const grid = document.getElementById('calendar-grid');
-  const label = document.getElementById('cal-week-label');
-  if (!grid || !label) return;
-
-  closeDay(false);
-  openedDay = null;
-
-  label.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const key = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
-  const wins = SMALL_WINS[key];
-  const isToday = currentDate.getTime() === today.getTime();
-
-  const classes = ['cal-day'];
-  if (wins) classes.push('has-wins');
-  if (isToday) classes.push('today');
-
-  let pageContent = '';
-  if (wins) {
-    const illustration = getWinIllustration(wins);
-    const preview = wins.map(w => `<span>${escapeHtml(w)}</span>`).join('<br>');
-    pageContent = `<div class="page-illustration" aria-hidden="true">${illustration}</div>` +
-                  `<div class="page-wins">${preview}</div>`;
-  }
-
-  const dayName = DAY_NAMES[currentDate.getDay()];
-  const dateLabel = currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-
-  // Days with wins are real buttons; empty days are inert text.
-  const cover = wins
-    ? `<button type="button" class="cal-day-cover" aria-expanded="false" ` +
-      `aria-label="Show small wins for ${dateLabel}" data-date="${key}">` +
-      `<span class="cover-weekday">${dayName}</span>${currentDate.getDate()}</button>`
-    : `<div class="cal-day-cover"><span class="cover-weekday">${dayName}</span>${currentDate.getDate()}</div>`;
-
-  grid.innerHTML = `<div class="${classes.join(' ')}">` +
-    `<div class="cal-day-page">${pageContent}</div>` + cover +
-  `</div>`;
-
-  const btn = grid.querySelector('.cal-day-cover[data-date]');
-  if (btn) btn.addEventListener('click', () => toggleDay(btn.closest('.cal-day'), key, btn));
-}
-
-function toggleDay(el, dateKey, btn) {
-  if (el.classList.contains('opened')) {
-    closeDay();
+function initScribblesCode(section) {
+  const canvas = document.getElementById('thoughts-code-scan');
+  const context = canvas.getContext('2d');
+  const base = document.createElement('canvas');
+  const baseContext = base.getContext('2d');
+  if (!context || !baseContext) {
+    console.error('Scribbles code background unavailable: Canvas 2D could not be initialized.');
     return;
   }
 
-  // Close previously opened day
-  if (openedDay) {
-    openedDay.classList.remove('opened');
-    openedDay.querySelector('.cal-day-cover[data-date]')?.setAttribute('aria-expanded', 'false');
-  }
+  const streams = SCRIBBLES_CODE_SNIPPETS.map(code => code.replaceAll(' ', ''));
+  const palette = ['#a0508a', '#af6d85', '#be7b9b', '#a8687c', '#b77da2'];
+  let width = 0;
+  let height = 0;
+  let pixelRatio = 1;
+  let columns = 1;
+  let rows = 1;
+  let inView = false;
+  let frameId = null;
+  let previousTime = null;
+  let lastPaint = -Infinity;
+  let elapsed = 0;
 
-  el.classList.add('opened');
-  if (btn) btn.setAttribute('aria-expanded', 'true');
-  openedDay = el;
-  showDetail(dateKey);
-}
-
-function showDetail(dateKey) {
-  let panel = document.getElementById('wins-detail');
-  if (!panel) {
-    panel = document.createElement('div');
-    panel.className = 'wins-detail';
-    panel.id = 'wins-detail';
-    document.querySelector('.wins-calendar').appendChild(panel);
-  }
-
-  const [y, m, d] = dateKey.split('-').map(Number);
-  const dateStr = new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-  const wins = SMALL_WINS[dateKey] || [];
-  const listHtml = wins.map(w => `<li>${escapeHtml(w)}</li>`).join('');
-
-  panel.setAttribute('role', 'region');
-  panel.setAttribute('aria-label', `Small wins for ${dateStr}`);
-  panel.innerHTML =
-    `<div class="wins-detail-header">` +
-      `<div><div class="wins-detail-date">${dateStr}</div>` +
-      `<div class="wins-detail-sub">small wins ✿</div></div>` +
-      `<button type="button" class="wins-detail-close" aria-label="Close small wins">✕</button>` +
-    `</div>` +
-    `<ul class="wins-detail-list">${listHtml}</ul>`;
-
-  panel.querySelector('.wins-detail-close').addEventListener('click', closeDay);
-  panel.classList.add('open');
-}
-
-function hideDetail() {
-  const panel = document.getElementById('wins-detail');
-  if (panel) panel.classList.remove('open');
-}
-
-/* restoreFocus: return focus to the day button when the user closed it
-   themselves. Suppressed during re-render, where the button is replaced. */
-function closeDay(restoreFocus = true) {
-  if (openedDay) {
-    const btn = openedDay.querySelector('.cal-day-cover[data-date]');
-    openedDay.classList.remove('opened');
-    if (btn) {
-      btn.setAttribute('aria-expanded', 'false');
-      if (restoreFocus && btn.isConnected) btn.focus();
+  function drawColumn(target, column, alpha, glow = 0) {
+    const code = streams[column % streams.length];
+    const color = palette[column % palette.length];
+    target.save();
+    target.font = '10px ui-monospace, "SFMono-Regular", Menlo, monospace';
+    target.textAlign = 'center';
+    target.textBaseline = 'middle';
+    target.globalAlpha = alpha;
+    target.fillStyle = color;
+    target.shadowColor = color;
+    target.shadowBlur = glow;
+    for (let row = 0; row < rows; row++) {
+      target.fillText(
+        code[(row + column * 3) % code.length],
+        (column + .5) * width / columns,
+        (row + .5) * height / rows,
+      );
     }
-    openedDay = null;
+    target.restore();
   }
-  hideDetail();
+
+  function paint() {
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(base, 0, 0);
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    // Reuse the fixed glyphs, adding light only to the one or two active columns.
+    context.globalCompositeOperation = 'lighter';
+    const scanColumn = elapsed / 6400 * columns;
+    for (let column = 0; column < columns; column++) {
+      const distance = Math.abs(column - scanColumn);
+      const light = Math.max(0, 1 - Math.min(distance, columns - distance));
+      if (light > 0) drawColumn(context, column, .56 * light, light * 2);
+    }
+    context.globalCompositeOperation = 'source-over';
+  }
+
+  function shouldAnimate() {
+    return width > 0 && height > 0 && inView && !section.hidden &&
+      section.dataset.motion === 'on' && !document.hidden;
+  }
+
+  function stop() {
+    if (frameId !== null) cancelAnimationFrame(frameId);
+    frameId = null;
+    previousTime = null;
+    lastPaint = -Infinity;
+  }
+
+  function animate(timestamp) {
+    frameId = null;
+    if (!shouldAnimate()) {
+      previousTime = null;
+      return;
+    }
+    if (previousTime !== null) elapsed = (elapsed + timestamp - previousTime) % 6400;
+    previousTime = timestamp;
+    if (timestamp - lastPaint >= 1000 / 30) {
+      paint();
+      lastPaint = timestamp;
+    }
+    frameId = requestAnimationFrame(animate);
+  }
+
+  function syncMotion() {
+    if (shouldAnimate()) {
+      if (frameId === null) frameId = requestAnimationFrame(animate);
+    } else {
+      stop();
+    }
+  }
+
+  function resize() {
+    const bounds = canvas.getBoundingClientRect();
+    if (bounds.width === 0 || bounds.height === 0) {
+      stop();
+      return;
+    }
+    const nextRatio = Math.min(window.devicePixelRatio, 2);
+    if (width === bounds.width && height === bounds.height && pixelRatio === nextRatio) {
+      syncMotion();
+      return;
+    }
+    width = bounds.width;
+    height = bounds.height;
+    pixelRatio = nextRatio;
+    columns = Math.max(1, Math.floor(width / 10));
+    rows = Math.max(1, Math.floor(height / 10));
+    for (const layer of [canvas, base]) {
+      layer.width = Math.max(1, Math.round(width * pixelRatio));
+      layer.height = Math.max(1, Math.round(height * pixelRatio));
+    }
+    baseContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    for (let column = 0; column < columns; column++) drawColumn(baseContext, column, .25);
+    paint();
+    syncMotion();
+  }
+
+  new ResizeObserver(resize).observe(canvas);
+  new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting;
+    syncMotion();
+  }).observe(canvas);
+  new MutationObserver(syncMotion).observe(section, {
+    attributes: true,
+    attributeFilter: ['hidden', 'data-motion'],
+  });
+  document.addEventListener('visibilitychange', syncMotion);
+  window.addEventListener('resize', resize);
+  window.addEventListener('pagehide', stop);
+  window.addEventListener('pageshow', syncMotion);
+  resize();
 }
 
-// Calendar navigation
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('cal-prev')?.addEventListener('click', () => {
-    currentDate.setDate(currentDate.getDate() - 1);
-    renderCalendar();
+  const section = document.getElementById('section-thoughts');
+  const covers = document.getElementById('thoughts-covers');
+  const reader = document.getElementById('thought-reader');
+  const newer = document.getElementById('thoughts-newer');
+  const older = document.getElementById('thoughts-older');
+  const pageStatus = document.getElementById('thoughts-page-status');
+  const latest = document.getElementById('thoughts-read-latest');
+  const motionButton = document.getElementById('thoughts-motion');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const entries = [...THOUGHT_ENTRIES].sort((a, b) => b.date.localeCompare(a.date));
+  const pageSize = 3;
+  let page = 0;
+  let motionEnabled = true;
+
+  function renderCovers() {
+    const start = page * pageSize;
+    covers.start = start + 1;
+    covers.innerHTML = entries.slice(start, start + pageSize).map((entry, index) => `
+      <li>
+        <button type="button" class="thought-cover" data-entry="${start + index}" aria-haspopup="dialog">
+          <span class="thought-cover-top">
+            <svg class="thought-cover-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M5 3h7l3 3v11H5zM12 3v4h3M8 10h4M8 13h3"/></svg>
+            <time datetime="${escapeHtml(entry.date)}">${escapeHtml(formatThoughtDate(entry.date))}</time>
+            <span class="thought-cover-number" aria-hidden="true">${String(start + index + 1).padStart(2, '0')}</span>
+          </span>
+          <span class="thought-cover-title">${escapeHtml(entry.title)}</span>
+          <span class="thought-cover-bottom">
+            <span class="thought-cover-category">${escapeHtml(entry.category)}</span>
+            <span class="thought-cover-open" aria-hidden="true">read entry ↗</span>
+          </span>
+        </button>
+      </li>
+    `).join('');
+    newer.disabled = page === 0;
+    older.disabled = start + pageSize >= entries.length;
+    pageStatus.textContent = entries.length
+      ? `${start + 1}–${Math.min(start + pageSize, entries.length)} of ${entries.length}`
+      : 'No entries yet';
+  }
+
+  function openEntry(entry, trigger) {
+    document.getElementById('thought-reader-title').textContent = entry.title;
+    document.getElementById('thought-reader-category').textContent = entry.category;
+    document.getElementById('thought-reader-filename').textContent = `scribbles / ${entry.date}.md`;
+    const date = document.getElementById('thought-reader-date');
+    date.dateTime = entry.date;
+    date.textContent = formatThoughtDate(entry.date, true);
+    document.getElementById('thought-reader-copy').replaceChildren(...entry.paragraphs.map(text => {
+      const paragraph = document.createElement('p');
+      paragraph.textContent = text;
+      return paragraph;
+    }));
+    // Let the native dialog restore focus to its opener, including in Safari.
+    trigger.focus({ preventScroll: true });
+    reader.showModal();
+  }
+
+  covers.addEventListener('click', event => {
+    const trigger = event.target.closest('.thought-cover');
+    if (trigger) openEntry(entries[Number(trigger.dataset.entry)], trigger);
+  });
+  latest.addEventListener('click', () => openEntry(entries[0], latest));
+  document.getElementById('thought-reader-close').addEventListener('click', () => reader.close());
+  reader.addEventListener('click', event => {
+    if (event.target !== reader) return;
+    const bounds = reader.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) reader.close();
   });
 
-  document.getElementById('cal-next')?.addEventListener('click', () => {
-    currentDate.setDate(currentDate.getDate() + 1);
-    renderCalendar();
-  });
+  function turnPage(direction, trigger) {
+    page += direction;
+    renderCovers();
+    if (trigger.disabled) (direction > 0 ? newer : older).focus({ preventScroll: true });
+  }
+  newer.addEventListener('click', () => turnPage(-1, newer));
+  older.addEventListener('click', () => turnPage(1, older));
 
-  renderCalendar();
+  function updateMotion() {
+    const enabled = motionEnabled && !reducedMotion.matches;
+    section.dataset.motion = enabled ? 'on' : 'off';
+    motionButton.setAttribute('aria-pressed', String(enabled));
+    motionButton.disabled = reducedMotion.matches;
+    document.getElementById('thoughts-motion-label').textContent = reducedMotion.matches
+      ? 'Reduced motion'
+      : `Motion ${enabled ? 'on' : 'off'}`;
+  }
+  motionButton.addEventListener('click', () => {
+    motionEnabled = !motionEnabled;
+    updateMotion();
+  });
+  reducedMotion.addEventListener('change', updateMotion);
+
+  document.getElementById('thoughts-entry-count').textContent = `${entries.length} entries`;
+  latest.hidden = entries.length === 0;
+  document.querySelector('.thoughts-pagination').hidden = entries.length <= pageSize;
+  motionButton.hidden = false;
+  renderCovers();
+  updateMotion();
+  initScribblesCode(section);
 });

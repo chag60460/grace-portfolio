@@ -6,13 +6,11 @@ This is my personal portfolio site, styled as a little macOS desktop — frosted
 
 ## What's Inside
 
-Five sections you can click through, just like navigating a real desktop:
+Three tabs you can click through, just like navigating a real desktop:
 
-- **About Me** — who I am, what excites me, and an alarming matcha latte count hehe
-- **Faith** — my journey as a Christ follower, plus an interactive Small Wins calendar I coded to celebrate everyday victories
-- **Projects** — passion projects spanning tangible interfaces, AI systems, and open-source tools (Sonic Stitches, Solar Proximity, AI Arduino Temperature Monitor, Yours Truly)
-- **Skills** — languages, frontend, and backend/infra — the full toolkit
-- **Resume** — experience at Microsoft and MIT Media Lab, education, and a downloadable PDF
+- **Portfolio** — who I am and the projects I've designed and built
+- **Faith** — my journey as a Christ follower and what grounds and guides me
+- **Scribbles** — a notebook for unbuilt concepts, design experiments, and product visions, alongside my existing Small Wins Diary
 
 ## Built With
 
@@ -26,7 +24,7 @@ I kept the stack intentionally simple. The fun here is in the design and interac
 - macOS-inspired window chrome with frosted-glass blur effects
 - Sidebar navigator that switches sections with smooth transitions
 - A real-time clock ticking away in the menu bar
-- A hand-coded monthly calendar with illustrated entries for daily small wins
+- A photo-led Scribbles tab with gentle motion and a macOS-style journal reader
 - Dreamy pastel gradient background because aesthetics matter
 
 ## Getting Started
@@ -36,6 +34,60 @@ git clone https://github.com/chag60460/grace-portfolio.git
 cd grace-portfolio
 open index.html
 ```
+
+## Adding a journal entry
+
+**Scribbles** introduces my unbuilt concepts, design experiments, and product
+visions with "What if? A place for the not-yet." and "Before the product, there's
+a scribble." The existing Small Wins Diary remains here, separate from Faith;
+brainstorm-preview topics are not published as entries.
+
+Existing entries are preserved, with three covers shown at a time, newest first. Select a
+cover to read the full entry; **older** and **newer** browse published entries
+without stepping through empty calendar days.
+
+Scribbles keeps the macOS window chrome and the same pastel-pink icon as the
+other tabs. Its wider scene uses blush-pink lighting, rose accents, and
+translucent pink glass covers and reader. The portrait is centered, dense
+vertical TypeScript fragments fill the left, and entry covers sit on the right.
+The code glow uses the same rose-pink palette. The letters
+stay fixed while a thin, straight highlight crosses one or two columns at a
+time. The fragments are decorative, not executed or connected to a terminal.
+On narrow screens the covers move beneath the centered portrait. The code
+backdrop keeps the same top and bottom anchors at every width, extending through
+the taller stacked scene instead of shrinking to a fixed-height strip.
+**Read the latest entry** opens the newest entry directly.
+
+Add an object to `THOUGHT_ENTRIES` in [js/main.js](./js/main.js):
+
+```js
+{
+  date: '2026-10-25',
+  title: 'A title for this moment',
+  category: 'small beginnings',
+  paragraphs: [
+    'Write what happened, in your own words.',
+    'Add another paragraph when there is more to say.',
+  ],
+},
+```
+
+Use a unique `YYYY-MM-DD` date. Entries sort automatically; titles, categories,
+and paragraphs are plain text, not HTML. No account, service, or build step is
+needed. Commit and publish the updated file to make new entries visible.
+
+The supplied glasses portrait is stored as [thoughts-portrait.webp](./thoughts-portrait.webp),
+with camera and location metadata removed. It is an illustration of the diary's
+author, not a photo assigned to each entry's date. Motion is limited to the code
+scan, slow photo drift, light, and short cover entrances; it does not synthesize
+facial movement. The code is rendered locally on a transparent canvas: its
+stationary glyphs are cached, with only the highlight updated at up to 30 frames
+per second. It stops when the canvas is off screen, another section is selected,
+or the browser tab is hidden. No video, model, or external service is required.
+The **Motion** control pauses it, and reduced-motion preferences show a still
+version. Tabs, covers, page controls, and the reader support
+keyboard navigation; Escape closes the reader and restores focus to the button
+that opened it.
 
 ## Playable Games
 
@@ -114,7 +166,8 @@ field-validated service.
 ```
 index.html          — The whole page
 css/styles.css      — All the styling magic
-js/main.js          — Section switcher, clock, and the Small Wins calendar
+js/main.js          — Section switcher, clock, Scribbles entries, and journal interactions
+thoughts-portrait.webp — Metadata-free portrait used in Scribbles
 ```
 
 ## Say Hi!
