@@ -6,6 +6,7 @@
   <title>Borrowed Wind - Grace Chang</title>
   <meta name="description" content="Borrowed Wind: game design and development for an original five-chapter 3D action-adventure, with branching narrative, wind-and-sword combat, and optional gesture controls." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <script src="../../js/game-player.js" defer></script>
 </head>
 <body class="game-case-study">
@@ -27,16 +28,27 @@
       </div>
       <main class="main-content" id="main-content">
         <article aria-labelledby="game-title">
-          <header class="game-case-header">
-            <a class="game-back-link" href="../../index.html#card-borrowed-wind"><span aria-hidden="true">&lsaquo;</span> Back to portfolio</a>
-            <p class="game-case-kicker">Game design &amp; development</p>
-            <h1 id="game-title">Borrowed Wind</h1>
-            <p class="game-case-subtitle">The Names Beneath the Bridge &middot; An original 3D action-adventure</p>
+          <a class="game-back-link" href="../../index.html#card-borrowed-wind"><span aria-hidden="true">&lsaquo;</span> Back to portfolio</a>
+          <header class="project-hero project-hero-teal" aria-labelledby="game-title">
+            <div class="project-hero-copy">
+              <p class="project-hero-kicker">Game design &amp; development</p>
+              <h1 id="game-title">Borrowed Wind</h1>
+              <p class="project-hero-lede">The Names Beneath the Bridge</p>
+              <p class="project-hero-summary">A five-chapter 3D adventure with exploration, sword combat, branching choices, and optional hand-gesture controls.</p>
+              <span class="project-hero-status">Playable in the browser &middot; Keyboard &amp; touch</span>
+              <div class="project-hero-actions">
+                <a class="project-hero-button" href="#game-player" data-game-open="game-player">Play the game <span aria-hidden="true">&rarr;</span></a>
+                <a class="project-hero-link" href="#game-concept">How it plays &darr;</a>
+              </div>
+            </div>
+            <div class="project-hero-art">
+              <img src="media/cover.jpg" alt="Borrowed Wind's mountain courtyard and third-person character" width="1280" height="720" />
+            </div>
           </header>
-          <div class="game-player" data-game-src="play/index.html" data-game-title="Borrowed Wind">
+          <div class="game-player" id="game-player" data-game-src="play/index.html" data-game-title="Borrowed Wind">
             <div class="game-player-toolbar">
               <button type="button" class="game-start" hidden disabled><span aria-hidden="true">&#9654;</span> Reopen game</button>
-              <span class="game-player-status" role="status" hidden></span>
+              <span class="game-player-status" role="status" tabindex="-1" hidden></span>
               <div class="game-player-tools" hidden>
                 <button type="button" class="game-control game-fullscreen" aria-label="Enter fullscreen" aria-pressed="false" title="Enter fullscreen" hidden>&#x26F6;</button>
                 <button type="button" class="game-control game-close" aria-label="Close game" title="Close game">&times;</button>

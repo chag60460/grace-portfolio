@@ -6,6 +6,7 @@
   <title>Yours, Truly — Grace Chang</title>
   <meta name="description" content="Yours, Truly: a full-stack wellness journaling web app with structured daily prompts, mood tracking, and secure authentication." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <style>
     /* ── Project page layout ── */
     .window-area { grid-template-columns: 1fr !important; }
@@ -768,8 +769,20 @@
         <a href="../../index.html" class="back-link" data-open-section="about">‹ back to portfolio</a>
 
         <!-- ════════════ HERO ════════════ -->
-        <div class="hero">
-          <div class="hero-inner">
+        <header class="project-hero project-hero-rose" aria-labelledby="project-title">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">Wellness journal</p>
+            <h1 id="project-title">Yours, Truly</h1>
+            <p class="project-hero-lede">Small reflections. A clearer picture.</p>
+            <p class="project-hero-summary">An app for college students to record daily rose, thorn, and bud reflections alongside mood, sleep, and stress.</p>
+            <span class="project-hero-status">Full-stack web app &middot; Flask + MySQL</span>
+            <div class="project-hero-actions">
+              <a class="project-hero-button" href="#app-screens">View the app screens <span aria-hidden="true">&rarr;</span></a>
+              <a class="project-hero-link" href="#core-features">Explore the features &darr;</a>
+            </div>
+          </div>
+          <div class="project-hero-art hero" role="img" aria-label="A wellness notebook with rose, thorn, and bud prompts, mood, and sleep tracking">
+            <div class="hero-inner" aria-hidden="true">
             <div class="hero-notebook">
               <div class="hero-notebook-body">
                 <div class="hn-title">Wellness Journal</div>
@@ -786,12 +799,9 @@
                 </div>
               </div>
             </div>
+            </div>
           </div>
-          <div class="hero-overlay">
-            <h1>Yours, Truly</h1>
-            <p class="hero-subtitle">A wellness journaling app for college students</p>
-          </div>
-        </div>
+        </header>
 
         <div class="case-study">
 
@@ -835,7 +845,7 @@
           <p>I wanted to build something that felt like <strong>opening a real notebook</strong> — warm, inviting, and handwritten — but with the power of a database underneath: structured prompts, mood tracking, calendar retrieval, and secure multi-user accounts.</p>
 
           <!-- ════════════ FEATURES ════════════ -->
-          <h2>Core Features</h2>
+          <h2 id="core-features" tabindex="-1">Core Features</h2>
 
           <div class="feature-grid">
             <div class="feature-card">
@@ -871,7 +881,7 @@
           </div>
 
           <!-- ════════════ DESIGN ════════════ -->
-          <h2>Design &amp; UI</h2>
+          <h2 id="app-screens" tabindex="-1">Design &amp; UI</h2>
           <p>The visual design intentionally evokes a <strong>physical wellness journal</strong> — ruled paper textures, binder ring imagery, handwriting fonts (Noteworthy, Brush Script MT), and a warm pink color palette. The goal was to make opening the app feel like opening your personal notebook.</p>
 
           <div class="mockup-stage">

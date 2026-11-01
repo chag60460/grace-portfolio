@@ -6,6 +6,7 @@
   <title>Fritter — Grace Chang</title>
   <meta name="description" content="Fritter: a research-driven social feed redesign that gives people explicit control over how their feed is curated. From user interviews through concept design, critique, and shipped implementation." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <style>
     /* ── Project page layout ── */
     .window-area { grid-template-columns: 1fr !important; }
@@ -330,17 +331,26 @@
         <a href="../../index.html" class="back-link" data-open-section="about">‹ back to portfolio</a>
 
         <!-- ════════════ HERO ════════════ -->
-        <div class="hero">
-          <div class="hero-inner">
-            <img class="hero-shot" src="media/shot_feed.png" alt="Fritter feed with posts locked until the reader earns points" />
-            <img class="hero-shot lift" src="media/shot_chat.png" alt="Fritter chat screen where messaging a friend earns browsing time" />
-            <img class="hero-shot" src="media/shot_limit.png" alt="Fritter daily limit warning offering five more minutes or exit" />
+        <header class="project-hero project-hero-teal" aria-labelledby="project-title">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">Social feed redesign</p>
+            <h1 id="project-title">Fritter</h1>
+            <p class="project-hero-lede">Make the feed your own.</p>
+            <p class="project-hero-summary">Three working features that give readers control over curation, browsing time, and the rewards behind their feed.</p>
+            <span class="project-hero-status">Research to implementation &middot; Vue + TypeScript</span>
+            <div class="project-hero-actions">
+              <a class="project-hero-button" href="#project-demos">Watch the demos <span aria-hidden="true">&rarr;</span></a>
+              <a class="project-hero-link" href="#project-decisions">Design decisions &darr;</a>
+            </div>
           </div>
-          <div class="hero-overlay">
-            <h1>Fritter</h1>
-            <p class="hero-subtitle">Giving people explicit control over how their feed gets built</p>
+          <div class="project-hero-art hero">
+            <div class="hero-inner">
+              <img class="hero-shot" src="media/shot_feed.png" alt="Fritter feed with posts locked until the reader earns points" />
+              <img class="hero-shot lift" src="media/shot_chat.png" alt="Fritter chat screen where messaging a friend earns browsing time" />
+              <img class="hero-shot" src="media/shot_limit.png" alt="Fritter daily limit warning offering five more minutes or exit" />
+            </div>
           </div>
-        </div>
+        </header>
 
         <div class="case-study">
 
@@ -504,7 +514,7 @@
 
           <!-- ════════════ 6. CONVERGE ════════════ -->
           <div class="stage">Stage 06 · Decide</div>
-          <h2>Three in, three out</h2>
+          <h2 id="project-decisions" tabindex="-1">Three in, three out</h2>
           <p>The three I cut are the more interesting half of the decision.</p>
 
           <table class="landscape-table">
@@ -610,7 +620,7 @@
 
           <!-- ════════════ 9. SHIP ════════════ -->
           <div class="stage">Stage 09 · Build</div>
-          <h2>Shipping it</h2>
+          <h2 id="project-demos" tabindex="-1">Shipping it</h2>
           <p>I built the design out as a working application — Vue and TypeScript on the front end, Express and MongoDB behind it.</p>
 
           <div class="demo-row">

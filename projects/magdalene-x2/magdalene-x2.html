@@ -6,6 +6,7 @@
   <title>Magdalene X² — Grace Chang</title>
   <meta name="description" content="Magdalene X²: an autonomous multi-agent health-intelligence iOS app unifying labs, cycle, nutrition, fitness, and sleep for women." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <style>
     /* ── Project page layout ── */
     .window-area { grid-template-columns: 1fr !important; }
@@ -753,8 +754,20 @@
         <a href="../../index.html" class="back-link" data-open-section="about">‹ back to portfolio</a>
 
         <!-- ════════════ HERO ════════════ -->
-        <div class="hero">
-          <div class="hero-inner">
+        <header class="project-hero project-hero-warm" aria-labelledby="project-title">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">Women's health intelligence</p>
+            <h1 id="project-title">Magdalene X²</h1>
+            <p class="project-hero-lede">One picture of your whole health.</p>
+            <p class="project-hero-summary">Connecting labs, cycle, sleep, nutrition, and fitness through plain-language insights and small personal experiments.</p>
+            <span class="project-hero-status">Hi-fi prototype &middot; Wellness insight, not diagnosis</span>
+            <div class="project-hero-actions">
+              <a class="project-hero-button" href="#project-prototype">Try the prototype <span aria-hidden="true">&rarr;</span></a>
+              <a class="project-hero-link" href="#design-iterations">See design iterations &darr;</a>
+            </div>
+          </div>
+          <div class="project-hero-art hero" role="img" aria-label="Magdalene's Today, cross-domain insight, and Ask screens">
+            <div class="hero-inner" aria-hidden="true">
             <!-- Mini phone: Today screen -->
             <div class="hero-phone">
               <div class="hero-phone-inner">
@@ -801,12 +814,9 @@
                 <div class="hp-nav"><span>☀️ Today</span><span class="act">✦ Ask</span><span>🧫 Exp</span></div>
               </div>
             </div>
+            </div>
           </div>
-          <div class="hero-overlay">
-            <h1>Magdalene X²</h1>
-            <p class="hero-subtitle">An autonomous health-intelligence companion for women</p>
-          </div>
-        </div>
+        </header>
 
         <div class="case-study">
 
@@ -1032,7 +1042,7 @@
           </ul>
 
           <!-- ════════════ PROTOTYPE ITERATIONS ════════════ -->
-          <h2>Prototype Iterations</h2>
+          <h2 id="design-iterations" tabindex="-1">Prototype Iterations</h2>
           <p>Every module was designed in code, not in a static canvas. Each step below is one iteration: a real, working comparison build put side by side so the choice could be judged on the actual screen rather than a description of it. The five modules here took <strong>41 iterations</strong>: color families, ring geometry, message tone, and data-entry placement, each one narrowing the next decision.</p>
 
           <div class="iter-viewer">
@@ -1126,7 +1136,7 @@
           </div>
 
           <!-- ════════════ DESIGN SHOWCASE ════════════ -->
-          <h2>Product Design</h2>
+          <h2 id="project-prototype" tabindex="-1">Product Design</h2>
           <p>The final design uses a warm, editorial voice paired with modular data cards, with the cycle phase treated as a first-class variable that contextualizes every insight. The live hi-fi prototype is embedded below — the design system first, then six screens. Onboarding, Modules, Experiments and Me are interactive: tap their cards and buttons to walk the nested pages.</p>
 
           <div class="proto-frame">

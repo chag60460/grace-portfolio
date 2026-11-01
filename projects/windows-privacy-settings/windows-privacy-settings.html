@@ -6,6 +6,7 @@
   <title>Windows Privacy Settings — Grace Chang</title>
   <meta name="description" content="Windows Privacy &amp; Security settings refresh: restructuring the permission architecture so people can tell at a glance what has access to their camera, mic, location and files — across 4M+ monthly active devices." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <style>
     /* ── Project page layout ── */
     .window-area { grid-template-columns: 1fr !important; }
@@ -309,16 +310,22 @@
         <a href="../../index.html" class="back-link" data-open-section="about">‹ back to portfolio</a>
 
         <!-- ════════════ HERO ════════════ -->
-        <div class="hero">
-          <div class="hero-inner">
-            <img class="hero-device" src="media/hero-device.png"
-                 alt="A Windows laptop showing the Windows 11 desktop" />
+        <header class="project-hero project-hero-blue" aria-labelledby="project-title">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">Windows interaction design</p>
+            <h1 id="project-title">Windows Privacy Settings</h1>
+            <p class="project-hero-lede">Know what has access.</p>
+            <p class="project-hero-summary">Making privacy permissions easier to discover and tune, with clear categories and app-access counts at a glance.</p>
+            <span class="project-hero-status">Shipped redesign &middot; 4M+ monthly active devices</span>
+            <div class="project-hero-actions">
+              <a class="project-hero-button" href="#permission-redesign">Explore the redesign <span aria-hidden="true">&rarr;</span></a>
+              <a class="project-hero-link" href="#permission-details">Interaction details &darr;</a>
+            </div>
           </div>
-          <div class="hero-overlay">
-            <h1>Windows Privacy Settings</h1>
-            <p class="hero-subtitle">Making it obvious what has access to your camera, mic, location and files</p>
+          <div class="project-hero-art">
+            <img src="media/ia-grouping.png" alt="The redesigned Windows Privacy and security page, with grouped permissions and app-access counts" />
           </div>
-        </div>
+        </header>
 
         <div class="case-study">
 
@@ -392,7 +399,7 @@
 
           <!-- ════════════ 2. ARCHITECTURE ════════════ -->
           <div class="stage">Stage 02 · Restructure</div>
-          <h2>Grouping permissions by what they protect</h2>
+          <h2 id="permission-redesign" tabindex="-1">Grouping permissions by what they protect</h2>
           <p>The flat list became labelled groups, organized around the kind of thing at risk rather than the underlying API. Someone worried about being listened to shouldn't have to know whether that lives under "devices" or "apps" — they should be able to scan for the group that matches their worry.</p>
 
           <div class="ia-grid">
@@ -486,7 +493,7 @@
 
           <!-- ════════════ 3. THE HEADER ════════════ -->
           <div class="stage">Stage 03 · Design</div>
-          <h2>Answering “who has access?” before it’s asked</h2>
+          <h2 id="permission-details" tabindex="-1">Answering “who has access?” before it’s asked</h2>
           <p>The centerpiece is a summary header that sits above each permission and states the answer directly — how many apps currently have access, with the apps themselves surfaced beside it. The count is the point: it turns an audit that used to take several taps into something you read.</p>
           <p>Most of the design work went into the states around the happy path, because those are where a privacy surface either earns trust or loses it. A count that appears out of nowhere after a delay is worse than no count at all.</p>
 

@@ -14,10 +14,15 @@ const SECTION_TITLES = {
   faith:    'faith',
 };
 
+const sectionScroll = new Map();
+
 function showSection(name, el) {
   const tab = el || document.querySelector(`.nav-item[data-section="${name}"]`);
   const panel = document.getElementById('section-' + name);
   if (!tab || !panel) return;
+  const content = document.getElementById('main-content');
+  const previous = document.querySelector('.section.active');
+  if (previous && previous !== panel) sectionScroll.set(previous.id, content.scrollTop);
 
   // Deactivate all panels and tabs
   document.querySelectorAll('.section').forEach(s => {
@@ -36,6 +41,7 @@ function showSection(name, el) {
   tab.classList.add('active');
   tab.setAttribute('aria-selected', 'true');
   tab.tabIndex = 0;
+  if (previous !== panel) content.scrollTop = sectionScroll.get(panel.id) ?? 0;
 
   // Update the window titlebar
   document.getElementById('window-title').textContent = SECTION_TITLES[name] ?? name;
@@ -52,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tab.addEventListener('click', () => showSection(tab.dataset.section, tab));
 
     tab.addEventListener('keydown', (e) => {
-      const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+      const keys = { ArrowRight: 1, ArrowLeft: -1 };
       let next = null;
 
       if (e.key in keys) next = (i + keys[e.key] + tabs.length) % tabs.length;

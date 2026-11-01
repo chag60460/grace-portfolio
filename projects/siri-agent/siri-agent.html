@@ -6,6 +6,7 @@
   <title>Siri Agent - Grace Chang</title>
   <meta name="description" content="Siri Agent: an AI-native iOS concept that orchestrates transparent, permissioned actions across apps." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <style>
     .window-area { grid-template-columns: 1fr !important; }
     .main-window { min-width: 0; min-height: auto; }
@@ -226,19 +227,31 @@
       <main class="main-content">
         <a href="../../index.html" class="back-link" data-open-section="about">&larr; back to portfolio</a>
 
-        <section class="hero" aria-labelledby="project-title">
-          <div class="hero-stage" aria-hidden="true">
-            <div class="siri-orb"></div>
-            <div class="agent-sheet">
-              <div class="agent-eyebrow">Siri Agent is working</div>
-              <div class="agent-title">Plan a trip to Chicago</div>
-              <div class="agent-task"><span class="agent-icon">F</span><span>Compare flights</span><span class="agent-status">Ready</span></div>
-              <div class="agent-task"><span class="agent-icon">H</span><span>Find lodging</span><span class="agent-status">3 found</span></div>
-              <div class="agent-task"><span class="agent-icon">A</span><span>Build an itinerary</span><span class="agent-status">Working</span></div>
+        <header class="project-hero project-hero-blue" aria-labelledby="project-title">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">AI-native interaction design</p>
+            <h1 id="project-title">Siri Agent</h1>
+            <p class="project-hero-lede">One goal. Fewer app handoffs.</p>
+            <p class="project-hero-summary">An iOS orchestration layer that turns natural-language goals into transparent, permissioned steps across apps.</p>
+            <span class="project-hero-status">Product design &middot; Technical prototype</span>
+            <div class="project-hero-actions">
+              <a class="project-hero-button prototype-jump" href="#interactive-prototype">Try interactive prototype <span aria-hidden="true">&darr;</span></a>
+              <a class="project-hero-link" href="#high-fi-designs">View design screens &darr;</a>
             </div>
           </div>
-          <div class="hero-copy"><h1 id="project-title">Siri Agent</h1><p>An AI-native orchestration layer for iOS</p></div>
-        </section>
+          <div class="project-hero-art hero" role="img" aria-label="Siri Agent coordinating flights, lodging, and an itinerary for a trip to Chicago">
+            <div class="hero-stage" aria-hidden="true">
+              <div class="siri-orb"></div>
+              <div class="agent-sheet">
+                <div class="agent-eyebrow">Siri Agent is working</div>
+                <div class="agent-title">Plan a trip to Chicago</div>
+                <div class="agent-task"><span class="agent-icon">F</span><span>Compare flights</span><span class="agent-status">Ready</span></div>
+                <div class="agent-task"><span class="agent-icon">H</span><span>Find lodging</span><span class="agent-status">3 found</span></div>
+                <div class="agent-task"><span class="agent-icon">A</span><span>Build an itinerary</span><span class="agent-status">Working</span></div>
+              </div>
+            </div>
+          </div>
+        </header>
 
         <article class="case-study">
           <p><strong>PRD: AI-Native iOS: Orchestrated Task Completion via Siri Agent</strong></p>
@@ -248,10 +261,7 @@
             <div><div class="meta-label">Status</div><div class="meta-value">Shipped</div></div>
           </div>
 
-          <!-- Stop the sticky shortcut before the embedded app. -->
           <div class="case-study-content">
-            <p class="prototype-shortcut"><a class="prototype-jump" href="#interactive-prototype">Try interactive prototype <span aria-hidden="true">&darr;</span></a></p>
-
             <section aria-labelledby="context">
               <h2 id="context">Context</h2>
               <p>AI is now everywhere in our lives, so knowledge gap and accessibility are no longer the most prevalent issues. Instead, how we interact with AI becomes the most important component.</p>
@@ -564,7 +574,7 @@
             </section>
 
             <section aria-labelledby="high-fi-designs">
-              <h2 id="high-fi-designs">High-Fi Designs</h2>
+              <h2 id="high-fi-designs" tabindex="-1">High-Fi Designs</h2>
               <h3>Siri Trip Flow</h3>
               <div class="high-fi">
                 <details name="siri-high-fi" open>

@@ -12,11 +12,16 @@ document.querySelectorAll('.game-player').forEach(player => {
   fullscreen.hidden = !document.fullscreenEnabled;
 
   function loadGame(userInitiated = false) {
-    if (frame) return;
+    if (userInitiated) player.scrollIntoView({ block: 'start', behavior: 'instant' });
+    if (frame) {
+      if (userInitiated) frame.focus({ preventScroll: true });
+      return;
+    }
     message.hidden = false;
 
     if (location.protocol === 'file:') {
       message.textContent = 'Game playback requires an HTTP or HTTPS preview.';
+      if (userInitiated) message.focus({ preventScroll: true });
       return;
     }
 
@@ -41,10 +46,17 @@ document.querySelectorAll('.game-player').forEach(player => {
     tools.hidden = false;
     player.classList.add('is-playing');
     stage.append(embed);
-    if (userInitiated) player.scrollIntoView({ block: 'start', behavior: 'instant' });
   }
 
   start.addEventListener('click', () => loadGame(true));
+  document.querySelectorAll(`[data-game-open="${player.id}"]`).forEach(link => {
+    link.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey ||
+          event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      loadGame(true);
+    });
+  });
   loadGame();
 
   fullscreen.addEventListener('click', async () => {

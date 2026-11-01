@@ -6,7 +6,7 @@ This is my personal portfolio site, styled as a little macOS desktop — frosted
 
 ## What's Inside
 
-Three tabs you can click through, just like navigating a real desktop:
+Three tabs in the top menu bar, just like navigating a real desktop:
 
 - **Portfolio** — who I am and the projects I've designed and built
 - **Faith** — my journey as a Christ follower and what grounds and guides me
@@ -22,7 +22,8 @@ I kept the stack intentionally simple. The fun here is in the design and interac
 ## Fun Details
 
 - macOS-inspired window chrome with frosted-glass blur effects
-- Sidebar navigator that switches sections with smooth transitions
+- Functional top navigation for Portfolio, Faith, and Scribbles
+- Project cards that open and close real case-study windows without leaving the gallery
 - A real-time clock ticking away in the menu bar
 - A photo-led Scribbles tab with gentle motion and a macOS-style journal reader
 - Dreamy pastel gradient background because aesthetics matter
@@ -35,6 +36,100 @@ cd grace-portfolio
 open index.html
 ```
 
+## Project gallery
+
+The gallery uses image-led cards with consistent 16:10 previews: two columns on
+desktop and one on phones. Previews scale with the card width instead of using
+short fixed-height crops, and images fit inside their frames without clipping
+the interface. Each card keeps its title, a short description, and project tags
+below the preview.
+
+Windows shows its actual settings redesign. Siri Agent and Fritter use three
+existing interface screenshots each; Sonic Stitches shows the tablecloth being
+used at dinner. Other projects retain their existing product previews, now
+fully framed against project-colored backgrounds. Images load lazily, and the
+whole card still opens its project window.
+
+To check gallery geometry, image loading, and card interactions with the
+existing browser-test setup, run `npm test -- --gallery` from
+`projects/corner-cafe/`. The same checks are included in the default test run.
+
+## Project windows
+
+Select a project card to open its existing case study in a macOS-style window.
+The title bar follows the supplied macOS reference: 14px red, yellow, and green
+traffic lights with 9px gaps, a bold close cross and minus, and a diagonal
+maximize/restore symbol. The reference palette is converted to sRGB for the web;
+the other window chrome uses the same colors.
+
+- **Red: close** unloads that project and returns focus to its card (or the
+  selected section tab if the gallery is hidden). Escape also closes it. The
+  card stays available to reopen.
+- **Yellow: minimize** moves the project into the bottom dock, keeping its
+  document, scroll position, and demo state loaded. Select its dock item or
+  original card to restore it without a reload.
+- **Green: maximize / restore size** toggles between a floating window and the
+  full browser viewport, without entering browser fullscreen or reloading.
+
+Only one project is visible at a time, but several can remain minimized.
+Window sizes are remembered for each loaded project. Phones initially open
+maximized; green restores a smaller floating window. All three controls remain
+visible while the case study scrolls and support keyboard activation.
+Minimized projects stay available across the top navigation sections until
+closed or the page is reloaded.
+
+The green control handles enlarging the window; there is no separate new-tab link.
+Command/Ctrl-click or middle-click a project card to open its standalone page.
+Normal links without JavaScript still use the original URLs.
+The window reports slow or failed loading rather than leaving an unexplained
+blank frame, with instructions to close and reopen the card to retry. A project
+page opened directly keeps its original layout. **Back to portfolio** links
+are hidden inside project windows, where the close button already provides a
+way out, but remain available on standalone project pages.
+
+Portfolio, Faith, and Scribbles use equal-sized, text-only menu items in a slim
+28px translucent desktop menu bar, with flat selection highlights instead of
+rounded pills. On phones the brand and clock sit above a compact 32px menu row.
+All three sections share the same viewport-sized desktop and content window,
+with longer content scrolling inside it. Each section remembers its scroll
+position while switching tabs. The minimized-project dock stays below the
+content window, without covering its content or changing the desktop size.
+
+Closing a project window unloads its embedded demos and games and may discard
+unsaved progress. Minimizing does not pause a game or stop its audio; use the
+game's own pause control when needed. Games retain their own keyboard controls;
+Escape inside a game or fullscreen view belongs to that experience. Use the
+window's red close button to leave the whole project.
+
+New project pages should include `../../js/project-window.js` with `defer`,
+alongside the shared stylesheet. It handles embedded layout, readiness, and
+return-to-gallery links without duplicating case-study content. No external
+service or new dependency is required.
+
+## Project opening banners
+
+Every linked project page opens with a Corner Cafe-style banner: the project
+name, a short introduction, an existing product preview, and direct access to
+the work before the full case study. Each project keeps its own visual identity.
+On phones the introduction and actions come before the preview so reviewers do
+not have to scroll past a large image to reach the project.
+
+The primary action points to the existing prototype, playable game, demo video,
+or product screens, depending on what the project provides. Screen-only case
+studies are not presented as live apps. The Windows banner shows the redesigned
+Privacy and security interface rather than a generic desktop image.
+
+The game banners' **Play the game** action focuses the already-loaded game, or
+reopens it if the player was closed. It does not duplicate or restart a running
+game. Local gameplay still requires HTTP or HTTPS; file URLs show the existing
+preview requirement. Other banner actions jump to the relevant in-page section
+without changing the demo's existing launch or loading behavior.
+
+The existing Corner Cafe test command also checks all nine opening banners
+over HTTP and file URLs: primary actions must fit in the initial project
+viewport at desktop and phone sizes, every banner link must reveal its target,
+and game actions must preserve running games and reopen closed players.
+
 ## Adding a journal entry
 
 **Scribbles** introduces my unbuilt concepts, design experiments, and product
@@ -46,8 +141,8 @@ Existing entries are preserved, with three covers shown at a time, newest first.
 cover to read the full entry; **older** and **newer** browse published entries
 without stepping through empty calendar days.
 
-Scribbles keeps the macOS window chrome and the same pastel-pink icon as the
-other tabs. Its wider scene uses blush-pink lighting, rose accents, and
+Scribbles keeps the macOS window chrome and text-only navigation of the
+other sections. Its scene uses blush-pink lighting, rose accents, and
 translucent pink glass covers and reader. The portrait is centered, dense
 vertical TypeScript fragments fill the left, and entry covers sit on the right.
 The code glow uses the same rose-pink palette. The letters
@@ -158,7 +253,8 @@ npm test
 Capture and HTTP tests expect this portfolio to be served on
 `http://127.0.0.1:4174`; set `PORTFOLIO_PREVIEW` to use another origin. The tests
 also cover file-URL startup, iframe readiness, both role entry points, and narrow
-milk-choice layouts. Browser binaries and `node_modules/` are development-only;
+milk-choice layouts, plus preserving an in-progress demo through project-window
+minimize, maximize, and restore. Browser binaries and `node_modules/` are development-only;
 the published site needs neither. Rebuild the bundle after changing the demo
 source. The case study remains labeled as a prototype, not a launched or
 field-validated service.
@@ -167,6 +263,7 @@ field-validated service.
 index.html          — The whole page
 css/styles.css      — All the styling magic
 js/main.js          — Section switcher, clock, Scribbles entries, and journal interactions
+js/project-window.js — Project window lifecycle and embedded case-study integration
 thoughts-portrait.webp — Metadata-free portrait used in Scribbles
 ```
 

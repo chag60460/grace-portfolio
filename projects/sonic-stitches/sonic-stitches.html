@@ -6,6 +6,7 @@
   <title>Sonic Stitches — Grace Chang</title>
   <meta name="description" content="Sonic Stitches: an interactive embroidered tablecloth using conductive-thread capacitive sensing to play oral histories through touch. MIT Media Lab, Tangible Media Group." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <style>
     /* ── Project page layout ── */
     .window-area { grid-template-columns: 1fr !important; }
@@ -455,13 +456,22 @@
         <a href="../../index.html" class="back-link" data-open-section="about">‹ back to portfolio</a>
 
         <!-- ════════════ HERO ════════════ -->
-        <div class="hero">
-          <img src="media/cover.png" alt="Close-up of a finger touching embroidered flowers on the Sonic Stitches tablecloth" />
-          <div class="hero-overlay">
-            <h1>Sonic Stitches</h1>
-            <p class="hero-subtitle">Storytelling through collaborative embroidery</p>
+        <header class="project-hero" aria-labelledby="project-title">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">Tangible interfaces &middot; Collaborative storytelling</p>
+            <h1 id="project-title">Sonic Stitches</h1>
+            <p class="project-hero-lede">Touch a stitch. Hear a story.</p>
+            <p class="project-hero-summary">An interactive embroidered tablecloth that brings recorded memories of food and home back to the dinner table.</p>
+            <span class="project-hero-status">MIT Media Lab &middot; Research prototype</span>
+            <div class="project-hero-actions">
+              <a class="project-hero-button" href="#project-demo">Watch the demo <span aria-hidden="true">&rarr;</span></a>
+              <a class="project-hero-link" href="#project-result">See the installation &darr;</a>
+            </div>
           </div>
-        </div>
+          <div class="project-hero-art hero">
+            <img src="media/cover.png" alt="Close-up of a finger touching embroidered flowers on the Sonic Stitches tablecloth" />
+          </div>
+        </header>
 
         <div class="case-study">
 
@@ -640,7 +650,7 @@
           <p>I was responsible for the <strong>entire technical architecture</strong>, from sensor integration to embedded programming — writing the Arduino firmware that reads capacitive touch values from conductive thread zones, calibrating sensor thresholds, and building the serial communication bridge to Processing. I also led the <strong>interaction design</strong>, defining how touch gestures would map to different audio playback behaviors based on different embroidery.</p>
 
           <!-- ════════════ FINAL RESULT ════════════ -->
-          <h2>Final Result</h2>
+          <h2 id="project-result" tabindex="-1">Final Result</h2>
 
           <div class="img-grid img-grid-2">
             <img src="media/table-overhead.jpg" alt="Overhead view of Sonic Stitches tablecloth set for dinner" />
@@ -652,7 +662,7 @@
           <p class="img-caption">Close-up showing the hand-stitched patterns that serve as touch-sensitive interaction zones.</p>
 
           <!-- ════════════ DEMO ════════════ -->
-          <h2>Demo</h2>
+          <h2 id="project-demo" tabindex="-1">Demo</h2>
           <div class="demo-section">
             <video class="demo-embed" controls preload="metadata">
               <source src="media/Sonic Stitches Demo.mp4#t=0.02" type="video/mp4" />

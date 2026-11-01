@@ -6,6 +6,7 @@
   <title>Bellweather Row - Grace Chang</title>
   <meta name="description" content="Bellweather Row: game design and development for The World's Worst Thief, a five-act 3D browser mystery with miniature worlds, clue-driven puzzles, and a player-authored ending." />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="../../js/project-window.js" defer></script>
   <script src="../../js/game-player.js" defer></script>
 </head>
 <body class="game-case-study">
@@ -27,16 +28,27 @@
       </div>
       <main class="main-content" id="main-content">
         <article aria-labelledby="game-title">
-          <header class="game-case-header">
-            <a class="game-back-link" href="../../index.html#card-bellweather-row"><span aria-hidden="true">&lsaquo;</span> Back to portfolio</a>
-            <p class="game-case-kicker">Game design &amp; development</p>
-            <h1 id="game-title">Bellweather Row</h1>
-            <p class="game-case-subtitle">The World's Worst Thief &middot; A five-act neighborhood mystery</p>
+          <a class="game-back-link" href="../../index.html#card-bellweather-row"><span aria-hidden="true">&lsaquo;</span> Back to portfolio</a>
+          <header class="project-hero project-hero-warm" aria-labelledby="game-title">
+            <div class="project-hero-copy">
+              <p class="project-hero-kicker">Game design &amp; development</p>
+              <h1 id="game-title">Bellweather Row</h1>
+              <p class="project-hero-lede">The World's Worst Thief</p>
+              <p class="project-hero-summary">A five-act neighborhood mystery with rotatable 3D worlds, clue-driven puzzles, and an ending shaped by your choices.</p>
+              <span class="project-hero-status">Playable in the browser &middot; Keyboard &amp; touch</span>
+              <div class="project-hero-actions">
+                <a class="project-hero-button" href="#game-player" data-game-open="game-player">Play the game <span aria-hidden="true">&rarr;</span></a>
+                <a class="project-hero-link" href="#game-concept">Explore the game design &darr;</a>
+              </div>
+            </div>
+            <div class="project-hero-art">
+              <img src="media/cover.jpg" alt="Bellweather Row's explorable 3D cafe and evidence casebook" width="1280" height="720" />
+            </div>
           </header>
-          <div class="game-player" data-game-src="play/index.html" data-game-title="Bellweather Row">
+          <div class="game-player" id="game-player" data-game-src="play/index.html" data-game-title="Bellweather Row">
             <div class="game-player-toolbar">
               <button type="button" class="game-start" hidden disabled><span aria-hidden="true">&#9654;</span> Reopen game</button>
-              <span class="game-player-status" role="status" hidden></span>
+              <span class="game-player-status" role="status" tabindex="-1" hidden></span>
               <div class="game-player-tools" hidden>
                 <button type="button" class="game-control game-fullscreen" aria-label="Enter fullscreen" aria-pressed="false" title="Enter fullscreen" hidden>&#x26F6;</button>
                 <button type="button" class="game-control game-close" aria-label="Close game" title="Close game">&times;</button>

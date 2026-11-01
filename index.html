@@ -24,67 +24,38 @@
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
-<div class="desktop">
+<div class="desktop home-desktop">
 
   <!-- ── Menu bar ── -->
-  <div class="menubar">
-    <div class="menubar-left">
-      <span class="menubar-brand">grace.dev</span>  <!-- domain -->
-      <span aria-hidden="true">File</span>
-      <span aria-hidden="true">View</span>
-      <span aria-hidden="true">Go</span>
-      <span aria-hidden="true">Help</span>
-    </div>
+  <header class="menubar home-menubar">
+    <span class="menubar-brand">grace.dev</span>
+    <nav class="section-nav" aria-label="Sections">
+      <div class="section-tabs" role="tablist" aria-label="Portfolio sections" aria-orientation="horizontal">
+        <button type="button" class="nav-item active" role="tab"
+                id="tab-about" aria-controls="section-about" aria-selected="true"
+                data-section="about">
+          Portfolio
+        </button>
+        <button type="button" class="nav-item" role="tab"
+                id="tab-faith" aria-controls="section-faith" aria-selected="false"
+                data-section="faith">
+          Faith
+        </button>
+        <button type="button" class="nav-item" role="tab"
+                id="tab-thoughts" aria-controls="section-thoughts" aria-selected="false"
+                data-section="thoughts">
+          Scribbles
+        </button>
+      </div>
+    </nav>
     <div class="menubar-right">
       <span>Open to work</span>  <!-- status -->
       <span id="clock"></span>
     </div>
-  </div>
+  </header>
 
   <!-- ── Window area ── -->
   <div class="window-area">
-
-    <!-- Sidebar navigator -->
-    <div class="window sidebar-window">
-      <div class="titlebar">
-        <div class="dots" aria-hidden="true">
-          <div class="dot dot-red"></div>
-          <div class="dot dot-yellow"></div>
-          <div class="dot dot-green"></div>
-        </div>
-        <span class="titlebar-title">navigator</span>
-      </div>
-      <div class="sidebar-content">
-        <div class="profile-section">
-          <img class="avatar" src="profile_pic.jpeg" alt="Portrait of Grace Chang" width="60" height="60" />  <!-- photo -->
-          <div>
-            <div class="profile-name">Grace</div>  <!-- name -->
-            <div class="profile-role">Product Designer who builds · UX Engineer</div>  <!-- role -->
-          </div>
-        </div>
-        <nav aria-label="Sections">
-          <div role="tablist" aria-label="Portfolio sections" style="display: contents;">
-            <button type="button" class="nav-item active" role="tab"
-                    id="tab-about" aria-controls="section-about" aria-selected="true"
-                    data-section="about">
-              <span class="nav-icon icon-pink" aria-hidden="true">◉</span> portfolio
-            </button>
-            <button type="button" class="nav-item" role="tab"
-                    id="tab-faith" aria-controls="section-faith" aria-selected="false"
-                    data-section="faith">
-              <span class="nav-icon icon-pink" aria-hidden="true">✝</span> faith
-            </button>
-            <button type="button" class="nav-item" role="tab"
-                    id="tab-thoughts" aria-controls="section-thoughts" aria-selected="false"
-                    data-section="thoughts">
-              <span class="nav-icon icon-pink" aria-hidden="true">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v10h10V7M7 9l1-3 5-5 2 2-5 5-3 1Z"/></svg>
-              </span> scribbles
-            </button>
-          </div>
-        </nav>
-      </div>
-    </div>
 
     <!-- Main content window -->
     <div class="window main-window">
@@ -100,7 +71,13 @@
 
         <!-- ABOUT -->
         <section class="section active" id="section-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0">
-          <h1 class="section-title">hi, i'm grace 💕</h1>  <!-- name -->
+          <div class="profile-section">
+            <img class="avatar" src="profile_pic.jpeg" alt="Portrait of Grace Chang" width="60" height="60" />
+            <div>
+              <h1 class="section-title">hi, i'm grace 💕</h1>
+              <p class="profile-role">Product Designer who builds · UX Engineer</p>
+            </div>
+          </div>
           <p class="section-sub">product design · interaction design · prototyping in code</p>  <!-- tagline -->
 
           <!-- bio -->
@@ -118,15 +95,15 @@
 
           <!-- projects gallery -->
           <h2 class="section-title" style="margin-top: 20px; font-size: 15px;">projects</h2>
-          <p class="section-sub">things i've built and shipped</p>
+          <p class="section-sub">things i've built and shipped<span class="project-gallery-hint" id="project-gallery-hint" hidden>select a card to open a project window</span></p>
           <div class="projects-grid">
 
             <a class="project-card" id="card-windows-privacy-settings"
                href="projects/windows-privacy-settings/windows-privacy-settings.html">
-              <img class="project-thumb" src="projects/windows-privacy-settings/media/cover.png"
-                   alt="A Windows 11 desktop and taskbar on a laptop screen" loading="lazy" />
+              <img class="project-thumb project-preview-blue" src="projects/windows-privacy-settings/media/ia-grouping.png"
+                   alt="The redesigned Windows Privacy and security page with grouped permissions and app-access counts" loading="lazy" decoding="async" />
               <span class="project-name">Windows Privacy Settings</span>
-              <span class="project-desc">Restructuring how people discover and tune their privacy controls, so the page answers "what has access?" on arrival — shipped across 4M+ monthly active devices.</span>
+              <span class="project-desc">Privacy controls that make app access clear, shipped across 4M+ monthly active devices.</span>
               <span class="project-tags">
                 <span class="project-tag">Information Architecture</span>
                 <span class="project-tag">Interaction Design</span>
@@ -138,10 +115,10 @@
 
             <a class="project-card" id="card-corner-cafe"
                href="projects/corner-cafe/corner-cafe.html">
-              <img class="project-thumb" src="projects/corner-cafe/media/cover.svg"
-                   alt="Corner Cafe customer ordering and volunteer milk-queue interfaces" loading="lazy" />
+              <img class="project-thumb project-preview-rose" src="projects/corner-cafe/media/cover.svg"
+                   alt="Corner Cafe customer ordering and volunteer milk-queue interfaces" loading="lazy" decoding="async" />
               <span class="project-name">Corner Cafe</span>
-              <span class="project-desc">Moving order information ahead of the cup: a volunteer cafe workflow, reusable design system, and working ordering prototype.</span>
+              <span class="project-desc">An order-ahead cafe workflow, reusable design system, and working prototype.</span>
               <span class="project-tags">
                 <span class="project-tag">Product Judgment</span>
                 <span class="project-tag">Design Systems</span>
@@ -152,17 +129,15 @@
 
             <a class="project-card" id="card-siri-agent"
                href="projects/siri-agent/siri-agent.html">
-              <span class="project-thumb siri-agent-thumb" role="img" aria-label="Siri Agent coordinating flight, lodging, and activity tasks across apps">
-                <span class="siri-thumb-orb"></span>
-                <span class="siri-thumb-sheet">
-                  <span class="siri-thumb-title">Planning Chicago</span>
-                  <span class="siri-thumb-task"><i></i> Flights</span>
-                  <span class="siri-thumb-task"><i></i> Lodging</span>
-                  <span class="siri-thumb-task"><i></i> Activities</span>
+              <span class="project-thumb project-screens siri-agent-thumb" role="img" aria-label="Siri Agent high-fidelity screens showing a trip plan, flight options, and an itinerary">
+                <span class="project-screens-row">
+                  <img src="projects/siri-agent/media/high-fi/e3-plan-ready.png" alt="" width="828" height="1792" loading="lazy" decoding="async" />
+                  <img src="projects/siri-agent/media/high-fi/e4-flight-options.png" alt="" width="828" height="1792" loading="lazy" decoding="async" />
+                  <img src="projects/siri-agent/media/high-fi/e6-itinerary.png" alt="" width="828" height="1792" loading="lazy" decoding="async" />
                 </span>
               </span>
               <span class="project-name">Siri Agent</span>
-              <span class="project-desc">An AI-native iOS orchestration layer that turns natural-language goals into transparent, permissioned actions across apps.</span>
+              <span class="project-desc">An iOS agent that turns goals into clear, permissioned actions across apps.</span>
               <span class="project-tags">
                 <span class="project-tag">Product Strategy</span>
                 <span class="project-tag">Agentic AI</span>
@@ -173,10 +148,10 @@
 
             <a class="project-card" id="card-magdalene-x2"
                href="projects/magdalene-x2/magdalene-x2.html">
-              <img class="project-thumb" src="projects/magdalene-x2/media/cover.svg"
-                   alt="Magdalene X squared health intelligence app interface" loading="lazy" />
+              <img class="project-thumb project-preview-warm" src="projects/magdalene-x2/media/cover.svg"
+                   alt="Magdalene X squared health intelligence app interface" loading="lazy" decoding="async" />
               <span class="project-name">Magdalene X²</span>
-              <span class="project-desc">An autonomous, multi-agent health-intelligence app that unifies labs, cycle, nutrition, fitness, and sleep for women.</span>
+              <span class="project-desc">A health-intelligence prototype connecting labs, cycle, sleep, nutrition, and fitness.</span>
               <span class="project-tags">
                 <span class="project-tag">Product Design</span>
                 <span class="project-tag">Multi-Agent AI</span>
@@ -187,10 +162,10 @@
 
             <a class="project-card" id="card-sonic-stitches"
                href="projects/sonic-stitches/sonic-stitches.html">
-              <img class="project-thumb" src="projects/sonic-stitches/media/cover.png"
-                   alt="The Sonic Stitches embroidered tablecloth set for dinner" loading="lazy" />
+              <img class="project-thumb" src="projects/sonic-stitches/media/dinner-interaction.jpg"
+                   alt="Dinner guests touching embroidered patterns on the Sonic Stitches tablecloth" loading="lazy" decoding="async" />
               <span class="project-name">Sonic Stitches</span>
-              <span class="project-desc">Explores the theme of TeleAbsence through interactive installations over textiles and immersive experiences.</span>
+              <span class="project-desc">An embroidered tablecloth that plays stories of food and home through touch.</span>
               <span class="project-tags">
                 <span class="project-tag">Arduino</span>
                 <span class="project-tag">C</span>
@@ -203,10 +178,10 @@
 
             <a class="project-card" id="card-borrowed-wind"
                href="projects/borrowed-wind/borrowed-wind.html">
-              <img class="project-thumb" src="projects/borrowed-wind/media/cover.jpg"
-                  alt="Borrowed Wind's playable 3D mountain courtyard and third-person character" width="1280" height="720" loading="lazy" />
+              <img class="project-thumb project-preview-teal" src="projects/borrowed-wind/media/cover.jpg"
+                   alt="Borrowed Wind's playable 3D mountain courtyard and third-person character" width="1280" height="720" loading="lazy" decoding="async" />
               <span class="project-name">Borrowed Wind</span>
-                <span class="project-desc">A five-chapter 3D action-adventure about borrowing wind: exploration, sword combat, branching story choices, and optional hand-gesture controls.</span>
+              <span class="project-desc">A 3D adventure with wind-powered exploration, sword combat, and branching choices.</span>
               <span class="project-tags">
                 <span class="project-tag">Game Design</span>
                 <span class="project-tag">Game Development</span>
@@ -218,10 +193,10 @@
 
             <a class="project-card" id="card-bellweather-row"
                href="projects/bellweather-row/bellweather-row.html">
-              <img class="project-thumb" src="projects/bellweather-row/media/cover.jpg"
-                   alt="The explorable 3D cafe and evidence casebook in Bellweather Row" width="1280" height="720" loading="lazy" />
+              <img class="project-thumb project-preview-warm" src="projects/bellweather-row/media/cover.jpg"
+                   alt="The explorable 3D cafe and evidence casebook in Bellweather Row" width="1280" height="720" loading="lazy" decoding="async" />
               <span class="project-name">Bellweather Row</span>
-              <span class="project-desc">A five-act neighborhood mystery with rotatable 3D worlds, clue-driven puzzles, character dialogue, and a newspaper ending shaped by the player.</span>
+              <span class="project-desc">A neighborhood mystery with explorable 3D scenes, clues, and choices that shape the ending.</span>
               <span class="project-tags">
                 <span class="project-tag">Game Design</span>
                 <span class="project-tag">Game Development</span>
@@ -233,10 +208,15 @@
 
             <a class="project-card" id="card-fritter"
                href="projects/fritter/fritter.html">
-              <img class="project-thumb" src="projects/fritter/media/cover.png"
-                   alt="Fritter app screens: generating a curated feed, a chat conversation, and a daily time limit warning" loading="lazy" />
+              <span class="project-thumb project-screens project-preview-teal" role="img" aria-label="Fritter app screens showing a curated feed, a chat conversation, and a daily time limit warning">
+                <span class="project-screens-row">
+                  <img src="projects/fritter/media/shot_feed.png" alt="" loading="lazy" decoding="async" />
+                  <img src="projects/fritter/media/shot_chat.png" alt="" loading="lazy" decoding="async" />
+                  <img src="projects/fritter/media/shot_limit.png" alt="" loading="lazy" decoding="async" />
+                </span>
+              </span>
               <span class="project-name">Fritter</span>
-              <span class="project-desc">A research-driven social feed redesign that hands curation back to the reader — six concepts, three shipped, taken from interviews through critique to a working app.</span>
+              <span class="project-desc">A social feed redesign that gives readers control over curation and browsing time.</span>
               <span class="project-tags">
                 <span class="project-tag">User Research</span>
                 <span class="project-tag">Concept Design</span>
@@ -249,10 +229,10 @@
 
             <a class="project-card" id="card-yours-truly"
                href="projects/yours-truly/yours-truly.html">
-              <img class="project-thumb" src="projects/yours-truly/media/cover.png"
-                   alt="Yours, Truly wellness journaling web app" loading="lazy" />
+              <img class="project-thumb project-preview-rose" src="projects/yours-truly/media/cover.png"
+                   alt="Yours, Truly wellness journaling interface with rose, thorn, and bud prompts" loading="lazy" decoding="async" />
               <span class="project-name">Yours, Truly</span>
-              <span class="project-desc">Full-stack wellness journaling web app with structured daily prompts, mood tracking, and secure authentication.</span>
+              <span class="project-desc">A wellness journal for daily reflections, mood tracking, and private entries.</span>
               <span class="project-tags">
                 <span class="project-tag">Python + Flask</span>
                 <span class="project-tag">MySQL</span>
@@ -339,6 +319,11 @@
     </div>
   </div>
 
+  <nav class="project-dock" id="project-dock" aria-label="Minimized projects" hidden>
+    <span class="project-dock-label">minimized</span>
+    <div class="project-dock-items" id="project-dock-items"></div>
+  </nav>
+
   <!-- ── Status bar ── -->
   <div class="status-bar">
     <span><span class="status-dot" aria-hidden="true"></span>available for work</span>  <!-- status -->
@@ -353,10 +338,34 @@
 
 </div>
 
+<dialog class="project-window" id="project-window" aria-labelledby="project-window-title" aria-describedby="project-window-hint">
+  <div class="titlebar project-window-titlebar">
+    <div class="dots project-window-controls" role="group" aria-label="Project window controls">
+      <button type="button" class="dot dot-red window-control project-window-control" id="project-window-close" aria-label="Close project window" title="Close project" autofocus>
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m1.5 1.5 9 9m0-9-9 9"/></svg>
+      </button>
+      <button type="button" class="dot dot-yellow window-control project-window-control" id="project-window-minimize" aria-label="Minimize project to dock" title="Minimize project">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M1.5 6h9"/></svg>
+      </button>
+      <button type="button" class="dot dot-green window-control project-window-control" id="project-window-maximize" aria-label="Maximize project window" title="Maximize project window" aria-pressed="false">
+        <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path class="window-expand-icon" d="M1 1h7L1 8zm10 10H4l7-7z"/><path class="window-restore-icon" d="M5 5H0l5-5zm2 2h5l-5 5z"/></svg>
+      </button>
+    </div>
+    <h2 class="titlebar-title" id="project-window-title">project</h2>
+  </div>
+  <p class="project-window-status" id="project-window-status" role="status" hidden></p>
+  <div class="project-window-body" id="project-window-body"></div>
+  <p class="project-window-hint" id="project-window-hint">Esc to close. Minimize keeps projects loaded; closing may lose unsaved progress.</p>
+</dialog>
+
 <dialog class="thought-reader" id="thought-reader" aria-labelledby="thought-reader-title" aria-describedby="thought-reader-date">
   <div class="titlebar thought-reader-titlebar">
-    <button type="button" class="thought-reader-close" id="thought-reader-close" aria-label="Close journal entry" autofocus><span aria-hidden="true">×</span></button>
-    <div class="dots" aria-hidden="true"><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+    <div class="dots">
+      <button type="button" class="dot dot-red window-control" id="thought-reader-close" aria-label="Close journal entry" autofocus>
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m1.5 1.5 9 9m0-9-9 9"/></svg>
+      </button>
+      <span class="dot dot-yellow" aria-hidden="true"></span><span class="dot dot-green" aria-hidden="true"></span>
+    </div>
     <span class="titlebar-title" id="thought-reader-filename">scribbles / entry.md</span>
   </div>
   <div class="thought-reader-body">
@@ -369,5 +378,6 @@
 </dialog>
 
 <script src="js/main.js"></script>
+<script src="js/project-window.js"></script>
 </body>
 </html>
