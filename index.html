@@ -28,18 +28,17 @@
 
   <!-- ── Menu bar ── -->
   <header class="menubar home-menubar">
-    <span class="menubar-brand">grace.dev</span>
     <nav class="section-nav" aria-label="Sections">
       <div class="section-tabs" role="tablist" aria-label="Portfolio sections" aria-orientation="horizontal">
+        <button type="button" class="nav-item menubar-brand" role="tab"
+                id="tab-grace" aria-controls="section-grace" aria-selected="false"
+                data-section="grace">
+          grace.dev
+        </button>
         <button type="button" class="nav-item active" role="tab"
                 id="tab-about" aria-controls="section-about" aria-selected="true"
                 data-section="about">
           Portfolio
-        </button>
-        <button type="button" class="nav-item" role="tab"
-                id="tab-faith" aria-controls="section-faith" aria-selected="false"
-                data-section="faith">
-          Faith
         </button>
         <button type="button" class="nav-item" role="tab"
                 id="tab-thoughts" aria-controls="section-thoughts" aria-selected="false"
@@ -69,33 +68,58 @@
       </div>
       <main class="main-content" id="main-content">
 
-        <!-- ABOUT -->
-        <section class="section active" id="section-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0">
-          <div class="profile-section">
-            <img class="avatar" src="profile_pic.jpeg" alt="Portrait of Grace Chang" width="60" height="60" />
-            <div>
-              <h1 class="section-title">hi, i'm grace 💕</h1>
-              <p class="profile-role">Product Designer who builds · UX Engineer</p>
+        <section class="section" id="section-grace" role="tabpanel" aria-labelledby="tab-grace" tabindex="0" hidden>
+          <div class="grace-intro">
+            <div class="profile-section">
+              <img class="avatar" src="profile_pic.jpeg" alt="Portrait of Grace Chang" width="80" height="80" />
+              <div>
+                <h1 class="section-title">hi, i'm grace 💕</h1>
+                <p class="profile-role">Product Designer who builds · UX Engineer</p>
+              </div>
             </div>
+            <p class="section-sub">product design · interaction design · prototyping in code</p>
+            <p class="about-bio">Designer who builds. I work from first sketch to shipped pixels, shaping how people discover, personalize, and enjoy the software they use every day — currently designing Windows experiences at Microsoft, previously at the MIT Media Lab.</p>
+            <p class="about-bio">My passion lies in <b>interaction design</b>, <b>tangible user interfaces</b>, and <b>the craft layer where design becomes code</b>. I prototype to think, and I am deeply interested in <b>creating meaningful human–computer experiences</b>, especially pushing for <b><i>ubiquitous computing.</i></b></p>
+            <div class="tag-row">
+              <span class="tag tag-pink">interaction design</span>
+              <span class="tag tag-purple">design systems</span>
+              <span class="tag tag-blue">Figma</span>
+              <span class="tag tag-green">rapid prototyping</span>
+              <span class="tag tag-pink">tangible interfaces</span>
+            </div>
+
+            <section class="grace-faith" id="grace-faith" aria-labelledby="grace-faith-title">
+              <h2 class="section-title" id="grace-faith-title">my journey as a Christ follower</h2>
+              <p class="section-sub">what grounds and guides me</p>
+
+              <figure class="faith-block">
+                <blockquote class="faith-verse">
+                  "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."
+                </blockquote>
+                <figcaption class="faith-ref">— Jeremiah 29:11</figcaption>
+              </figure>
+
+              <p class="about-bio">Before anything, I am first and foremost a Christian. My faith is the foundation of who I am and how I approach my work. It shapes how I build, collaborate, and serve others through technology.</p>
+
+              <figure class="faith-block">
+                <blockquote class="faith-verse">
+                  "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters."
+                </blockquote>
+                <figcaption class="faith-ref">— Colossians 3:23</figcaption>
+              </figure>
+
+              <p class="about-bio">I believe that every line of code can be an act of stewardship — using the gifts and talents I've been given to make a positive impact in the world.</p>
+              <p class="about-bio">In this specific season, God is fine-tuning my heart and making it align more with His. He has shown me how perfect love can cast out all fear, and instead make room for joy, peace, and compassion.</p>
+            </section>
           </div>
-          <p class="section-sub">product design · interaction design · prototyping in code</p>  <!-- tagline -->
+        </section>
 
-          <!-- bio -->
-          <p class="about-bio">Designer who builds. I work from first sketch to shipped pixels, shaping how people discover, personalize, and enjoy the software they use every day — currently designing Windows experiences at Microsoft, previously at the MIT Media Lab.</p>
-          <p class="about-bio">My passion lies in <b>interaction design</b>, <b>tangible user interfaces</b>, and <b>the craft layer where design becomes code</b>. I prototype to think, and I am deeply interested in <b>creating meaningful human–computer experiences</b>, especially pushing for <b><i>ubiquitous computing.</i></b></p>
-
-          <!-- interest tags -->
-          <div class="tag-row">
-            <span class="tag tag-pink">interaction design</span>
-            <span class="tag tag-purple">design systems</span>
-            <span class="tag tag-blue">Figma</span>
-            <span class="tag tag-green">rapid prototyping</span>
-            <span class="tag tag-pink">tangible interfaces</span>
-          </div>
-
+        <!-- PORTFOLIO -->
+        <section class="section active" id="section-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0">
           <!-- projects gallery -->
-          <h2 class="section-title" style="margin-top: 20px; font-size: 15px;">projects</h2>
-          <p class="section-sub">things i've built and shipped<span class="project-gallery-hint" id="project-gallery-hint" hidden>select a card to open a project window</span></p>
+          <h1 class="section-title">projects</h1>
+          <p class="section-sub project-gallery-subtitle">things i've built and shipped</p>
+          <p class="project-gallery-hint" id="project-gallery-hint" hidden>select a card to open a project window</p>
           <div class="projects-grid">
 
             <a class="project-card" id="card-windows-privacy-settings"
@@ -243,33 +267,6 @@
             </a>
 
           </div>
-        </section>
-
-        <!-- FAITH -->
-        <section class="section" id="section-faith" role="tabpanel" aria-labelledby="tab-faith" tabindex="0" hidden>
-          <h1 class="section-title">my journey as a Christ follower</h1>
-          <p class="section-sub">what grounds and guides me</p>
-
-          <!-- faith content -->
-          <figure class="faith-block">
-            <blockquote class="faith-verse">
-              "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."
-            </blockquote>
-            <figcaption class="faith-ref">— Jeremiah 29:11</figcaption>
-          </figure>
-
-          <p class="about-bio">Before anything, I am first and foremost a Christian. My faith is the foundation of who I am and how I approach my work. It shapes how I build, collaborate, and serve others through technology.</p>
-
-          <figure class="faith-block">
-            <blockquote class="faith-verse">
-              "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters."
-            </blockquote>
-            <figcaption class="faith-ref">— Colossians 3:23</figcaption>
-          </figure>
-
-          <p class="about-bio">I believe that every line of code can be an act of stewardship — using the gifts and talents I've been given to make a positive impact in the world.</p>
-          <p class="about-bio">In this specific season, God is fine-tuning my heart and making it align more with His. He has shown me how perfect love can cast out all fear, and instead make room for joy, peace, and compassion.</p>
-
         </section>
 
         <!-- SCRIBBLES -->

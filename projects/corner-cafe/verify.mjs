@@ -4,13 +4,182 @@ import assert from 'node:assert/strict';
 const origin = process.env.PORTFOLIO_PREVIEW || 'http://127.0.0.1:4174';
 const route = '/projects/corner-cafe/';
 const galleryOnly = process.argv.includes('--gallery');
+const windowsOnly = process.argv.includes('--windows');
+
+async function verifyWindowsCaseStudy(page, homeURL) {
+  const projectURL = new URL('projects/windows-privacy-settings/windows-privacy-settings.html', homeURL).href;
+  await page.goto(projectURL, { waitUntil: 'domcontentloaded' });
+  assert.equal(await page.locator('.back-link').isVisible(), true);
+  const story = page.locator('.case-study');
+  const wordCount = (await story.innerText()).trim().split(/\s+/).length;
+  assert.ok(wordCount >= 650 && wordCount <= 800, `Windows body must contain 650–800 words, got ${wordCount}`);
+  assert.equal(await story.locator('.design-decision').count(), 3);
+  assert.equal(await story.locator('figure').count(), 5);
+  assert.equal(await story.locator('.screenshot-figure img').count(), 2);
+  assert.equal(await story.locator('.screen-pin').count(), 2);
+  assert.equal(await story.locator('.state-grid > li').count(), 5);
+  assert.equal(await story.locator('table').count(), 0);
+  assert.deepEqual(await story.locator('.metric-row dt').allTextContents(), ['+10%', '−1.57s', '6 groups']);
+  const paragraphLengths = await story.locator('p').evaluateAll(nodes => nodes.map(node => node.textContent.trim().split(/\s+/).length));
+  assert.ok(paragraphLengths.every(length => length <= 80), 'Keep Windows paragraphs short and scannable');
+  for (const caption of await story.locator('.explanatory-figure > figcaption').allTextContents()) {
+    assert.match(caption, /schematic|illustrat/i);
+    assert.match(caption, /not/i, 'Explain that diagrams are not original design artifacts');
+  }
+
+  async function checkLayout(root) {
+    for (const image of await root.locator('.case-study img').all()) {
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate(el => el.decode());
+      assert.equal(await image.evaluate(el => {
+        const style = getComputedStyle(el);
+        const width = el.clientWidth;
+        const height = el.clientHeight;
+        return el.naturalWidth > 0 && style.height !== '0px' &&
+          Number(el.getAttribute('width')) === el.naturalWidth &&
+          Number(el.getAttribute('height')) === el.naturalHeight &&
+          Math.abs(height - width * el.naturalHeight / el.naturalWidth) < 2;
+      }), true, 'Windows screenshots must remain complete and proportional');
+    }
+    assert.equal(await root.locator('html').evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+    assert.equal(await root.locator('.main-content').evaluate(el => el.scrollWidth > el.clientWidth), false);
+    assert.equal(await root.locator('.layout-fixed .layout-label').evaluate(el => el.scrollWidth > el.clientWidth), true,
+      'The fixed-height illustration must actually demonstrate clipped text');
+    assert.equal(await root.locator('.layout-flexible .layout-label').evaluate(el => el.scrollWidth <= el.clientWidth), true);
+    const sampleHeights = await root.locator('.layout-sample').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().height));
+    assert.ok(sampleHeights[1] > sampleHeights[0], 'The flexible illustration must grow to show the full label');
+    for (const action of await root.locator('.project-hero-actions a').all()) {
+      const target = await action.getAttribute('href');
+      assert.equal(await root.locator(target).count(), 1);
+      await action.click();
+      assert.equal(await root.locator(target).evaluate(el => {
+        const bounds = el.getBoundingClientRect();
+        const scroller = el.closest('.main-content').getBoundingClientRect();
+        return bounds.top >= Math.max(0, scroller.top) && bounds.bottom <= Math.min(innerHeight, scroller.bottom);
+      }), true, `The Windows banner action must reveal ${target}`);
+    }
+  }
+
+  for (const width of [1280, 768, 375, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await checkLayout(page);
+  }
+
+  await page.goto(homeURL, { waitUntil: 'domcontentloaded' });
+  for (const width of [1280, 768, 375, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.locator('#card-windows-privacy-settings').click();
+    await page.waitForFunction(() => document.getElementById('project-window-status').hidden);
+    const project = page.frameLocator('.project-window-frame');
+    assert.equal(await project.locator('.back-link').isVisible(), false);
+    await checkLayout(project);
+    const startedAt = await project.locator('html').evaluate(() => performance.timeOrigin);
+    await page.locator('#project-window-maximize').click();
+    await page.locator('#project-window-minimize').click();
+    await page.locator('.project-dock-item').click();
+    assert.equal(await project.locator('html').evaluate(() => performance.timeOrigin), startedAt);
+    await page.locator('#project-window-close').focus();
+    await page.keyboard.press('Escape');
+    await page.locator('#project-window').waitFor({ state: 'hidden' });
+    assert.equal(await page.locator('#card-windows-privacy-settings').evaluate(el => el === document.activeElement), true);
+    assert.equal(await page.locator('.project-window-frame').count(), 0);
+  }
+  console.log(`Windows case study passed: ${wordCount} words, three decisions, five figures, standalone and embedded layouts`);
+}
+
+async function verifyGraceSection(page) {
+  const grace = page.locator('#section-grace');
+  const trigger = page.locator('#tab-grace');
+  const content = page.locator('#main-content');
+  assert.equal(await page.locator('.about-window, [popover]').count(), 0, 'The introduction must be a section, not a popup');
+  assert.equal(await grace.isVisible(), false);
+  assert.equal(await page.locator('#tab-about').getAttribute('aria-selected'), 'true');
+  assert.deepEqual(await page.locator('.nav-item').evaluateAll(nodes => nodes.map(node => node.dataset.section)),
+    ['grace', 'about', 'thoughts']);
+  assert.equal(await page.locator('#tab-faith, #section-faith').count(), 0);
+  assert.equal(await page.locator('#section-about .profile-section, #section-about .about-bio').count(), 0);
+  assert.equal(await page.locator('#section-about > h1').textContent(), 'projects');
+  assert.equal(await grace.locator('.grace-intro > .about-bio').count(), 2);
+  assert.equal(await grace.locator('#grace-faith .about-bio').count(), 3);
+  assert.equal(await grace.locator('#grace-faith blockquote').count(), 2);
+  assert.equal(await grace.locator('#grace-faith h2').count(), 1);
+  assert.equal(await grace.locator('.tag').count(), 5);
+
+  for (const [width, height] of [[1280, 900], [375, 667], [320, 568]]) {
+    await page.setViewportSize({ width, height });
+    await page.locator('#tab-about').click();
+    await content.evaluate(el => { el.scrollTop = 0; });
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    const firstPreview = await page.locator('.project-thumb').first().boundingBox();
+    const viewport = await content.boundingBox();
+    assert.ok(firstPreview.y - viewport.y < 120, `Projects should start near the top at ${width}px`);
+    assert.ok(firstPreview.y + firstPreview.height <= viewport.y + viewport.height,
+      `The first preview must fit before scrolling at ${width}x${height}`);
+
+    const windowBounds = await page.locator('.home-desktop .main-window').boundingBox();
+    for (const section of ['grace', 'thoughts', 'about']) {
+      await page.locator(`#tab-${section}`).click();
+      assert.equal(await page.locator(`#section-${section}`).isVisible(), true);
+      assert.equal(await page.locator('.section:not([hidden])').count(), 1);
+      assert.equal(await page.locator('.nav-item[aria-selected="true"]').count(), 1);
+      assert.deepEqual(await page.locator('.home-desktop .main-window').boundingBox(), windowBounds,
+        `Main window size changes in ${section} at ${width}px`);
+    }
+
+    await page.locator('#tab-about').focus();
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await trigger.evaluate(el => el === document.activeElement), true);
+    assert.equal(await grace.isVisible(), true);
+    assert.equal(await page.locator('#window-title').textContent(), 'grace.dev');
+    await grace.locator('img').evaluate(image => image.decode());
+    await grace.locator('#grace-faith > .about-bio').last().scrollIntoViewIfNeeded();
+    const lastParagraph = await grace.locator('#grace-faith > .about-bio').last().boundingBox();
+    assert.ok(lastParagraph.y >= viewport.y && lastParagraph.y + lastParagraph.height <= viewport.y + viewport.height,
+      `The complete moved content must be reachable at ${width}px`);
+    assert.equal(await content.evaluate(el => el.scrollWidth > el.clientWidth), false);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+    await page.keyboard.press('End');
+    assert.equal(await page.locator('#tab-thoughts').getAttribute('aria-selected'), 'true');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await trigger.getAttribute('aria-selected'), 'true');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('#tab-about').getAttribute('aria-selected'), 'true');
+    await page.keyboard.press('Home');
+    assert.equal(await trigger.getAttribute('aria-selected'), 'true');
+  }
+
+  for (const section of ['grace', 'about', 'thoughts']) {
+    await page.locator(`#tab-${section}`).click();
+    const scrollTop = await content.evaluate(el => { el.scrollTop = 160; return el.scrollTop; });
+    await page.locator(`#tab-${section === 'grace' ? 'about' : 'grace'}`).click();
+    await page.locator(`#tab-${section}`).click();
+    assert.equal(await page.locator(`#tab-${section}`).getAttribute('aria-selected'), 'true');
+    assert.equal(await content.evaluate(el => el.scrollTop), scrollTop);
+  }
+  await page.locator('#tab-about').click();
+}
 
 async function verifyGalleryPreviews(page) {
+  await verifyGraceSection(page);
   const cards = page.locator('.project-card');
+  const subtitle = page.locator('.project-gallery-subtitle');
+  const hint = page.locator('#project-gallery-hint');
   assert.equal(await cards.count(), 9);
+  assert.equal(await subtitle.textContent(), "things i've built and shipped");
+  assert.equal(await hint.evaluate(el => el.tagName), 'P');
+  assert.equal(await subtitle.evaluate(el => el.nextElementSibling?.id), 'project-gallery-hint');
+  assert.match(await page.locator('#section-about').textContent(),
+    /things i've built and shipped\s+select a card to open a project window/,
+    'Subtitle and instruction must remain separated in plain text');
   for (const width of [1280, 768, 600, 375, 320]) {
     await page.setViewportSize({ width, height: 900 });
     await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await subtitle.scrollIntoViewIfNeeded();
+    const subtitleBounds = await subtitle.boundingBox();
+    const hintBounds = await hint.boundingBox();
+    const gap = hintBounds.y - subtitleBounds.y - subtitleBounds.height;
+    assert.ok(Math.abs(gap - 5) < 1, `Subtitle and instruction need a 5px gap at ${width}px`);
     const columns = await page.locator('.projects-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
     assert.equal(columns, width > 600 ? 2 : 1, `Wrong gallery column count at ${width}px`);
     for (const card of await cards.all()) {
@@ -127,11 +296,18 @@ try {
     page.on('pageerror', error => {
       if (!error.stack?.includes('figma.com')) localErrors.push(error.message);
     });
+    if (windowsOnly) {
+      await verifyWindowsCaseStudy(page, new URL('../../index.html', base).href);
+      assert.deepEqual(localErrors, [], 'The Windows case study should not throw.');
+      results.push({ base, windowsCaseStudy: true });
+      await context.close();
+      continue;
+    }
     if (galleryOnly) {
       await page.goto(new URL('../../index.html', base).href);
       await verifyGalleryPreviews(page);
       assert.deepEqual(localErrors, [], 'The gallery and project windows should not throw.');
-      results.push({ base, galleryPreviews: true, cardWindows: true });
+      results.push({ base, galleryPreviews: true, cardWindows: true, graceSection: true });
       await context.close();
       continue;
     }
@@ -204,7 +380,7 @@ try {
       await page.setViewportSize({ width, height: 900 });
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       let sectionBounds;
-      for (const section of ['about', 'faith', 'thoughts']) {
+      for (const section of ['about', 'grace', 'thoughts']) {
         await page.locator(`#tab-${section}`).click();
         const bounds = await page.locator('.home-desktop .main-window').boundingBox();
         if (sectionBounds) assert.deepEqual(bounds, sectionBounds, `Section window size changes on ${section} at ${width}px`);
@@ -218,10 +394,12 @@ try {
         assert.equal(await page.locator('#main-content').evaluate(el => getComputedStyle(el).overflowY), 'auto');
       }
     }
+    await page.locator('#tab-grace').click();
+    const graceScroll = await page.locator('#main-content').evaluate(el => { el.scrollTop = 120; return el.scrollTop; });
     await page.locator('#tab-about').click();
     const galleryScroll = await page.locator('#main-content').evaluate(el => { el.scrollTop = 300; return el.scrollTop; });
-    await page.locator('#tab-faith').click();
-    assert.equal(await page.locator('#main-content').evaluate(el => el.scrollTop), 0);
+    await page.locator('#tab-grace').click();
+    assert.equal(await page.locator('#main-content').evaluate(el => el.scrollTop), graceScroll);
     await page.locator('#tab-about').click();
     assert.equal(await page.locator('#main-content').evaluate(el => el.scrollTop), galleryScroll);
     await page.locator('#card-corner-cafe').click();
@@ -288,8 +466,9 @@ try {
     assert.equal(await page.locator('.project-window-frame').count(), 0);
     assert.equal(await page.locator('#project-dock').isVisible(), false);
     await verifyOpeningBanners(page);
+    await verifyWindowsCaseStudy(page, new URL('../../index.html', base).href);
     assert.deepEqual(localErrors, [], 'The local app and case study should not throw.');
-    results.push({ base, fullTabOrder: true, iframeOrder: true, iframeHandshake: true, teamQueue: true, narrowMilkChoices: true, figmaTabControls: true, projectWindowState: true, consistentSections: true, referenceWindowControls: true, compactMenuBar: true, embeddedNavigation: true, openingBanners: true, gameBannerActions: true, galleryPreviews: true });
+    results.push({ base, fullTabOrder: true, iframeOrder: true, iframeHandshake: true, teamQueue: true, narrowMilkChoices: true, figmaTabControls: true, projectWindowState: true, consistentSections: true, referenceWindowControls: true, compactMenuBar: true, embeddedNavigation: true, openingBanners: true, gameBannerActions: true, galleryPreviews: true, graceSection: true });
     await context.close();
   }
   console.log(JSON.stringify({ passed: results }, null, 2));

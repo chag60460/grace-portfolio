@@ -145,6 +145,7 @@ body {
 .home-menubar { height: 28px; min-height: 28px; padding: 0 12px; gap: 14px; }
 .section-nav { display: flex; align-self: stretch; min-width: 0; }
 .section-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
+.section-tabs .menubar-brand { font-weight: 700; }
 .section-tabs .nav-item:focus-visible { outline-offset: -2px; border-radius: 0; }
 
 /* ── Status bar ── */
@@ -182,6 +183,14 @@ body {
 /* ============================================================
    COMPONENTS — Profile and navigation
    ============================================================ */
+
+.grace-intro { max-width: 640px; margin: clamp(8px, 4vw, 48px) auto; }
+.grace-intro .profile-section { flex-wrap: wrap; }
+.grace-intro .avatar { width: 80px; height: 80px; }
+.grace-intro .section-title { font-size: clamp(24px, 3vw, 32px); }
+.grace-intro .section-sub { margin: 18px 0 24px; line-height: 1.6; }
+.grace-intro .about-bio { font-size: 14px; line-height: 1.85; }
+.grace-intro .tag-row { margin-top: 24px; }
 
 .profile-section {
   display: flex;
@@ -341,7 +350,8 @@ body {
   box-shadow: 0 4px 16px rgba(160, 120, 200, 0.18);
 }
 
-.project-gallery-hint:not([hidden]) { display: block; margin-top: 5px; font-size: 11px; }
+.project-gallery-subtitle:has(+ .project-gallery-hint:not([hidden])) { margin-bottom: 5px; }
+.project-gallery-hint { margin-bottom: 18px; font-size: 11px; color: #6b5a7d; }
 
 .project-hero {
   --hero-accent: #6a4a9a;
@@ -677,8 +687,12 @@ body:has(.project-window[open]) { overflow: hidden; }
 .download-btn:hover { background: rgba(200, 180, 220, 0.45); }
 
 /* ============================================================
-   SECTION — Faith
+   SECTION — Grace: Faith
    ============================================================ */
+
+.grace-faith { margin-top: 32px; padding-top: 24px; border-top: 0.5px solid rgba(200, 180, 220, 0.45); }
+.grace-faith .section-title { font-size: 20px; }
+.grace-faith .section-sub { margin: 6px 0 20px; }
 
 .faith-block {
   background: rgba(252, 228, 243, 0.35);
@@ -1111,10 +1125,10 @@ button {
 
 /* Phone */
 @media (max-width: 600px) {
-  .home-menubar { height: auto; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; }
-  .home-menubar > .menubar-brand, .home-menubar .menubar-right { display: flex; align-items: center; min-height: 28px; }
-  .section-nav { order: 1; flex-basis: 100%; }
-  .section-tabs .nav-item { height: 32px; min-height: 32px; padding-inline: 8px; }
+  .home-menubar { height: 32px; min-height: 32px; gap: 0; padding: 0 10px; }
+  .home-menubar .menubar-right { display: none; }
+  .section-nav { flex-basis: 100%; }
+  .section-tabs .nav-item { padding-inline: 6px; font-size: 12px; }
 
   .projects-grid { grid-template-columns: 1fr; }
 
@@ -1144,7 +1158,7 @@ button {
 @media (max-width: 400px) {
   .menubar { gap: 10px; padding: 0 10px; }
   .menubar-right span:not(#clock) { display: none; }
-  .home-menubar { gap: 0 10px; padding: 0 10px; }
+  .home-menubar { gap: 0; padding: 0 10px; }
 }
 
 /* ============================================================

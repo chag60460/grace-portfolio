@@ -26,251 +26,71 @@
     }
     .back-link:hover { color: #6a4a9a; }
 
-    /* ── Hero ── */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 280px;
-      overflow: hidden;
-      margin-top: 12px;
-      /* Windows 11 desktop bloom — soft materials, natural colour, depth */
-      background:
-        radial-gradient(115% 85% at 16% 8%,  rgba(255,255,255,.90), transparent 55%),
-        radial-gradient(85% 75% at 84% 92%,  rgba(96,152,232,.55),  transparent 62%),
-        radial-gradient(70% 60% at 92% 10%,  rgba(168,140,220,.38), transparent 60%),
-        linear-gradient(135deg, #e4edfa, #cadcf1 46%, #a6c4e6);
-    }
-    .hero-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      padding: 0 22px 30px;
-    }
-    /* the render sits on white, so multiply drops it onto the gradient */
-    .hero-device {
-      max-height: 100%;
-      width: auto;
-      display: block;
-      mix-blend-mode: multiply;
-    }
+    .case-study { padding: 28px 32px 36px; color: #4a3f5c; }
+    .case-study h2 { margin: 0 0 12px; font-size: 24px; line-height: 1.25; letter-spacing: -0.5px; scroll-margin-top: 20px; }
+    .case-study h3 { font-size: 13px; line-height: 1.5; font-weight: 600; }
+    .case-study p, .case-study li { font-size: 13px; line-height: 1.75; color: #5a4a6a; }
+    .case-study p { margin-bottom: 14px; }
+    .case-study > section + section { margin-top: 32px; padding-top: 28px; border-top: 1px solid #ddd7e8; }
+    .case-study .decision-kicker { margin-bottom: 7px; color: #315f8f; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .case-study .study-note, .case-study figcaption { font-size: 11px; color: #6b5a7d; line-height: 1.6; }
+    .case-study figcaption { margin-top: 10px; }
+    .case-study figure { margin: 20px 0; }
+    .case-study figure img { display: block; width: 100%; height: auto; border: 1px solid #d5deeb; border-radius: 12px; background: #edf2f8; }
+    .case-study .decision-tradeoff { padding: 14px 16px; border-left: 3px solid #8daed2; background: #eef3fa; border-radius: 0 8px 8px 0; }
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      padding-bottom: 18px;
-      background: linear-gradient(to top, rgba(20,40,68,.78) 8%, rgba(20,40,68,.28) 26%, rgba(20,40,68,0) 46%);
-      pointer-events: none;
-    }
-    .hero-overlay h1 { font-size: 26px; color: #fff; margin: 0; letter-spacing: -0.5px; }
-    .hero-subtitle { font-size: 12.5px; color: rgba(255,255,255,.9); margin: 4px 0 0; }
+    .project-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-bottom: 28px; }
+    .project-meta dt { margin-bottom: 6px; color: #6b5a7d; font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; }
+    .project-meta dd { margin: 0; font-size: 12px; line-height: 1.6; }
+    .metric-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0 10px; }
+    .metric-row > div { padding: 18px; border: 1px solid #d6e1ef; border-radius: 12px; background: #edf3fa; }
+    .metric-row dt { color: #315f8f; font-size: 26px; font-weight: 650; }
+    .metric-row dd { margin-top: 5px; color: #5a4a6a; font-size: 11px; line-height: 1.5; }
 
-    /* ── Case study body ── */
-    .case-study { padding: 24px 28px 32px; }
+    .structure-pair, .layout-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .structure-panel, .layout-panel { min-width: 0; padding: 18px; border: 1px solid #ddd7e8; border-radius: 12px; background: #fbf9fd; }
+    .structure-panel h3, .layout-panel h3 { margin-bottom: 14px; color: #315f8f; }
+    .structure-after, .layout-flexible { border-color: #b7cde4; background: #edf3fa; }
+    .case-study .structure-list { display: grid; gap: 7px; padding: 0; margin: 0; list-style: none; }
+    .case-study .structure-list li { padding: 7px 10px; border: 1px solid #e0dfe8; border-radius: 6px; background: #fff; font-size: 12px; }
+    .structure-list small { display: block; margin-top: 2px; color: #6b5a7d; font-size: 11px; }
+    .structure-after .structure-list li:first-child { border-color: #a6c5e5; box-shadow: inset 3px 0 #709bc9; }
+    .annotated-screen { position: relative; }
+    .screen-pin { position: absolute; left: 27%; display: grid; place-items: center; width: 24px; height: 24px; border: 2px solid #fff; border-radius: 50%; background: #315f8f; color: #fff; font: 700 12px/1 -apple-system, BlinkMacSystemFont, sans-serif; box-shadow: 0 2px 6px #17375440; transform: translate(-50%, -50%); }
+    .screen-pin-core { top: 20%; }
+    .screen-pin-security { top: 55%; }
+    .case-study .screenshot-notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 30px; padding-left: 20px; margin: 14px 0 0; }
+    .screenshot-notes li::marker { color: #315f8f; font-weight: 700; }
 
-    .project-meta {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      padding: 16px 18px;
-      background: rgba(255,255,255,.55);
-      border: 0.5px solid rgba(200,180,220,.35);
-      border-radius: 10px;
-      margin-bottom: 4px;
-    }
-    .meta-label {
-      font-size: 9px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #c5a0d8;
-      margin-bottom: 4px;
-    }
-    .meta-value { font-size: 12px; color: #4a3f5c; font-weight: 500; line-height: 1.4; }
-
-    .case-study h2 {
-      font-size: 15px;
-      font-weight: 600;
-      color: #4a3f5c;
-      margin: 32px 0 10px;
-      padding-bottom: 6px;
-      border-bottom: 0.5px solid rgba(200, 180, 220, 0.3);
-    }
-    .case-study h3 { font-size: 13px; font-weight: 600; color: #6a4a9a; margin: 18px 0 6px; }
-    .case-study p { font-size: 13px; color: #5a4a6a; line-height: 1.75; margin-bottom: 12px; }
-    .case-study ul { font-size: 13px; color: #5a4a6a; line-height: 1.8; padding-left: 20px; margin-bottom: 14px; }
-
-    .stage {
-      font-size: 9.5px;
-      font-weight: 700;
-      color: #c5a0d8;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 30px;
-    }
-    .stage + h2 { margin-top: 4px; }
-
-    .prompt-box {
-      background: rgba(240, 230, 255, 0.5);
-      border-left: 3px solid #c5b8f0;
-      padding: 14px 18px;
-      border-radius: 0 8px 8px 0;
-      margin: 16px 0;
-      font-size: 14px;
-      color: #6a4a9a;
-      font-style: italic;
-      line-height: 1.6;
-    }
-
-    .tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
-    .tags-row .project-tag {
-      font-size: 11px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      background: #ede4f5;
-      color: #6a4a9a;
-      font-weight: 500;
-    }
-
-    /* ── Metric row ── */
-    .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0; }
-    .metric-card {
-      background: rgba(255,255,255,.6);
-      border: 0.5px solid rgba(200,180,220,.35);
-      border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-    }
-    .metric-num { font-size: 19px; font-weight: 600; color: #6a4a9a; }
-    .metric-label { font-size: 10.5px; color: #6b5a7d; margin-top: 3px; line-height: 1.45; }
-
-    /* ── Insight callout ── */
-    .insight {
-      background: rgba(123, 94, 167, .07);
-      border: 0.5px solid rgba(123, 94, 167, .25);
-      border-radius: 10px;
-      padding: 18px 20px;
-      margin: 18px 0;
-    }
-    .insight-label {
-      font-size: 9.5px; font-weight: 700; color: #7B5EA7;
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
-    }
-    .insight p { margin: 0; font-size: 13.5px; color: #4a3f5c; line-height: 1.7; }
-
-    /* ── Grouping / IA columns ── */
-    .ia-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
-    .ia-card {
-      background: rgba(255,255,255,.6);
-      border: 0.5px solid rgba(200,180,220,.35);
-      border-radius: 10px;
-      padding: 14px 16px;
-    }
-    .ia-name { font-size: 12.5px; font-weight: 600; color: #4a3f5c; margin-bottom: 5px; }
-    .ia-card p { font-size: 11px; line-height: 1.6; margin: 0; color: #5a4a6a; }
-
-    /* ── Before / after information architecture ── */
-    .ia-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0 10px; }
-    .ia-col {
-      border: 0.5px solid rgba(200,180,220,.35);
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
-    }
-    .ia-col-head { padding: 10px 13px; border-bottom: 0.5px solid rgba(200,180,220,.3); }
-    .ia-col-head b { display: block; font-size: 12px; color: #4a3f5c; }
-    .ia-col-head span { font-size: 10.5px; color: #8a7d9c; line-height: 1.5; }
-    .ia-list { display: flex; flex-direction: column; padding: 10px 13px 13px; }
-    .ia-list span {
-      font-size: 11px; color: #5a4a6a;
-      padding: 3.5px 0 3.5px 10px;
-      border-left: 2px solid rgba(200,180,220,.5);
-    }
-    .ia-list-head {
-      font-size: 9.5px !important; font-weight: 700;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: #6a4a9a !important;
-      border-left: 0 !important; padding-left: 0 !important;
-      margin: 11px 0 4px;
-    }
-    .ia-list-head:first-child { margin-top: 0; }
-    /* the flat column is deliberately undifferentiated */
-    .ia-list.flat span { color: #8a7d9c; border-left-color: rgba(200,180,220,.28); }
-    .ia-compare-note { font-size: 11.5px; color: #8a7d9c; line-height: 1.65; font-style: italic; }
-
-    /* ── State table ── */
-    .landscape-table {
-      width: 100%; border-collapse: collapse; font-size: 11.5px; margin: 14px 0;
-      background: rgba(255,255,255,.5); border-radius: 10px; overflow: hidden;
-      border: 0.5px solid rgba(200,180,220,.3);
-    }
-    .landscape-table th {
-      background: rgba(240,230,255,.5); color: #6a4a9a; font-weight: 600;
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
-      padding: 10px; text-align: left;
-      border-bottom: 0.5px solid rgba(200,180,220,.3);
-    }
-    .landscape-table td {
-      padding: 10px; color: #5a4a6a; vertical-align: top; line-height: 1.55;
-      border-bottom: 0.5px solid rgba(200,180,220,.15);
-    }
-    .landscape-table td:first-child { font-weight: 600; color: #4a3f5c; white-space: nowrap; }
-    .landscape-table tr:last-child td { border-bottom: none; }
-
-    /* ── Before / after ── */
-    .change-list { display: grid; gap: 10px; margin: 16px 0; }
-    .change-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 10px; }
-    .change-cell {
-      border-radius: 10px; padding: 13px 15px; font-size: 11.5px; line-height: 1.6;
-      border: 0.5px solid rgba(200,180,220,.35);
-    }
-    .change-cell.crit { background: rgba(179, 0, 89, .05); }
-    .change-cell.fix  { background: rgba(88, 150, 110, .07); }
-    .change-cell b { display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
-    .change-cell.crit b { color: #9c3b6a; }
-    .change-cell.fix b { color: #3f7a56; }
-    .change-arrow { display: flex; align-items: center; color: #c5a0d8; font-size: 15px; }
-
-    /* ── Figures (soft placeholder while art is pending) ── */
-    figure { margin: 16px 0; }
-    figure img {
-      width: 100%;
-      border-radius: 10px;
-      border: 0.5px solid rgba(200,180,220,.35);
-      display: block;
-      min-height: 120px;
-      background: linear-gradient(135deg, #eef3fa, #e2ebf6);
-      color: #8a7d9c;
-      font-size: 11px;
-    }
-    figcaption { font-size: 11px; color: #8a7d9c; margin-top: 7px; line-height: 1.5; text-align: center; }
-    .fig-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
-    .fig-row.two { grid-template-columns: repeat(2, 1fr); }
-    .fig-row figure { margin: 0; }
-    .fig-row img { height: 180px; object-fit: cover; object-position: top; }
-
-    .privacy-note {
-      font-size: 11px; color: #8a7d9c; font-style: italic;
-      line-height: 1.6; margin-top: 18px;
-      padding-top: 12px; border-top: 0.5px solid rgba(200,180,220,.3);
-    }
+    .case-study .state-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 0; margin: 0; list-style: none; }
+    .state-grid > li { min-width: 0; padding: 12px; border: 1px solid #d6e1ef; border-radius: 10px; background: #f2f6fb; }
+    .state-grid h3 { margin-bottom: 10px; color: #315f8f; }
+    .state-preview { display: grid; align-content: center; gap: 8px; min-height: 82px; padding: 10px; border: 1px solid #e2e4ea; border-radius: 6px; background: #fff; }
+    .state-preview > span { color: #6b5a7d; font-size: 11px; }
+    .state-preview > strong { color: #3f5168; font-size: 12px; font-weight: 500; }
+    .state-preview .state-skeleton { width: 80%; height: 12px; border-radius: 4px; background: #dce5ef; }
+    .case-study .state-grid p { margin: 10px 0 0; font-size: 11px; line-height: 1.6; }
+    .layout-sample { display: grid; grid-template-columns: minmax(0, 1fr) 32px; align-items: center; gap: 12px; width: 100%; max-width: 280px; margin-inline: auto; padding: 12px; border: 1px solid #dce1ea; border-radius: 8px; background: #fff; color: #3f5168; font-size: 13px; line-height: 1.6; }
+    .layout-fixed .layout-sample { height: 48px; }
+    .layout-fixed .layout-label { white-space: nowrap; overflow: hidden; }
+    .layout-control { width: 32px; height: 18px; border-radius: 12px; background: #3f719f; position: relative; }
+    .layout-control::after { content: ''; position: absolute; top: 3px; right: 3px; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+    .case-study .layout-panel p { margin: 12px 0 0; font-size: 11px; }
+    .case-study .takeaways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding-left: 20px; margin: 18px 0; }
+    .case-study .privacy-note { margin: 28px 0 0; padding-top: 16px; border-top: 1px solid #ddd7e8; font-size: 11px; line-height: 1.7; color: #6b5a7d; }
 
     @media (max-width: 780px) {
-      .project-meta { grid-template-columns: 1fr 1fr; }
-      .metric-row, .ia-grid, .fig-row { grid-template-columns: 1fr; }
-      .ia-compare { grid-template-columns: 1fr; }
-      .change-row { grid-template-columns: 1fr; }
-      .change-arrow { transform: rotate(90deg); justify-content: center; }
+      .case-study { padding: 24px 20px; }
+      .case-study .state-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 600px) {
-      .landscape-table { table-layout: fixed; overflow-wrap: anywhere; }
-      .landscape-table td:first-child { white-space: normal; }
+      .project-meta, .metric-row, .structure-pair, .layout-pair,
+      .case-study .screenshot-notes, .case-study .takeaways { grid-template-columns: minmax(0, 1fr); }
+      .project-meta { gap: 12px; }
+      .metric-row > div { display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: center; gap: 12px; padding: 12px 16px; }
+      .metric-row dd { margin: 0; }
+      .case-study h2 { font-size: 22px; }
+      .screen-pin { width: 18px; height: 18px; font-size: 10px; }
     }
   </style>
 </head>
@@ -328,262 +148,146 @@
         </header>
 
         <div class="case-study">
+          <section aria-labelledby="study-overview">
+            <dl class="project-meta">
+              <div><dt>My role</dt><dd>Software Engineer · Interaction Design</dd></div>
+              <div><dt>Collaboration</dt><dd>Designers and PMs</dd></div>
+              <div><dt>Scope</dt><dd>Windows privacy &amp; security · L1 refresh</dd></div>
+            </dl>
+            <h2 id="study-overview">The problem, in one minute</h2>
+            <p>People could find the permissions page, but still had to open individual settings to understand which apps had access. CSAT verbatims helped explain a behavior visible in telemetry: arriving, then leaving without changing anything.</p>
+            <p>I contributed interaction designs informed by those signals and implemented the architectural and rendering changes. The focus was <strong>clearer hierarchy, visible access information, and trustworthy loading behavior</strong> — not adding another set of controls.</p>
+            <dl class="metric-row" aria-label="Reported outcomes">
+              <div><dt>+10%</dt><dd>feature discoverability</dd></div>
+              <div><dt>−1.57s</dt><dd>perceived load time</dd></div>
+              <div><dt>6 groups</dt><dd>replacing one flat list</dd></div>
+            </dl>
+            <p class="study-note">These outcomes describe the shipped refresh, combining design and engineering changes; they are not results from an isolated comparison of the diagrams below.</p>
+          </section>
 
-          <!-- ════════════ META ════════════ -->
-          <div class="project-meta">
-            <div class="meta-item">
-              <div class="meta-label">Role</div>
-              <div class="meta-value">Software Engineer · Interaction Design</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-label">Type</div>
-              <div class="meta-value">Shipped Redesign · L1 Refresh</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-label">Scale</div>
-              <div class="meta-value">4M+ monthly active devices</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-label">Context</div>
-              <div class="meta-value">Microsoft · Windows Settings</div>
-            </div>
-          </div>
+          <section class="design-decision" aria-labelledby="permission-redesign">
+            <p class="decision-kicker">01 / Information architecture</p>
+            <h2 id="permission-redesign" tabindex="-1">Group by concern, not a flat inventory</h2>
+            <p><strong>The choice:</strong> organize permissions around what they protect. A person worried about their microphone should not need to understand the underlying API categories. Location, camera, and microphone become a prominent core group; the remaining controls gain named destinations.</p>
 
-          <!-- ════════════ OVERVIEW ════════════ -->
-          <h2>Overview</h2>
-          <p>Privacy settings are the part of an operating system where people go when they already feel uneasy. Something asked for the microphone, or a light came on, and they want to know what has access and how to take it away. Windows had all of that information — it was just spread across a long, flat list where every permission looked equally important and none of them said what was actually going on.</p>
-          <p>This was an end-to-end refresh of how those controls are discovered and tuned. I worked across the boundary between design and implementation: <strong>contributing interaction designs grounded in CSAT verbatims and behavioral telemetry, then implementing the architectural changes that made them fast enough to feel instant.</strong> I partnered closely with designers and PMs throughout.</p>
-
-          <div class="prompt-box">
-            You can already change every one of these settings. So why does no one feel confident that they know what has access to their camera?
-          </div>
-
-          <div class="tags-row">
-            <span class="project-tag">Information Architecture</span>
-            <span class="project-tag">Interaction Design</span>
-            <span class="project-tag">Design Systems</span>
-            <span class="project-tag">Telemetry &amp; CSAT</span>
-            <span class="project-tag">Localization</span>
-            <span class="project-tag">Rendering Performance</span>
-          </div>
-
-          <div class="metric-row">
-            <div class="metric-card">
-              <div class="metric-num">4M+</div>
-              <div class="metric-label">monthly active devices reached</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-num">+10%</div>
-              <div class="metric-label">lift in feature discoverability</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-num">−1.57s</div>
-              <div class="metric-label">cut from perceived load time</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-num">6</div>
-              <div class="metric-label">permission groups replacing one flat list</div>
-            </div>
-          </div>
-
-          <!-- ════════════ 1. THE PROBLEM ════════════ -->
-          <div class="stage">Stage 01 · Understand</div>
-          <h2>A list that answered the wrong question</h2>
-          <p>The existing page was an inventory. It could tell you that a permission existed and whether its master switch was on, but it could not tell you the thing people actually arrive wanting to know: <em>right now, who has this?</em> Answering that meant opening a permission, scanning a list of apps, going back, and repeating — once per permission.</p>
-          <p>Reading CSAT verbatims alongside behavioral telemetry made the split clear. People weren't failing to find the settings page; they were landing on it and leaving without changing anything. The controls were discoverable. Their <em>state</em> wasn't.</p>
-
-          <div class="insight">
-            <div class="insight-label">The reframe</div>
-            <p>The problem was never that people couldn't reach the toggles. It was that the page made them do the aggregation in their head — opening each permission one at a time to assemble a picture the system already had. The fix was to stop making them ask, and start telling them up front.</p>
-          </div>
-
-          <!-- ════════════ 2. ARCHITECTURE ════════════ -->
-          <div class="stage">Stage 02 · Restructure</div>
-          <h2 id="permission-redesign" tabindex="-1">Grouping permissions by what they protect</h2>
-          <p>The flat list became labelled groups, organized around the kind of thing at risk rather than the underlying API. Someone worried about being listened to shouldn't have to know whether that lives under "devices" or "apps" — they should be able to scan for the group that matches their worry.</p>
-
-          <div class="ia-grid">
-            <div class="ia-card">
-              <div class="ia-name">Core privacy settings</div>
-              <p>The controls with the highest stakes and the most traffic, lifted to the top of the page instead of being ranked alphabetically among everything else.</p>
-            </div>
-            <div class="ia-card">
-              <div class="ia-name">Security</div>
-              <p>Device- and account-level protections, kept adjacent to privacy but distinct from it — related concerns, different mental model.</p>
-            </div>
-            <div class="ia-card">
-              <div class="ia-name">Your info</div>
-              <p>Identity and account data: what an app can learn about <em>you</em>, as opposed to what it can sense around you.</p>
-            </div>
-            <div class="ia-card">
-              <div class="ia-name">Communication</div>
-              <p>Microphone, mail and messaging — the permissions people most often want to audit in a hurry.</p>
-            </div>
-            <div class="ia-card">
-              <div class="ia-name">File access</div>
-              <p>Documents, folders and libraries, separated out so file reach reads as its own category of exposure.</p>
-            </div>
-            <div class="ia-card">
-              <div class="ia-name">System</div>
-              <p>Device-level sensors and capabilities that sit underneath everything else and rarely need touching.</p>
-            </div>
-          </div>
-
-          <p>Every row in every group is the same component — an icon, a plain-language description, and its control inline on the right. Uniform rows mean the eye can scan a column of state without re-learning a layout each time, and one component fix improves every group at once.</p>
-
-          <div class="ia-compare">
-            <div class="ia-col">
-              <div class="ia-col-head">
-                <b>Before</b>
-                <span>One undifferentiated list — every item weighted the same</span>
+            <figure class="explanatory-figure" aria-labelledby="structure-caption">
+              <div class="structure-pair">
+                <div class="structure-panel">
+                  <h3>Before: one list to scan</h3>
+                  <ul class="structure-list">
+                    <li>Location</li><li>Camera</li><li>Microphone</li>
+                    <li>Voice activation</li><li>Notifications</li><li>Account info</li>
+                    <li>More permissions…</li>
+                  </ul>
+                </div>
+                <div class="structure-panel structure-after">
+                  <h3>After: a hierarchy to navigate</h3>
+                  <ul class="structure-list">
+                    <li><strong>Core privacy settings</strong><small>Location · Camera · Microphone</small></li>
+                    <li>Security</li><li>Your info</li><li>Communication</li>
+                    <li>File access</li><li>System</li>
+                  </ul>
+                </div>
               </div>
-              <div class="ia-list flat">
-                <span class="ia-list-head">App permissions</span>
-                <span>Location</span><span>Camera</span><span>Microphone</span>
-                <span>Voice activation</span><span>Notifications</span><span>Account info</span>
-                <span>Contacts</span><span>Calendar</span><span>Phone calls</span>
-                <span>Call history</span><span>Email</span><span>Tasks</span>
-                <span>Messaging</span><span>Radios</span><span>Other devices</span>
-                <span>Background apps</span><span>App diagnostics</span>
-                <span>Automatic file downloads</span><span>Documents</span>
-                <span>Pictures</span><span>Videos</span><span>File system</span>
+              <figcaption id="structure-caption">Schematic comparison of the described structures, not original iteration files. The goal is faster orientation, not fewer controls.</figcaption>
+            </figure>
+
+            <figure class="screenshot-figure">
+              <div class="annotated-screen">
+                <img src="media/ia-grouping.png" width="1269" height="780" alt="The shipped Privacy and security page with Core privacy settings above a separate Security group" loading="lazy" decoding="async" />
+                <span class="screen-pin screen-pin-core" aria-hidden="true">1</span>
+                <span class="screen-pin screen-pin-security" aria-hidden="true">2</span>
               </div>
-            </div>
+              <ol class="screenshot-notes">
+                <li><strong>Core controls first.</strong> High-stakes permissions get a clear starting point.</li>
+                <li><strong>Security stays distinct.</strong> Related protections remain nearby without becoming one undifferentiated category.</li>
+              </ol>
+              <figcaption>Shipped interface, with annotations added for this case study.</figcaption>
+            </figure>
+            <p class="decision-tradeoff"><strong>Trade-off:</strong> grouping adds headings and demands meaningful labels. Reusing the same row component keeps scanning consistent, so visitors learn one interaction pattern rather than a different layout for each category.</p>
+          </section>
 
-            <div class="ia-col">
-              <div class="ia-col-head">
-                <b>After</b>
-                <span>Six groups, ordered by what’s at stake</span>
+          <section class="design-decision" aria-labelledby="permission-details">
+            <p class="decision-kicker">02 / Access visibility</p>
+            <h2 id="permission-details" tabindex="-1">Put the answer in the scan path</h2>
+            <p><strong>The choice:</strong> show an access count before someone opens a permission. The screenshot makes the change concrete: each core row now answers “how many apps?” A count summarizes access; it does not mean those apps are using the sensor right now.</p>
+            <figure class="screenshot-figure">
+              <img src="media/state-count.png" width="805" height="275" alt="Core privacy rows showing 12 apps for Location, 8 apps for Camera, and 6 apps for Microphone" loading="lazy" decoding="async" />
+              <figcaption>Shipped detail: permission names and access counts can be scanned together, without opening three separate pages.</figcaption>
+            </figure>
+
+            <figure class="explanatory-figure" aria-labelledby="states-caption">
+              <ul class="state-grid">
+                <li>
+                  <h3>Loading</h3>
+                  <div class="state-preview"><span>Location</span><span class="state-skeleton" aria-hidden="true"></span></div>
+                  <p>Reserve space; do not imply zero.</p>
+                </li>
+                <li>
+                  <h3>Access off</h3>
+                  <div class="state-preview"><span>Location</span><strong>Access off</strong></div>
+                  <p>Permission disabled across the system.</p>
+                </li>
+                <li>
+                  <h3>Zero</h3>
+                  <div class="state-preview"><span>Location</span><strong>0 apps</strong></div>
+                  <p>Enabled, but no apps granted access.</p>
+                </li>
+                <li>
+                  <h3>One</h3>
+                  <div class="state-preview"><span>Location</span><strong>1 app</strong></div>
+                  <p>Singular phrasing matches the count.</p>
+                </li>
+                <li>
+                  <h3>Many</h3>
+                  <div class="state-preview"><span>Location</span><strong>12 apps</strong></div>
+                  <p>Summarize before showing app details.</p>
+                </li>
+              </ul>
+              <figcaption id="states-caption">Illustrations of the states described in this case study, not captured product screens. The sample values explain behavior rather than document separate iterations.</figcaption>
+            </figure>
+            <p class="decision-tradeoff"><strong>Trade-off:</strong> a concise summary can hide important distinctions. Loading, disabled access, and an empty app list must not look interchangeable. Stable placeholders and explicit wording make those differences visible while retaining a route to the underlying details.</p>
+          </section>
+
+          <section class="design-decision" aria-labelledby="layout-pressure-test">
+            <p class="decision-kicker">03 / Layout under pressure</p>
+            <h2 id="layout-pressure-test">Let the content set the height</h2>
+            <p><strong>The change:</strong> move away from a header sized for a comfortable English string. Spanish and Japanese checks exposed different text lengths and shapes. The component needed to absorb another line without clipping the message or displacing its neighboring controls.</p>
+
+            <figure class="explanatory-figure" aria-labelledby="layout-caption">
+              <div class="layout-pair">
+                <div class="layout-panel layout-fixed">
+                  <h3>Fixed-height assumption</h3>
+                  <div class="layout-sample">
+                    <span class="layout-label">12 applications are allowed to access your microphone</span>
+                    <span class="layout-control" aria-hidden="true"></span>
+                  </div>
+                  <p>Expanded text is clipped.</p>
+                </div>
+                <div class="layout-panel layout-flexible">
+                  <h3>Content-driven height</h3>
+                  <div class="layout-sample">
+                    <span class="layout-label">12 applications are allowed to access your microphone</span>
+                    <span class="layout-control" aria-hidden="true"></span>
+                  </div>
+                  <p>Text wraps; the control stays aligned.</p>
+                </div>
               </div>
-              <div class="ia-list">
-                <span class="ia-list-head">Core privacy settings</span>
-                <span>Location</span><span>Camera</span><span>Microphone</span>
+              <figcaption id="layout-caption">Illustrative stress test using expanded English copy, not a translated product screenshot or historical prototype. The controls here are explanatory, not interactive.</figcaption>
+            </figure>
+            <p class="decision-tradeoff"><strong>Trade-off:</strong> flexible rows take more vertical space, but preserve meaning across languages. Plural forms and word order belong in the component design, not in a late patch that shortens or hides the message.</p>
+          </section>
 
-                <span class="ia-list-head">Security</span>
-                <span>Windows Security</span><span>Device encryption</span>
-                <span>Cloud PC</span><span>Passkeys</span>
+          <section aria-labelledby="takeaways-title">
+            <h2 id="takeaways-title">What I would carry forward</h2>
+            <p>The rendering work supported the same interaction goal: present a stable, understandable page promptly. Contributing to the design and implementing it kept performance constraints in the conversation while the component could still change.</p>
+            <ul class="takeaways">
+              <li><strong>Design the non-happy paths early.</strong> Empty, disabled, loading, and expanded-text states reveal whether the component communicates reliably, not just whether the ideal screen looks finished.</li>
+              <li><strong>Pair behavioral signals with people's words.</strong> Telemetry can flag where visitors stop; verbatims help explain why. Together they make the next design question more specific.</li>
+            </ul>
+          </section>
 
-                <span class="ia-list-head">Your info</span>
-                <span>Find my device</span><span>Recommendations &amp; offers</span>
-                <span>Account info</span><span>Contacts</span><span>Calendar</span>
-                <span>Tasks</span><span>Search</span>
-
-                <span class="ia-list-head">Communication</span>
-                <span>Voice activation</span><span>Email</span><span>Messaging</span>
-                <span>Calls</span><span>Call history</span><span>Speech</span>
-
-                <span class="ia-list-head">File access</span>
-                <span>File system</span><span>Downloads</span><span>Documents</span>
-                <span>Pictures</span><span>Music</span><span>Videos</span>
-
-                <span class="ia-list-head">System</span>
-                <span>Notifications</span><span>App diagnostics</span>
-                <span>Diagnostics &amp; feedback</span><span>Radio</span>
-                <span>Other devices</span><span>Automatic file downloads</span>
-                <span>Presence sensing</span><span>Motion</span><span>Eye tracker</span>
-              </div>
-            </div>
-          </div>
-          <p class="ia-compare-note">The three highest-stakes permissions — location, camera, microphone — move from wherever the alphabet put them to the top of the page. Everything else sorts into a group named for the kind of exposure it represents.</p>
-
-          <figure>
-            <img src="media/ia-grouping.png" alt="The Windows privacy and security page with permissions grouped under Core privacy settings, Security and Your info" loading="lazy" />
-            <figcaption>The shipped page — permissions grouped under labelled headings, each row carrying its own access count</figcaption>
-          </figure>
-
-          <!-- ════════════ 3. THE HEADER ════════════ -->
-          <div class="stage">Stage 03 · Design</div>
-          <h2 id="permission-details" tabindex="-1">Answering “who has access?” before it’s asked</h2>
-          <p>The centerpiece is a summary header that sits above each permission and states the answer directly — how many apps currently have access, with the apps themselves surfaced beside it. The count is the point: it turns an audit that used to take several taps into something you read.</p>
-          <p>Most of the design work went into the states around the happy path, because those are where a privacy surface either earns trust or loses it. A count that appears out of nowhere after a delay is worse than no count at all.</p>
-
-          <table class="landscape-table">
-            <thead>
-              <tr><th>State</th><th>What it shows</th><th>Why it matters</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Loading</td>
-                <td>Skeleton placeholders in the shape of the final content</td>
-                <td>The layout never jumps, so a slow enumeration doesn't read as a glitch on a security page</td>
-              </tr>
-              <tr>
-                <td>Access off</td>
-                <td>The permission is disabled system-wide</td>
-                <td>Nothing has access and the page says so plainly — no counting required</td>
-              </tr>
-              <tr>
-                <td>0 apps</td>
-                <td>Access is on, but nothing is using it</td>
-                <td>Distinguishes "switched off" from "on but unused" — two very different facts</td>
-              </tr>
-              <tr>
-                <td>1 app</td>
-                <td>Singular phrasing, one app surfaced</td>
-                <td>Grammar that matches reality; the single case is common and shouldn't read as a template</td>
-              </tr>
-              <tr>
-                <td>Many apps</td>
-                <td>The count, with apps shown alongside</td>
-                <td>The scanning case the whole feature exists for</td>
-              </tr>
-              <tr>
-                <td>Hover</td>
-                <td>Affordance on the app entries</td>
-                <td>Signals the summary is a way in, not just a readout</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figure>
-            <img src="media/state-count.png" alt="Location, Camera and Microphone rows each showing how many apps have access" loading="lazy" />
-            <figcaption>Resolved — each row answers “how many apps?” before it’s asked</figcaption>
-          </figure>
-
-          <!-- ════════════ 4. LOCALIZATION ════════════ -->
-          <div class="stage">Stage 04 · Pressure-test</div>
-          <h2>Designing for languages that don’t fit</h2>
-          <p>A summary sentence with a number in it is a localization problem waiting to happen. Plural rules differ by language, word order moves the count around, and translated strings routinely run longer than the English they came from.</p>
-          <p>So the header was tested in the languages most likely to break it rather than only in English. Spanish stretched the string; Japanese changed its shape entirely. The component had to grow to absorb a second line of text instead of clipping or pushing the controls out of alignment.</p>
-
-          <div class="change-list">
-            <div class="change-row">
-              <div class="change-cell crit">
-                <b>Fixed height</b>
-                English fits comfortably, so the header is sized to English. Longer translations clip or force the apps beside them out of position.
-              </div>
-              <div class="change-arrow">→</div>
-              <div class="change-cell fix">
-                <b>Height that absorbs the string</b>
-                The header grows for languages that need the room, and everything beside it stays aligned. Nothing has to be re-laid-out per locale.
-              </div>
-            </div>
-          </div>
-
-
-          <!-- ════════════ 5. PERFORMANCE ════════════ -->
-          <div class="stage">Stage 05 · Build</div>
-          <h2>Making it feel instant</h2>
-          <p>A settings page that takes a beat to appear reads as broken, and on a privacy surface it reads as something worse — as though the system is deciding what to admit. The perceived speed of this page was a trust feature, not a nice-to-have.</p>
-          <p>I implemented the architectural changes behind the redesign and worked the rendering path directly, <strong>cutting perceived load time by 1.57 seconds</strong>. Paired with the restructured hierarchy, <strong>feature discoverability rose 10%</strong> — people were finding and using controls that had been sitting in the same product all along.</p>
-
-          <div class="insight">
-            <div class="insight-label">What actually moved the number</div>
-            <p>Nothing was added to this page. The controls, the data and the capabilities were all already there. What changed is that the page now states what it knows instead of making the reader assemble it — and it does so quickly enough that the answer feels like a fact rather than a result.</p>
-          </div>
-
-          <!-- ════════════ 6. REFLECTION ════════════ -->
-          <div class="stage">Stage 06 · Reflect</div>
-          <h2>What I’d carry forward</h2>
-          <ul>
-            <li><strong>The empty and loading states were the design.</strong> Most of the value landed in "0 apps", "access off" and the skeleton — the states that are easy to treat as edge cases and are in fact the ones that decide whether a privacy page feels honest.</li>
-            <li><strong>Verbatims explain what telemetry can only flag.</strong> Telemetry showed people arriving and leaving without acting. It took reading their own words to understand that they'd found the setting and still couldn't tell what it was doing.</li>
-            <li><strong>Being on both sides of the handoff is a shortcut.</strong> Contributing the interaction design and then implementing it meant performance constraints shaped the design while it was still cheap to change, instead of eroding it afterwards.</li>
-            <li><strong>Localization belongs in the first round.</strong> Testing the header in Japanese early turned a rework into a sizing decision.</li>
-          </ul>
-
-          <p class="privacy-note">Shown with the permission of a shipping design. Screens reflect the public-facing Windows privacy and security settings experience; internal planning artifacts and unreleased surfaces are deliberately not included.</p>
-
+          <p class="privacy-note">Screens show the public-facing Windows experience. Internal planning artifacts and unreleased surfaces are not included. Diagrams explain the documented decisions; they are not original design-history evidence.</p>
         </div>
       </div>
     </div>

@@ -9,9 +9,9 @@
    ─────────────────────────────────────────────────────────── */
 
 const SECTION_TITLES = {
+  grace:    'grace.dev',
   about:    'portfolio',
   thoughts: 'scribbles',
-  faith:    'faith',
 };
 
 const sectionScroll = new Map();
@@ -51,7 +51,6 @@ function showSection(name, el) {
 /* ── Wire up tabs: click + arrow keys ── */
 document.addEventListener('DOMContentLoaded', () => {
   const tabs = Array.from(document.querySelectorAll('.nav-item[data-section]'));
-
   tabs.forEach((tab, i) => {
     tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
 

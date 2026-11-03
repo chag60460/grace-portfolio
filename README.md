@@ -8,9 +8,12 @@ This is my personal portfolio site, styled as a little macOS desktop — frosted
 
 Three tabs in the top menu bar, just like navigating a real desktop:
 
-- **Portfolio** — who I am and the projects I've designed and built
-- **Faith** — my journey as a Christ follower and what grounds and guides me
+- **grace.dev** — my portrait, introduction, interests, and faith journey
+- **Portfolio** — the projects I've designed and built, visible immediately
 - **Scribbles** — a notebook for unbuilt concepts, design experiments, and product visions, alongside my existing Small Wins Diary
+
+Each tab uses the same-sized main window. Portfolio is selected initially;
+**grace.dev** is a regular section, not a popup or a profile sidebar.
 
 ## Built With
 
@@ -22,7 +25,7 @@ I kept the stack intentionally simple. The fun here is in the design and interac
 ## Fun Details
 
 - macOS-inspired window chrome with frosted-glass blur effects
-- Functional top navigation for Portfolio, Faith, and Scribbles
+- Functional top navigation for grace.dev, Portfolio, and Scribbles
 - Project cards that open and close real case-study windows without leaving the gallery
 - A real-time clock ticking away in the menu bar
 - A photo-led Scribbles tab with gentle motion and a macOS-style journal reader
@@ -38,6 +41,13 @@ open index.html
 
 ## Project gallery
 
+Portfolio starts directly with the project gallery. **grace.dev** switches the
+main window to the full introduction, including the portrait, role, biography,
+and interests, followed by the faith journey and verses. Faith is a subsection
+of grace.dev, not a separate tab. It uses the same keyboard navigation and per-section scroll
+restoration as the other tabs. There is no overlay, so the top navigation stays
+available while reading the introduction.
+
 The gallery uses image-led cards with consistent 16:10 previews: two columns on
 desktop and one on phones. Previews scale with the card width instead of using
 short fixed-height crops, and images fit inside their frames without clipping
@@ -50,7 +60,7 @@ used at dinner. Other projects retain their existing product previews, now
 fully framed against project-colored backgrounds. Images load lazily, and the
 whole card still opens its project window.
 
-To check gallery geometry, image loading, and card interactions with the
+To check the three sections, gallery geometry, image loading, and card interactions with the
 existing browser-test setup, run `npm test -- --gallery` from
 `projects/corner-cafe/`. The same checks are included in the default test run.
 
@@ -87,9 +97,10 @@ page opened directly keeps its original layout. **Back to portfolio** links
 are hidden inside project windows, where the close button already provides a
 way out, but remain available on standalone project pages.
 
-Portfolio, Faith, and Scribbles use equal-sized, text-only menu items in a slim
+grace.dev, Portfolio, and Scribbles use equal-sized, text-only menu items in a slim
 28px translucent desktop menu bar, with flat selection highlights instead of
-rounded pills. On phones the brand and clock sit above a compact 32px menu row.
+rounded pills. On phones all three tabs fit in one compact 32px row; the clock and
+availability label are hidden to leave room for navigation.
 All three sections share the same viewport-sized desktop and content window,
 with longer content scrolling inside it. Each section remembers its scroll
 position while switching tabs. The minimized-project dock stays below the
@@ -130,11 +141,31 @@ over HTTP and file URLs: primary actions must fit in the initial project
 viewport at desktop and phone sizes, every banner link must reveal its target,
 and game actions must preserve running games and reopen closed players.
 
+## Windows Privacy Settings case study
+
+The Windows story is organized around three decisions: grouping permissions,
+surfacing access counts, and allowing longer text to wrap. Its body targets
+650–800 words, with the contribution and reported outcomes near the top.
+
+The two existing public-facing screenshots are preserved, with numbered
+annotations on the full page and an uncropped access-count detail. The compact
+structure comparison, five-state strip, and long-label layout comparison are
+explicitly labeled explanatory illustrations, not original iteration files or
+additional product screenshots. The layout example uses expanded English text;
+it is not a translated capture. Do not present these diagrams as research or
+historical design evidence.
+
+Run `npm test -- --windows` from `projects/corner-cafe/` with the portfolio HTTP
+preview available to check the word budget, visual sections, responsive
+layouts, banner links, and project-window lifecycle over HTTP and file URLs.
+The same checks are included in the default browser regression run.
+
 ## Adding a journal entry
 
 **Scribbles** introduces my unbuilt concepts, design experiments, and product
 visions with "What if? A place for the not-yet." and "Before the product, there's
-a scribble." The existing Small Wins Diary remains here, separate from Faith;
+a scribble." The existing Small Wins Diary remains here, separate from the
+faith content in grace.dev;
 brainstorm-preview topics are not published as entries.
 
 Existing entries are preserved, with three covers shown at a time, newest first. Select a
