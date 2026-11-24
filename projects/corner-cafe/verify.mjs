@@ -57,14 +57,21 @@ async function verifyCasePresentation(page) {
   assert.equal(await system.getAttribute('aria-selected'), 'true');
   const panel = page.getByRole('tabpanel', { name: 'Design system' });
   const source = new URL(await panel.locator('iframe').getAttribute('src'));
-  assert.equal(source.hostname, 'embed.figma.com');
-  assert.equal(source.pathname, '/design/zxHthtAJYiEfssRXADRmkI', 'A prototype embed can redirect to the historical starting frame');
-  assert.equal(source.searchParams.get('node-id'), '78-24');
-  for (const [name, node] of [[/Open counter foundations/, '78-24'], [/Open component states/, '79-88']]) {
-    const link = new URL(await panel.getByRole('link', { name }).getAttribute('href'));
-    assert.equal(link.origin, 'https://www.figma.com');
-    assert.equal(link.pathname, source.pathname);
-    assert.equal(link.searchParams.get('node-id'), node);
+  const components = 'https://www.figma.com/design/O3S4nOxcySQw2P9i1ViK7x?node-id=3-2';
+  assert.equal(source.origin, 'https://embed.figma.com');
+  assert.equal(source.pathname, new URL(components).pathname);
+  assert.equal(source.searchParams.get('node-id'), '3-2', 'Embed Local Components, not the separate review library');
+  assert.equal(await panel.getByRole('link', { name: /Open component states/ }).getAttribute('href'), components);
+  assert.equal(await panel.getByRole('link', { name: /Open counter foundations/ }).getAttribute('href'),
+    'https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=78-24');
+  const examples = panel.getByRole('list', { name: 'Examples from the current cup components' }).getByRole('img');
+  assert.deepEqual(await examples.evaluateAll(imgs => imgs.map(img => img.getAttribute('src'))), [
+    'media/cup-states/hot/coffee.webp', 'media/cup-states/iced/pour-2.webp', 'media/cup-states/hot/milk-pour.webp',
+  ]);
+  for (const example of await examples.all()) {
+    await example.scrollIntoViewIfNeeded();
+    await example.evaluate(img => img.decode());
+    assert.ok(await example.isVisible(), 'Current artwork must be visible even when the embed is blocked');
   }
   await system.press('ArrowRight');
   const app = page.getByRole('tabpanel', { name: 'App walkthrough' });
@@ -94,6 +101,7 @@ async function verifyCasePresentation(page) {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.getByRole('tab', { name: 'App walkthrough' }).press('ArrowRight');
   const cups = page.getByRole('tabpanel', { name: 'Cup components' });
+  assert.equal(await cups.getByRole('link', { name: /Open component states/ }).getAttribute('href'), components);
   for (const temp of ['Hot', 'Iced']) {
     await cups.getByRole('radio', { name: temp, exact: true }).check();
     const paths = await cups.locator('li img').evaluateAll(images => images.map(img => img.getAttribute('src')));

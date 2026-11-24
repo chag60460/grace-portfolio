@@ -266,13 +266,14 @@ Mocha from its base through two lavender pumps to a frame captured mid-pour.
 With the portfolio preview running, use `npm run capture` from
 `projects/corner-cafe/` to regenerate these images from the coded prototype.
 
-The four Figma views cover the [counter foundations](https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=78-24),
-the 47 app screens, 18 cup states in both temperatures, and the five-frame
-lavender-to-oat storyboard. The screen and storyboard previews are rendered
-from the layouts used to build the design; the cup gallery uses the same
-photographs as the component masters. All three galleries work without a
-Figma account. The design-system tab retains its foundations embed and
-[component library link](https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=79-88).
+The Design system tab embeds [02 — Local Components in Corner Cafe — App Design](https://www.figma.com/design/O3S4nOxcySQw2P9i1ViK7x?node-id=3-2).
+Both component-state links open that page. The separate [counter foundations](https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=78-24)
+link is for palette and typography. Photographic state examples are served
+with the portfolio, so they remain visible if the Figma viewer is unavailable.
+The other three tabs cover all 47 app screens, 18 cup states in both
+temperatures, and the five-frame lavender-to-oat storyboard. The screen and
+storyboard previews use the layouts from the design, and the cup gallery
+uses the same photographs as the component masters.
 The optional [live walkthrough](https://www.figma.com/proto/O3S4nOxcySQw2P9i1ViK7x)
 uses the file's current starting flow rather than an obsolete frame ID;
 Figma controls access. The playable demo is hosted with the portfolio.
