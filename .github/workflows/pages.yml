@@ -6,24 +6,60 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
+  upload:
+    runs-on: ubuntu-latest
+    env:
+      PAGES_ARTIFACT: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+    outputs:
+      artifact_name: ${{ env.PAGES_ARTIFACT }}
+      artifact_id: ${{ steps.upload.outputs.artifact_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: upload
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: ${{ env.PAGES_ARTIFACT }}
+          path: .
+
   deploy:
+    needs: upload
+    permissions:
+      actions: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
+      - name: Wait for the uploaded artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_NAME: ${{ needs.upload.outputs.artifact_name }}
+          ARTIFACT_ID: ${{ needs.upload.outputs.artifact_id }}
+        run: |
+          : "${ARTIFACT_NAME:?Missing artifact name}" "${ARTIFACT_ID:?Missing upload ID}"
+          endpoint="repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$ARTIFACT_NAME"
+          for attempt in {1..12}; do
+            if gh api "$endpoint" | jq -e --arg id "$ARTIFACT_ID" --arg name "$ARTIFACT_NAME" '
+              .total_count == 1 and (.artifacts[0] |
+                (.id | tostring) == $id and .name == $name and .expired == false and .size_in_bytes > 0)
+            ' > /dev/null; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::Pages artifact $ARTIFACT_NAME (ID $ARTIFACT_ID) was not discoverable."
+          exit 1
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+        with:
+          artifact_name: ${{ needs.upload.outputs.artifact_name }}
