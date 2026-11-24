@@ -1,11 +1,18 @@
-export const DRINK_SHOTS = Object.freeze({ Americano: 2, Latte: 1, Mocha: 1 });
+export const DRINK_RECIPES = Object.freeze({
+  Americano: { shots: 2, chocolatePumps: 0, finish: 'water' },
+  Latte: { shots: 1, chocolatePumps: 0, finish: 'milk' },
+  Mocha: { shots: 1, chocolatePumps: 1, finish: 'milk' },
+});
+
+export const DRINK_SHOTS = Object.freeze(Object.fromEntries(Object.entries(DRINK_RECIPES).map(([name, recipe]) => [name, recipe.shots])));
+export const MAX_SYRUP_PUMPS = 6;
 
 export const SYRUPS = [
-  { id: 'vanilla', name: 'Vanilla', color: '#d5a257', note: 'Soft & sweet' },
-  { id: 'caramel', name: 'Caramel', color: '#b96b34', note: 'Golden & cozy' },
-  { id: 'hazelnut', name: 'Hazelnut', color: '#996748', note: 'A little nutty' },
-  { id: 'lavender', name: 'Lavender', color: '#aa89c2', note: 'Floral & dreamy' },
-  { id: 'none', name: 'No syrup', color: '#e5ded7', note: 'Simply coffee' },
+  { id: 'vanilla', name: 'Vanilla', color: '#d5a257' },
+  { id: 'caramel', name: 'Caramel', color: '#b96b34' },
+  { id: 'hazelnut', name: 'Hazelnut', color: '#996748' },
+  { id: 'lavender', name: 'Lavender', color: '#aa89c2' },
+  { id: 'none', name: 'No syrup', color: '#e5ded7' },
 ];
 
 export const MILKS = [
@@ -15,8 +22,8 @@ export const MILKS = [
 ];
 
 export function cupLevels(pumps, milkFraction = 0) {
-  if (!Number.isInteger(pumps) || pumps < 0 || pumps > 6 || !Number.isFinite(milkFraction) || milkFraction < 0 || milkFraction > 1) {
-    throw new Error('Cup fill requires 0-6 pumps and a milk fraction between 0 and 1.');
+  if (!Number.isInteger(pumps) || pumps < 0 || pumps > MAX_SYRUP_PUMPS || !Number.isFinite(milkFraction) || milkFraction < 0 || milkFraction > 1) {
+    throw new Error(`Cup fill requires 0-${MAX_SYRUP_PUMPS} pumps and a milk fraction between 0 and 1.`);
   }
   const syrup = pumps * 8;
   return { syrup, milk: (154 - syrup) * milkFraction };
@@ -29,12 +36,12 @@ export function createOrder(draft, orders, now = Date.now()) {
     throw new Error('Please enter a first and last name, up to 40 characters each.');
   }
   if (!['hot', 'cold'].includes(draft.temperature)) throw new Error('Choose hot or cold.');
-  if (!Object.hasOwn(DRINK_SHOTS, draft.drink)) throw new Error('Choose a drink.');
+  if (!Object.hasOwn(DRINK_RECIPES, draft.drink)) throw new Error('Choose a drink.');
   const americano = draft.drink === 'Americano';
   if (!americano && !MILKS.some(milk => milk.id === draft.milk)) throw new Error('Choose a milk.');
   if (!americano && !SYRUPS.some(syrup => syrup.id === draft.syrup)) throw new Error('Choose a syrup.');
-  if (!americano && (!Number.isInteger(draft.pumps) || draft.pumps < 0 || draft.pumps > 6)) {
-    throw new Error('Choose between 0 and 6 syrup pumps.');
+  if (!americano && (!Number.isInteger(draft.pumps) || draft.pumps < 0 || draft.pumps > MAX_SYRUP_PUMPS)) {
+    throw new Error(`Choose between 0 and ${MAX_SYRUP_PUMPS} syrup pumps.`);
   }
   return {
     id: crypto.randomUUID(),
@@ -42,7 +49,7 @@ export function createOrder(draft, orders, now = Date.now()) {
     firstName, lastName,
     temperature: draft.temperature,
     drink: draft.drink,
-    shots: DRINK_SHOTS[draft.drink],
+    shots: DRINK_RECIPES[draft.drink].shots,
     syrup: americano || draft.pumps === 0 ? 'none' : draft.syrup,
     pumps: americano || draft.syrup === 'none' ? 0 : draft.pumps,
     milk: americano ? null : draft.milk,
@@ -73,12 +80,12 @@ export function markReady(orders, ids, now = Date.now()) {
 export function isOrder(value) {
   return value && typeof value.id === 'string' && Number.isInteger(value.number) &&
     typeof value.firstName === 'string' && typeof value.lastName === 'string' &&
-    ['hot', 'cold'].includes(value.temperature) && Object.hasOwn(DRINK_SHOTS, value.drink) &&
-    (value.shots === undefined || value.shots === DRINK_SHOTS[value.drink]) &&
+    ['hot', 'cold'].includes(value.temperature) && Object.hasOwn(DRINK_RECIPES, value.drink) &&
+    (value.shots === undefined || value.shots === DRINK_RECIPES[value.drink].shots) &&
     ['preparing', 'ready'].includes(value.status) && typeof value.milkDone === 'boolean' &&
     (value.milk === null || MILKS.some(milk => milk.id === value.milk)) &&
     SYRUPS.some(syrup => syrup.id === value.syrup) && Number.isInteger(value.pumps) &&
-    value.pumps >= 0 && value.pumps <= 6 && Number.isFinite(value.createdAt) &&
+    value.pumps >= 0 && value.pumps <= MAX_SYRUP_PUMPS && Number.isFinite(value.createdAt) &&
     (value.readyAt === null || Number.isFinite(value.readyAt));
 }
 

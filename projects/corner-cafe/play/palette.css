@@ -1,0 +1,55 @@
+::selection { background: var(--enamel); color: var(--ink); }
+:focus-visible { outline-color: #674719; }
+.sidebar { background-color: var(--buttercream); }
+.brand, h1, .choice-card > strong { color: var(--ink); }
+.brand-icon, .avatar { background-color: var(--enamel); color: var(--ink); }
+.brand-dot, .eyebrow { color: var(--accent); }
+.nav-item, .breadcrumb, .demo-badge, .choice-detail, .helper-note { color: var(--muted); }
+.nav-item.active, .nav-item:hover, .profile .icon-button:hover { background-color: var(--accent-soft); color: var(--ink); }
+.nav-count { background-color: var(--paper); }
+.profile { border-color: var(--line); }
+.breadcrumb span { color: var(--card-edge); }
+.choice-card { border-color: var(--card-edge); }
+.choice-card:hover, .choice-card:focus-visible {
+  background-color: #fff8de; border-color: var(--accent); box-shadow: 0 6px 20px #805d2317;
+}
+.role-visual.peach { background-color: var(--enamel); color: var(--ink); }
+.role-visual.mint { background-color: var(--oat); color: var(--ink); }
+.role-visual.lavender { background-color: var(--kraft); color: var(--ink); }
+.role-visual [data-role-art] { display: block; width: 62.5%; height: auto; }
+.toast { background-color: var(--ink); color: var(--paper); box-shadow: 0 8px 35px #65482b29; }
+.toast.error { background-color: #78381f; }
+.error-banner { background-color: #fae7cc; color: #6d3121; }
+
+.button { background-color: var(--enamel); color: var(--ink); box-shadow: 0 5px 11px #805d230c; }
+.button:hover:not(:disabled) { background-color: #e9ce68; box-shadow: 0 7px 17px #805d231b; }
+.button:disabled { background-color: var(--oat); border-color: var(--line); color: var(--muted); opacity: 1; box-shadow: none; }
+.back-link, .customer-note, .handwritten, .animation-caption, .stepper li, .demo-note { color: var(--muted); }
+.demo-note { border-color: var(--card-edge); }
+.customer-note strong, .name-fields label, .recipe h3 { color: var(--ink); }
+.name-fields input { background-color: var(--paper); border-color: var(--card-edge); color: var(--ink); }
+.name-fields input:focus-visible { border-color: var(--accent); }
+.name-fields input::placeholder { color: var(--muted); opacity: 1; }
+
+.stepper li:not(:last-child)::after { background-color: var(--line); }
+.stepper li > span { background-color: var(--oat); }
+.stepper li.current, .stepper li.current > span { color: var(--ink); }
+.stepper li.current > span { background-color: var(--enamel); }
+.stepper li.complete > span { background-color: var(--accent-soft); color: var(--accent); }
+.stepper li.complete::after { background-color: var(--line); }
+.choice-check { border-color: var(--card-edge); background-color: var(--paper); }
+.choice-card.selected { background-color: var(--accent-soft); border-color: var(--accent); box-shadow: 0 0 0 2px #805d2324; }
+.selected .choice-check { background-color: var(--accent); border-color: var(--accent); color: var(--paper); }
+
+.preview-panel { background-color: var(--buttercream); border-color: var(--line); }
+.preview-top .eyebrow, .recipe .eyebrow { color: var(--accent); }
+.art-halo, .recipe { background-color: var(--paper); }
+.art-sparkle { color: var(--card-edge); }
+.art-dot { background-color: var(--enamel); }
+.cup-art.iced { --cup-color: var(--kraft); }
+.cup-face circle { fill: var(--ink); }
+.cup-face path { stroke: var(--ink); }
+.cup-face ellipse { fill: #bc8757; }
+.recipe { border-color: var(--line); }
+.recipe-tags > span { background-color: var(--buttercream); color: var(--muted); }
+.preview-foot { background-color: var(--accent-soft); border-color: var(--line); color: var(--muted); }

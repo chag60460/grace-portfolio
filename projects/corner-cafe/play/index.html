@@ -1,19 +1,138 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#fff7f8">
-    <meta name="description" content="A little coffee, a little community. An interactive Corner Cafe prototype.">
-    <title>Corner Cafe · A little cup of happy</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23f6dce6'/%3E%3Cpath d='M16 25h29v17a12 12 0 0 1-29 0z' fill='%23a85572'/%3E%3Cpath d='M45 28h4a7 7 0 0 1 0 14h-4' fill='none' stroke='%23a85572' stroke-width='4'/%3E%3C/svg%3E">
-    <link rel="stylesheet" href="./styles.css">
-    <script src="./app.bundle.js" defer></script>
-  </head>
-  <body>
-    <div id="app"><p style="padding:32px;color:#88405d;font:16px system-ui" role="status">Opening Corner Cafe...</p></div>
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <div id="print-area"></div>
-    <noscript>This interactive prototype needs JavaScript. Enable JavaScript and reload.</noscript>
-  </body>
+<html lang="en" data-cafe>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbf1cd">
+  <meta name="description" content="Explore coffee ordering and volunteer stations in the Corner Cafe prototype.">
+  <title>Corner Cafe · At the counter</title>
+  <link rel="stylesheet"  href="../tokens.css">
+  <link rel="stylesheet" id="demo-skin" media="not all" href="styles.css">
+  <link rel="stylesheet" id="entry-palette" media="not all" href="palette.css">
+  <link rel="stylesheet" id="counter-skin" href="counter.css">
+  <link rel="stylesheet" id="shared-counter-art" href="shared.css">
+  <script src="./app.bundle.js" defer></script>
+</head>
+<body>
+<div id="app">
+<div class="app-shell" id="login-counter">
+<aside class="sidebar entry-rail">
+      <a class="brand" href="#" data-action="brand" aria-label="Corner Cafe home"><span class="brand-icon"><svg data-icon="cup" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h12v7a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M16 9h2a3 3 0 0 1 0 6h-2M7 3v2m4-2v2"/></svg></span><span>corner<span class="brand-second">cafe<span class="brand-dot">.</span></span></span></a>
+      <p class="entry-current" aria-current="page">
+        <svg data-icon="home" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 10 9-7 9 7v11H3V10Z"/><path d="M9 21v-8h6v8"/></svg>
+        Welcome in
+      </p>
+      <section class="counter-guest-note">
+        <h2>First visit?</h2>
+        <p>No account needed.<br>Choose the <strong>Guest</strong> cup.</p>
+      </section>
+</aside>
+<template id="role-chooser-art">
+<svg data-role-art="drinker" viewBox="0 0 46 38" aria-hidden="true" focusable="false">
+            <g class="icon-lines">
+              <path d="M4 29c6.3 2.2 30.4 2.6 39.6-.4-3.8 5.2-27.5 7.2-39.6.4z" fill="#ead49d"/>
+              <path d="M33.3 14.1l3.7-.3c6-.3 6.2 7.3.1 9.7l-5.2 1.3m2.5-8.1 2.5-.1c2.4.1 2.7 3.7-1.6 4.8l-2.1.5" fill="#fff7dc"/>
+              <path d="M8.8 12.5c.2 8.9 2.7 14.7 10.8 16.2l4.4.1c7-1.5 9.8-6.6 10.4-16z" fill="#fff9e6"/>
+              <ellipse cx="21.6" cy="12.6" rx="12.8" ry="3.7" fill="#f7e6bd"/>
+            </g>
+            <path d="M11.9 13.3c4.7-3.5 15.5-3.4 19.6.2-4.8 2.1-15.3 2.2-19.6-.2z" fill="#806043"/>
+            <path class="fine-lines" d="M12.9 17.2c.3 2.7 1.2 4.8 2.8 6.3"/>
+          </svg>
+<svg data-role-art="team" viewBox="0 0 46 38" aria-hidden="true" focusable="false">
+            <g class="icon-lines">
+              <path d="M30.4 11.7c7.4-.9 11.8-.2 10.7 6.1-.9 4.6-5.2 9.5-10.2 11.3l-1.5-2.7c4.6-2.4 8.2-7 8.2-9.9-.1-1.9-2.2-2.3-7.1-1.6z" fill="#eee3c3"/>
+              <path d="M5.6 7.7l7.2 1.7c4.3-3.4 13.4-3.2 18.2.1l2.5 22.2c-3.4 4.2-18.3 4.7-24.1.7L11 14z" fill="#f4ebcd"/>
+              <path d="M6.8 8.5c8.5 5.6 17.2 6.5 23.7 1.2" stroke-width="1.15"/>
+            </g>
+            <path class="fine-lines" d="M15.4 15.7l-1.3 14.5m12-14.9 1.2 13.9"/>
+          </svg>
+</template>
+<main class="counter">
+  <h1 class="sr" tabindex="-1">Corner Cafe sign in</h1>
+  <div class="machine tease" id="machine" data-state="idle" data-lever="up">
+    <img class="photo" src="./assets/counter-machine.jpg" width="823" height="768" alt="Butter-yellow espresso machine with a chrome drip tray.">
+    <button class="lever" id="lever" type="button" aria-controls="cups" aria-label="pull to login" aria-describedby="instructions">
+      <svg class="lever-svg" viewBox="0 0 330 220" aria-hidden="true">
+        <defs>
+          <linearGradient id="shaft" x2="0.05" y2="1" gradientUnits="objectBoundingBox">
+            <stop stop-color="#6e6552"/><stop offset=".18" stop-color="#fffae7"/><stop offset=".39" stop-color="#ede5d0"/>
+            <stop offset=".53" stop-color="#a8a598"/><stop offset=".7" stop-color="#736c5c"/><stop offset=".91" stop-color="#cabca5"/><stop offset="1" stop-color="#6d604c"/>
+          </linearGradient>
+          <linearGradient id="white-grip" x1=".13" y1="0" x2=".24" y2="1">
+            <stop stop-color="#d5d5cf"/><stop offset=".13" stop-color="#ffffff"/><stop offset=".29" stop-color="#fcfcfa"/>
+            <stop offset=".58" stop-color="#f4f4ef"/><stop offset=".83" stop-color="#dfded6"/><stop offset="1" stop-color="#c1bfb5"/>
+          </linearGradient>
+          <radialGradient id="boss" cx=".28" cy=".2" r=".92">
+            <stop stop-color="#fffcef"/><stop offset=".39" stop-color="#e4d8be"/><stop offset=".65" stop-color="#9d927c"/><stop offset=".81" stop-color="#706956"/><stop offset="1" stop-color="#c5b69a"/>
+          </radialGradient>
+          <filter id="joint-shadow" x="-.3" y="-.4" width="1.7" height="2">
+            <feDropShadow dx="1.7" dy="3" stdDeviation="1.9" flood-color="#665029" flood-opacity=".42"/>
+          </filter>
+        </defs>
+        <g filter="url(#joint-shadow)">
+          <ellipse cx="20" cy="122" rx="14.3" ry="17.5" transform="rotate(-17 20 122)" fill="url(#boss)" stroke="#b09a77" stroke-width="1"/>
+          <g class="hardware">
+            <path d="M17 117.5Q16 122 18 127L99 127.5 100 116.9Z" fill="url(#shaft)" stroke="#7d735f" stroke-width=".55"/>
+            <path d="M25 118.4h63" stroke="#fff9df" stroke-width="1.1" opacity=".8"/>
+            <rect x="78" y="115.2" width="12" height="14.4" rx="3.3" fill="url(#shaft)"/>
+            <path class="grip" d="M87 116Q92 112 100 111L132 108.9Q144 108.7 147 115.1Q150.4 122 146.6 129.5Q144 135.3 133 135.2L100 132.9Q92 132.1 87 128.4Z" fill="url(#white-grip)" stroke="#a9a89f" stroke-width=".78"/>
+            <path d="M98 113.7q18-2.2 34-2.5 5-.1 8 1.1" fill="none" stroke="#ffffff" opacity=".95" stroke-width="1.7" stroke-linecap="round"/>
+            <path class="hit" d="M16 122H140" fill="none" stroke="transparent" stroke-width="44" vector-effect="non-scaling-stroke" stroke-linecap="round"/>
+          </g>
+          <ellipse cx="19" cy="122" rx="8.5" ry="10" transform="rotate(-18 19 122)" fill="url(#boss)"/>
+        </g>
+        <circle class="pivot-hit" cx="20" cy="122" r="20" fill="transparent"/>
+      </svg>
+      <span class="tag" aria-hidden="true"><i class="tag-hole"></i>pull to login</span>
+    </button>
+    <span class="lamp" aria-hidden="true"></span>
+    <svg class="extraction" viewBox="0 0 823 768" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="espresso-color">
+          <stop stop-color="#513019"/><stop offset=".24" stop-color="#95602d"/><stop offset=".47" stop-color="#c88a4e"/>
+          <stop offset=".72" stop-color="#986033"/><stop offset="1" stop-color="#60391f"/>
+        </linearGradient>
+        <path id="espresso-strand" d="M-2.2 0 Q-3.1 10 -2.1 28 C-1.2 45 -2.15 74 -1.55 100 Q0 102 1.6 100 C2.1 76 1.35 41 2.25 23 Q3 8 2.2 0Z" fill="url(#espresso-color)"/>
+        <path id="crema-filament" d="M-.65 0 Q-1.5 18 -.55 34 T-.45 66 T-.15 100" pathLength="100"/>
+        <ellipse id="outlet-lip" cx="0" cy="0" rx="4.3" ry="1.8" fill="#79593c" stroke="#cfb38b" stroke-width=".7"/>
+        <ellipse id="eddy" cx="0" cy="0" rx="11" ry="3.5"/>
+        <g id="impact"><ellipse rx="4.7" ry="1.7" fill="#47271a" opacity=".8"/><path d="M-4 .2 Q-.5 2.8 3.8 .5" fill="none" stroke="#cea06a" stroke-width=".85"/></g>
+      </defs>
+      <g class="outlet" transform="translate(333.52 396.2)">
+        <g class="column"><g class="falling"><use href="#espresso-strand"/><use class="crema-thread" href="#crema-filament"/></g></g>
+        <use href="#outlet-lip"/>
+        <g class="landing"><g class="pool"><use href="#impact"/><use class="ripple" href="#eddy"/><use class="ripple echo" href="#eddy"/></g></g>
+      </g>
+      <g class="outlet" transform="translate(450.75 439.6)">
+        <g class="column"><g class="falling"><use href="#espresso-strand"/><use class="crema-thread" href="#crema-filament"/></g></g>
+        <use href="#outlet-lip"/>
+        <g class="landing"><g class="pool"><use href="#impact"/><use class="ripple" href="#eddy"/><use class="ripple echo" href="#eddy"/></g></g>
+      </g>
+    </svg>
+    <div class="cups" id="cups" role="group" aria-label="Sign-in options" aria-describedby="pickup-note" hidden>
+      <p class="pickup-tag" id="pickup-note"><i class="tag-hole" aria-hidden="true"></i>Choose a cup to sign in.</p>
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="counter-sleeve-cut" clipPathUnits="objectBoundingBox">
+            <path d="M.040 .279 C.045 .348 .254 .400 .500 .400 S.955 .348 .960 .279 L.858 .823 C.855 .885 .699 .920 .500 .920 S.145 .885 .142 .823 Z"/>
+          </clipPath>
+        </defs>
+      </svg>
+      <button class="cup guest" type="button" data-action="guest" aria-label="Sign in as a Guest">
+        <span class="ware"><img class="paper-cup" src="./assets/guest-cup.png" width="294" height="446" alt=""><span class="cup-mouth" aria-hidden="true" hidden><img class="liquid-surface" src="./assets/guest-espresso.png" width="294" height="144" alt=""></span><span class="cup-lettering">Guest</span></span>
+      </button>
+      <button class="cup church" type="button" data-action="church" aria-label="Sign in with Church Center">
+        <span class="ware"><img class="paper-cup" src="./assets/church-cup.png" width="294" height="446" alt=""><span class="cup-mouth" aria-hidden="true" hidden><img class="liquid-surface" src="./assets/church-espresso.png" width="294" height="144" alt=""></span><span class="cup-lettering">Church<br>Center</span></span>
+      </button>
+    </div>
+  </div>
+  <p id="instructions" class="sr">Pull down to reveal the sign-in cups. Lift up to stop pouring. Tap, Enter, or Space switches direction. You can also use the up and down arrow keys. Tab to a cup to sign in.</p>
+  <p id="message" class="sr" role="status" aria-atomic="true"></p>
+  <noscript>Enable JavaScript to try the lever in this prototype.</noscript>
+</main>
+</div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="print-area"></div>
+</body>
 </html>

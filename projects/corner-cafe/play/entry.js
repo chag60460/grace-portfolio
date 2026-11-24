@@ -12,7 +12,7 @@ import('./app.js').then(() => {
 }).catch(error => {
   console.error('Corner Cafe startup failed:', error);
   const panel = document.createElement('section');
-  panel.style.cssText = 'max-width:520px;margin:60px auto;padding:28px;font:16px/1.7 system-ui;color:#543b45;background:#fff7f8;border:1px solid #eedce3;border-radius:16px';
+  panel.style.cssText = 'max-width:520px;margin:60px auto;padding:28px;font:16px/1.7 system-ui;color:var(--ink);background:var(--paper);border:1px solid var(--card-edge);border-radius:16px';
   panel.setAttribute('role', 'alert');
   const heading = document.createElement('h1');
   heading.textContent = 'The cafe could not open.';

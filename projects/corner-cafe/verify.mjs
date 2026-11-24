@@ -5,6 +5,113 @@ const origin = process.env.PORTFOLIO_PREVIEW || 'http://127.0.0.1:4174';
 const route = '/projects/corner-cafe/';
 const galleryOnly = process.argv.includes('--gallery');
 const windowsOnly = process.argv.includes('--windows');
+const casePresentationOnly = process.argv.includes('--case-presentation');
+
+async function verifyCasePresentation(page) {
+  // The portfolio galleries and demo must work even when the third-party viewer is blocked.
+  await page.route('https://embed.figma.com/**', route => route.abort('blockedbyclient'));
+  const menu = page.getByRole('navigation', { name: 'Case study sections' });
+  const active = hash => page.waitForFunction(expected => {
+    const current = document.querySelectorAll('.cc-jump-links [aria-current="location"]');
+    return current.length === 1 && current[0].hash === expected;
+  }, hash);
+  for (const width of [1280, 320]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.evaluate(() => scrollTo(0, 0));
+    await active('#use-the-app');
+    const cover = await page.locator('.cc-hero-art img').evaluate(async img => {
+      await img.decode();
+      const art = img.getBoundingClientRect(), text = document.querySelector('.cc-hero-copy').getBoundingClientRect();
+      return { ratio: img.naturalWidth / img.naturalHeight, right: art.right, beside: art.left >= text.right, below: art.top >= text.bottom };
+    });
+    assert.equal(cover.ratio, 680 / 520);
+    assert.ok(cover.right <= width && (width > 760 ? cover.beside : cover.below));
+
+    await menu.getByRole('link', { name: 'The workflow' }).click();
+    await active('#workflow');
+    const nav = await menu.boundingBox(), section = await page.locator('#workflow').boundingBox();
+    assert.ok(Math.abs(nav.y) < 2 && section.y >= nav.y + nav.height - 1, 'The pinned index must not cover the target');
+    const historyLength = await page.evaluate(() => history.length);
+    await page.locator('#system').evaluate(el => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
+    await active('#system');
+    assert.deepEqual(await page.evaluate(() => [location.hash, history.length]), ['#workflow', historyLength]);
+    await page.locator('#experience-title').evaluate(el => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
+    await active('#workflow');
+  }
+  const deepLink = new URL(page.url());
+  deepLink.hash = 'system';
+  await page.setViewportSize({ width: 637, height: 510 });
+  await page.goto('about:blank');
+  await page.goto(deepLink.href, { waitUntil: 'domcontentloaded' });
+  await active('#system');
+  await menu.getByRole('link', { name: 'Try it' }).press('Enter');
+  await active('#prototype');
+  await menu.getByRole('link', { name: 'Figma' }).click();
+  await active('#figma');
+  await page.goBack();
+  await active('#prototype');
+  await page.goForward();
+  await active('#figma');
+
+  const system = page.getByRole('tab', { name: 'Design system', exact: true });
+  assert.equal(await system.getAttribute('aria-selected'), 'true');
+  const panel = page.getByRole('tabpanel', { name: 'Design system' });
+  const source = new URL(await panel.locator('iframe').getAttribute('src'));
+  assert.equal(source.hostname, 'embed.figma.com');
+  assert.equal(source.pathname, '/design/zxHthtAJYiEfssRXADRmkI', 'A prototype embed can redirect to the historical starting frame');
+  assert.equal(source.searchParams.get('node-id'), '78-24');
+  for (const [name, node] of [[/Open counter foundations/, '78-24'], [/Open component states/, '79-88']]) {
+    const link = new URL(await panel.getByRole('link', { name }).getAttribute('href'));
+    assert.equal(link.origin, 'https://www.figma.com');
+    assert.equal(link.pathname, source.pathname);
+    assert.equal(link.searchParams.get('node-id'), node);
+  }
+  await system.press('ArrowRight');
+  const app = page.getByRole('tabpanel', { name: 'App walkthrough' });
+  const picker = app.getByLabel('Choose a screen');
+  const keys = await picker.locator('option').evaluateAll(options => options.map(o => o.value));
+  assert.equal(new Set(keys).size, 47);
+  assert.ok(await app.getByRole('button', { name: 'Previous' }).isDisabled());
+  await app.getByRole('button', { name: 'Next' }).click();
+  assert.equal(await picker.inputValue(), 'cups');
+  await picker.selectOption('labels-selected');
+  assert.ok(await app.getByRole('button', { name: 'Next' }).isDisabled());
+  assert.match(await app.getByRole('status').textContent(), /Screen 47 of 47/);
+  assert.equal(await app.getByRole('link', { name: /View full-size screen/ }).getAttribute('href'), 'media/app-screens/labels-selected.webp');
+  await page.evaluate(async keys => {
+    await Promise.all(keys.map(async key => {
+      const image = new Image();
+      image.src = `media/app-screens/${key}.webp`;
+      await image.decode();
+      if (image.naturalWidth < 390 || image.naturalHeight < 844) throw Error(`Missing or undersized screen: ${key}`);
+    }));
+  }, keys);
+  assert.equal(await app.locator('iframe').getAttribute('src'), null);
+  await app.locator('summary').click();
+  const live = new URL(await app.locator('iframe[src]').getAttribute('src'));
+  assert.equal(live.origin + live.pathname, 'https://embed.figma.com/proto/O3S4nOxcySQw2P9i1ViK7x');
+  assert.ok(!live.searchParams.has('starting-point-node-id') && !live.searchParams.has('node-id'));
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.getByRole('tab', { name: 'App walkthrough' }).press('ArrowRight');
+  const cups = page.getByRole('tabpanel', { name: 'Cup components' });
+  for (const temp of ['Hot', 'Iced']) {
+    await cups.getByRole('radio', { name: temp, exact: true }).check();
+    const paths = await cups.locator('li img').evaluateAll(images => images.map(img => img.getAttribute('src')));
+    assert.equal(new Set(paths).size, 18);
+    assert.ok(paths.every(src => src.startsWith(`media/cup-states/${temp.toLowerCase()}/`)));
+    await page.evaluate(paths => Promise.all(paths.map(src => { const img = new Image(); img.src = src; return img.decode(); })), paths);
+  }
+  await page.getByRole('tab', { name: 'Cup components' }).press('End');
+  const motion = page.getByRole('tabpanel', { name: 'Motion storyboard' });
+  assert.equal(await motion.locator('li a').count(), 5);
+  const pour = motion.getByRole('img', { name: 'Tilted oat carton pouring into the Mocha' });
+  await pour.scrollIntoViewIfNeeded();
+  await pour.evaluate(img => img.decode());
+  assert.ok(await pour.isVisible());
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'Mobile galleries must fit horizontally.');
+  await page.locator('#system [data-show-system]').click();
+  assert.ok(await panel.isVisible());
+}
 
 async function verifyWindowsCaseStudy(page, homeURL) {
   const projectURL = new URL('projects/windows-privacy-settings/windows-privacy-settings.html', homeURL).href;
@@ -296,6 +403,14 @@ try {
     page.on('pageerror', error => {
       if (!error.stack?.includes('figma.com')) localErrors.push(error.message);
     });
+    if (casePresentationOnly) {
+      await page.goto(`${base}corner-cafe.html`);
+      await verifyCasePresentation(page);
+      assert.deepEqual(localErrors, []);
+      results.push({ base, casePresentation: true });
+      await context.close();
+      continue;
+    }
     if (windowsOnly) {
       await verifyWindowsCaseStudy(page, new URL('../../index.html', base).href);
       assert.deepEqual(localErrors, [], 'The Windows case study should not throw.');
@@ -312,6 +427,7 @@ try {
       continue;
     }
     await page.goto(`${base}play/index.html?demo=drinker`);
+    assert.equal(await page.getByLabel('First name').getAttribute('placeholder'), null);
     await page.getByLabel('First name').fill('Demo');
     await page.getByLabel('Last name').fill('Sipper');
     await page.locator('#name-form button[type=submit]').click();
@@ -320,21 +436,30 @@ try {
     await page.locator('[data-action=drink][data-value=Latte]').click();
     await page.locator('[data-action=next]').click();
     await page.locator('[data-action=syrup][data-value=caramel]').click();
+    const syrup = page.locator('.station-photo');
+    const baseSurface = Number(await syrup.getAttribute('data-surface'));
+    assert.equal(await syrup.getAttribute('data-amount'), '0');
+    await page.getByRole('button', { name: 'Add one pump' }).click();
+    assert.ok(Number(await syrup.getAttribute('data-surface')) < baseSurface);
     await page.locator('[data-action=next]').click();
     await page.locator('[data-action=milk][data-value=soy]').click();
+    assert.equal(await page.locator('.milk-photo').getAttribute('data-filled'), '1');
+    assert.equal(await page.locator('.milk-pose use').getAttribute('href'), '#milk-photo-soy');
     for (const width of [390, 280, 240]) {
       await page.setViewportSize({ width, height: 844 });
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-      const geometry = await page.locator('.milk-options .choice-card').evaluateAll(nodes => nodes.map(card => {
+      const geometry = await page.locator('.milk-option').evaluateAll(nodes => nodes.map(card => {
         const box = card.getBoundingClientRect();
-        const icon = card.querySelector('.milk-illustration').getBoundingClientRect();
-        return { fits: icon.left >= box.left && icon.right <= box.right, inViewport: box.left >= 0 && box.right <= innerWidth };
+        return { fits: box.width >= 44 && box.height >= 44, inViewport: box.left >= 0 && box.right <= innerWidth };
       }));
+      assert.equal(geometry.length, 3);
       assert.ok(geometry.every(item => item.fits && item.inViewport), `Milk choices clipped at ${width}px`);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `Demo overflow at ${width}px for ${base}`);
     }
     await page.locator('[data-action=submit-order]').click();
-    await page.getByRole('heading', { name: /A little happiness/ }).waitFor();
+    await page.locator('.pickup-ticket h1').waitFor();
+    assert.deepEqual(await page.locator('.recipe-lines dd').allTextContents(), ['1 espresso shot', 'Soy milk', '1 pump of caramel syrup']);
+    assert.equal(await page.locator('.pickup-ticket .order-state').textContent(), 'Preparing');
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(`${base}play/index.html?demo=team`);
     await page.locator('main [data-action=steamer]').click();
@@ -353,20 +478,17 @@ try {
     await drinker.locator('[data-action=next]').click();
     await drinker.locator('[data-action=drink][data-value=Americano]').click();
     await drinker.locator('[data-action=submit-order]').click();
-    await drinker.getByRole('heading', { name: /A little happiness/ }).waitFor();
+    await drinker.locator('.pickup-ticket h1').waitFor();
+    assert.deepEqual(await drinker.locator('.recipe-lines dd').allTextContents(), ['2 espresso shots + water', 'None']);
     assert.equal(await drinker.locator('.error-banner').count(), 0);
     await page.locator('#close-demo').click();
     await page.locator('[data-demo-mode=team]').click();
     await page.waitForFunction(() => document.querySelector('#demo-status').textContent.startsWith('Team demo ready.'));
     const team = page.frameLocator('#demo-stage iframe');
-    assert.equal(await team.locator('main .role-grid .choice-card').count(), 3);
+    assert.equal(await team.locator('main .station-menu .station-link').count(), 3);
     await page.locator('#close-demo').click();
     assert.equal(await page.locator('#demo-stage iframe').count(), 0);
-    assert.equal(await page.locator('#figma iframe[src^="https://embed.figma.com/"]').count(), 2);
-    await page.locator('#figma-system-tab').click();
-    assert.equal(await page.locator('#figma-system-panel').isVisible(), true);
-    await page.locator('#figma-system-tab').press('ArrowLeft');
-    assert.equal(await page.locator('#figma-app-tab').getAttribute('aria-selected'), 'true');
+    await verifyCasePresentation(page);
     for (const width of [320, 375, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
@@ -417,6 +539,14 @@ try {
     assert.deepEqual(dots.map(dot => dot.color), ['rgb(255, 92, 96)', 'rgb(250, 200, 0)', 'rgb(53, 199, 89)']);
     const project = page.frameLocator('.project-window-frame[data-project="card-corner-cafe"]');
     assert.equal(await project.locator('.cc-back:visible').count(), 0, 'Embedded project windows must not duplicate close with back links');
+    const index = project.getByRole('navigation', { name: 'Case study sections' });
+    await index.getByRole('link', { name: 'The workflow' }).click();
+    await index.locator('[href="#workflow"][aria-current="location"]').waitFor();
+    assert.ok(await project.locator('#workflow').evaluate(section => {
+      const nav = document.querySelector('.cc-jump-links').getBoundingClientRect();
+      const top = section.getBoundingClientRect().top;
+      return Math.abs(nav.top) < 2 && top >= nav.bottom - 1 && top < innerHeight;
+    }), 'The project window should pin the index without hiding the heading');
     await project.locator('[data-demo-mode=drinker]').click();
     const windowDemo = project.frameLocator('#demo-stage iframe');
     await windowDemo.getByLabel('First name').fill('Window');

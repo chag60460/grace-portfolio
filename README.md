@@ -259,15 +259,29 @@ interactive prototype is bundled under `projects/corner-cafe/play/` and loads
 only when a visitor launches it; it can also open in a full tab. No separate
 server, account, or build step is required on GitHub Pages.
 
-The case study includes tabbed Figma prototype and design-system embeds, plus
-separate customer and coffee-team walkthroughs. The embeds retain Figma's access
-rules; verify view-only link sharing for public visitors. The coded demo does not
-need a Figma account and uses an explicit app-ready message rather than guessing
-when an iframe has initialized.
+The case study opens with three real mobile screens: drink selection, the pickup
+ticket, and the milk queue. Its five section links highlight the current section
+without adding history entries as you scroll. The motion sequence follows one
+Mocha from its base through two lavender pumps to a frame captured mid-pour.
+With the portfolio preview running, use `npm run capture` from
+`projects/corner-cafe/` to regenerate these images from the coded prototype.
 
-The library uses Figma's working presentation viewer for its foundations, with a
-link to the full component canvas. The regular design-file viewer returned a
-Figma-side 403 during validation; both presentation URLs loaded without a login.
+The four Figma views cover the [counter foundations](https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=78-24),
+the 47 app screens, 18 cup states in both temperatures, and the five-frame
+lavender-to-oat storyboard. The screen and storyboard previews are rendered
+from the layouts used to build the design; the cup gallery uses the same
+photographs as the component masters. All three galleries work without a
+Figma account. The design-system tab retains its foundations embed and
+[component library link](https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=79-88).
+The optional [live walkthrough](https://www.figma.com/proto/O3S4nOxcySQw2P9i1ViK7x)
+uses the file's current starting flow rather than an obsolete frame ID;
+Figma controls access. The playable demo is hosted with the portfolio.
+
+`projects/corner-cafe/tokens.css` supplies the case study and demo palette.
+The demo loads its artwork from `play/assets/`, including the separate sign-in
+cups, recipe bases, syrup layers, and three milk packages. The guest and team
+shortcuts still use `?demo=drinker` and `?demo=team`. Sign-in is simulated and
+orders stay in this browser under the existing `corner-cafe-orders-v1` key.
 
 The demo is shipped as a classic JavaScript bundle, so it does not depend on
 browser ES-module loading when opened from a downloaded file. For development,

@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Corner Cafe &mdash; Grace Chang</title>
   <meta name="description" content="Designing an order-ahead workflow for a volunteer coffee team: product decisions, a reusable design system, semantic tokens, and a working coded prototype." />
-  <meta name="theme-color" content="#fff7f8" />
+  <meta name="theme-color" content="#fbf1cd" />
   <meta property="og:title" content="Corner Cafe — Grace Chang" />
   <meta property="og:description" content="Moving order information ahead of the cup. Product design, design systems, and prototyping in code." />
   <meta property="og:image" content="https://chag60460.github.io/grace-portfolio/projects/corner-cafe/media/social.jpg" />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <link rel="stylesheet" href="tokens.css" />
   <link rel="stylesheet" href="corner-cafe.css" />
   <script src="../../js/project-window.js" defer></script>
   <script src="corner-cafe.js" defer></script>
 </head>
-<body class="cafe-case">
+<body class="cafe-case" data-cafe>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <div class="desktop">
   <div class="menubar">
@@ -32,19 +33,18 @@
           <a class="cc-back" href="../../index.html#card-corner-cafe">&lsaquo; Back to portfolio</a>
           <header class="cc-hero">
             <div class="cc-hero-copy">
-              <span class="cc-kicker">A little coffee. A better workflow.</span>
+              <span class="cc-kicker">Product design / Volunteer operations</span>
               <h1 id="cafe-title">Corner Cafe<span>.</span></h1>
-              <p class="cc-lede">Moving order information<br />ahead of the cup.</p>
+              <p class="cc-lede">One order, from the counter to pickup.</p>
               <p>An order-ahead experience for a rotating volunteer coffee team, designed around the work behind the counter&mdash;not just the ordering screen.</p>
               <span class="cc-status">Independent project &middot; Prototype, not yet field-tested</span>
               <div class="cc-actions">
                 <a class="cc-button" href="#prototype">Try the prototype <span aria-hidden="true">&rarr;</span></a>
-                <a class="cc-text-link" href="#figma">Explore the embedded Figma &darr;</a>
+                <a class="cc-text-link" href="#figma" data-show-system>View the Figma design system &darr;</a>
               </div>
             </div>
             <div class="cc-hero-art">
-              <img src="media/cover.svg" width="680" height="520" alt="Illustration pairing a smiling customer coffee cup with a volunteer's milk-order queue." />
-              <span>one order, two sides of the counter</span>
+              <img src="media/screen-showcase.png" width="680" height="520" alt="Three app screens: choosing an espresso recipe, a Mocha ticket ready for pickup, and the team’s milk-prep queue." />
             </div>
           </header>
 
@@ -55,7 +55,7 @@
             <div><dt>Approach</dt><dd>PRD-led, AI-assisted build</dd></div>
           </dl>
           <nav class="cc-jump-links" aria-label="Case study sections">
-            <a href="#use-the-app">What you can do</a><a href="#workflow">The workflow</a><a href="#system">The system</a><a href="#prototype">Try it</a><a href="#figma">Figma</a>
+            <a href="#use-the-app" aria-current="location">What you can do</a><a href="#workflow">The workflow</a><a href="#system">The system</a><a href="#prototype">Try it</a><a href="#figma">Figma</a>
           </nav>
 
           <div class="cc-body">
@@ -66,13 +66,13 @@
               <div class="cc-journey-grid">
                 <div class="cc-journey">
                   <span class="cc-label">Coffee drinker</span>
-                  <h3>Make a drink your way.</h3>
+                  <h3>Order a coffee.</h3>
                   <ol>
-                    <li><strong>Enter.</strong> Use the Church Center demo or continue as a guest, choose Coffee Drinker, and enter a first and last name.</li>
+                    <li><strong>Enter.</strong> Pull the machine&rsquo;s lever and choose a sign-in cup. Guests enter a first and last name; the simulated Church Center account already has a name.</li>
                     <li><strong>Choose your coffee.</strong> Pick hot or iced, then Americano, latte, or mocha. Shot counts are fixed, not another question to answer.</li>
-                    <li><strong>Customize.</strong> Latte and mocha continue to syrup, pump count, and milk. Americano skips these steps.</li>
+                    <li><strong>Customize.</strong> The glass starts with espresso. Mocha also includes one pump of chocolate. Add up to six optional syrup pumps and choose a milk; Americano skips both steps.</li>
                     <li><strong>Submit.</strong> Review the visible recipe and place the order. The status screen shows it being prepared.</li>
-                    <li><strong>Pick up in person.</strong> See the ready state and collect the drink by name. The demo has an explicit ready-state preview.</li>
+                    <li><strong>Pick up.</strong> The ticket changes from Preparing to Ready for pickup. Reopen it from My orders.</li>
                   </ol>
                   <button class="cc-button" type="button" data-demo-mode="drinker">Try the coffee-drinker flow &rarr;</button>
                   <p class="cc-caption">Shortcut starts at guest name entry. Use a fictional name.</p>
@@ -81,9 +81,9 @@
                   <span class="cc-label">Coffee team</span>
                   <h3>Pick a station. See what needs doing.</h3>
                   <p>Enter the demo, choose <strong>Coffee Team</strong>, then select the role you are serving in.</p>
-                  <div class="cc-station"><strong>Order taker</strong><p>Select labels to print, or take an order on someone&rsquo;s behalf. The recipe remains readable if a label needs to be handwritten.</p></div>
-                  <div class="cc-station"><strong>Milk steamer</strong><p>Choose dairy, non-dairy, or both. Read milk counts, then select orders or swipe a card to finish the milk and reduce the queue.</p></div>
-                  <div class="cc-station"><strong>Drink mixer</strong><p>Select finished drinks and mark them ready. Customers&rsquo; status pages update in another tab in this same browser.</p></div>
+                  <div class="cc-station"><strong>Order taking</strong><p>Take a customer&rsquo;s order or print selected cup labels in black on white.</p></div>
+                  <div class="cc-station"><strong>Milk prep</strong><p>Filter the queue by milk type. Steam milk for hot drinks or use cold milk for iced drinks. Finish one ticket or a batch.</p></div>
+                  <div class="cc-station"><strong>Drink assembly</strong><p>Mark finished drinks ready for pickup. The customer&rsquo;s ticket updates in another tab of the same browser.</p></div>
                   <button class="cc-button" type="button" data-demo-mode="team">Try a coffee-team station &rarr;</button>
                   <p class="cc-caption">Shortcut opens the role picker and supplies fictional orders if the queue is empty.</p>
                 </div>
@@ -122,50 +122,52 @@
 
             <section class="cc-section" aria-labelledby="experience-title">
               <span class="cc-kicker">03 / Interaction design</span>
-              <h2 id="experience-title">A little delight for customers. Clarity for volunteers.</h2>
+              <h2 id="experience-title">The customer builds a drink. The team gets a ticket.</h2>
               <div class="cc-screen-grid">
-                <figure><a class="cc-screen" href="media/customer-full.png" target="_blank" rel="noopener noreferrer"><img src="media/customer-full.png" width="692" height="1812" alt="Complete milk-customization panel, including the cup preview, all three milk choices, and Place my order button." loading="lazy" /></a><figcaption><strong>Customer customization</strong>The complete choice panel, not a cropped viewport. Open the image to inspect the controls at full size.</figcaption></figure>
-                <figure><a class="cc-screen" href="media/steamer-full.png" target="_blank" rel="noopener noreferrer"><img src="media/steamer-full.png" width="692" height="1824" alt="Complete non-dairy milk queue with oat and soy orders, counts, selection controls, and the finish-milk action." loading="lazy" /></a><figcaption><strong>Milk-steamer queue</strong>Counts, recipes, and completion controls stay together. The shared layout supports volunteers who rotate roles weekly.</figcaption></figure>
+                <figure><a class="cc-screen" href="media/customer-full.png" target="_blank" rel="noopener noreferrer"><img src="media/customer-full.png" alt="Milk choices, oat carton, filled glass, recipe and Place my order button." loading="lazy" /></a><figcaption><strong>Milk selection</strong>A glass bottle, folded oat carton, and sage soy carton distinguish the three choices.</figcaption></figure>
+                <figure><a class="cc-screen" href="media/steamer-full.png" target="_blank" rel="noopener noreferrer"><img src="media/steamer-full.png" alt="Non-dairy milk queue with oat and soy orders, counts, selection controls, and the Finish milk action." loading="lazy" /></a><figcaption><strong>Milk prep queue</strong>Each ticket shows the customer, temperature, recipe, and whether the milk needs steaming.</figcaption></figure>
               </div>
               <p class="cc-caption">Full-panel captures from the coded prototype, using fictional demo orders. Sticky positioning is flattened only for capture so no controls are concealed.</p>
               <h3 class="cc-subheading">Motion explains a change, not just a mood.</h3>
               <div class="cc-motion-grid">
-                <figure><img src="media/cup-empty.png" width="692" height="512" alt="The transparent cup before any syrup or milk is added." loading="lazy" /><figcaption><strong>1. Start empty</strong>The cup does not imply ingredients have already been chosen.</figcaption></figure>
-                <figure><img src="media/cup-syrup.png" width="692" height="512" alt="Two visible caramel pumps collected at the bottom of the cup." loading="lazy" /><figcaption><strong>2. See each pump</strong>The syrup color and level match the selection. Plus adds a pour; minus reduces the amount.</figcaption></figure>
-                <figure><img src="media/cup-milk.png" width="692" height="512" alt="Oat milk filling above the caramel layer, without removing the syrup." loading="lazy" /><figcaption><strong>3. Keep the recipe visible</strong>Milk fills the remaining cup while preserving the syrup underneath.</figcaption></figure>
+                <figure><img src="media/cup-base.png" alt="The clear Mocha mug starts with espresso and its included chocolate." loading="lazy" /><figcaption><strong>1. Start with the recipe</strong>One espresso shot and one pump of chocolate are already in the Mocha. Extra syrup starts at zero.</figcaption></figure>
+                <figure><img src="media/cup-syrup.png" alt="Two pumps of lavender syrup form a purple layer above the espresso and chocolate." loading="lazy" /><figcaption><strong>2. Add lavender syrup</strong>Two presses of + add two pumps. The purple layer is visible above the dark coffee.</figcaption></figure>
+                <figure><img src="media/cup-milk.png" alt="Oat milk pours from the tilted kraft carton into the lavender Mocha, with the stream touching the drink." loading="lazy" /><figcaption><strong>3. Pour oat milk</strong>The stream meets the surface and curls into the espresso while the glass fills.</figcaption></figure>
               </div>
               <div class="cc-detail-grid">
                 <div><h3>Fewer decisions, not more controls.</h3><p>Shot count is fixed: two for an Americano, one for a latte or mocha. Americanos skip the syrup and milk steps entirely.</p></div>
-                <div><h3>Feedback that matches the recipe.</h3><p>The cup begins empty at the syrup step. Choosing a flavor starts with two pumps; each additional pump changes the visible level. Milk fills above the retained syrup.</p></div>
+                <div><h3>Ingredients carry forward.</h3><p>The same clear mug or ribbed iced glass carries the recipe from syrup to milk. The pickup ticket distinguishes included chocolate from optional syrup.</p></div>
               </div>
               <div class="cc-interaction-grid">
-                <div><h3>Selection is explicit.</h3><p>A border and checkmark acknowledge the chosen card. Hot and iced cups jump on selection; the visible recipe updates with the choice.</p></div>
+                <div><h3>Selection is explicit.</h3><p>Both temperature choices start neutral. Only the selected card gains a butter-yellow field, checkmark, and small stars behind the drink.</p></div>
                 <div><h3>Boundaries prevent accidental input.</h3><p>Pumps stay between 0 and 6, and unavailable counter actions are disabled. Required name fields stop an incomplete order before submission.</p></div>
-                <div><h3>Gestures have a visible alternative.</h3><p>Steamers can swipe a ticket or use its Done action. They can also select a batch and finish the milk together.</p></div>
+                <div><h3>Gestures have a visible alternative.</h3><p>Volunteers can swipe a ticket or use Finish milk. They can also select a batch and finish the milk together.</p></div>
                 <div><h3>Motion has a quieter equivalent.</h3><p>Reduced-motion mode shows the completed ingredient state without animated pouring. Counts, labels, and selected states still communicate the result.</p></div>
               </div>
             </section>
 
             <section class="cc-section" id="system" aria-labelledby="system-title">
               <span class="cc-kicker">04 / Design system + design tokens</span>
-              <h2 id="system-title">A system behind the softness.</h2>
-              <p>The blush palette is only the surface. The reusable structure includes selection cards, order tickets, role cards, counters, status badges, and distinct dairy, oat-grain, and soy-bean icons. States carry meaning: selected, unavailable, milk complete, and ready.</p>
+              <h2 id="system-title">Color follows the task.</h2>
+              <p>Buttercream frames the counter; ivory holds forms and order tickets. Machine yellow marks an action or selection. A forest-green badge means the caf&eacute; is open; a separate muted-green state identifies a drink ready for pickup. Status is written in words as well as color.</p>
               <div class="cc-system-sample" aria-label="Illustrative order-ticket component states">
                 <div class="cc-ticket"><span>#101 &middot; DEFAULT</span><h3>Emma Lee</h3><p>Hot latte &middot; 1 shot</p><div>Oat milk &middot; 2 vanilla pumps</div></div>
                 <div class="cc-ticket cc-ticket-selected"><span>#101 &middot; SELECTED <b aria-hidden="true">&#10003;</b></span><h3>Emma Lee</h3><p>Hot latte &middot; 1 shot</p><div>Oat milk &middot; 2 vanilla pumps</div></div>
-                <div class="cc-ticket cc-ticket-ready"><span>#101 &middot; READY</span><h3>Emma Lee</h3><p>Ready for a happy hello.</p><div>Pickup by name</div></div>
+                <div class="cc-ticket cc-ticket-ready"><span>#101 &middot; READY</span><h3>Emma Lee</h3><p>Ready for pickup</p><div>Hot latte &middot; Oat milk &middot; 2 vanilla pumps</div></div>
               </div>
               <p class="cc-caption">Illustrative state anatomy: the order identity stays stable while selection and fulfillment change.</p>
               <h3 class="cc-subheading">Make the intent visible in the token name.</h3>
               <div class="cc-token-table">
                 <table><caption>Current color mapping between design intent and the coded prototype</caption><thead><tr><th>Value</th><th>Semantic intent</th><th>Code usage</th></tr></thead><tbody>
-                  <tr><td><i style="--swatch:#fff7f8"></i><code>#FFF7F8</code></td><td>Canvas background</td><td><code>var(--bg)</code></td></tr>
-                  <tr><td><i style="--swatch:#fffafb"></i><code>#FFFAFB</code></td><td>Default surface</td><td><code>var(--paper)</code></td></tr>
-                  <tr><td><i style="--swatch:#a85572"></i><code>#A85572</code></td><td>Primary action</td><td><code>var(--accent)</code></td></tr>
-                  <tr><td><i style="--swatch:#eedce3"></i><code>#EEDCE3</code></td><td>Quiet separation</td><td><code>var(--line)</code></td></tr>
+                  <tr><td><i style="--swatch:var(--buttercream)"></i><code>#FBF1CD</code></td><td>Counter and sidebar</td><td><code>var(--buttercream)</code></td></tr>
+                  <tr><td><i style="--swatch:var(--paper)"></i><code>#FFFDF5</code></td><td>Ticket and input surface</td><td><code>var(--paper)</code></td></tr>
+                  <tr><td><i style="--swatch:var(--ink)"></i><code>#412B20</code></td><td>Primary text</td><td><code>var(--ink)</code></td></tr>
+                  <tr><td><i style="--swatch:var(--enamel)"></i><code>#F2DE7D</code></td><td>Primary action</td><td><code>var(--enamel)</code></td></tr>
+                  <tr><td><i style="--swatch:var(--open)"></i><code>#245B3A</code></td><td>Open status &middot; white text</td><td><code>var(--open)</code></td></tr>
+                  <tr><td><i style="--swatch:var(--ready-surface)"></i><code>#E3ECDA</code></td><td>Ready for pickup</td><td><code>var(--ready-surface)</code></td></tr>
                 </tbody></table>
               </div>
-              <div class="cc-token-proof"><code>background: var(--accent);</code><a class="cc-button" href="#prototype">See the token in action &rarr;</a></div>
+              <div class="cc-token-proof"><code>background: var(--enamel);</code><a class="cc-button" href="#prototype">Try the prototype &rarr;</a></div>
               <p class="cc-caption">The current Figma-to-CSS mapping is maintained manually, not an automated token pipeline. The app file uses local main components and instances; it does not require a published, paid-plan library.</p>
               <div class="cc-actions">
                 <a class="cc-button cc-button-secondary" href="#figma" data-show-system>Inspect the embedded design system &darr;</a>
@@ -176,7 +178,7 @@
             <section class="cc-section" id="prototype" aria-labelledby="prototype-title">
               <span class="cc-kicker">05 / Builder + prototyping</span>
               <h2 id="prototype-title">The interaction is the evidence.</h2>
-              <p>I used AI-assisted implementation to move from the PRD into a working HTML/CSS/JavaScript prototype and editable Figma artifacts. The coded version exercises the behavior; Figma documents the system and a preset walkthrough. They serve different purposes.</p>
+              <p>The coded prototype lets you place an order, prepare the milk, and mark the drink ready for pickup. The updated Figma design system documents the colors, type, and control states used in those screens.</p>
               <div class="cc-demo" id="cafe-demo">
                 <div class="cc-demo-toolbar">
                   <button class="cc-button" type="button" id="load-demo" aria-controls="demo-stage">Launch interactive demo</button>
@@ -184,7 +186,7 @@
                   <a class="cc-text-link" id="full-demo-link" href="play/index.html" target="_blank" rel="noopener noreferrer">Open in a full tab &nearr;<span class="cc-sr"> (opens a new tab)</span></a>
                 </div>
                 <div id="demo-stage" class="cc-demo-stage">
-                  <div id="demo-poster" class="cc-demo-poster"><img src="media/cover.svg" width="680" height="520" loading="lazy" alt="" /><div><strong>Make a little cup of happy.</strong><p>Try a latte as a guest, or choose Coffee team and add sample orders.</p></div></div>
+                  <div id="demo-poster" class="cc-demo-poster"><img src="media/counter-cover.png" loading="lazy" alt="" /><div><strong>At the counter</strong><p>Pull the lever for the sign-in cups, then order a drink or choose a team station.</p></div></div>
                 </div>
                 <p class="cc-demo-status" id="demo-status" role="status" aria-live="polite">The demo loads only when you launch it. Use a made-up name.</p>
               </div>
@@ -192,26 +194,81 @@
                 <div><h3>Shared order data, different responsibilities.</h3><p>One order model supplies the customer status, labels, milk queues, and mixer view. Browser-local persistence lets separate tabs demonstrate the handoff without a backend.</p></div>
                 <div><h3>Built to inspect, not just watch.</h3><p>Recipe validation, fixed shot counts, 0&ndash;6 pump limits, filtered milk counts, ready-state updates, and reduced-motion behavior are covered by logic tests and browser walkthroughs.</p></div>
               </div>
-              <div class="cc-callout"><strong>Prototype boundaries.</strong> Church Center sign-in is simulated. Guest team access exists for exploration, not production authorization. Orders stay in this browser; there is no live cross-device service or push notification. The Figma click-through uses preset orders rather than paid variable-driven logic.</div>
+              <div class="cc-callout"><strong>Prototype boundaries.</strong> Church Center sign-in is simulated. Guest team access exists for exploration, not production authorization. Orders stay in this browser; there is no live cross-device service or push notification.</div>
             </section>
 
             <section class="cc-section" id="figma" aria-labelledby="figma-title">
               <span class="cc-kicker">Inside the design files</span>
-              <h2 id="figma-title">Explore Figma without leaving the case study.</h2>
-              <p>The app is a preset click-through; the design-system file contains the editable foundations and components. Use the tabs below or the embedded player&rsquo;s fullscreen control.</p>
+              <h2 id="figma-title">Corner Cafe in Figma.</h2>
+              <p>Browse the counter foundations, all 47 app screens, the hot and iced cup states, and one Mocha from espresso to oat milk. The screen and artwork previews below do not require a Figma account.</p>
               <div class="cc-figma-tabs" role="tablist" aria-label="Figma views">
-                <button type="button" role="tab" id="figma-app-tab" aria-selected="true" aria-controls="figma-app-panel" data-figma-tab="app">App prototype</button>
-                <button type="button" role="tab" id="figma-system-tab" aria-selected="false" aria-controls="figma-system-panel" tabindex="-1" data-figma-tab="system">Design system</button>
+                <button type="button" role="tab" id="figma-system-tab" aria-selected="true" aria-controls="figma-system-panel" data-figma-tab="system">Design system</button>
+                <button type="button" role="tab" id="figma-app-tab" aria-selected="false" aria-controls="figma-app-panel" tabindex="-1" data-figma-tab="app">App walkthrough</button>
+                <button type="button" role="tab" id="figma-cups-tab" aria-selected="false" aria-controls="figma-cups-panel" tabindex="-1" data-figma-tab="cups">Cup components</button>
+                <button type="button" role="tab" id="figma-motion-tab" aria-selected="false" aria-controls="figma-motion-panel" tabindex="-1" data-figma-tab="motion">Motion storyboard</button>
               </div>
-              <div class="cc-figma-panel" id="figma-app-panel" role="tabpanel" aria-labelledby="figma-app-tab">
-                <iframe title="Corner Cafe Figma app prototype" src="https://embed.figma.com/proto/O3S4nOxcySQw2P9i1ViK7x?node-id=2002-13169&amp;starting-point-node-id=2002%3A13169&amp;scaling=scale-down&amp;content-scaling=fixed&amp;embed-host=share" loading="lazy" allowfullscreen></iframe>
-                <a class="cc-text-link" href="https://www.figma.com/proto/O3S4nOxcySQw2P9i1ViK7x" target="_blank" rel="noopener noreferrer">Open the prototype in Figma &nearr;</a>
+              <div class="cc-figma-panel" id="figma-system-panel" role="tabpanel" aria-labelledby="figma-system-tab">
+                <div class="cc-figma-links">
+                  <a class="cc-text-link" href="https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=78-24" target="_blank" rel="noopener noreferrer">Open counter foundations &nearr;</a>
+                  <a class="cc-text-link" href="https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=79-88" target="_blank" rel="noopener noreferrer">Open component states &nearr;</a>
+                </div>
+                <iframe title="Corner Cafe design system: counter review foundations" src="https://embed.figma.com/design/zxHthtAJYiEfssRXADRmkI?node-id=78-24&amp;embed-host=share" loading="lazy" allowfullscreen></iframe>
               </div>
-              <div class="cc-figma-panel" id="figma-system-panel" role="tabpanel" aria-labelledby="figma-system-tab" hidden>
-                <iframe title="Corner Cafe Figma design-system foundations presentation" src="https://embed.figma.com/proto/zxHthtAJYiEfssRXADRmkI?node-id=22-51&amp;scaling=contain&amp;content-scaling=fixed&amp;embed-host=share" loading="lazy" allowfullscreen></iframe>
-                <a class="cc-text-link" href="https://www.figma.com/design/zxHthtAJYiEfssRXADRmkI" target="_blank" rel="noopener noreferrer">Open the library in Figma &nearr;</a>
+              <div class="cc-figma-panel cc-gallery-panel" id="figma-app-panel" role="tabpanel" aria-labelledby="figma-app-tab" hidden>
+                <div class="cc-screen-browser">
+                  <div>
+                    <span class="cc-label">01 / App screens</span>
+                    <h3>From the counter to pickup.</h3>
+                    <p>Follow a customer order, or jump to the team&rsquo;s milk queues, pickup tickets, and printed labels.</p>
+                    <label class="cc-picker-label" for="cc-screen-picker">Choose a screen</label>
+                    <select id="cc-screen-picker"></select>
+                    <div class="cc-screen-controls">
+                      <button type="button" data-screen-step="-1" disabled>Previous</button>
+                      <button type="button" data-screen-step="1">Next</button>
+                    </div>
+                    <p id="cc-screen-position" class="cc-caption" role="status">Screen 1 of 47 &middot; At the counter</p>
+                    <div class="cc-figma-links">
+                      <a class="cc-text-link" href="https://www.figma.com/proto/O3S4nOxcySQw2P9i1ViK7x" target="_blank" rel="noopener noreferrer">Play the Figma walkthrough &nearr;</a>
+                      <a class="cc-text-link" href="https://www.figma.com/design/O3S4nOxcySQw2P9i1ViK7x" target="_blank" rel="noopener noreferrer">Open the app design file &nearr;</a>
+                    </div>
+                  </div>
+                  <figure class="cc-indexed-screen">
+                    <div class="cc-screen-viewport" tabindex="0" role="region" aria-label="Screen preview">
+                      <img id="cc-screen-image" src="media/app-screens/welcome.webp" alt="At the counter: the butter-yellow espresso machine with its lever raised." loading="lazy" />
+                    </div>
+                    <figcaption><a class="cc-text-link" id="cc-full-screen" href="media/app-screens/welcome.webp" target="_blank" rel="noopener noreferrer">View full-size screen &nearr;</a></figcaption>
+                  </figure>
+                </div>
+                <details class="cc-prototype-embed">
+                  <summary>Explore the live Figma prototype here</summary>
+                  <iframe title="Corner Cafe Figma app walkthrough" data-src="https://embed.figma.com/proto/O3S4nOxcySQw2P9i1ViK7x?scaling=scale-down&amp;content-scaling=fixed&amp;embed-host=share" loading="lazy" allowfullscreen></iframe>
+                </details>
               </div>
-              <p class="cc-caption">These are live Figma presentation embeds, not screenshots. The library tab presents its foundations; open the library link to browse all component pages. The coded demo above runs independently and does not require a Figma account.</p>
+              <div class="cc-figma-panel cc-gallery-panel" id="figma-cups-panel" role="tabpanel" aria-labelledby="figma-cups-tab" hidden>
+                <span class="cc-label">02 / Local components</span>
+                <h3>One recipe, two glasses.</h3>
+                <p>The 18 cup states track selection, zero to six syrup pumps, and the milk pour. Compare the handled mug with the ribbed iced glass.</p>
+                <fieldset class="cc-temperature"><legend>Cup temperature</legend>
+                  <label><input type="radio" name="cc-cup-temp" value="hot" checked /> Hot</label>
+                  <label><input type="radio" name="cc-cup-temp" value="iced" /> Iced</label>
+                </fieldset>
+                <ol class="cc-cup-grid" id="cc-cup-grid" aria-label="Cup component states"></ol>
+                <div class="cc-actions"><a class="cc-text-link" href="https://www.figma.com/design/O3S4nOxcySQw2P9i1ViK7x" target="_blank" rel="noopener noreferrer">Open the design file &nearr;</a><span class="cc-caption">Page 02 &mdash; Local Components</span></div>
+              </div>
+              <div class="cc-figma-panel cc-gallery-panel" id="figma-motion-panel" role="tabpanel" aria-labelledby="figma-motion-tab" hidden>
+                <span class="cc-label">03 / Prototype &amp; motion</span>
+                <h3>A lavender Mocha in five frames.</h3>
+                <p>Two lavender pumps raise the liquid level. Oat milk reaches the drink before it blends; the settled frame is the reduced-motion reference.</p>
+                <ol class="cc-story-grid" aria-label="Motion storyboard">
+                  <li><a href="media/storyboard/espresso-chocolate.webp" target="_blank" rel="noopener noreferrer"><img src="media/storyboard/espresso-chocolate.webp" alt="Mocha base in the clear glass" loading="lazy" /><span>1. Espresso &amp; chocolate</span></a></li>
+                  <li><a href="media/storyboard/lavender-one.webp" target="_blank" rel="noopener noreferrer"><img src="media/storyboard/lavender-one.webp" alt="First lavender stream entering the espresso" loading="lazy" /><span>2. One lavender pump</span></a></li>
+                  <li><a href="media/storyboard/lavender-two.webp" target="_blank" rel="noopener noreferrer"><img src="media/storyboard/lavender-two.webp" alt="Second pump raising the lavender layer" loading="lazy" /><span>3. Two lavender pumps</span></a></li>
+                  <li><a href="media/storyboard/oat-pour.webp" target="_blank" rel="noopener noreferrer"><img src="media/storyboard/oat-pour.webp" alt="Tilted oat carton pouring into the Mocha" loading="lazy" /><span>4. Pour oat milk</span></a></li>
+                  <li><a href="media/storyboard/oat-mocha.webp" target="_blank" rel="noopener noreferrer"><img src="media/storyboard/oat-mocha.webp" alt="Settled drink and upright oat carton" loading="lazy" /><span>5. Oat-milk Mocha</span></a></li>
+                </ol>
+                <div class="cc-actions"><a class="cc-text-link" href="https://www.figma.com/design/O3S4nOxcySQw2P9i1ViK7x" target="_blank" rel="noopener noreferrer">Open the design file &nearr;</a><span class="cc-caption">Page 03 &mdash; Prototype &amp; Motion</span></div>
+              </div>
+              <noscript><p><a href="https://www.figma.com/design/O3S4nOxcySQw2P9i1ViK7x">Open the app screens, components, and storyboard in Figma.</a></p></noscript>
             </section>
 
             <section class="cc-section" id="validation" aria-labelledby="validation-title">

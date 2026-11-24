@@ -1,0 +1,24 @@
+/* Shared with the coded prototype and the Counter review Figma collection. */
+[data-cafe] {
+  --bg: #fcf6e3;
+  --paper: #fffdf5;
+  --buttercream: #fbf1cd;
+  --ink: #412b20;
+  --muted: #6b5743;
+  --enamel: #f2de7d;
+  --accent: #805d23;
+  --accent-dark: var(--ink);
+  --accent-soft: #f4e7bc;
+  --line: #e6d9aa;
+  --card-edge: #a18b62;
+  --kraft: #dfc69b;
+  --oat: #eae4d5;
+  --open: #245b3a;
+  --on-open: #fff;
+  --open-dot: #c4f0cb;
+  --ready-surface: #e3ecda;
+  --ready-ink: #365535;
+  --cup-color: var(--enamel);
+  --cup-outline: var(--accent);
+  --cup-glaze: var(--paper);
+}
