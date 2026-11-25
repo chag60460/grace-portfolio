@@ -21,6 +21,17 @@ jobs:
       artifact_id: ${{ steps.upload.outputs.artifact_id }}
     steps:
       - uses: actions/checkout@v4
+      - name: Version the gallery stylesheet
+        shell: bash
+        run: |
+          version=$(git hash-object css/styles.css)
+          page="$RUNNER_TEMP/gallery-index.html"
+          sed "s|href=\"css/styles[.]css\"|href=\"css/styles.css?v=$version\"|" index.html > "$page"
+          grep -Fq "href=\"css/styles.css?v=$version\"" "$page" || {
+            echo "::error::Could not find the gallery stylesheet link in index.html"
+            exit 1
+          }
+          mv "$page" index.html
       - id: upload
         uses: actions/upload-pages-artifact@v3
         with:

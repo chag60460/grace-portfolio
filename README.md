@@ -68,6 +68,10 @@ single-project section pairs its preview with its description and tags instead.
 On phones, all cards stack with the text below the preview. Each preview keeps
 its 16:10 frame and fits the image without cropping the interface.
 
+The Pages deployment adds a content-based version to the gallery stylesheet
+URL so a cached stylesheet from an earlier layout is not reused. Local previews
+still open directly without a build.
+
 Windows shows its actual settings redesign. Siri Agent and Fritter use three
 existing interface screenshots each; Sonic Stitches shows the tablecloth being
 used at dinner. Other projects retain their existing product previews, now

@@ -473,7 +473,12 @@ async function verifyGraceSection(page) {
     const viewport = await content.boundingBox();
     const intro = await page.locator('#section-about > header p').boundingBox();
     const heading = await page.getByRole('heading', { name: 'Industry', exact: true }).boundingBox();
+    const card = await page.locator('#card-windows-privacy-settings').boundingBox();
+    const research = await page.getByRole('heading', { name: 'Research', exact: true }).boundingBox();
     assert.ok(intro.y >= viewport.y && heading.y > intro.y + intro.height, 'Show the intro above the first section');
+    assert.ok(card.y >= heading.y + heading.height && Math.abs(card.x - heading.x) < 1 && Math.abs(card.width - heading.width) < 1,
+      `Industry must sit above a full-width card at ${width}px`);
+    assert.ok(research.y - (card.y + card.height) >= 24, `Keep the next section clear of the card at ${width}px`);
     assert.ok(firstPreview.y - (heading.y + heading.height) < 40, `The first preview should follow its heading at ${width}px`);
     assert.ok(firstPreview.y + firstPreview.height <= viewport.y + viewport.height,
       `The first preview must fit before scrolling at ${width}x${height}`);
