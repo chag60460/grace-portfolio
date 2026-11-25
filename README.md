@@ -10,10 +10,19 @@ Three tabs in the top menu bar, just like navigating a real desktop:
 
 - **grace.dev** — my portrait, introduction, interests, and faith journey
 - **Portfolio** — the projects I've designed and built, visible immediately
-- **Scribbles** — a notebook for unbuilt concepts, design experiments, and product visions, alongside my existing Small Wins Diary
+- **Scribbles** — a collection for unbuilt concepts, design experiments, and product visions, starting with "Room to Feel"
 
 Each tab uses the same-sized main window. Portfolio is selected initially;
 **grace.dev** is a regular section, not a popup or a profile sidebar.
+
+Each section has its own address, so links, refreshes, and Back/Forward work:
+
+- Portfolio — `index.html` (no hash)
+- grace.dev — `index.html#aboutme`
+- Scribbles — `index.html#productideas`
+
+Existing `#card-…` links (used by project back links) still open Portfolio at
+that card. Run `npm test -- --urls` from `projects/corner-cafe/` to check them.
 
 ## Built With
 
@@ -28,7 +37,7 @@ I kept the stack intentionally simple. The fun here is in the design and interac
 - Functional top navigation for grace.dev, Portfolio, and Scribbles
 - Project cards that open and close real case-study windows without leaving the gallery
 - A real-time clock ticking away in the menu bar
-- A photo-led Scribbles tab with gentle motion and a macOS-style journal reader
+- A photo-led Scribbles tab with gentle motion and a macOS-style product-idea reader
 - Dreamy pastel gradient background because aesthetics matter
 
 ## Getting Started
@@ -48,11 +57,16 @@ of grace.dev, not a separate tab. It uses the same keyboard navigation and per-s
 restoration as the other tabs. There is no overlay, so the top navigation stays
 available while reading the introduction.
 
-The gallery uses image-led cards with consistent 16:10 previews: two columns on
-desktop and one on phones. Previews scale with the card width instead of using
-short fixed-height crops, and images fit inside their frames without clipping
-the interface. Each card keeps its title, a short description, and project tags
-below the preview.
+The gallery groups each project once under Industry, Research, Human–AI
+Interaction, Volunteer, Gaming, or School. The **projects** title is followed
+by a short introduction styled like the grace.dev subtitle. The header has no
+category shortcuts; existing bookmarks such as `index.html#projects-volunteer`
+still point to their headings.
+
+Sections with two projects show their cards side by side on desktop. A
+single-project section pairs its preview with its description and tags instead.
+On phones, all cards stack with the text below the preview. Each preview keeps
+its 16:10 frame and fits the image without cropping the interface.
 
 Windows shows its actual settings redesign. Siri Agent and Fritter use three
 existing interface screenshots each; Sonic Stitches shows the tablecloth being
@@ -160,60 +174,61 @@ preview available to check the word budget, visual sections, responsive
 layouts, banner links, and project-window lifecycle over HTTP and file URLs.
 The same checks are included in the default browser regression run.
 
-## Adding a journal entry
+## Editing Scribbles entries
 
 **Scribbles** introduces my unbuilt concepts, design experiments, and product
 visions with "What if? A place for the not-yet." and "Before the product, there's
-a scribble." The existing Small Wins Diary remains here, separate from the
-faith content in grace.dev;
-brainstorm-preview topics are not published as entries.
+a scribble." **The Collection** currently holds one entry, **Room to Feel** — a
+reflection on VisionQuest, AI, and creativity that ends with a product idea.
+Both its cover and **Read the latest entry** open the same reader. There are no
+dated entries, counts, pagination, or entry-data array.
 
-Existing entries are preserved, with three covers shown at a time, newest first. Select a
-cover to read the full entry; **older** and **newer** browse published entries
-without stepping through empty calendar days.
+The entry is static HTML in [index.html](./index.html):
+
+1. Cover: title in `#thought-entry-title`, label in `#thought-entry-category`,
+   and the short description inside `#thoughts-entry`.
+2. Reader: `#thought-reader-title`, the subtitle in `#thought-reader-status`,
+   and paragraphs in `#thought-reader-copy`.
+
+Keep the cover and reader titles identical. The reader content is not
+overwritten by JavaScript. No account, service, date field, or build step is
+needed.
 
 Scribbles keeps the macOS window chrome and text-only navigation of the
 other sections. Its scene uses blush-pink lighting, rose accents, and
-translucent pink glass covers and reader. The portrait is centered, dense
-vertical TypeScript fragments fill the left, and entry covers sit on the right.
+translucent pink glass cover and reader. The portrait is centered, dense
+vertical TypeScript fragments fill the left, and the collection sits on the right.
 The code glow uses the same rose-pink palette. The letters
 stay fixed while a thin, straight highlight crosses one or two columns at a
 time. The fragments are decorative, not executed or connected to a terminal.
-On narrow screens the covers move beneath the centered portrait. The code
+On narrow screens the collection moves beneath the centered portrait. The code
 backdrop keeps the same top and bottom anchors at every width, extending through
 the taller stacked scene instead of shrinking to a fixed-height strip.
-**Read the latest entry** opens the newest entry directly.
-
-Add an object to `THOUGHT_ENTRIES` in [js/main.js](./js/main.js):
-
-```js
-{
-  date: '2026-10-25',
-  title: 'A title for this moment',
-  category: 'small beginnings',
-  paragraphs: [
-    'Write what happened, in your own words.',
-    'Add another paragraph when there is more to say.',
-  ],
-},
-```
-
-Use a unique `YYYY-MM-DD` date. Entries sort automatically; titles, categories,
-and paragraphs are plain text, not HTML. No account, service, or build step is
-needed. Commit and publish the updated file to make new entries visible.
 
 The supplied glasses portrait is stored as [thoughts-portrait.webp](./thoughts-portrait.webp),
-with camera and location metadata removed. It is an illustration of the diary's
-author, not a photo assigned to each entry's date. Motion is limited to the code
-scan, slow photo drift, light, and short cover entrances; it does not synthesize
+with camera and location metadata removed. Motion is limited to the code
+scan, slow photo drift, light, and a short cover entrance; it does not synthesize
 facial movement. The code is rendered locally on a transparent canvas: its
 stationary glyphs are cached, with only the highlight updated at up to 30 frames
 per second. It stops when the canvas is off screen, another section is selected,
 or the browser tab is hidden. No video, model, or external service is required.
 The **Motion** control pauses it, and reduced-motion preferences show a still
-version. Tabs, covers, page controls, and the reader support
+version. Tabs, the cover, and the reader support
 keyboard navigation; Escape closes the reader and restores focus to the button
 that opened it.
+
+All three entry-window controls work. Yellow minimizes the entry into the same
+dock as projects; the dock item, collection card, or **Read the latest entry**
+restores its reading position and chosen window size. Green toggles between
+the compact reader and the full browser viewport without opening another tab
+or entering browser fullscreen. Red or Escape closes the entry without closing
+minimized projects. If it was restored over another section, closing returns
+focus to that section's selected navigation tab.
+
+Run `npm test -- --scribbles` from `projects/corner-cafe/` with the portfolio
+HTTP preview available to check the entry links, keyboard/focus behavior,
+reader controls, shared dock, motion controls, and desktop/mobile layout. These checks also run in the full
+browser regression suite.
 
 ## Playable Games
 
@@ -308,7 +323,7 @@ field-validated service.
 ```
 index.html          — The whole page
 css/styles.css      — All the styling magic
-js/main.js          — Section switcher, clock, Scribbles entries, and journal interactions
+js/main.js          — Section switcher, clock, Scribbles motion, and idea-reader controls
 js/project-window.js — Project window lifecycle and embedded case-study integration
 thoughts-portrait.webp — Metadata-free portrait used in Scribbles
 ```

@@ -5,6 +5,8 @@ const origin = process.env.PORTFOLIO_PREVIEW || 'http://127.0.0.1:4174';
 const route = '/projects/corner-cafe/';
 const galleryOnly = process.argv.includes('--gallery');
 const windowsOnly = process.argv.includes('--windows');
+const scribblesOnly = process.argv.includes('--scribbles');
+const urlsOnly = process.argv.includes('--urls');
 const casePresentationOnly = process.argv.includes('--case-presentation');
 
 async function verifyCasePresentation(page) {
@@ -121,6 +123,247 @@ async function verifyCasePresentation(page) {
   assert.ok(await panel.isVisible());
 }
 
+async function verifySectionUrls(page, homeURL) {
+  const home = new URL(homeURL);
+  home.hash = '';
+  const selected = () => page.locator('.nav-item[aria-selected="true"]').getAttribute('data-section');
+  const hash = () => page.evaluate(() => location.hash);
+
+  await page.goto(home.href, { waitUntil: 'domcontentloaded' });
+  assert.equal(await hash(), '');
+  assert.equal(await selected(), 'about');
+
+  for (const [tab, section, expected] of [
+    ['#tab-grace', 'grace', '#aboutme'],
+    ['#tab-thoughts', 'thoughts', '#productideas'],
+    ['#tab-about', 'about', ''],
+  ]) {
+    await page.locator(tab).click();
+    assert.equal(await hash(), expected, `${section} must update the address`);
+    assert.equal(await selected(), section);
+  }
+
+  await page.goBack();
+  assert.equal(await hash(), '#productideas');
+  assert.equal(await selected(), 'thoughts');
+  await page.goBack();
+  assert.equal(await selected(), 'grace');
+  await page.goBack();
+  assert.equal(await hash(), '');
+  assert.equal(await selected(), 'about');
+  await page.goForward();
+  assert.equal(await selected(), 'grace');
+
+  // Keyboard tab changes update the address too.
+  await page.locator('#tab-grace').focus();
+  await page.keyboard.press('End');
+  assert.equal(await hash(), '#productideas');
+
+  for (const [fragment, section] of [['aboutme', 'grace'], ['productideas', 'thoughts']]) {
+    const link = new URL(home.href);
+    link.hash = fragment;
+    await page.goto(link.href, { waitUntil: 'domcontentloaded' });
+    assert.equal(await selected(), section, `#${fragment} must open ${section}`);
+    assert.equal(await page.locator(`#section-${section}`).isVisible(), true);
+    assert.equal(await page.locator('#window-title').textContent(), { grace: 'grace.dev', thoughts: 'scribbles' }[section]);
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    assert.equal(await selected(), section, 'Refreshing must keep the section');
+  }
+
+  // Existing project back links use #card-…; they must still land on Portfolio at that card.
+  const cardLink = new URL(home.href);
+  cardLink.hash = 'card-fritter';
+  await page.goto(cardLink.href, { waitUntil: 'domcontentloaded' });
+  assert.equal(await selected(), 'about');
+  await page.locator('#tab-thoughts').click();
+  await page.evaluate(() => { location.hash = 'card-yours-truly'; });
+  await page.waitForFunction(() => document.getElementById('section-about').classList.contains('active'));
+  assert.equal(await page.locator('#card-yours-truly').evaluate(el => {
+    const card = el.getBoundingClientRect();
+    const view = document.getElementById('main-content').getBoundingClientRect();
+    return card.top < view.bottom && card.bottom > view.top;
+  }), true, 'An in-page #card link must reveal the card');
+
+  // Unrelated fragments such as the skip link leave the current section alone.
+  await page.locator('#tab-grace').click();
+  await page.evaluate(() => { location.hash = 'main-content'; });
+  assert.equal(await selected(), 'grace');
+
+  // Category bookmarks must reveal the heading, even when Back leaves a different tab.
+  await page.goto('about:blank');
+  await page.goto(new URL('#projects-gaming', home).href);
+  const bookmarkInView = () => {
+    const heading = document.getElementById('projects-gaming').getBoundingClientRect();
+    const view = document.getElementById('main-content').getBoundingClientRect();
+    return heading.height > 0 && heading.top >= view.top && heading.bottom <= view.bottom;
+  };
+  await page.waitForFunction(bookmarkInView, null, { timeout: 3000 });
+  await page.locator('#tab-thoughts').click();
+  await page.goBack();
+  assert.equal(await selected(), 'about');
+  assert.equal(await hash(), '#projects-gaming');
+  // A same-document Back can report the new URL before the browser finishes restoring scroll.
+  await page.waitForFunction(bookmarkInView, null, { timeout: 3000 });
+  await page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done))));
+  assert.ok(await page.evaluate(bookmarkInView), 'Back must keep the previously linked heading in view after paint');
+
+  // Legacy return links from standalone project pages still open Portfolio.
+  await page.evaluate(() => sessionStorage.setItem('openSection', 'about'));
+  await page.goto(home.href, { waitUntil: 'domcontentloaded' });
+  assert.equal(await selected(), 'about');
+  assert.equal(await hash(), '');
+  console.log('Section URLs passed: #aboutme, #productideas, clean Portfolio URL, Back/Forward, refresh, keyboard, #card links');
+}
+
+async function verifyScribbles(page, homeURL) {
+  await page.goto(homeURL, { waitUntil: 'domcontentloaded' });
+  await page.locator('#tab-thoughts').click();
+  const section = page.locator('#section-thoughts');
+  const latest = page.locator('#thoughts-read-latest');
+  const entry = page.locator('#thoughts-entry');
+  const reader = page.locator('#thought-reader');
+  const close = page.locator('#thought-reader-close');
+  const minimize = page.locator('#thought-reader-minimize');
+  const maximize = page.locator('#thought-reader-maximize');
+  const restore = page.locator('#thought-reader-restore');
+  const content = page.locator('#main-content');
+  assert.equal(await section.locator('#thoughts-collection-title').textContent(), 'THE COLLECTION');
+  assert.equal(await section.locator('.thought-cover').count(), 1);
+  assert.doesNotMatch(await section.innerText(), /diary|small wins/i);
+  assert.equal(await page.locator('.thoughts-pagination, #thoughts-covers, #thoughts-entry-count, #thoughts-page-status, #thought-reader-date, [data-entry]').count(), 0);
+  assert.deepEqual(await page.evaluate(() => [typeof THOUGHT_ENTRIES, typeof formatThoughtDate]), ['undefined', 'undefined']);
+  assert.match(await latest.textContent(), /Read the latest entry/);
+  assert.equal(await reader.locator('time').count(), 0);
+  assert.equal(await reader.locator('#thought-reader-copy p').count(), 5);
+  assert.equal(await reader.locator('#thought-reader-copy h3').count(), 0);
+  assert.match(await reader.locator('#thought-reader-copy').textContent(), /synthezoid[\s\S]*Counterpoint/);
+  assert.doesNotMatch(await page.locator('#section-thoughts, #thought-reader').evaluateAll(nodes => nodes.map(n => n.textContent).join(' ')), /placeholder/i);
+  await section.locator('.thoughts-portrait img').evaluate(image => image.decode());
+
+  for (const [width, height] of [[1280, 900], [768, 900], [375, 667], [320, 568]]) {
+    await page.setViewportSize({ width, height });
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.equal(await content.evaluate(el => el.scrollWidth > el.clientWidth), false, `Scribbles overflows at ${width}px`);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+    for (const [index, trigger] of [latest, entry].entries()) {
+      await trigger.scrollIntoViewIfNeeded();
+      const scrollTop = await content.evaluate(el => el.scrollTop);
+      assert.equal(await trigger.getAttribute('aria-controls'), 'thought-reader');
+      if (index === 0) await trigger.click();
+      else await trigger.press('Enter');
+      await reader.waitFor({ state: 'visible' });
+      assert.equal(await reader.locator('#thought-reader-title').textContent(),
+        await entry.locator('.thought-cover-title').textContent());
+      assert.match(await reader.locator('#thought-reader-status').textContent(), /VisionQuest/);
+      assert.equal(await close.evaluate(el => el === document.activeElement), true);
+      const bounds = await reader.boundingBox();
+      assert.ok(bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.width <= width && bounds.y + bounds.height <= height,
+        `Idea reader is clipped at ${width}x${height}`);
+      await maximize.click();
+      await page.waitForFunction(() => {
+        const bounds = document.getElementById('thought-reader').getBoundingClientRect();
+        return bounds.width === innerWidth && bounds.height === innerHeight;
+      });
+      assert.equal(await maximize.getAttribute('aria-pressed'), 'true');
+      assert.equal(await reader.locator('.window-restore-icon').isVisible(), true);
+      assert.equal(await page.evaluate(() => document.fullscreenElement), null);
+      await minimize.click();
+      await reader.waitFor({ state: 'hidden' });
+      assert.equal(await restore.evaluate(el => el === document.activeElement), true);
+      await restore.click();
+      assert.equal(await maximize.getAttribute('aria-pressed'), 'true', 'Restore must retain the maximized size');
+      assert.equal(await restore.count(), 0, 'Restoring the entry must remove its dock item');
+      await maximize.click();
+      await page.waitForFunction(expected => {
+        const bounds = document.getElementById('thought-reader').getBoundingClientRect();
+        return bounds.width === expected.width && bounds.height === expected.height;
+      }, bounds);
+      await reader.locator('#thought-reader-copy p').last().scrollIntoViewIfNeeded();
+      const closeBounds = await close.boundingBox();
+      assert.ok(closeBounds.y >= 0 && closeBounds.y + closeBounds.height <= height, 'The close control must stay visible');
+      assert.equal(await reader.locator('.thought-reader-body').evaluate(el => el.scrollWidth > el.clientWidth), false);
+      if (index === 0) await page.keyboard.press('Escape');
+      else await close.click();
+      await reader.waitFor({ state: 'hidden' });
+      assert.equal(await trigger.evaluate(el => el === document.activeElement), true);
+      assert.equal(await content.evaluate(el => el.scrollTop), scrollTop);
+    }
+  }
+
+  await latest.click();
+  await reader.waitFor({ state: 'visible' });
+  await page.mouse.click(1, 1);
+  await reader.waitFor({ state: 'hidden' });
+  assert.equal(await latest.evaluate(el => el === document.activeElement), true);
+
+  const motion = page.locator('#thoughts-motion');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForFunction(() => document.getElementById('thoughts-motion').disabled);
+  assert.equal(await section.getAttribute('data-motion'), 'off');
+  assert.equal(await page.locator('#thoughts-motion-label').textContent(), 'Reduced motion');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.waitForFunction(() => document.getElementById('section-thoughts').dataset.motion === 'on');
+  await motion.click();
+  assert.equal(await section.getAttribute('data-motion'), 'off');
+  await motion.click();
+  assert.equal(await section.getAttribute('data-motion'), 'on');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForFunction(() => document.getElementById('section-thoughts').dataset.motion === 'off');
+
+  await latest.click();
+  await reader.locator('#thought-reader-copy').evaluate(copy => {
+    const sample = document.createElement('p');
+    sample.id = 'reader-scroll-test';
+    sample.textContent = 'Additional product idea detail for testing scroll preservation. '.repeat(60);
+    copy.append(sample);
+  });
+  const readerBody = reader.locator('.thought-reader-body');
+  const readingPosition = await readerBody.evaluate(el => { el.scrollTop = 180; return el.scrollTop; });
+  assert.ok(readingPosition > 0, 'Use overflowing reader content to verify scroll preservation');
+  const entryContent = await reader.locator('#thought-reader-copy').textContent();
+  await minimize.press('Enter');
+  for (const trigger of [latest, entry]) {
+    await trigger.click();
+    assert.equal(await readerBody.evaluate(el => el.scrollTop), readingPosition);
+    assert.equal(await restore.count(), 0, 'Reopening from a card or latest must not leave a duplicate dock item');
+    await minimize.click();
+  }
+
+  await page.locator('#tab-about').click();
+  await page.locator('#card-windows-privacy-settings').click();
+  await page.waitForFunction(() => document.getElementById('project-window-status').hidden);
+  const project = page.frameLocator('.project-window-frame');
+  const startedAt = await project.locator('html').evaluate(() => performance.timeOrigin);
+  assert.equal(await restore.isVisible(), true, 'Opening a project must not hide a minimized entry');
+  await page.locator('#project-window-minimize').click();
+  assert.equal(await page.locator('.project-dock-item:not([hidden])').count(), 2);
+  await restore.click();
+  assert.equal(await readerBody.evaluate(el => el.scrollTop), readingPosition);
+  assert.equal(await reader.locator('#thought-reader-copy').textContent(), entryContent);
+  assert.equal(await page.locator('.project-dock-item[data-project="card-windows-privacy-settings"]').isVisible(), true);
+  await close.click();
+  assert.equal(await restore.count(), 0);
+  assert.equal(await page.locator('.project-dock-item:not([hidden])').count(), 1);
+  assert.equal(await page.locator('#project-dock').isVisible(), true, 'Closing the entry must keep a minimized project in the dock');
+  await page.locator('#tab-thoughts').click();
+  await latest.click();
+  await minimize.click();
+  await page.locator('#tab-grace').click();
+  await page.locator('.project-dock-item[data-project="card-windows-privacy-settings"]').click();
+  assert.equal(await project.locator('html').evaluate(() => performance.timeOrigin), startedAt);
+  await page.locator('#project-window-close').click();
+  assert.equal(await restore.isVisible(), true, 'Closing a project must leave the entry available in the dock');
+  await restore.click();
+  assert.equal(await readerBody.evaluate(el => el.scrollTop), readingPosition);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#tab-grace').evaluate(el => el === document.activeElement), true);
+  assert.equal(await page.locator('#project-dock').isVisible(), false);
+  await page.locator('#reader-scroll-test').evaluate(el => el.remove());
+  await page.locator('#tab-thoughts').click();
+  assert.equal(await page.locator('dialog[open]').count(), 0);
+  console.log('Scribbles passed: Room to Feel entry, both entry points, reader minimize/maximize, mixed dock, preserved reading position, focus and motion');
+}
+
 async function verifyWindowsCaseStudy(page, homeURL) {
   const projectURL = new URL('projects/windows-privacy-settings/windows-privacy-settings.html', homeURL).href;
   await page.goto(projectURL, { waitUntil: 'domcontentloaded' });
@@ -214,7 +457,7 @@ async function verifyGraceSection(page) {
     ['grace', 'about', 'thoughts']);
   assert.equal(await page.locator('#tab-faith, #section-faith').count(), 0);
   assert.equal(await page.locator('#section-about .profile-section, #section-about .about-bio').count(), 0);
-  assert.equal(await page.locator('#section-about > h1').textContent(), 'projects');
+  assert.equal(await page.locator('#section-about').getByRole('heading', { level: 1 }).textContent(), 'projects');
   assert.equal(await grace.locator('.grace-intro > .about-bio').count(), 2);
   assert.equal(await grace.locator('#grace-faith .about-bio').count(), 3);
   assert.equal(await grace.locator('#grace-faith blockquote').count(), 2);
@@ -228,7 +471,10 @@ async function verifyGraceSection(page) {
     await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     const firstPreview = await page.locator('.project-thumb').first().boundingBox();
     const viewport = await content.boundingBox();
-    assert.ok(firstPreview.y - viewport.y < 120, `Projects should start near the top at ${width}px`);
+    const intro = await page.locator('#section-about > header p').boundingBox();
+    const heading = await page.getByRole('heading', { name: 'Industry', exact: true }).boundingBox();
+    assert.ok(intro.y >= viewport.y && heading.y > intro.y + intro.height, 'Show the intro above the first section');
+    assert.ok(firstPreview.y - (heading.y + heading.height) < 40, `The first preview should follow its heading at ${width}px`);
     assert.ok(firstPreview.y + firstPreview.height <= viewport.y + viewport.height,
       `The first preview must fit before scrolling at ${width}x${height}`);
 
@@ -278,25 +524,43 @@ async function verifyGraceSection(page) {
 async function verifyGalleryPreviews(page) {
   await verifyGraceSection(page);
   const cards = page.locator('.project-card');
-  const subtitle = page.locator('.project-gallery-subtitle');
-  const hint = page.locator('#project-gallery-hint');
+  const header = page.locator('#section-about > header');
+  const intro = header.locator('p');
+  const categories = [
+    ['Industry', ['Windows Privacy Settings']],
+    ['Research', ['Sonic Stitches']],
+    ['Human–AI Interaction', ['Siri Agent', 'Magdalene X²']],
+    ['Volunteer', ['Corner Cafe']],
+    ['Gaming', ['Borrowed Wind', 'Bellweather Row']],
+    ['School', ['Fritter', 'Yours, Truly']],
+  ];
+  const order = categories.map(([name]) => name);
+  assert.equal(await header.getByRole('link').count(), 0, 'The gallery header should not contain category shortcuts');
+  assert.deepEqual(await page.locator('#section-about').getByRole('heading', { level: 2 }).allTextContents(), order);
+  await page.locator('#section-about').focus();
+  for (const [name, projects] of categories) {
+    const group = page.getByRole('region', { name, exact: true });
+    assert.deepEqual(await group.locator('.project-name').allTextContents(), projects);
+    for (const card of await group.locator('.project-card').all()) {
+      await page.keyboard.press('Tab');
+      assert.ok(await card.evaluate(el => el === document.activeElement), `Tab must reach each project in ${name} in order`);
+    }
+  }
   assert.equal(await cards.count(), 9);
-  assert.equal(await subtitle.textContent(), "things i've built and shipped");
-  assert.equal(await hint.evaluate(el => el.tagName), 'P');
-  assert.equal(await subtitle.evaluate(el => el.nextElementSibling?.id), 'project-gallery-hint');
-  assert.match(await page.locator('#section-about').textContent(),
-    /things i've built and shipped\s+select a card to open a project window/,
-    'Subtitle and instruction must remain separated in plain text');
   for (const width of [1280, 768, 600, 375, 320]) {
     await page.setViewportSize({ width, height: 900 });
     await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-    await subtitle.scrollIntoViewIfNeeded();
-    const subtitleBounds = await subtitle.boundingBox();
-    const hintBounds = await hint.boundingBox();
-    const gap = hintBounds.y - subtitleBounds.y - subtitleBounds.height;
-    assert.ok(Math.abs(gap - 5) < 1, `Subtitle and instruction need a 5px gap at ${width}px`);
-    const columns = await page.locator('.projects-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
-    assert.equal(columns, width > 600 ? 2 : 1, `Wrong gallery column count at ${width}px`);
+    await header.scrollIntoViewIfNeeded();
+    const lines = await intro.evaluate(el => {
+      const text = document.createRange();
+      text.selectNodeContents(el);
+      return text.getClientRects().length;
+    });
+    if (width >= 768) assert.equal(lines, 1, `The introduction should fit on one line at ${width}px`);
+    if (width <= 375) assert.ok(lines > 1, `The introduction should wrap at ${width}px`);
+    const columns = await page.locator('.projects-grid').evaluateAll(grids =>
+      grids.map(grid => getComputedStyle(grid).gridTemplateColumns.split(' ').length));
+    assert.deepEqual(columns, Array(categories.length).fill(width > 600 ? 2 : 1), `Wrong gallery column counts at ${width}px`);
     for (const card of await cards.all()) {
       await card.scrollIntoViewIfNeeded();
       await card.locator('img').evaluateAll(images => Promise.all(images.map(image => image.decode())));
@@ -304,7 +568,9 @@ async function verifyGalleryPreviews(page) {
       assert.ok(Math.abs(preview.height - preview.width * 10 / 16) < 1, `Preview is not 16:10 at ${width}px`);
       if (width === 1280) assert.ok(preview.height >= 300, 'Desktop previews must be substantially taller than the old 80px strips');
       const title = await card.locator('.project-name').boundingBox();
-      assert.ok(title.y >= preview.y + preview.height, 'Project title must sit below the preview');
+      const horizontal = width > 600 && await card.evaluate(el => el.parentElement.querySelectorAll('.project-card').length === 1);
+      if (horizontal) assert.ok(title.x >= preview.x + preview.width, 'A single project should use the full row');
+      else assert.ok(title.y >= preview.y + preview.height, 'Stacked cards must keep the title below the preview');
       assert.ok((await card.locator('.project-desc').textContent()).trim().length <= 110, 'Keep the gallery description short');
       assert.equal(await card.evaluate(el => {
         const previewBounds = el.querySelector('.project-thumb').getBoundingClientRect();
@@ -416,6 +682,20 @@ try {
       await verifyCasePresentation(page);
       assert.deepEqual(localErrors, []);
       results.push({ base, casePresentation: true });
+      await context.close();
+      continue;
+    }
+    if (scribblesOnly) {
+      await verifyScribbles(page, new URL('../../index.html', base).href);
+      assert.deepEqual(localErrors, [], 'Scribbles and its reader should not throw.');
+      results.push({ base, scribblesPlaceholder: true, readerControls: true, motionControls: true });
+      await context.close();
+      continue;
+    }
+    if (urlsOnly) {
+      await verifySectionUrls(page, new URL('../../index.html', base).href);
+      assert.deepEqual(localErrors, [], 'Section URLs should not throw.');
+      results.push({ base, sectionUrls: true });
       await context.close();
       continue;
     }
@@ -536,8 +816,8 @@ try {
     await page.waitForFunction(() => document.getElementById('project-window-status').hidden);
     assert.equal(await page.locator('#project-window-link').count(), 0);
     assert.equal(await page.locator('.project-window-control > svg').count(), 3);
-    assert.equal(await page.locator('.window-expand-icon').isVisible(), true);
-    assert.equal(await page.locator('.window-restore-icon').isVisible(), false);
+    assert.equal(await page.locator('#project-window .window-expand-icon').isVisible(), true);
+    assert.equal(await page.locator('#project-window .window-restore-icon').isVisible(), false);
     const dots = await page.locator('.project-window-control').evaluateAll(nodes => nodes.map(node => {
       const bounds = node.getBoundingClientRect();
       return { x: bounds.x, width: bounds.width, height: bounds.height, color: getComputedStyle(node).backgroundColor };
@@ -565,8 +845,8 @@ try {
     const floating = await page.locator('#project-window').boundingBox();
     await page.locator('#project-window-maximize').click();
     assert.equal(await page.locator('#project-window-maximize').getAttribute('aria-pressed'), 'true');
-    assert.equal(await page.locator('.window-expand-icon').isVisible(), false);
-    assert.equal(await page.locator('.window-restore-icon').isVisible(), true);
+    assert.equal(await page.locator('#project-window .window-expand-icon').isVisible(), false);
+    assert.equal(await page.locator('#project-window .window-restore-icon').isVisible(), true);
     await page.waitForFunction(() => {
       const bounds = document.getElementById('project-window').getBoundingClientRect();
       return bounds.width === innerWidth && bounds.height === innerHeight;
@@ -605,8 +885,10 @@ try {
     assert.equal(await page.locator('#project-dock').isVisible(), false);
     await verifyOpeningBanners(page);
     await verifyWindowsCaseStudy(page, new URL('../../index.html', base).href);
+    await verifyScribbles(page, new URL('../../index.html', base).href);
+    await verifySectionUrls(page, new URL('../../index.html', base).href);
     assert.deepEqual(localErrors, [], 'The local app and case study should not throw.');
-    results.push({ base, fullTabOrder: true, iframeOrder: true, iframeHandshake: true, teamQueue: true, narrowMilkChoices: true, figmaTabControls: true, projectWindowState: true, consistentSections: true, referenceWindowControls: true, compactMenuBar: true, embeddedNavigation: true, openingBanners: true, gameBannerActions: true, galleryPreviews: true, graceSection: true });
+    results.push({ base, fullTabOrder: true, iframeOrder: true, iframeHandshake: true, teamQueue: true, narrowMilkChoices: true, figmaTabControls: true, projectWindowState: true, consistentSections: true, referenceWindowControls: true, compactMenuBar: true, embeddedNavigation: true, openingBanners: true, gameBannerActions: true, galleryPreviews: true, graceSection: true, scribblesPlaceholder: true, sectionUrls: true });
     await context.close();
   }
   console.log(JSON.stringify({ passed: results }, null, 2));

@@ -46,22 +46,19 @@
   const body = document.getElementById('project-window-body');
   const status = document.getElementById('project-window-status');
   const maximize = document.getElementById('project-window-maximize');
-  const dock = document.getElementById('project-dock');
   const dockItems = document.getElementById('project-dock-items');
   const projects = new Map();
   let activeProject = null;
 
   function renderDock() {
-    let minimizedCount = 0;
     projects.forEach(project => {
       const problem = !project.loading && Boolean(project.message);
       project.restoreButton.hidden = !project.minimized;
       project.restoreButton.textContent = `${project.name}${problem ? ' (load issue)' : ''}`;
       project.restoreButton.setAttribute('aria-label', `Restore ${project.name}${problem ? ', loading problem' : ''}`);
       project.restoreButton.title = `Restore ${project.name}`;
-      if (project.minimized) minimizedCount++;
     });
-    dock.hidden = minimizedCount === 0;
+    syncWindowDock();
   }
 
   function renderActiveProject() {
@@ -183,8 +180,6 @@
       showProject(projects.get(card.id) || createProject(card), card);
     });
   });
-  document.getElementById('project-gallery-hint').hidden = false;
-
   document.getElementById('project-window-close').addEventListener('click', () => closeProject(activeProject));
   document.getElementById('project-window-minimize').addEventListener('click', () => minimizeProject(activeProject));
   maximize.addEventListener('click', () => {

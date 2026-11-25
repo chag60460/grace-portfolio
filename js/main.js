@@ -14,12 +14,38 @@ const SECTION_TITLES = {
   thoughts: 'scribbles',
 };
 
+// Portfolio keeps the clean URL; other sections get a shareable hash.
+const SECTION_HASHES = {
+  grace:    'aboutme',
+  about:    '',
+  thoughts: 'productideas',
+};
+
 const sectionScroll = new Map();
 
-function showSection(name, el) {
+function sectionFromHash(hash) {
+  const fragment = hash.replace(/^#/, '');
+  if (!fragment || fragment.startsWith('card-') || document.getElementById(fragment)?.matches('.projects-grid > h2')) return 'about';
+  return Object.keys(SECTION_HASHES).find(name => SECTION_HASHES[name] === fragment) ?? null;
+}
+
+function syncSectionUrl(name, mode) {
+  if (mode === 'none' || sectionFromHash(location.hash) === name) return;
+  const url = new URL(location.href);
+  url.hash = SECTION_HASHES[name] ?? '';
+  history[mode === 'replace' ? 'replaceState' : 'pushState'](null, '', url.href);
+}
+
+function syncWindowDock() {
+  const dock = document.getElementById('project-dock');
+  dock.hidden = !dock.querySelector('.project-dock-item:not([hidden])');
+}
+
+function showSection(name, el, historyMode = 'push') {
   const tab = el || document.querySelector(`.nav-item[data-section="${name}"]`);
   const panel = document.getElementById('section-' + name);
   if (!tab || !panel) return;
+  syncSectionUrl(name, historyMode);
   const content = document.getElementById('main-content');
   const previous = document.querySelector('.section.active');
   if (previous && previous !== panel) sectionScroll.set(previous.id, content.scrollTop);
@@ -76,8 +102,23 @@ document.addEventListener('DOMContentLoaded', () => {
   if (pending) {
     sessionStorage.removeItem('openSection');
     const target = document.querySelector(`.nav-item[data-section="${pending}"]`);
-    if (target) showSection(pending, target);
+    if (target) showSection(pending, target, 'replace');
   }
+
+  const linked = sectionFromHash(location.hash);
+  if (linked && linked !== 'about') showSection(linked, null, 'none');
+
+  // A gallery anchor may be inside a hidden tab when traversing history.
+  window.addEventListener('popstate', () => {
+    const name = sectionFromHash(location.hash);
+    if (!name) return;
+    if (!document.getElementById('section-' + name).classList.contains('active')) {
+      showSection(name, null, 'none');
+    }
+    if (name === 'about' && location.hash) {
+      document.getElementById(location.hash.slice(1))?.scrollIntoView({ block: 'start' });
+    }
+  });
 });
 
 /* ── Live clock ─────────────────────────────────────────────
@@ -101,69 +142,7 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 30_000);
 
-/* ── Scribbles journal ── */
-
-const THOUGHT_ENTRIES = [
-  {
-    date: '2026-07-26',
-    title: 'A step toward my dream job',
-    category: 'small beginnings',
-    paragraphs: ['I applied to my dream job'],
-  },
-  {
-    date: '2026-04-08',
-    title: 'Facing the unknown',
-    category: 'an honest day',
-    paragraphs: ['Feeling lost about the future but faced my emotions honestly'],
-  },
-  {
-    date: '2026-04-07',
-    title: 'Showing up & learning',
-    category: 'notes & connections',
-    paragraphs: ['Went to an EiC networking event and learned some very helpful tips'],
-  },
-  {
-    date: '2026-04-06',
-    title: 'A linked list, finally reversed',
-    category: 'something clicked',
-    paragraphs: ['Figured out how to reverse a linked list for the first time ever!'],
-  },
-  {
-    date: '2026-04-05',
-    title: 'Easter, friends & a sunset',
-    category: 'life lately',
-    paragraphs: ['Easter! Yapped with friends after church and saw sunset later'],
-  },
-  {
-    date: '2026-04-04',
-    title: 'A little Shanghai connection',
-    category: 'a conversation',
-    paragraphs: ['Had a nice conversation with Michael about Shanghai and our shared experience'],
-  },
-  {
-    date: '2026-04-03',
-    title: 'Making space for feelings',
-    category: 'a quiet moment',
-    paragraphs: ['Processed my emotions'],
-  },
-];
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, c => (
-    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-  ));
-}
-
-function formatThoughtDate(date, long = false) {
-  // Parse locally so an entry's calendar date does not shift with the time zone.
-  const [year, month, day] = date.split('-').map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString('en-US', {
-    month: long ? 'long' : 'short',
-    day: 'numeric',
-    year: 'numeric',
-    ...(long ? { weekday: 'long' } : {}),
-  });
-}
+/* ── Scribbles ── */
 
 const SCRIBBLES_CODE_SNIPPETS = [
   'const { fn, ...cfg } = ctx ?? {};',
@@ -319,82 +298,78 @@ function initScribblesCode(section) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const section = document.getElementById('section-thoughts');
-  const covers = document.getElementById('thoughts-covers');
   const reader = document.getElementById('thought-reader');
-  const newer = document.getElementById('thoughts-newer');
-  const older = document.getElementById('thoughts-older');
-  const pageStatus = document.getElementById('thoughts-page-status');
+  const readerBody = reader.querySelector('.thought-reader-body');
+  const maximize = document.getElementById('thought-reader-maximize');
   const latest = document.getElementById('thoughts-read-latest');
+  const entry = document.getElementById('thoughts-entry');
+  const dockItems = document.getElementById('project-dock-items');
   const motionButton = document.getElementById('thoughts-motion');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const entries = [...THOUGHT_ENTRIES].sort((a, b) => b.date.localeCompare(a.date));
-  const pageSize = 3;
-  let page = 0;
+  const restore = document.createElement('button');
+  restore.type = 'button';
+  restore.id = 'thought-reader-restore';
+  restore.className = 'project-dock-item';
+  restore.setAttribute('aria-haspopup', 'dialog');
+  restore.setAttribute('aria-controls', reader.id);
+  let readerOpener = latest;
+  let readerScroll = 0;
   let motionEnabled = true;
 
-  function renderCovers() {
-    const start = page * pageSize;
-    covers.start = start + 1;
-    covers.innerHTML = entries.slice(start, start + pageSize).map((entry, index) => `
-      <li>
-        <button type="button" class="thought-cover" data-entry="${start + index}" aria-haspopup="dialog">
-          <span class="thought-cover-top">
-            <svg class="thought-cover-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M5 3h7l3 3v11H5zM12 3v4h3M8 10h4M8 13h3"/></svg>
-            <time datetime="${escapeHtml(entry.date)}">${escapeHtml(formatThoughtDate(entry.date))}</time>
-            <span class="thought-cover-number" aria-hidden="true">${String(start + index + 1).padStart(2, '0')}</span>
-          </span>
-          <span class="thought-cover-title">${escapeHtml(entry.title)}</span>
-          <span class="thought-cover-bottom">
-            <span class="thought-cover-category">${escapeHtml(entry.category)}</span>
-            <span class="thought-cover-open" aria-hidden="true">read entry ↗</span>
-          </span>
-        </button>
-      </li>
-    `).join('');
-    newer.disabled = page === 0;
-    older.disabled = start + pageSize >= entries.length;
-    pageStatus.textContent = entries.length
-      ? `${start + 1}–${Math.min(start + pageSize, entries.length)} of ${entries.length}`
-      : 'No entries yet';
-  }
-
-  function openEntry(entry, trigger) {
-    document.getElementById('thought-reader-title').textContent = entry.title;
-    document.getElementById('thought-reader-category').textContent = entry.category;
-    document.getElementById('thought-reader-filename').textContent = `scribbles / ${entry.date}.md`;
-    const date = document.getElementById('thought-reader-date');
-    date.dateTime = entry.date;
-    date.textContent = formatThoughtDate(entry.date, true);
-    document.getElementById('thought-reader-copy').replaceChildren(...entry.paragraphs.map(text => {
-      const paragraph = document.createElement('p');
-      paragraph.textContent = text;
-      return paragraph;
-    }));
-    // Let the native dialog restore focus to its opener, including in Safari.
+  function openReader(trigger) {
+    if (trigger !== restore) readerOpener = trigger;
     trigger.focus({ preventScroll: true });
     reader.showModal();
+    readerBody.scrollTop = readerScroll;
+    restore.remove();
+    syncWindowDock();
   }
 
-  covers.addEventListener('click', event => {
-    const trigger = event.target.closest('.thought-cover');
-    if (trigger) openEntry(entries[Number(trigger.dataset.entry)], trigger);
+  function closeReader() {
+    readerScroll = readerBody.scrollTop;
+    reader.close();
+    restore.remove();
+    syncWindowDock();
+    const target = readerOpener.getClientRects().length
+      ? readerOpener
+      : document.querySelector('.nav-item[aria-selected="true"]');
+    target.focus({ preventScroll: true });
+  }
+
+  [latest, entry].forEach(trigger => {
+    trigger.hidden = false;
+    trigger.addEventListener('click', () => openReader(trigger));
   });
-  latest.addEventListener('click', () => openEntry(entries[0], latest));
-  document.getElementById('thought-reader-close').addEventListener('click', () => reader.close());
+  restore.addEventListener('click', () => openReader(restore));
+  document.getElementById('thought-reader-minimize').addEventListener('click', () => {
+    readerScroll = readerBody.scrollTop;
+    const title = document.getElementById('thought-reader-title').textContent.trim();
+    restore.textContent = title;
+    restore.setAttribute('aria-label', `Restore ${title}`);
+    restore.title = `Restore ${title}`;
+    reader.close();
+    dockItems.append(restore);
+    syncWindowDock();
+    restore.focus({ preventScroll: true });
+  });
+  maximize.addEventListener('click', () => {
+    const maximized = reader.classList.toggle('is-maximized');
+    const label = maximized ? 'Restore entry window size' : 'Maximize entry window';
+    maximize.setAttribute('aria-pressed', String(maximized));
+    maximize.setAttribute('aria-label', label);
+    maximize.title = label;
+  });
+  document.getElementById('thought-reader-close').addEventListener('click', closeReader);
+  reader.addEventListener('cancel', event => {
+    event.preventDefault();
+    closeReader();
+  });
   reader.addEventListener('click', event => {
     if (event.target !== reader) return;
     const bounds = reader.getBoundingClientRect();
     if (event.clientX < bounds.left || event.clientX > bounds.right ||
-        event.clientY < bounds.top || event.clientY > bounds.bottom) reader.close();
+        event.clientY < bounds.top || event.clientY > bounds.bottom) closeReader();
   });
-
-  function turnPage(direction, trigger) {
-    page += direction;
-    renderCovers();
-    if (trigger.disabled) (direction > 0 ? newer : older).focus({ preventScroll: true });
-  }
-  newer.addEventListener('click', () => turnPage(-1, newer));
-  older.addEventListener('click', () => turnPage(1, older));
 
   function updateMotion() {
     const enabled = motionEnabled && !reducedMotion.matches;
@@ -411,11 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   reducedMotion.addEventListener('change', updateMotion);
 
-  document.getElementById('thoughts-entry-count').textContent = `${entries.length} entries`;
-  latest.hidden = entries.length === 0;
-  document.querySelector('.thoughts-pagination').hidden = entries.length <= pageSize;
   motionButton.hidden = false;
-  renderCovers();
   updateMotion();
   initScribblesCode(section);
 });

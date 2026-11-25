@@ -117,11 +117,13 @@
         <!-- PORTFOLIO -->
         <section class="section active" id="section-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0">
           <!-- projects gallery -->
-          <h1 class="section-title">projects</h1>
-          <p class="section-sub project-gallery-subtitle">things i've built and shipped</p>
-          <p class="project-gallery-hint" id="project-gallery-hint" hidden>select a card to open a project window</p>
-          <div class="projects-grid">
+          <header>
+            <h1 class="section-title">projects</h1>
+            <p class="section-sub project-gallery-intro">selected design and engineering work from Microsoft, the MIT Media Lab, and my independent projects 💕</p>
+          </header>
 
+          <section class="projects-grid" aria-labelledby="projects-industry">
+            <h2 id="projects-industry" tabindex="-1">Industry</h2>
             <a class="project-card" id="card-windows-privacy-settings"
                href="projects/windows-privacy-settings/windows-privacy-settings.html">
               <img class="project-thumb project-preview-blue" src="projects/windows-privacy-settings/media/ia-grouping.png"
@@ -136,21 +138,29 @@
                 <span class="project-tag">Localization</span>
               </span>
             </a>
+          </section>
 
-            <a class="project-card" id="card-corner-cafe"
-               href="projects/corner-cafe/corner-cafe.html">
-              <img class="project-thumb project-preview-warm" src="projects/corner-cafe/media/counter-cover.png"
-                   alt="Butter-yellow espresso machine with Guest and Church Center sign-in cups" loading="lazy" decoding="async" />
-              <span class="project-name">Corner Cafe</span>
-              <span class="project-desc">An order-ahead cafe workflow, reusable design system, and working prototype.</span>
+          <section class="projects-grid" aria-labelledby="projects-research">
+            <h2 id="projects-research" tabindex="-1">Research</h2>
+            <a class="project-card" id="card-sonic-stitches"
+               href="projects/sonic-stitches/sonic-stitches.html">
+              <img class="project-thumb" src="projects/sonic-stitches/media/dinner-interaction.jpg"
+                   alt="Dinner guests touching embroidered patterns on the Sonic Stitches tablecloth" loading="lazy" decoding="async" />
+              <span class="project-name">Sonic Stitches</span>
+              <span class="project-desc">An embroidered tablecloth that plays stories of food and home through touch.</span>
               <span class="project-tags">
-                <span class="project-tag">Product Judgment</span>
-                <span class="project-tag">Design Systems</span>
-                <span class="project-tag">Design Tokens</span>
-                <span class="project-tag">Coded Prototype</span>
+                <span class="project-tag">Arduino</span>
+                <span class="project-tag">C</span>
+                <span class="project-tag">Interaction Design</span>
+                <span class="project-tag">Capacitive &amp; Pressure Sensors</span>
+                <span class="project-tag">Java</span>
+                <span class="project-tag">Processing</span>
               </span>
             </a>
+          </section>
 
+          <section class="projects-grid" aria-labelledby="projects-human-ai">
+            <h2 id="projects-human-ai" tabindex="-1">Human–AI Interaction</h2>
             <a class="project-card" id="card-siri-agent"
                href="projects/siri-agent/siri-agent.html">
               <span class="project-thumb project-screens siri-agent-thumb" role="img" aria-label="Siri Agent high-fidelity screens showing a trip plan, flight options, and an itinerary">
@@ -183,23 +193,27 @@
                 <span class="project-tag">UX Research</span>
               </span>
             </a>
+          </section>
 
-            <a class="project-card" id="card-sonic-stitches"
-               href="projects/sonic-stitches/sonic-stitches.html">
-              <img class="project-thumb" src="projects/sonic-stitches/media/dinner-interaction.jpg"
-                   alt="Dinner guests touching embroidered patterns on the Sonic Stitches tablecloth" loading="lazy" decoding="async" />
-              <span class="project-name">Sonic Stitches</span>
-              <span class="project-desc">An embroidered tablecloth that plays stories of food and home through touch.</span>
+          <section class="projects-grid" aria-labelledby="projects-volunteer">
+            <h2 id="projects-volunteer" tabindex="-1">Volunteer</h2>
+            <a class="project-card" id="card-corner-cafe"
+               href="projects/corner-cafe/corner-cafe.html">
+              <img class="project-thumb project-preview-warm" src="projects/corner-cafe/media/counter-cover.png"
+                   alt="Butter-yellow espresso machine with Guest and Church Center sign-in cups" loading="lazy" decoding="async" />
+              <span class="project-name">Corner Cafe</span>
+              <span class="project-desc">An order-ahead cafe workflow, reusable design system, and working prototype.</span>
               <span class="project-tags">
-                <span class="project-tag">Arduino</span>
-                <span class="project-tag">C</span>
-                <span class="project-tag">Interaction Design</span>
-                <span class="project-tag">Capacitive &amp; Pressure Sensors</span>
-                <span class="project-tag">Java</span>
-                <span class="project-tag">Processing</span>
+                <span class="project-tag">Product Judgment</span>
+                <span class="project-tag">Design Systems</span>
+                <span class="project-tag">Design Tokens</span>
+                <span class="project-tag">Coded Prototype</span>
               </span>
             </a>
+          </section>
 
+          <section class="projects-grid" aria-labelledby="projects-gaming">
+            <h2 id="projects-gaming" tabindex="-1">Gaming</h2>
             <a class="project-card" id="card-borrowed-wind"
                href="projects/borrowed-wind/borrowed-wind.html">
               <img class="project-thumb project-preview-teal" src="projects/borrowed-wind/media/cover.jpg"
@@ -229,7 +243,10 @@
                 <span class="project-tag">Three.js + TypeScript</span>
               </span>
             </a>
+          </section>
 
+          <section class="projects-grid" aria-labelledby="projects-school">
+            <h2 id="projects-school" tabindex="-1">School</h2>
             <a class="project-card" id="card-fritter"
                href="projects/fritter/fritter.html">
               <span class="project-thumb project-screens project-preview-teal" role="img" aria-label="Fritter app screens showing a curated feed, a chat conversation, and a daily time limit warning">
@@ -265,8 +282,7 @@
                 <span class="project-tag">HTML + CSS</span>
               </span>
             </a>
-
-          </div>
+          </section>
         </section>
 
         <!-- SCRIBBLES -->
@@ -284,7 +300,7 @@
               <p class="thoughts-eyebrow">WHAT IF? A PLACE FOR THE NOT-YET.</p>
               <h1 class="section-title">Before the product,<span>there's a scribble.</span></h1>
               <p class="section-sub">My unbuilt concepts, design experiments,<br>and my product visions for the future.</p>
-              <button type="button" class="thoughts-read-latest" id="thoughts-read-latest" aria-haspopup="dialog" hidden>Read the latest entry <span aria-hidden="true">↗</span></button>
+              <button type="button" class="thoughts-read-latest" id="thoughts-read-latest" aria-haspopup="dialog" aria-controls="thought-reader" hidden>Read the latest entry <span aria-hidden="true">↗</span></button>
             </div>
             <div class="thoughts-scene">
               <div class="thoughts-code" aria-hidden="true">
@@ -293,30 +309,30 @@
               <div class="thoughts-portrait">
                 <img src="thoughts-portrait.webp" alt="Grace wearing glasses and smiling" width="768" height="1022" loading="lazy" decoding="async" />
               </div>
-              <div class="thoughts-journal">
-                <div class="thoughts-journal-heading">
-                  <div><p class="thoughts-eyebrow">THE COLLECTION</p><h2 id="thoughts-journal-title">Small Wins Diary</h2></div>
-                  <span class="thoughts-entry-count" id="thoughts-entry-count"></span>
-                </div>
-                <ol class="thoughts-covers" id="thoughts-covers" aria-labelledby="thoughts-journal-title"></ol>
-                <nav class="thoughts-pagination" aria-label="Journal pages" hidden>
-                  <button type="button" id="thoughts-newer" aria-label="Show newer journal entries">‹ <span>newer</span></button>
-                  <span id="thoughts-page-status" role="status" aria-live="polite"></span>
-                  <button type="button" id="thoughts-older" aria-label="Show older journal entries"><span>older</span> ›</button>
-                </nav>
-                <noscript><p class="thoughts-noscript">Enable JavaScript to browse the journal entries.</p></noscript>
+              <div class="thoughts-collection">
+                <h2 class="thoughts-eyebrow" id="thoughts-collection-title">THE COLLECTION</h2>
+                <button type="button" class="thought-cover" id="thoughts-entry"
+                        aria-haspopup="dialog" aria-controls="thought-reader"
+                        aria-labelledby="thought-entry-title" aria-describedby="thought-entry-category" hidden>
+                  <span class="thought-cover-top">
+                    <svg class="thought-cover-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M5 3h7l3 3v11H5zM12 3v4h3M8 10h4M8 13h3"/></svg>
+                    <span class="thought-cover-category" id="thought-entry-category">Reflection · AI &amp; creativity</span>
+                  </span>
+                  <span class="thought-cover-title" id="thought-entry-title">Room to Feel</span>
+                  <span class="thought-cover-description">What VisionQuest made me think about AI and creativity, and an idea for a design mentor that helps you grow.</span>
+                  <span class="thought-cover-open" aria-hidden="true">read entry ↗</span>
+                </button>
+                <noscript><p class="thoughts-noscript">Enable JavaScript to read this entry.</p></noscript>
               </div>
-              <p class="thoughts-scene-caption">not a finished story. just a few pages of mine.</p>
             </div>
           </div>
-          <p class="thoughts-footnote"><span>Some days are a milestone. Some days are just showing up.</span><span>both belong here.</span></p>
         </section>
 
       </main>
     </div>
   </div>
 
-  <nav class="project-dock" id="project-dock" aria-label="Minimized projects" hidden>
+  <nav class="project-dock" id="project-dock" aria-label="Minimized windows" hidden>
     <span class="project-dock-label">minimized</span>
     <div class="project-dock-items" id="project-dock-items"></div>
   </nav>
@@ -355,22 +371,32 @@
   <p class="project-window-hint" id="project-window-hint">Esc to close. Minimize keeps projects loaded; closing may lose unsaved progress.</p>
 </dialog>
 
-<dialog class="thought-reader" id="thought-reader" aria-labelledby="thought-reader-title" aria-describedby="thought-reader-date">
+<dialog class="thought-reader" id="thought-reader" aria-labelledby="thought-reader-title" aria-describedby="thought-reader-status">
   <div class="titlebar thought-reader-titlebar">
-    <div class="dots">
-      <button type="button" class="dot dot-red window-control" id="thought-reader-close" aria-label="Close journal entry" autofocus>
+    <div class="dots" role="group" aria-label="Entry window controls">
+      <button type="button" class="dot dot-red window-control" id="thought-reader-close" aria-label="Close entry" title="Close entry" autofocus>
         <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m1.5 1.5 9 9m0-9-9 9"/></svg>
       </button>
-      <span class="dot dot-yellow" aria-hidden="true"></span><span class="dot dot-green" aria-hidden="true"></span>
+      <button type="button" class="dot dot-yellow window-control" id="thought-reader-minimize" aria-label="Minimize entry to dock" title="Minimize entry">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M1.5 6h9"/></svg>
+      </button>
+      <button type="button" class="dot dot-green window-control" id="thought-reader-maximize" aria-label="Maximize entry window" title="Maximize entry window" aria-pressed="false">
+        <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path class="window-expand-icon" d="M1 1h7L1 8zm10 10H4l7-7z"/><path class="window-restore-icon" d="M5 5H0l5-5zm2 2h5l-5 5z"/></svg>
+      </button>
     </div>
-    <span class="titlebar-title" id="thought-reader-filename">scribbles / entry.md</span>
+    <span class="titlebar-title">scribbles / room-to-feel</span>
   </div>
   <div class="thought-reader-body">
-    <p class="thoughts-eyebrow" id="thought-reader-category"></p>
-    <h2 id="thought-reader-title"></h2>
-    <time id="thought-reader-date"></time>
-    <div class="thought-reader-copy" id="thought-reader-copy"></div>
-    <div class="thought-reader-signature"><span>grace</span><span>small wins diary</span></div>
+    <p class="thoughts-eyebrow">Reflection · AI &amp; creativity</p>
+    <h2 id="thought-reader-title">Room to Feel</h2>
+    <p class="thought-reader-status" id="thought-reader-status">After VisionQuest</p>
+    <div class="thought-reader-copy" id="thought-reader-copy">
+      <p>One scene in VisionQuest has stayed with me longer than any of its battles. The characters pause to talk about synthezoids, the artificial beings at the center of the story, and what it means to build something that can think. The first synthezoid ever made was designed to reason and to serve, but over time it began to feel, and nothing in its design was prepared for that. Its emotions had nowhere to go, and eventually it exploded. What unsettled me was not the explosion itself, but the idea behind it: a mind could be destroyed not by a flaw in its code, but by an experience its makers never planned for.</p>
+      <p>We are not building synthezoids, but we are building systems that increasingly sound as if they understand us. Today's AI can comfort someone who is anxious, encourage someone who is stuck, and apologize when it gets something wrong—often in language that feels remarkably human. Researchers still debate whether anything resembling feeling exists behind those words, and most would say it does not. Yet people already respond to these tools emotionally. They confide in them, rely on them, and sometimes trust them more than they realize. In that sense, the emotional side of AI has already arrived, even if it lives in us rather than in the machine.</p>
+      <p>Lately, I find myself asking AI for something far less mechanical than answers. I want it to help design products, critique the apps I use, and explain why one layout feels calm while another feels crowded. In other words, I want it to understand aesthetics, and aesthetics are hard to separate from creativity. Good taste is not just a set of rules; it comes from noticing, preferring, and sometimes breaking those rules on purpose. The more we ask AI to judge what is beautiful or what works, the more we are asking it to develop something like a creative sensibility of its own.</p>
+      <p>That is where the synthezoid comes back to me. If AI becomes genuinely creative, it may not stay neatly inside the briefs we give it. It might form preferences, push back on our choices, or propose directions we never asked for. That could make it an extraordinary collaborator, or it could quietly flatten our work into whatever the model finds most pleasing. Either way, creativity with nowhere to go becomes its own kind of pressure. If we want AI that can truly create, we should not ask it simply to echo us. We should let its point of view stretch ours.</p>
+      <p>One idea I keep sketching is Counterpoint, a design-critique partner built to help you grow rather than agree with you. You share a screen, a flow, or an early sketch, and instead of fixing it immediately, Counterpoint asks what you were trying to achieve. Then it responds the way a great mentor would: what it notices first, what feels unresolved, and the principles behind its reaction. It pushes back on choices you make out of habit, shows you directions you would not have reached on your own, and explains why they work. Over time, it notices your patterns—the safe layouts you return to, the details you tend to overlook—and turns them into small creative challenges. The goal is not an AI that adopts your taste, but one that helps you develop a sharper, braver one.</p>
+    </div>
   </div>
 </dialog>
 
